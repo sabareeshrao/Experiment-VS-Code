@@ -1,0 +1,45 @@
+name: Install Postman Simulator
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".integration/postman/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reconstruct and install Postman simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .integration/postman/part-* > /tmp/postman.b64
+          base64 -d /tmp/postman.b64 > /tmp/postman.zip
+          rm -rf /tmp/postman-unpack simulator/postman
+          mkdir -p /tmp/postman-unpack simulator/postman
+          unzip -q /tmp/postman.zip -d /tmp/postman-unpack
+          cp -R /tmp/postman-unpack/postman/. simulator/postman/
+          sed -i '/shared\.css/d;/fidelity\.css/d' simulator/postman/index.html
+          rm -rf .integration/postman
+
+      - name: Commit installed simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Install upgraded Postman simulator"
+          git push
