@@ -43,16 +43,16 @@ function findText(text,scope){
  return best;
 }
 function find(plan){
+ if(plan&&plan.text){
+   var byText=findText(plan.text,plan.scope||null);
+   if(byText)return byText;
+ }
  var selectors=Array.isArray(plan&&plan.selectors)?plan.selectors:[];
  for(var i=0;i<selectors.length;i++){
    try{
      var el=document.querySelector(selectors[i]);
      if(el&&visible(el))return el;
    }catch(_){}
- }
- if(plan&&plan.text){
-   var byText=findText(plan.text,plan.scope||null);
-   if(byText)return byText;
  }
  return null;
 }
