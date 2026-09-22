@@ -10,6 +10,7 @@ on:
       - "lessons.js"
       - "README.md"
       - "project/**"
+      - "project-data/**"
       - "simulator/**"
       - ".github/workflows/package-simulator.yml"
 
@@ -43,6 +44,7 @@ jobs:
           cp index.html styles.css app.js lessons.js README.md dist/Experiment-VS-Code-Trial/
           cp -R simulator dist/Experiment-VS-Code-Trial/
           cp -R project dist/Experiment-VS-Code-Trial/
+          cp -R project-data dist/Experiment-VS-Code-Trial/
 
       - name: Upload IntelliJ UI ZIP artifact
         uses: actions/upload-artifact@v4
