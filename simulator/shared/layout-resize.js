@@ -215,14 +215,14 @@
 
     // Same rule for Query Tool vs Results: no extra grid row.
     const resultsH=clamp(get("resultsH",results.getBoundingClientRect().height||210),90,Math.max(110,main.clientHeight-150));
-    main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(resultsH);
+    main.style.gridTemplateRows="35px 32px minmax(0,1fr) "+px(resultsH);
     const h=makeHandle(main,"sim-layout-handle-h","pgResultsResize");
     if(h){
       h.style.top="calc(100% - "+px(resultsH)+")";
       dragHandle(h,"y",e=>{
         const r=main.getBoundingClientRect();
         const rh=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-150));
-        main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(rh);
+        main.style.gridTemplateRows="35px 32px minmax(0,1fr) "+px(rh);
         h.style.top="calc(100% - "+px(rh)+")";
       },()=>commit({resultsH:results.getBoundingClientRect().height}));
     }
@@ -606,7 +606,7 @@
         const results=main.querySelector(".results");
         const fallback=results?.getBoundingClientRect().height||210;
         const rh=clamp(get("resultsH",fallback),90,Math.max(110,main.clientHeight-150));
-        main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(rh);
+        main.style.gridTemplateRows="35px 32px minmax(0,1fr) "+px(rh);
         const h=document.getElementById("pgResultsResize");
         if(h)h.style.top="calc(100% - "+px(rh)+")";
       }
