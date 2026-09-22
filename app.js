@@ -179,75 +179,38 @@
     if (!step?.action) return null;
     const software = normalizeSoftware(step.software);
     const action = step.action.action;
-    const d = step.action.data || {};
-    const plan = (selectors, extra = {}) => ({ selectors, duration: 1150, ...extra });
+    const plan = (selectors, extra = {}) => ({ selectors, duration: 1050, ...extra });
 
+    // Blue guidance is only for controls the developer clicks.
+    // Editors/terminals use their own native changed-line emphasis.
     if (software === "intellij") {
-      if (action === "newProject") return plan(["#newBtn", "#projectTitle"]);
-      if (action === "createPackage" || action === "createFile") return plan(["#newBtn", "#tree"]);
-      if (action === "openFile") return plan(["#tree"], { text: actionTextFromPath(d.file || d.path), scope: "#tree" });
-      if (action === "typeCode") return plan(["#editorWrap", "#code"]);
-      if (action === "showFileStructure") return plan(["#rightPanel", "#editorPane"]);
+      if (action === "newProject" || action === "createPackage" || action === "createFile") return plan(["#newBtn"]);
     }
-
     if (software === "vscode") {
-      if (action === "openFile") return plan(["#tree"], { text: actionTextFromPath(d.file || d.path), scope: "#tree" });
-      if (action === "createFile") return plan(["#newFileBtn", "#tree"]);
-      if (action === "typeCode") return plan(["#codeViewport", "#codeTable"]);
-      if (action === "terminalCommand" || action === "runTerminal") return plan(["#terminal"]);
+      if (action === "createFile") return plan(["#newFileBtn"]);
     }
-
     if (software === "pgadmin") {
-      if (action === "setStatus") return plan(["#status"]);
-      if (action === "selectTree") return plan(["#tree"], { text: actionTextFromPath(d.path), scope: "#tree" });
       if (action === "openQueryTool") return plan(["#newQuery"]);
-      if (action === "typeSql") return plan(["#sqlwrap", "#sql"]);
       if (action === "executeQuery") return plan(["#run"]);
     }
-
     if (software === "postman") {
-      if (action === "openRequest") return plan(["#collections"]);
       if (action === "setEnvironment") return plan(["#envName"]);
       if (action === "setMethod") return plan(["#methodBox"]);
-      if (action === "typeUrl") return plan(["#urlBox"]);
       if (action === "setHeaders") return plan(["#reqTabs"], { text: "Headers", scope: "#reqTabs" });
       if (action === "sendRequest") return plan(["#sendBtn"]);
       if (action === "selectResponseTab") return plan(["#respTabs"]);
     }
-
-    if (software === "cmd") {
-      if (action === "setCwd") return plan(["#cwdStatus", "#terminal"]);
-      if (action === "executeCommand" || action === "typeCommand") return plan(["#terminal", "#terminalWrap"]);
-    }
-
-    if (software === "linux") {
-      if (action === "setCwd") return plan(["#cwdStatus", "#terminalWin"]);
-      if (action === "executeCommand") return plan(["#terminal", "#terminalWin"]);
-      if (action === "stopProcess") return plan(["#terminalWin"]);
-    }
-
     if (software === "ssms") {
-      if (action === "openConnectDialog") return plan(['[data-target="connect"]', "#toolbar"]);
-      if (action === "setConnectionField") {
-        if (d.field === "authentication") return plan(["#modal select", "#modal"]);
-        return plan(["#modal input", "#modal"]);
-      }
-      if (action === "connectServer") return plan(["#statusServer", "#statusbar"]);
-      if (action === "expandNode") return plan(["#objectTree"], { text: actionTextFromPath(d.id), scope: "#objectTree" });
+      if (action === "openConnectDialog") return plan(['[data-target="connect"]']);
+      if (action === "connectServer") return plan(['[data-target="connectDialogButton"]']);
       if (action === "changeDatabase") return plan(["#dbSelect"]);
-      if (action === "newQuery") return plan(['[data-target="newQuery"]', "#toolbar"]);
-      if (action === "typeSql") return plan(["#queryGroups", "#editorArea"]);
-      if (action === "executeQuery") return plan(['[data-target="execute"]', "#toolbar"]);
-      if (action === "refreshObjectExplorer") return plan(['[data-target="refreshObjectExplorer"]', "#objectTree"]);
-      if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]', "#resultsPane"]);
-      if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]', "#resultsPane"]);
-      if (action === "saveQuery") return plan(['[data-target="save"]', "#toolbar"]);
-      if (action === "openActivityMonitor") return plan(["#objectTree", "#workspace"]);
-      if (["createIndex","showObjectExplorerDetails","backupDatabase","createAgentJob","createAgentSchedule","runAgentJob","showAgentJobHistory"].includes(action)) {
-        return plan(["#objectTree", "#resultsPane"]);
-      }
+      if (action === "newQuery") return plan(['[data-target="newQuery"]']);
+      if (action === "executeQuery") return plan(['[data-target="execute"]']);
+      if (action === "refreshObjectExplorer") return plan(['[data-target="refreshObjectExplorer"]']);
+      if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]']);
+      if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]']);
+      if (action === "saveQuery") return plan(['[data-target="save"]']);
     }
-
     return null;
   }
 
@@ -286,21 +249,30 @@
     if (!flat.length || fullCodeMode) return;
     const step = flat[current];
     const target = normalizeSoftware(step.software);
-
     if (!engineReady[target]) return;
 
-    const actionNumber = step.localIndex + 1;
-    const actionTrail = actionNumber <= 5
-      ? Array.from({ length: actionNumber }, (_, i) => "Action " + (i + 1)).join(" > ")
-      : "Action 1 > … > Action " + (actionNumber - 2) + " > Action " + (actionNumber - 1) + " > Action " + actionNumber;
+    const stage = course.stages[step.stageIndex];
+    const completed = (stage.steps || [])
+      .slice(0, step.localIndex + 1)
+      .map(item => item.title);
+    const visibleActions = completed.length <= 4
+      ? completed
+      : ["…", ...completed.slice(-4)];
 
     frames[target].contentWindow.postMessage({
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
-      stage: course.stages[step.stageIndex].title,
-      actionTrail: "Actions performed: " + actionTrail
+      stage: stage.title,
+      actionTrail: "Actions performed: " + visibleActions.join(" > ")
     }, "*");
+  }
+
+  function scheduleCurrentExplanation(delay = 120) {
+    const expected = current;
+    setTimeout(() => {
+      if (!fullCodeMode && current === expected) explainCurrentStep();
+    }, delay);
   }
 
   function updateUrlForFullCode() {
@@ -469,7 +441,6 @@
     setPlaybackVisibility();
     renderSidebar();
     updateUrlForStep();
-    explainCurrentStep();
   }
 
   function goToStep(index, animateFinal) {
@@ -488,6 +459,7 @@
 
     renderCurrentStep();
     seekSoftware(current, software, animateFinal);
+    scheduleCurrentExplanation(120);
   }
 
   window.addEventListener("message", event => {
@@ -524,6 +496,7 @@
       setTimeout(() => {
         seekSoftware(current, software, false);
         renderCurrentStep();
+        scheduleCurrentExplanation(120);
       }, 0);
     }
   });
