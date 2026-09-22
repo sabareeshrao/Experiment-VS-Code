@@ -48,6 +48,31 @@
     jira: false
   };
 
+  function ensureGlobalUiPersistence(frame) {
+    if (!frame) return;
+    try {
+      const doc = frame.contentDocument;
+      if (!doc?.documentElement || !doc.body) return;
+      const alreadyLoaded = [...doc.scripts].some(script =>
+        String(script.src || "").includes("/simulator/shared/layout-resize.js")
+      );
+      if (alreadyLoaded) return;
+
+      const script = doc.createElement("script");
+      script.src = new URL("simulator/shared/layout-resize.js?v=4", location.href).href;
+      script.dataset.globalUiPersistence = "1";
+      doc.body.appendChild(script);
+    } catch (_) {}
+  }
+
+  // Every simulator iframe, including future ones, receives the same UI
+  // persistence runtime automatically. Individual simulators only need to
+  // expose normal resizable layout or data-sim-persist attributes.
+  document.querySelectorAll("iframe.sim-frame").forEach(frame => {
+    frame.addEventListener("load", () => ensureGlobalUiPersistence(frame));
+    setTimeout(() => ensureGlobalUiPersistence(frame), 0);
+  });
+
   const stageList = $("stageList");
   const stepTitle = $("stepTitle");
   const stageLabel = $("stageLabel");
