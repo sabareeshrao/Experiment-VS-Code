@@ -15,7 +15,30 @@ style.textContent=[
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
 "body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important}",
 "body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none;z-index:2}",
-".sim-line-text{position:relative;z-index:3}"
+".sim-line-text{position:relative;z-index:3}",
+/* Global overflow + scrollbar safety.  Every simulator can expose long tree
+   paths, filenames, SQL/code lines, table rows, console output, etc.  Never
+   crop that content just because the pane is narrow. */
+"html body *{scrollbar-width:thin!important;scrollbar-color:rgba(126,136,148,.72) transparent!important}",
+"html body *::-webkit-scrollbar{width:10px!important;height:10px!important;display:block!important}",
+"html body *::-webkit-scrollbar-track{background:transparent!important}",
+"html body *::-webkit-scrollbar-thumb{background:rgba(126,136,148,.62)!important;border:2px solid transparent!important;background-clip:padding-box!important;border-radius:999px!important;min-width:28px!important;min-height:28px!important}",
+"html body *::-webkit-scrollbar-thumb:hover{background:rgba(154,165,178,.82)!important;background-clip:padding-box!important}",
+"html body *::-webkit-scrollbar-corner{background:transparent!important}",
+/* Explorer/tree panes: horizontal scrolling is deliberate.  Child rows keep
+   their natural width so the browser has something to scroll to. */
+"body .tree,body .objectTree,body .apiTreeSide,body .fileList{overflow:auto!important;overflow-x:auto!important;overflow-y:auto!important;scrollbar-gutter:stable}",
+"body .tree .treeRow,body .tree .row,body .objectTree .treeRow{width:max-content!important;min-width:100%!important}",
+"body .tree .nodeText,body .tree .node,body .tree .treeLabel,body .objectTree .treeLabel{overflow:visible!important;text-overflow:clip!important;max-width:none!important;flex:0 0 auto!important;white-space:nowrap!important}",
+/* Other long-content panes already support overflow; make horizontal access
+   explicit without changing their internal layout. */
+"body .terminalWrap,body .terminalViewport,body .codeViewport,body .resultBody,body .result-body,body .markdownPreviewBody,body .apiTreeMain,body .history{overflow-x:auto!important}",
+/* Lists that intentionally have minimum-width rows must be allowed to drive a
+   horizontal scrollbar rather than shrink their text into ellipses. */
+"body .fileList .fileRow{width:max-content!important;min-width:max(100%,560px)!important}",
+"body .fileList .fileName{overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important}",
+"body .sidebar .collection,body .sidebar .requestRow{min-width:max-content}",
+"body .sidebar .requestRow>*{white-space:nowrap}"
 ].join("");
 document.head.appendChild(style);
 
