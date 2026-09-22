@@ -10,7 +10,8 @@
     pgadmin: $("pgadminFrame"),
     postman: $("postmanFrame"),
     cmd: $("cmdFrame"),
-    linux: $("linuxFrame")
+    linux: $("linuxFrame"),
+    ssms: $("ssmsFrame")
   };
 
   const appIds = {
@@ -19,7 +20,8 @@
     pgadmin: "pgadmin",
     postman: "postman",
     cmd: "cmd",
-    linux: "linux"
+    linux: "linux",
+    ssms: "sql_server_management_studio"
   };
 
   const appLabels = {
@@ -28,7 +30,8 @@
     pgadmin: "pgAdmin 4",
     postman: "Postman",
     cmd: "Command Prompt",
-    linux: "Linux"
+    linux: "Linux",
+    ssms: "SQL Server Management Studio"
   };
 
   const engineReady = {
@@ -37,7 +40,8 @@
     pgadmin: false,
     postman: false,
     cmd: false,
-    linux: false
+    linux: false,
+    ssms: false
   };
 
   const stageList = $("stageList");
@@ -89,6 +93,7 @@
     if (value === "postman") return "postman";
     if (value === "cmd") return "cmd";
     if (value === "linux") return "linux";
+    if (value === "ssms") return "ssms";
     return "intellij";
   }
 
@@ -107,6 +112,7 @@
     softwareBadge.classList.toggle("postman", activeSoftware === "postman");
     softwareBadge.classList.toggle("cmd", activeSoftware === "cmd");
     softwareBadge.classList.toggle("linux", activeSoftware === "linux");
+    softwareBadge.classList.toggle("ssms", activeSoftware === "ssms");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
