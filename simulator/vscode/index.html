@@ -4,36 +4,224 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Visual Studio Code Simulator</title>
 <style>
-:root{--bg:#181818;--editor:#1f1f1f;--line:#2b2b2b;--text:#ccc;--muted:#858585;--blue:#0078d4;--select:#04395e;--hover:#2a2d2e}
+:root{--bg:#181818;--editor:#1f1f1f;--line:#2b2b2b;--text:#ccc;--muted:#858585;--blue:#0078d4;--select:#04395e;--hover:#2a2d2e;--tab:#181818;--tabActive:#1f1f1f}
 *{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#424242 transparent}
-*::-webkit-scrollbar{width:10px;height:10px}
-*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-track{background:transparent}
 *::-webkit-scrollbar-thumb{background:#424242;border:2px solid transparent;background-clip:padding-box;border-radius:8px}
 *::-webkit-scrollbar-thumb:hover{background:#555;border:2px solid transparent;background-clip:padding-box}
 *::-webkit-scrollbar-corner{background:transparent}
 html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif}
-button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-rows:35px minmax(0,1fr) 22px}.titlebar{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:0 9px;font-size:11px}.logo{width:21px;color:#23a8f2;font-size:17px;font-weight:900}.menus{display:flex;gap:14px}.command{margin:auto;width:min(480px,48vw);height:24px;border:1px solid #3a3a3a;border-radius:6px;background:#242424;display:flex;align-items:center;justify-content:center;color:#aaa}.window{letter-spacing:10px;color:#aaa}
-.workbench{min-height:0;display:grid;grid-template-columns:48px 245px minmax(0,1fr)}.activity{border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center}.act{width:48px;height:48px;border:0;background:transparent;color:#8d8d8d;font-size:18px}.act.active{color:#fff;border-left:2px solid #fff}.act:hover{color:#fff}.activity .bottom{margin-top:auto}.sidebar{min-width:0;border-right:1px solid var(--line);display:grid;grid-template-rows:35px minmax(0,1fr)}.sideTitle{display:flex;align-items:center;padding:0 14px;font-size:10px;text-transform:uppercase;letter-spacing:.06em}.tree{overflow:auto;padding:4px 0;font-size:11px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:6px;white-space:nowrap}.row:hover{background:var(--hover)}.row.active{background:var(--select)}.tw{width:15px;text-align:center;color:#9b9b9b}.ico{width:17px;text-align:center}.name{overflow:hidden;text-overflow:ellipsis}
-.center{min-width:0;min-height:0;display:grid;grid-template-rows:35px 25px minmax(0,1fr) 190px;background:var(--editor)}.tabs{display:flex;background:#181818;border-bottom:1px solid var(--line)}.tab{min-width:120px;padding:9px 12px 0;border-right:1px solid var(--line);font-size:11px;color:#aaa}.tab.active{background:var(--editor);color:#fff;border-top:1px solid var(--blue)}.bread{padding:5px 12px;color:#999;font-size:10px;border-bottom:1px solid var(--line)}.editor{min-height:0;display:grid;grid-template-columns:48px minmax(0,1fr);overflow:auto}.gutter{padding:10px 8px 40px 0;text-align:right;color:#6e7681;font:11px/21px Consolas,monospace}.code{margin:0;padding:10px 18px 40px 8px;white-space:pre;min-width:max-content;font:12px/21px Consolas,monospace}.line{display:block;min-height:21px}.line.focus{background:rgba(0,120,212,.12)}.kw{color:#c586c0}.str{color:#ce9178}.num{color:#b5cea8}.com{color:#6a9955}
-.panel{border-top:1px solid var(--line);display:grid;grid-template-rows:34px minmax(0,1fr)}.panelTabs{display:flex;gap:18px;padding:0 12px;font-size:10px}.panelTab{height:34px;padding-top:11px;color:#999}.panelTab.active{color:#fff;border-bottom:1px solid #fff}.terminal{overflow:auto;padding:9px 13px;font:11px/18px Consolas,monospace;white-space:pre-wrap}.status{display:flex;align-items:center;gap:11px;border-top:1px solid #2b2b2b;padding:0 8px;font-size:9px;color:#aaa}.status .grow{flex:1}.status .blue{background:#007acc;color:#fff;margin-left:-8px;height:21px;padding:5px 8px}
-.assistant{position:absolute;z-index:400;right:16px;bottom:35px;width:315px;max-width:calc(100vw - 30px);background:#252526;border:1px solid #454545;border-radius:6px;box-shadow:0 12px 32px #0008;overflow:hidden;user-select:none;touch-action:none}.assistant.hidden{display:none}.aHead{height:34px;display:flex;align-items:center;gap:7px;padding:0 7px;background:#202020;border-bottom:1px solid #3c3c3c;cursor:grab}.aIcon{width:20px;height:20px;display:grid;place-items:center;border-radius:4px;background:#0e639c;color:#fff;font-size:9px;font-weight:800}.aTitles{flex:1;min-width:0}.aTitles strong,.aTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.aTitles strong{font-size:10px}.aTitles span{font-size:8.5px;color:#999}.aBtn{width:23px;height:23px;border:0;background:transparent;color:#aaa;border-radius:3px}.aBody{padding:9px 10px 11px;font:10.5px/1.55 "Segoe UI",Arial,sans-serif;cursor:grab}.tag{display:inline-block;padding:2px 6px;border-radius:3px;background:#15364d;color:#9cdcfe;font-size:9px;margin-bottom:7px}.lang{font-size:8px;color:#75beff;margin-left:5px}.aBody p{margin:0}.assistant.min .aBody{display:none}.assistant.min{width:225px}
+button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-rows:35px minmax(0,1fr) 22px}
+.titlebar{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:0 9px;font-size:11px}
+.logo{width:21px;color:#23a8f2;font-size:17px;font-weight:900}.menus{display:flex;gap:14px}
+.command{margin:auto;width:min(480px,48vw);height:24px;border:1px solid #3a3a3a;border-radius:6px;background:#242424;display:flex;align-items:center;justify-content:center;color:#aaa}
+.window{letter-spacing:10px;color:#aaa}
+.workbench{min-height:0;display:grid;grid-template-columns:48px 245px minmax(0,1fr)}
+.activity{border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center}
+.act{width:48px;height:48px;border:0;background:transparent;color:#8d8d8d;font-size:18px}.act.active{color:#fff;border-left:2px solid #fff}.act:hover{color:#fff}.activity .bottom{margin-top:auto}
+.sidebar{min-width:0;border-right:1px solid var(--line);display:grid;grid-template-rows:35px minmax(0,1fr)}
+.sideTitle{display:flex;align-items:center;padding:0 14px;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.tree{overflow:auto;padding:4px 0;font-size:11px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:6px;white-space:nowrap;cursor:default}
+.row:hover{background:var(--hover)}.row.active{background:var(--select)}.tw{width:15px;text-align:center;color:#9b9b9b}.ico{width:17px;text-align:center}.name{overflow:hidden;text-overflow:ellipsis}
+.center{min-width:0;min-height:0;display:grid;grid-template-rows:35px 25px minmax(0,1fr) 190px;background:var(--editor)}
+.tabs{display:flex;align-items:stretch;min-width:0;overflow-x:auto;overflow-y:hidden;background:#181818;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{height:0}
+.tab{position:relative;display:flex;align-items:center;gap:7px;flex:0 0 auto;min-width:120px;max-width:220px;height:35px;padding:0 7px 0 10px;border-right:1px solid var(--line);border-top:1px solid transparent;background:var(--tab);font-size:11px;color:#999;cursor:default}
+.tab:hover{background:#1c1c1c;color:#ddd}.tab.active{background:var(--tabActive);color:#fff;border-top-color:var(--blue)}
+.tab.preview .tabLabel{font-style:italic}.tabIcon{flex:0 0 15px;text-align:center;font-size:10px}.tabLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabClose{margin-left:auto;width:20px;height:20px;border:0;border-radius:4px;background:transparent;color:#999;opacity:0;display:grid;place-items:center;padding:0;font-size:14px;line-height:1}
+.tab:hover .tabClose,.tab.active .tabClose{opacity:1}.tabClose:hover{background:#3a3d41;color:#fff}
+.welcomeTab{min-width:110px}.dirtyDot{width:8px;height:8px;border-radius:50%;background:#ddd;margin-left:auto}
+.bread{padding:5px 12px;color:#999;font-size:10px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.editor{min-height:0;display:grid;grid-template-columns:48px minmax(0,1fr);overflow:auto}.gutter{padding:10px 8px 40px 0;text-align:right;color:#6e7681;font:11px/21px Consolas,monospace}.code{margin:0;padding:10px 18px 40px 8px;white-space:pre;min-width:max-content;font:12px/21px Consolas,monospace}.line{display:block;min-height:21px}.line.focus{background:rgba(0,120,212,.12)}
+.kw{color:#c586c0}.str{color:#ce9178}.num{color:#b5cea8}.com{color:#6a9955}.type{color:#4ec9b0}
+.emptyEditor{grid-column:1/3;display:grid;place-items:center;color:#666;font-size:12px;letter-spacing:.02em}
+.panel{border-top:1px solid var(--line);display:grid;grid-template-rows:34px minmax(0,1fr)}
+.panelTabs{display:flex;gap:18px;padding:0 12px;font-size:10px}.panelTab{height:34px;padding-top:11px;color:#999}.panelTab.active{color:#fff;border-bottom:1px solid #fff}
+.terminal{overflow:auto;padding:9px 13px;font:11px/18px Consolas,monospace;white-space:pre-wrap}
+.status{display:flex;align-items:center;gap:11px;border-top:1px solid #2b2b2b;padding:0 8px;font-size:9px;color:#aaa}.status .grow{flex:1}.status .blue{background:#007acc;color:#fff;margin-left:-8px;height:21px;padding:5px 8px}
+.assistant{position:absolute;z-index:400;right:16px;bottom:35px;width:315px;max-width:calc(100vw - 30px);background:#252526;border:1px solid #454545;border-radius:6px;box-shadow:0 12px 32px #0008;overflow:hidden;user-select:none;touch-action:none}.assistant.hidden{display:none}
+.aHead{height:34px;display:flex;align-items:center;gap:7px;padding:0 7px;background:#202020;border-bottom:1px solid #3c3c3c;cursor:grab}.aIcon{width:20px;height:20px;display:grid;place-items:center;border-radius:4px;background:#0e639c;color:#fff;font-size:9px;font-weight:800}
+.aTitles{flex:1;min-width:0}.aTitles strong,.aTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.aTitles strong{font-size:10px}.aTitles span{font-size:8.5px;color:#999}.aBtn{width:23px;height:23px;border:0;background:transparent;color:#aaa;border-radius:3px}
+.aBody{padding:9px 10px 11px;font:10.5px/1.55 "Segoe UI",Arial,sans-serif;cursor:grab}.tag{display:inline-block;padding:2px 6px;border-radius:3px;background:#15364d;color:#9cdcfe;font-size:9px;margin-bottom:7px}.lang{font-size:8px;color:#75beff;margin-left:5px}.aBody p{margin:0}.assistant.min .aBody{display:none}.assistant.min{width:225px}
 @media(max-width:850px){.workbench{grid-template-columns:42px 190px minmax(0,1fr)}.activity,.act{width:42px}.command{width:40vw}}@media(max-width:620px){.workbench{grid-template-columns:40px 0 minmax(0,1fr)}.sidebar{display:none}.menus{display:none}.command{width:60vw}}
-</style></head><body>
-<div class="app"><div class="titlebar"><span class="logo">◈</span><span class="menus"><span>File</span><span>Edit</span><span>Selection</span><span>View</span><span>Go</span><span>Run</span><span>Terminal</span><span>Help</span></span><div class="command">⌕ &nbsp; Java Practice</div><span class="window">— □ ×</span></div>
-<div class="workbench"><aside class="activity"><button class="act active" title="Explorer">▱</button><button class="act">⌕</button><button class="act">⑂</button><button class="act">▷</button><button class="act">▦</button><button class="act bottom">◎</button><button class="act">⚙</button></aside><aside class="sidebar"><div class="sideTitle">Explorer</div><div class="tree" id="tree"></div></aside><main class="center"><div class="tabs"><div class="tab active" id="tab">Welcome</div></div><div class="bread" id="bread">Java Practice</div><div class="editor" id="editor"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre></div><section class="panel"><div class="panelTabs"><span class="panelTab">PROBLEMS</span><span class="panelTab">OUTPUT</span><span class="panelTab active">TERMINAL</span><span class="panelTab">DEBUG CONSOLE</span></div><div class="terminal" id="terminal">PS Java Practice&gt; </div></section></main></div>
-<div class="status"><span class="blue">⑂ main</span><span>○ 0</span><span>△ 0</span><span class="grow"></span><span id="position">Ln 1, Col 1</span><span>Spaces: 4</span><span>UTF-8</span><span>{ }</span></div></div>
+</style></head>
+<body>
+<div class="app">
+ <div class="titlebar"><span class="logo">◈</span><span class="menus"><span>File</span><span>Edit</span><span>Selection</span><span>View</span><span>Go</span><span>Run</span><span>Terminal</span><span>Help</span></span><div class="command">⌕ &nbsp; Java Practice</div><span class="window">— □ ×</span></div>
+ <div class="workbench">
+  <aside class="activity"><button class="act active" title="Explorer">▱</button><button class="act" title="Search">⌕</button><button class="act" title="Source Control">⑂</button><button class="act" title="Run and Debug">▷</button><button class="act" title="Extensions">▦</button><button class="act bottom" title="Accounts">◎</button><button class="act" title="Settings">⚙</button></aside>
+  <aside class="sidebar"><div class="sideTitle">Explorer</div><div class="tree" id="tree"></div></aside>
+  <main class="center">
+   <div class="tabs" id="tabs"></div>
+   <div class="bread" id="bread">Java Practice</div>
+   <div class="editor" id="editor"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre></div>
+   <section class="panel"><div class="panelTabs"><span class="panelTab">PROBLEMS</span><span class="panelTab">OUTPUT</span><span class="panelTab active">TERMINAL</span><span class="panelTab">DEBUG CONSOLE</span></div><div class="terminal" id="terminal">PS Java Practice&gt; </div></section>
+  </main>
+ </div>
+ <div class="status"><span class="blue">⑂ main</span><span>○ 0</span><span>△ 0</span><span class="grow"></span><span id="position">Ln 1, Col 1</span><span>Spaces: 4</span><span>UTF-8</span><span>{ }</span></div>
+</div>
 <div class="assistant hidden" id="assistant"><div class="aHead" id="aHead"><div class="aIcon">AI</div><div class="aTitles"><strong id="aTitle">Step explanation</strong><span id="aStage">Developer guidance</span></div><button class="aBtn" id="aMin">—</button><button class="aBtn" id="aClose">×</button></div><div class="aBody"><span class="tag" id="aStep">Step</span><span class="lang">Telugu • English letters</span><p id="aText"></p></div></div>
 <script>
-(()=>{"use strict";const $=id=>document.getElementById(id),clone=v=>JSON.parse(JSON.stringify(v??null)),esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");const R={tree:$("tree"),tab:$("tab"),bread:$("bread"),gutter:$("gutter"),code:$("code"),editor:$("editor"),terminal:$("terminal"),assistant:$("assistant"),aHead:$("aHead"),aTitle:$("aTitle"),aStage:$("aStage"),aStep:$("aStep"),aText:$("aText")};let baseline={},state={},files={},activeFile=null,changed=[],seekToken=0;
-function normalize(){state=state||{};files=clone(state.files||{});for(const[p,v]of Object.entries(files))if(typeof v==="string")files[p]={content:v};activeFile=state.initialFile||Object.keys(files)[0]||null}
-function syntax(line){let e=esc(line);if(/^\s*\/\//.test(line))return'<span class="com">'+e+'</span>';return e.replace(/\b(class|public|private|protected|const|let|var|function|return|if|else|for|while|import|from|export|new|async|await|interface|type)\b/g,'<span class="kw">$1</span>').replace(/("[^"]*"|'[^']*')/g,'<span class="str">$1</span>').replace(/\b(\d+)\b/g,'<span class="num">$1</span>')}
-function rows(){const paths=Object.keys(files).sort(),folders=new Set();for(const p of paths){const a=p.split("/");for(let i=1;i<a.length;i++)folders.add(a.slice(0,i).join("/"))}return[...[...folders].map(p=>({p,folder:true,d:p.split("/").length-1})),...paths.map(p=>({p,folder:false,d:p.split("/").length-1}))].sort((a,b)=>a.p.localeCompare(b.p))}
-function renderTree(){R.tree.innerHTML="";for(const x of rows()){const row=document.createElement("div");row.className="row"+(!x.folder&&x.p===activeFile?" active":"");row.style.paddingLeft=(7+x.d*12)+"px";const n=x.p.split("/").pop();row.innerHTML='<span class="tw">'+(x.folder?"⌄":"")+'</span><span class="ico">'+(x.folder?"▰":/\.java$/.test(n)?"J":/\.(js|ts|tsx)$/.test(n)?"JS":"·")+'</span><span class="name">'+esc(n)+'</span>';if(!x.folder)row.onclick=()=>{activeFile=x.p;changed=[];renderAll()};R.tree.appendChild(row)}}
-function renderCode(){const content=activeFile&&files[activeFile]?files[activeFile].content||"":"";const lines=String(content).split("\n");R.gutter.innerHTML="";R.code.innerHTML="";lines.forEach((line,i)=>{const g=document.createElement("div");g.textContent=i+1;R.gutter.appendChild(g);const s=document.createElement("span");s.className="line"+(changed.includes(i+1)&&line.trim()?" focus":"");s.innerHTML=syntax(line);R.code.appendChild(s)});R.tab.textContent=activeFile?activeFile.split("/").pop():"Welcome";R.bread.textContent=activeFile?"Java Practice  ›  "+activeFile.split("/").join("  ›  "):"Java Practice";R.editor.scrollTop=R.editor.scrollHeight}
-function renderAll(){renderTree();renderCode();R.terminal.textContent=state.terminal||"PS Java Practice> "}function reset(){state=clone(baseline||{});normalize();changed=[];renderAll()}function ensureFile(p){if(!files[p])files[p]={content:""};state.files=files;activeFile=p}
-async function apply(step,animate,token){const d=step?.data||{};switch(step?.action){case"openFile":activeFile=d.file||d.path||activeFile;break;case"createFile":ensureFile(d.file||d.path);files[activeFile].content=String(d.content||"");break;case"setFile":ensureFile(d.file||d.path);files[activeFile].content=String(d.content||d.code||"");break;case"typeCode":{const p=d.file||d.path||activeFile;ensureFile(p);const old=files[p].content||"",add=String(d.code||d.text||""),baseLines=old.split("\n").length;let next=old+add;changed=add.split("\n").map((x,i)=>x.trim()?baseLines+i:null).filter(Boolean);if(d.marker&&old.includes(d.marker)){const ls=old.split("\n"),idx=ls.findIndex(x=>x.includes(d.marker)),indent=(ls[idx].match(/^\s*/)||[""])[0],block=add.split("\n").map(x=>indent+x);if(d.position==="before")ls.splice(idx,0,...block);else if(d.position==="after")ls.splice(idx+1,0,...block);else ls.splice(idx,1,...block);next=ls.join("\n");changed=block.map((x,i)=>x.trim()?idx+1+i:null).filter(Boolean)}if(animate&&add.length<500){let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;files[p].content=old+built;renderCode();await new Promise(r=>setTimeout(r,10))}}files[p].content=next;break}case"terminalCommand":case"runTerminal":state.terminal=(state.terminal||"PS Java Practice> ")+String(d.command||"")+(d.output!==undefined?"\n"+d.output:"")+"\nPS Java Practice> ";break;case"setTerminal":state.terminal=String(d.text||d.output||"");break;case"newProject":state.workspaceName=d.name||state.workspaceName||"Java Practice";break;case"createDirectory":case"createPackage":break}state.files=files;renderAll()}
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const clone=v=>JSON.parse(JSON.stringify(v??null));
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const R={tree:$("tree"),tabs:$("tabs"),bread:$("bread"),gutter:$("gutter"),code:$("code"),editor:$("editor"),terminal:$("terminal"),position:$("position"),assistant:$("assistant"),aHead:$("aHead"),aTitle:$("aTitle"),aStage:$("aStage"),aStep:$("aStep"),aText:$("aText")};
+
+let baseline={},state={},files={},activeFile=null,openedTabs=[],changed=[],seekToken=0;
+
+function iconFor(path){
+ const n=(path||"").split("/").pop()||"";
+ if(/\.java$/i.test(n))return "J";
+ if(/\.(js|jsx|ts|tsx)$/i.test(n))return "JS";
+ if(/\.json$/i.test(n))return "{}";
+ if(/\.md$/i.test(n))return "M↓";
+ if(/\.html$/i.test(n))return "<>";
+ if(/\.css$/i.test(n))return "#";
+ if(/^\.env/.test(n))return "⚙";
+ if(/^\.gitignore$/i.test(n))return "⑂";
+ return "·";
+}
+function normalize(){
+ state=state||{};
+ files=clone(state.files||{});
+ for(const[p,v]of Object.entries(files))if(typeof v==="string")files[p]={content:v};
+ openedTabs=(state.openTabs||[]).map(x=>typeof x==="string"?{path:x,pinned:true}:{path:x.path,pinned:x.pinned!==false}).filter(x=>x.path&&files[x.path]);
+ activeFile=state.initialFile&&files[state.initialFile]?state.initialFile:(openedTabs[0]?.path||Object.keys(files)[0]||null);
+ if(activeFile&&!openedTabs.some(t=>t.path===activeFile))openedTabs.push({path:activeFile,pinned:true});
+}
+function syntax(line){
+ let e=esc(line);
+ if(/^\s*(\/\/|#)/.test(line))return'<span class="com">'+e+'</span>';
+ return e
+  .replace(/\b(class|public|private|protected|const|let|var|function|return|if|else|for|while|import|from|export|new|async|await|interface|type|package|extends|implements|void|int|boolean|float|String)\b/g,'<span class="kw">$1</span>')
+  .replace(/("[^"]*"|'[^']*')/g,'<span class="str">$1</span>')
+  .replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
+}
+function rows(){
+ const paths=Object.keys(files).sort(),folders=new Set();
+ for(const p of paths){const a=p.split("/");for(let i=1;i<a.length;i++)folders.add(a.slice(0,i).join("/"))}
+ return[...[...folders].map(p=>({p,folder:true,d:p.split("/").length-1})),...paths.map(p=>({p,folder:false,d:p.split("/").length-1}))].sort((a,b)=>a.p.localeCompare(b.p));
+}
+function openDoc(path,pinned=true){
+ if(!path||!files[path])return;
+ let tab=openedTabs.find(t=>t.path===path);
+ if(tab){if(pinned)tab.pinned=true}
+ else{
+   if(!pinned){
+     const previewIndex=openedTabs.findIndex(t=>!t.pinned);
+     if(previewIndex>=0)openedTabs[previewIndex]={path,pinned:false};
+     else openedTabs.push({path,pinned:false});
+   }else openedTabs.push({path,pinned:true});
+ }
+ activeFile=path;
+ state.openTabs=openedTabs.map(t=>({path:t.path,pinned:t.pinned}));
+}
+function pinDoc(path){const t=openedTabs.find(x=>x.path===path);if(t)t.pinned=true;state.openTabs=openedTabs.map(x=>({path:x.path,pinned:x.pinned}));}
+function closeDoc(path){
+ const i=openedTabs.findIndex(t=>t.path===path);if(i<0)return;
+ const wasActive=activeFile===path;openedTabs.splice(i,1);
+ if(wasActive)activeFile=openedTabs[i]?.path||openedTabs[i-1]?.path||null;
+ state.openTabs=openedTabs.map(t=>({path:t.path,pinned:t.pinned}));
+ changed=[];renderAll();
+}
+function cycleTab(dir){
+ if(openedTabs.length<2)return;
+ let i=openedTabs.findIndex(t=>t.path===activeFile);if(i<0)i=0;
+ i=(i+dir+openedTabs.length)%openedTabs.length;activeFile=openedTabs[i].path;changed=[];renderAll();scrollActiveTab();
+}
+function scrollActiveTab(){requestAnimationFrame(()=>R.tabs.querySelector(".tab.active")?.scrollIntoView({block:"nearest",inline:"nearest"}))}
+function renderTabs(){
+ R.tabs.innerHTML="";
+ if(!openedTabs.length){
+   const w=document.createElement("div");w.className="tab active welcomeTab";w.innerHTML='<span class="tabLabel">Welcome</span>';R.tabs.appendChild(w);return;
+ }
+ for(const t of openedTabs){
+   const el=document.createElement("div");el.className="tab"+(t.path===activeFile?" active":"")+(!t.pinned?" preview":"");el.title=t.path;
+   el.innerHTML='<span class="tabIcon">'+esc(iconFor(t.path))+'</span><span class="tabLabel">'+esc(t.path.split("/").pop())+'</span><button class="tabClose" title="Close">×</button>';
+   el.onclick=e=>{if(e.target.closest(".tabClose"))return;activeFile=t.path;changed=[];renderAll();scrollActiveTab()};
+   el.ondblclick=()=>{pinDoc(t.path);renderTabs()};
+   el.onauxclick=e=>{if(e.button===1){e.preventDefault();closeDoc(t.path)}};
+   el.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeDoc(t.path)};
+   R.tabs.appendChild(el);
+ }
+}
+function renderTree(){
+ R.tree.innerHTML="";
+ for(const x of rows()){
+   const row=document.createElement("div");row.className="row"+(!x.folder&&x.p===activeFile?" active":"");row.style.paddingLeft=(7+x.d*12)+"px";
+   const n=x.p.split("/").pop();row.innerHTML='<span class="tw">'+(x.folder?"⌄":"")+'</span><span class="ico">'+(x.folder?"▰":esc(iconFor(n)))+'</span><span class="name">'+esc(n)+'</span>';
+   if(!x.folder){
+     row.onclick=()=>{openDoc(x.p,false);changed=[];renderAll();scrollActiveTab()};
+     row.ondblclick=()=>{openDoc(x.p,true);changed=[];renderAll();scrollActiveTab()};
+   }
+   R.tree.appendChild(row);
+ }
+}
+function renderCode(){
+ R.gutter.innerHTML="";R.code.innerHTML="";
+ if(!activeFile||!files[activeFile]){
+   R.bread.textContent=state.workspaceName||"Java Practice";
+   const empty=document.createElement("div");empty.className="emptyEditor";empty.textContent="Open a file from Explorer";R.editor.appendChild(empty);return;
+ }
+ R.editor.querySelectorAll(".emptyEditor").forEach(x=>x.remove());
+ const content=files[activeFile].content||"",lines=String(content).split("\n");
+ lines.forEach((line,i)=>{const g=document.createElement("div");g.textContent=i+1;R.gutter.appendChild(g);const s=document.createElement("span");s.className="line"+(changed.includes(i+1)&&line.trim()?" focus":"");s.innerHTML=syntax(line);R.code.appendChild(s)});
+ R.bread.textContent=(state.workspaceName||"Java Practice")+"  ›  "+activeFile.split("/").join("  ›  ");
+ R.position.textContent="Ln "+Math.max(1,lines.length)+", Col 1";
+ R.editor.scrollTop=R.editor.scrollHeight;
+}
+function renderAll(){renderTree();renderTabs();renderCode();R.terminal.textContent=state.terminal||"PS Java Practice> "}
+function reset(){state=clone(baseline||{});normalize();changed=[];renderAll()}
+function ensureFile(p){if(!p)return null;if(!files[p])files[p]={content:""};state.files=files;openDoc(p,true);return p}
+
+async function apply(step,animate,token){
+ const d=step?.data||{};
+ switch(step?.action){
+  case"openFile":openDoc(d.file||d.path||activeFile,true);break;
+  case"closeFile":closeDoc(d.file||d.path||activeFile);return;
+  case"createFile":{const p=ensureFile(d.file||d.path);if(p)files[p].content=String(d.content||"");break}
+  case"setFile":{const p=ensureFile(d.file||d.path);if(p)files[p].content=String(d.content||d.code||"");break}
+  case"typeCode":{
+    const p=ensureFile(d.file||d.path||activeFile);if(!p)break;
+    const old=files[p].content||"",add=String(d.code||d.text||""),baseLines=old.split("\n").length;let next=old+add;
+    changed=add.split("\n").map((x,i)=>x.trim()?baseLines+i:null).filter(Boolean);
+    if(d.marker&&old.includes(d.marker)){
+      const ls=old.split("\n"),idx=ls.findIndex(x=>x.includes(d.marker)),indent=(ls[idx].match(/^\s*/)||[""])[0],block=add.split("\n").map(x=>indent+x);
+      if(d.position==="before")ls.splice(idx,0,...block);else if(d.position==="after")ls.splice(idx+1,0,...block);else ls.splice(idx,1,...block);
+      next=ls.join("\n");changed=block.map((x,i)=>x.trim()?idx+1+i:null).filter(Boolean);
+    }
+    if(animate&&add.length<500){let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;files[p].content=old+built;renderCode();await new Promise(r=>setTimeout(r,10))}}
+    files[p].content=next;break;
+  }
+  case"terminalCommand":case"runTerminal":state.terminal=(state.terminal||"PS Java Practice> ")+String(d.command||"")+(d.output!==undefined?"\n"+d.output:"")+"\nPS Java Practice> ";break;
+  case"setTerminal":state.terminal=String(d.text||d.output||"");break;
+  case"newProject":state.workspaceName=d.name||state.workspaceName||"Java Practice";break;
+  case"createDirectory":case"createPackage":break;
+ }
+ state.files=files;state.openTabs=openedTabs.map(t=>({path:t.path,pinned:t.pinned}));renderAll();scrollActiveTab();
+}
 async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){await apply(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}}
+
 function explain(m){R.aTitle.textContent=m.title||"Step explanation";R.aStage.textContent=m.stage||"Developer guidance";R.aStep.textContent="Step "+(m.step||"");R.aText.textContent=m.text||"";R.assistant.classList.remove("hidden")}
-let drag=null;R.aHead.onpointerdown=e=>{if(e.target.closest("button"))return;const r=R.assistant.getBoundingClientRect();drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};R.assistant.setPointerCapture?.(e.pointerId)};document.onpointermove=e=>{if(!drag||e.pointerId!==drag.id)return;const w=R.assistant.offsetWidth,h=R.assistant.offsetHeight;R.assistant.style.left=Math.max(6,Math.min(innerWidth-w-6,e.clientX-drag.dx))+"px";R.assistant.style.top=Math.max(6,Math.min(innerHeight-h-6,e.clientY-drag.dy))+"px";R.assistant.style.right="auto";R.assistant.style.bottom="auto"};document.onpointerup=e=>{if(drag&&e.pointerId===drag.id)drag=null};$("aMin").onclick=()=>R.assistant.classList.toggle("min");$("aClose").onclick=()=>R.assistant.classList.add("hidden");
-window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.vscode||{});reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);if(m.type==="SIM_EXPLAIN")explain(m)});baseline={workspaceName:"Java Practice",files:{},terminal:"PS Java Practice> "};reset();parent.postMessage({type:"ENGINE_READY",app:"vscode"},"*")})();
-</script></body></html>
+let drag=null;R.aHead.onpointerdown=e=>{if(e.target.closest("button"))return;const r=R.assistant.getBoundingClientRect();drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};R.assistant.setPointerCapture?.(e.pointerId)};
+document.onpointermove=e=>{if(!drag||e.pointerId!==drag.id)return;const w=R.assistant.offsetWidth,h=R.assistant.offsetHeight;R.assistant.style.left=Math.max(6,Math.min(innerWidth-w-6,e.clientX-drag.dx))+"px";R.assistant.style.top=Math.max(6,Math.min(innerHeight-h-6,e.clientY-drag.dy))+"px";R.assistant.style.right="auto";R.assistant.style.bottom="auto"};
+document.onpointerup=e=>{if(drag&&e.pointerId===drag.id)drag=null};$("aMin").onclick=()=>R.assistant.classList.toggle("min");$("aClose").onclick=()=>R.assistant.classList.add("hidden");
+
+document.addEventListener("keydown",e=>{
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="w"){e.preventDefault();if(activeFile)closeDoc(activeFile)}
+ if(e.ctrlKey&&e.key==="Tab"){e.preventDefault();cycleTab(e.shiftKey?-1:1)}
+});
+
+window.addEventListener("message",e=>{
+ const m=e.data||{};
+ if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.vscode||{});reset()}
+ if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);
+ if(m.type==="SIM_EXPLAIN")explain(m)
+});
+baseline={workspaceName:"Java Practice",files:{},terminal:"PS Java Practice> ",openTabs:[]};reset();
+parent.postMessage({type:"ENGINE_READY",app:"vscode",actions:["openFile","closeFile","createFile","setFile","typeCode","terminalCommand","setTerminal","newProject","createDirectory","createPackage"]},"*");
+})();
+</script>
+</body></html>
