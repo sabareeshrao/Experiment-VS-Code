@@ -18,7 +18,10 @@
     "openActivityMonitor","setSessions","killSession","openBackupDialog","backupDatabase","openRestoreDialog","restoreDatabase",
     "openSqlServerAgent","createAgentJob","runAgentJob","showTableDesigner","editTopRows","generateScripts","importData","exportData",
     "createLogin","createUser","grantPermission","schemaCompare","showQueryStore","showProfiler","showExtendedEvents",
-    "createAgentSchedule","showAgentJobHistory","addLinkedServer","openRegisteredServers","showObjectExplorerDetails","createDatabaseDiagram","openOptions","setEditorOption"
+    "createAgentSchedule","showAgentJobHistory","addLinkedServer","openRegisteredServers","showObjectExplorerDetails","createDatabaseDiagram","openOptions","setEditorOption",
+    "openContextMenu","chooseContextMenuPath","closeContextMenu","openAdaptiveDialog","closeAdaptiveDialog","setAdaptiveField","selectAdaptiveOption",
+    "showObjectDependencies","showServerProperties","openToolWindow","closeToolWindow","setToolWindowPinned","openTemplateExplorer","openSolutionExplorer","openPropertiesWindow",
+    "showLiveQueryStatistics","showStandardReport","setConnectionColor"
   ];
 
   let packageRef = null;
@@ -56,7 +59,16 @@
     propertiesDialog: null,
     exportDialog: null,
     copiedText: "",
-    codeFocus: null
+    codeFocus: null,
+    contextMenu: null,
+    adaptiveDialog: null,
+    dependenciesDialog: null,
+    serverPropertiesDialog: null,
+    toolWindow: null,
+    toolWindowPinned: true,
+    liveStats: false,
+    clientStatsEnabled: false,
+    connectionColor: ""
   };
 
   const $ = id => document.getElementById(id);
@@ -64,7 +76,9 @@
     app: $("app"), titleText: $("titleText"), menubar: $("menubar"), toolbar: $("toolbar"), dbSelect: $("dbSelect"),
     leftPane: $("leftPane"), objectTree: $("objectTree"), workspace: $("workspace"), docTabs: $("docTabs"), editorArea: $("editorArea"), queryGroups: $("queryGroups"), resultsPane: $("resultsPane"), resultBody: $("resultBody"),
     statusLeft: $("statusLeft"), statusServer: $("statusServer"), statusDb: $("statusDb"), statusUser: $("statusUser"),
-    menuPopup: $("menuPopup"), intelli: $("intelli"), modalBackdrop: $("modalBackdrop"), modal: $("modal"), notification: $("notification"), boundary: $("boundary"), assistant: $("ssmsAssistant"), assistantDrag: $("ssmsAssistantDrag"), assistantTitle: $("ssmsAssistantTitle"), assistantStage: $("ssmsAssistantStage"), assistantMeta: $("ssmsAssistantMeta"), assistantText: $("ssmsAssistantText"), assistantMin: $("ssmsAssistantMin"), assistantClose: $("ssmsAssistantClose")
+    menuPopup: $("menuPopup"), contextMenu: $("contextMenu"), intelli: $("intelli"), modalBackdrop: $("modalBackdrop"), modal: $("modal"), notification: $("notification"), boundary: $("boundary"),
+    toolWindow: $("ssmsToolWindow"), toolTitle: $("ssmsToolTitle"), toolBody: $("ssmsToolBody"), toolPin: $("ssmsToolPin"), toolClose: $("ssmsToolClose"),
+    assistant: $("ssmsAssistant"), assistantDrag: $("ssmsAssistantDrag"), assistantTitle: $("ssmsAssistantTitle"), assistantStage: $("ssmsAssistantStage"), assistantMeta: $("ssmsAssistantMeta"), assistantText: $("ssmsAssistantText"), assistantMin: $("ssmsAssistantMin"), assistantClose: $("ssmsAssistantClose")
   };
 
   const clone = value => JSON.parse(JSON.stringify(value ?? null));
@@ -159,6 +173,7 @@
   function resetUi() {
     ui.menu = null; ui.connectOpen = false; ui.connectionDraft = {}; ui.modalType = null; ui.notification = ""; ui.intelli = null;
     ui.boundaryTarget = null; ui.resultTab = "results"; ui.windowsDialogOpen = false; ui.propertiesDialog = null; ui.exportDialog = null; ui.copiedText = ""; ui.featurePanel=null; ui.codeFocus=null; ui.optionsOpen=false; ui.typingTab=null;
+    ui.contextMenu=null; ui.adaptiveDialog=null; ui.dependenciesDialog=null; ui.serverPropertiesDialog=null; ui.toolWindow=null; ui.toolWindowPinned=true; ui.liveStats=false; ui.clientStatsEnabled=false; ui.connectionColor="";
     clearBoundary();
   }
 
@@ -190,7 +205,7 @@
     if (!state) state = defaultState();
     refs.titleText.textContent = `${state.title || "SQL Server Management Studio"}${state.connected && state.connection?.serverName ? ` - ${state.connection.serverName}` : ""}`;
     document.documentElement.style.setProperty("--editor-size",Math.max(10,Math.min(24,Number(state.options.fontSize)||14))+"px");
-    renderDbSelect(); renderObjectTree(); renderTabs(); renderEditors(); renderResults(); renderStatus(); renderTransients();
+    renderDbSelect(); renderObjectTree(); renderTabs(); renderEditors(); renderResults(); renderStatus(); renderToolWindow(); renderTransients();
     decorateChrome();
     requestAnimationFrame(positionBoundary);
   }
@@ -333,7 +348,121 @@
   }
 
   function renderTransients(){
-    renderMenu(); renderModal(); renderNotification(); renderIntelli();
+    renderMenu(); renderContextMenu(); renderModal(); renderNotification(); renderIntelli();
+  }
+
+  function capabilityRegistry(){ return window.SSMS_CAPABILITIES || {contextMenus:{},toolWindows:{}}; }
+
+  function currentObjectContext(){
+    const id=String(state.selectedObject||"");
+    if(id==="server") return {kind:"server",id};
+    if(id.startsWith("db:")) return {kind:"database",id,database:id.slice(3)};
+    const m=id.match(/^(table|view|procedures|functions):([^:]+):(.+)$/);
+    if(m) return {kind:m[1]==="procedures"?"procedure":m[1]==="functions"?"function":m[1],id,database:m[2],name:m[3]};
+    if(id.startsWith("table:")){const parts=id.split(":");return {kind:"table",id,database:parts[1],name:parts.slice(2).join(":")};}
+    if(id.startsWith("view:")){const parts=id.split(":");return {kind:"view",id,database:parts[1],name:parts.slice(2).join(":")};}
+    return {kind:"object",id};
+  }
+
+  function renderContextItems(items,path=[]){
+    return (items||[]).map((entry,index)=>{
+      if(entry?.separator) return '<div class="contextMenuSeparator"></div>';
+      const nextPath=[...path,index].join(".");
+      const children=Array.isArray(entry?.items)?entry.items:[];
+      const checked=entry?.checked===true || (entry?.command==="toggleActualPlan"&&!!activeTab()?.includeActualPlan) || (entry?.command==="toggleLiveStats"&&!!ui.liveStats) || (entry?.command==="toggleClientStats"&&!!ui.clientStatsEnabled);
+      return '<div class="contextMenuItem '+(children.length?'hasSubmenu ':'')+(entry?.disabled?'disabled':'')+'" data-context-path="'+esc(nextPath)+'">'+
+        '<span class="contextMenuCheck">'+(entry?.checkable?(checked?'✓':''):'')+'</span>'+
+        '<span>'+esc(entry?.label||"")+'</span>'+
+        '<span class="contextMenuShortcut">'+esc(entry?.shortcut||"")+'</span>'+
+        '<span class="contextMenuArrow">'+(children.length?'▶':'')+'</span>'+
+        (children.length?'<div class="contextSubmenu">'+renderContextItems(children,[...path,index])+'</div>':'')+
+      '</div>';
+    }).join("");
+  }
+
+  function contextEntryAt(path){
+    let items=capabilityRegistry().contextMenus?.[ui.contextMenu?.menu]||[];
+    let entry=null;
+    for(const p of String(path||"").split(".").filter(Boolean)){entry=items[Number(p)];items=entry?.items||[];}
+    return entry;
+  }
+
+  function renderContextMenu(){
+    if(!refs.contextMenu)return;
+    if(!ui.contextMenu){refs.contextMenu.classList.remove("show");refs.contextMenu.innerHTML="";return;}
+    const items=capabilityRegistry().contextMenus?.[ui.contextMenu.menu]||ui.contextMenu.items||[];
+    refs.contextMenu.innerHTML=renderContextItems(items);
+    refs.contextMenu.classList.add("show");
+    refs.contextMenu.style.left=Math.max(4,Math.min(innerWidth-refs.contextMenu.offsetWidth-4,Number(ui.contextMenu.x)||4))+"px";
+    refs.contextMenu.style.top=Math.max(4,Math.min(innerHeight-refs.contextMenu.offsetHeight-4,Number(ui.contextMenu.y)||4))+"px";
+  }
+
+  function openContextMenu(menu,x,y,context={}){
+    ui.menu=null;ui.contextMenu={menu:menu||"queryEditor",x:Number(x)||12,y:Number(y)||12,context:clone(context||{})};renderTransients();
+  }
+
+  function renderToolWindow(){
+    if(!refs.toolWindow)return;
+    if(!ui.toolWindow){refs.toolWindow.classList.remove("show","pinned");return;}
+    const def=capabilityRegistry().toolWindows?.[ui.toolWindow.name]||ui.toolWindow.definition||{sections:[]};
+    refs.toolTitle.textContent=ui.toolWindow.name||"Tool Window";
+    refs.toolWindow.classList.add("show");
+    refs.toolWindow.classList.toggle("pinned",ui.toolWindowPinned!==false);
+    refs.toolPin.textContent=ui.toolWindowPinned===false?"📍":"📌";
+    refs.toolBody.innerHTML=(def.sections||[]).map(section=>
+      '<div class="toolTreeRow"><span class="toolTreeIcon">▸</span><strong>'+esc(section.label||"")+'</strong></div>'+
+      (section.children||[]).map(child=>'<div class="toolTreeRow child" data-tool-item="'+esc(child)+'"><span class="toolTreeIcon">◇</span><span>'+esc(child)+'</span></div>').join("")
+    ).join("") || '<div class="smallNote" style="padding:10px">No items.</div>';
+  }
+
+  function openNamedToolWindow(name,definition=null){
+    ui.toolWindow={name:name||"Tool Window",definition:definition||null};renderToolWindow();
+  }
+
+  function dependencyHtml(d){
+    const object=d.object||d.name||currentObjectContext().name||"Object";
+    const deps=Array.isArray(d.dependencies)?d.dependencies:[
+      {name:"Address",type:"Table",level:0},{name:"AddressType",type:"Table",level:0},{name:"BusinessEntity",type:"Table",level:0},
+      {name:"EmailAddress",type:"Table",level:0},{name:"Employee",type:"Table",level:0},{name:"PersonPhone",type:"Table",level:0}
+    ];
+    return '<div class="modalTitle">Object Dependencies - '+esc(object)+'</div>'+
+      '<div class="dependencyDialog"><div class="dependencySide"><strong>Select a page</strong><div>General</div>'+
+      '<div class="dependencyConnection"><b>Connection</b><br>Server<br>'+esc(state.connection?.serverName||"localhost")+'<br><br>Connection<br>'+esc(state.currentUser||state.connection?.authentication||"")+'<br><br>Progress<br>✓ Ready</div></div>'+
+      '<div class="dependencyMain"><div class="smallNote">Objects related to <b>'+esc(object)+'</b></div>'+
+      '<div class="dependencyOptions"><label><input type="radio" name="dependencyDirection" value="dependOn" '+(d.direction!=="dependsOn"?"checked":"")+'> Objects that depend on ['+esc(object)+']</label>'+
+      '<label><input type="radio" name="dependencyDirection" value="dependsOn" '+(d.direction==="dependsOn"?"checked":"")+'> Objects on which ['+esc(object)+'] depends</label></div>'+
+      '<div class="dependencyTree">'+deps.map(x=>'<div class="dependencyTreeRow" style="--level:'+(Number(x.level)||0)+'"><span>▣</span><span>'+esc(x.name||x)+'</span><span class="smallNote">'+esc(x.type||"")+'</span></div>').join("")+'</div>'+
+      '<div class="dependencyDetail"><label>Selected object</label><div>'+esc(d.selected||object)+'</div><label>Name</label><div>'+esc(d.selected||object)+'</div><label>Type</label><div>'+esc(d.type||"Table")+'</div><label>Dependency type</label><div>Schema-bound dependency</div></div></div></div>'+
+      '<div class="modalActions"><button class="dialogBtn primary">OK</button><button class="dialogBtn">Cancel</button></div>';
+  }
+
+  function serverPropertiesHtml(d){
+    const page=d.page||"General";
+    const pages=["General","Memory","Processors","Security","Connections","Database Settings","Advanced","Permissions"];
+    const values=Object.assign({
+      "Product":"Microsoft SQL Server","Operating System":"Windows","Platform":"NT x64","Version":state.version||"16.x",
+      "Server Collation":d.collation||"SQL_Latin1_General_CP1_CI_AS","Root Directory":"C:\\Program Files\\Microsoft SQL Server"
+    },d.properties||{});
+    return '<div class="modalTitle">Server Properties - '+esc(state.connection?.serverName||"SQL Server")+'</div>'+
+      '<div class="propertyPages"><div class="propertyNav">'+pages.map(p=>'<button class="'+(p===page?'active':'')+'" data-property-page="'+esc(p)+'">'+esc(p)+'</button>').join("")+'</div>'+
+      '<div class="propertyContent"><h3 style="margin-top:0">'+esc(page)+'</h3><div class="propertySection">'+Object.entries(values).map(([k,v])=>'<label>'+esc(k)+'</label><div>'+esc(v)+'</div>').join("")+'</div></div></div>'+
+      '<div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary">OK</button></div>';
+  }
+
+  function adaptiveDialogHtml(d){
+    const fields=Array.isArray(d.fields)?d.fields:[];
+    return '<div class="modalTitle">'+esc(d.title||"SQL Server Management Studio")+'</div><div class="modalBody">'+
+      (d.text?'<p>'+esc(d.text)+'</p>':'')+
+      '<div class="adaptiveForm">'+fields.map((f,i)=>{
+        const name=esc(f.name||("field"+i)),label='<label>'+esc(f.label||f.name||"Field")+'</label>';
+        if(f.type==="select")return label+'<select data-adaptive-field="'+name+'">'+(f.options||[]).map(o=>'<option '+(String(o)===String(f.value)?'selected':'')+'>'+esc(o)+'</option>').join("")+'</select>';
+        if(f.type==="checkbox")return label+'<label><input type="checkbox" data-adaptive-field="'+name+'" '+(f.value?'checked':'')+'> '+esc(f.caption||"Enabled")+'</label>';
+        if(f.type==="radio")return label+'<div class="adaptiveChecks">'+(f.options||[]).map(o=>'<label><input type="radio" name="adaptive-'+name+'" value="'+esc(o)+'" '+(String(o)===String(f.value)?'checked':'')+'> '+esc(o)+'</label>').join("")+'</div>';
+        if(f.type==="textarea")return label+'<textarea data-adaptive-field="'+name+'">'+esc(f.value||"")+'</textarea>';
+        return label+'<input data-adaptive-field="'+name+'" value="'+esc(f.value??"")+'">';
+      }).join("")+'</div></div><div class="modalActions">'+
+      (d.buttons||["Cancel","OK"]).map(b=>'<button class="dialogBtn '+(b==="OK"?"primary":"")+'" data-adaptive-button="'+esc(b)+'">'+esc(b)+'</button>').join("")+
+      '</div>';
   }
 
   function renderMenu(){
