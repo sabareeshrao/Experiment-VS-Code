@@ -83,6 +83,11 @@ function wireInput(input){
     if(e.key==="Enter"){e.preventDefault();const cmd=input.value;inputDraft="";if(cmd.trim()){history.push(cmd);historyIndex=history.length}executeManual(cmd);return}
     if(e.key==="ArrowUp"){e.preventDefault();if(history.length){historyIndex=Math.max(0,historyIndex-1);input.value=history[historyIndex]||"";inputDraft=input.value;queueMicrotask(()=>input.setSelectionRange(input.value.length,input.value.length))}return}
     if(e.key==="ArrowDown"){e.preventDefault();if(history.length){historyIndex=Math.min(history.length,historyIndex+1);input.value=historyIndex===history.length?"":history[historyIndex]||"";inputDraft=input.value;queueMicrotask(()=>input.setSelectionRange(input.value.length,input.value.length))}return}
+    if((e.key==="ArrowLeft"||e.key==="ArrowRight")&&!input.value){
+      e.preventDefault();
+      parent.postMessage({type:"SIM_NAVIGATE",app:APP_ID,direction:e.key==="ArrowRight"?"next":"prev"},"*");
+      return;
+    }
     if(e.key==="Tab"){e.preventDefault();autocomplete(input);return}
     if(e.ctrlKey&&e.key.toLowerCase()==="c"){e.preventDefault();if(activeProcess){makeOutput("^C");stopProcess("Process terminated by user.");render()}else{input.value="";inputDraft="";makeOutput("^C");render()}return}
   };
