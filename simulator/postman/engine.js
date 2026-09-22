@@ -294,7 +294,8 @@ function loadPackage(p){
 async function typeField(kind,text,animate,token){
   const r=requestById(currentRequest);if(!r)return;
   const final=String(text??"");
-  const assign=v=>{if(kind==="url")r.url=v;else r.body=v;markDirty();renderAll()};
+  const focus=()=>kind==="url"?$("urlBox"):$("requestBody");
+  const assign=v=>{if(kind==="url")r.url=v;else r.body=v;markDirty();renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(focus(),{block:"center"}))};
   if(!animate||!autoType){assign(final);return}
   const steps=Math.min(60,Math.max(1,final.length)),dur=Math.min(1000,Math.max(220,final.length*12));
   for(let i=1;i<=steps;i++){if(token!==seekToken)return;assign(final.slice(0,Math.floor(final.length*i/steps)));await sleep(dur/steps)}
