@@ -41,7 +41,8 @@
     windowsDialogOpen: false,
     propertiesDialog: null,
     exportDialog: null,
-    copiedText: ""
+    copiedText: "",
+    codeFocus: false
   };
 
   const $ = id => document.getElementById(id);
@@ -140,7 +141,7 @@
 
   function resetUi() {
     ui.menu = null; ui.connectOpen = false; ui.connectionDraft = {}; ui.modalType = null; ui.notification = ""; ui.intelli = null;
-    ui.boundaryTarget = null; ui.resultTab = "results"; ui.windowsDialogOpen = false; ui.propertiesDialog = null; ui.exportDialog = null; ui.copiedText = ""; ui.featurePanel=null;
+    ui.boundaryTarget = null; ui.resultTab = "results"; ui.windowsDialogOpen = false; ui.propertiesDialog = null; ui.exportDialog = null; ui.copiedText = ""; ui.featurePanel=null; ui.codeFocus=false;
     clearBoundary();
   }
 
@@ -263,7 +264,7 @@
   function renderQueryGroup(tab, idx) {
     if(!tab) return `<div class="emptyWorkspace">No query window</div>`;
     const lineCount=Math.max(1,String(tab.sql||"").split("\n").length);const nums=Array.from({length:lineCount},(_,i)=>i+1).join("\n");
-    return `<section class="queryGroup" data-query-group="${idx}"><div class="queryHead"><span class="qhTitle">${esc(tab.title)}</span><span class="qhMeta">${esc(tab.connectionName||state.connection?.serverName||"")} · ${esc(tab.database||state.currentDatabase||"")}</span></div><div class="codeViewport" data-code-viewport="${esc(tab.id)}"><div class="sqlEditorShell" data-editor-shell="${esc(tab.id)}"><pre class="sqlGutter" aria-hidden="true">${nums}</pre><textarea class="sqlTextarea" data-sql-editor="${esc(tab.id)}" spellcheck="false" wrap="off">${esc(tab.sql||"")}</textarea></div></div></section>`;
+    return `<section class="queryGroup" data-query-group="${idx}"><div class="queryHead"><span class="qhTitle">${esc(tab.title)}</span><span class="qhMeta">${esc(tab.connectionName||state.connection?.serverName||"")} · ${esc(tab.database||state.currentDatabase||"")}</span></div><div class="codeViewport" data-code-viewport="${esc(tab.id)}"><div class="sqlEditorShell ${ui.codeFocus&&tab.id===state.activeQueryId?"sim-code-change":""}" data-editor-shell="${esc(tab.id)}"><pre class="sqlGutter" aria-hidden="true">${nums}</pre><textarea class="sqlTextarea" data-sql-editor="${esc(tab.id)}" spellcheck="false" wrap="off">${esc(tab.sql||"")}</textarea></div></div></section>`;
   }
 
   function renderResults() {
@@ -343,7 +344,7 @@
     return CONNECTION_CHAIN.has(a) || ((a==="highlightTarget"||a==="pressButton") && target==="connectDialogButton");
   }
   function prepareReplayStep(step){
-    clearBoundary(); const a=step?.action||"";
+    clearBoundary(); ui.codeFocus=false; const a=step?.action||"";
     if(!connectionContinuation(step)){ui.connectOpen=false;ui.connectionDraft={};}
     const keepIntelli=!!ui.intelli && (a==="acceptIntelliSense" || a==="highlightTarget" || a==="pressButton");
     const previousIntelli=keepIntelli?clone(ui.intelli):null;
@@ -484,7 +485,7 @@
       case "closeQueryTab": removeTab(d.id||d.tab||state.activeQueryId);break;
       case "closeAllQueries": state.queryTabs=[];state.activeQueryId=null;state.groups={a:[],b:[]};state.groupMode="single";break;
       case "setSql": t=t||addTab(d);t.sql=String(d.sql??d.text??"");t.dirty=d.dirty!==false;t.selection=null;t.syntaxErrors=[];break;
-      case "typeSql": t=t||addTab(d);if(animate)await animateSql(t,d.sql??d.text??"",token);else{t.sql=String(d.sql??d.text??"");t.dirty=true;}if(d.boundary){const lines=String(t.sql).split("\n").length;showBoundary({type:"lineRange",start:d.startLine||1,end:d.endLine||lines});}break;
+      case "typeSql": t=t||addTab(d);if(animate)await animateSql(t,d.sql??d.text??"",token);else{t.sql=String(d.sql??d.text??"");t.dirty=true;}if(allowBoundary)ui.codeFocus=true;break;
       case "appendSql": t=t||addTab(d);{const app=String(d.sql??d.text??"");const newSql=(t.sql||"")+app;if(animate)await animateSql(t,newSql,token);else{t.sql=newSql;t.dirty=true;}}break;
       case "selectSqlRange": if(t)t.selection={startLine:Number(d.startLine||1),endLine:Number(d.endLine||d.startLine||1)};break;
       case "clearSelection": if(t)t.selection=null;break;
@@ -519,7 +520,7 @@
       case "beginTransaction": if(!state.transactionSnapshot)state.transactionSnapshot=clone(state.databases);state.statusText="Transaction started";break;
       case "commitTransaction": state.transactionSnapshot=null;state.statusText="Transaction committed";break;
       case "rollbackTransaction": if(state.transactionSnapshot){state.databases=clone(state.transactionSnapshot);state.transactionSnapshot=null;syncObjectExplorerCache();}state.statusText="Transaction rolled back";break;
-      case "createIndex": {const tb=tableByName(d.database||state.currentDatabase,d.table);if(tb){tb.indexes=tb.indexes||[];tb.indexes.push({name:d.name||"IX_New",columns:clone(d.columns||[]),unique:!!d.unique});state.objectExplorerStale=true;}break;}
+      case "createIndex": {const tb=tableByName(d.database||state.currentDatabase,d.table);if(tb){tb.indexes=tb.indexes||[];tb.indexes.push({name:d.name||"IX_New",columns:clone(d.columns||[]),unique:!!d.unique});state.objectExplorerStale=true;}ui.featurePanel={title:"Index created",text:"Index: "+(d.name||"IX_New")+"\nTable: "+(d.table||"")+"\nColumns: "+(d.columns||[]).join(", ")+"\nUnique: "+(d.unique?"Yes":"No")};state.statusText="Index created successfully";break;}
       case "createView": {const db=ensureDb(d.database||state.currentDatabase);db.views.push({schema:d.schema||"dbo",name:d.name||"NewView",sql:d.sql||""});break;}
       case "createProcedure": {const db=ensureDb(d.database||state.currentDatabase);db.procedures.push({schema:d.schema||"dbo",name:d.name||"NewProcedure",sql:d.sql||""});break;}
       case "createFunction": {const db=ensureDb(d.database||state.currentDatabase);db.functions.push({schema:d.schema||"dbo",name:d.name||"NewFunction",sql:d.sql||""});break;}
@@ -533,12 +534,12 @@
       case "setSessions": state.sessions=clone(d.sessions||[]);break;
       case "killSession": state.sessions=(state.sessions||[]).filter(s=>String(s.id||s.sessionId)!==String(d.id||d.sessionId));state.statusText=`Session ${d.id||d.sessionId} killed`;break;
       case "openBackupDialog": ui.featurePanel={title:"Back Up Database",text:`Database: ${d.database||state.currentDatabase}\nBackup type: ${d.type||"Full"}\nDestination: ${d.path||"Disk"}`};break;
-      case "backupDatabase": state.backups.push({database:d.database||state.currentDatabase,type:d.type||"Full",path:d.path||`${d.database||state.currentDatabase}.bak`,time:d.time||"just now"});state.statusText="The backup of database completed successfully.";break;
+      case "backupDatabase": {const backup={database:d.database||state.currentDatabase,type:d.type||"Full",path:d.path||`${d.database||state.currentDatabase}.bak`,time:d.time||"just now"};state.backups.push(backup);state.statusText="The backup of database completed successfully.";ui.featurePanel={title:"Back Up Database - "+backup.database,text:"Backup completed successfully.\n\nType: "+backup.type+"\nDestination: "+backup.path+"\nTime: "+backup.time};break;}
       case "openRestoreDialog": ui.featurePanel={title:"Restore Database",text:`Source: ${d.path||"backup.bak"}\nDestination: ${d.database||state.currentDatabase}`};break;
       case "restoreDatabase": ensureDb(d.database||state.currentDatabase);state.statusText="Database restored successfully.";break;
       case "openSqlServerAgent": ui.featurePanel={title:"SQL Server Agent",html:`<table class="featureTable"><thead><tr><th>Job</th><th>Status</th><th>Last run</th></tr></thead><tbody>${(state.agentJobs||[]).map(j=>`<tr><td>${esc(j.name)}</td><td>${esc(j.status||"Idle")}</td><td>${esc(j.lastRun||"")}</td></tr>`).join("")}</tbody></table>`};break;
-      case "createAgentJob": state.agentJobs.push({name:d.name||"New Job",status:"Idle",steps:clone(d.steps||[]),lastRun:"Never"});break;
-      case "runAgentJob": {const j=(state.agentJobs||[]).find(x=>x.name===d.name);if(j){j.status="Succeeded";j.lastRun=d.time||"just now";state.agentJobHistory.push({job:j.name,time:j.lastRun,status:"Succeeded",duration:d.duration||"00:00:01"});}state.statusText="Job completed successfully";break;}
+      case "createAgentJob": {const job={name:d.name||"New Job",status:"Idle",steps:clone(d.steps||[]),lastRun:"Never"};state.agentJobs.push(job);state.statusText="SQL Server Agent job created";ui.featurePanel={title:"SQL Server Agent - New Job",html:'<table class="featureTable"><tbody><tr><th>Job</th><td>'+esc(job.name)+'</td></tr><tr><th>Status</th><td>Idle</td></tr><tr><th>Step</th><td>'+esc(job.steps[0]?.name||"")+'</td></tr><tr><th>Command</th><td>'+esc(job.steps[0]?.command||"")+'</td></tr></tbody></table>'};break;}
+      case "runAgentJob": {const j=(state.agentJobs||[]).find(x=>x.name===d.name);if(j){j.status="Succeeded";j.lastRun=d.time||"just now";state.agentJobHistory.push({job:j.name,time:j.lastRun,status:"Succeeded",duration:d.duration||"00:00:01"});ui.featurePanel={title:"SQL Server Agent - Job Run",html:'<table class="featureTable"><tbody><tr><th>Job</th><td>'+esc(j.name)+'</td></tr><tr><th>Result</th><td>Succeeded</td></tr><tr><th>Run time</th><td>'+esc(j.lastRun)+'</td></tr><tr><th>Duration</th><td>'+esc(d.duration||"00:00:01")+'</td></tr></tbody></table>'};}state.statusText="Job completed successfully";break;}
       case "showTableDesigner": ui.featurePanel={title:`Table Designer - ${d.table||"Table"}`,text:d.text||"Columns | Data Type | Allow Nulls\nUse the designer to edit table metadata."};break;
       case "editTopRows": {const tb=tableByName(d.database||state.currentDatabase,d.table);if(tb){const nt=addTab({title:`Edit ${d.top||200} Rows - ${tb.name}`,database:d.database||state.currentDatabase,sql:`SELECT TOP (${d.top||200}) * FROM [${tb.schema||"dbo"}].[${tb.name}]`});nt.result={columns:(tb.columns||[]).map(c=>c.name),rows:clone((tb.rows||[]).slice(0,d.top||200)),messages:`${Math.min((tb.rows||[]).length,d.top||200)} row(s)`};}}break;
       case "generateScripts": ui.featurePanel={title:"Generate Scripts",text:d.text||"Choose objects → Set scripting options → Review summary → Generate"};break;
@@ -551,7 +552,7 @@
       case "showQueryStore": ui.featurePanel={title:"Query Store",text:d.text||"Top Resource Consuming Queries\nRegressed Queries\nQuery Wait Statistics"};break;
       case "showProfiler": ui.featurePanel={title:"SQL Server Profiler",text:d.text||"Trace running: RPC:Completed, SQL:BatchCompleted"};break;
       case "showExtendedEvents": ui.featurePanel={title:"Extended Events",text:d.text||"Session: system_health\nEvents: error_reported, xml_deadlock_report"};break;
-      case "createAgentSchedule": {const j=(state.agentJobs||[]).find(x=>x.name===d.job||x.name===d.name);if(j){j.schedules=j.schedules||[];j.schedules.push({name:d.schedule||"Daily",frequency:d.frequency||"Daily",time:d.time||"02:00"});}state.statusText="Job schedule saved";break;}
+      case "createAgentSchedule": {const j=(state.agentJobs||[]).find(x=>x.name===d.job||x.name===d.name);const schedule={name:d.schedule||"Daily",frequency:d.frequency||"Daily",time:d.time||"02:00"};if(j){j.schedules=j.schedules||[];j.schedules.push(schedule);ui.featurePanel={title:"SQL Server Agent - Schedule",html:'<table class="featureTable"><tbody><tr><th>Job</th><td>'+esc(j.name)+'</td></tr><tr><th>Schedule</th><td>'+esc(schedule.name)+'</td></tr><tr><th>Frequency</th><td>'+esc(schedule.frequency)+'</td></tr><tr><th>Time</th><td>'+esc(schedule.time)+'</td></tr></tbody></table>'};}state.statusText="Job schedule saved";break;}
       case "showAgentJobHistory": ui.featurePanel={title:"Job History",html:`<table class="featureTable"><thead><tr><th>Job</th><th>Run</th><th>Status</th><th>Duration</th></tr></thead><tbody>${(state.agentJobHistory||[]).map(h=>`<tr><td>${esc(h.job)}</td><td>${esc(h.time||"")}</td><td>${esc(h.status||"Succeeded")}</td><td>${esc(h.duration||"00:00:01")}</td></tr>`).join("")}</tbody></table>`};break;
       case "addLinkedServer": state.linkedServers.push({name:d.name||"REMOTE_SQL",provider:d.provider||"SQL Server",dataSource:d.dataSource||d.name||""});state.statusText="Linked server added";break;
       case "openRegisteredServers": ui.featurePanel={title:"Registered Servers",html:`<table class="featureTable"><thead><tr><th>Name</th><th>Server</th><th>Group</th></tr></thead><tbody>${(state.registeredServers||[]).map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.server||s.name)}</td><td>${esc(s.group||"Local Server Groups")}</td></tr>`).join("")}</tbody></table>`};break;
