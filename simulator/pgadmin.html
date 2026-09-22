@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pgAdmin 4 Educational Simulator</title>
+<style>
+:root{--bg:#1d252c;--chrome:#202b34;--chrome2:#25323c;--panel:#1f272e;--editor:#171d22;--line:#3a4650;--text:#d8e1e8;--muted:#8fa0ae;--blue:#4b7599;--blue2:#365872;--green:#6fbf7b;--pink:#d979c6;--yellow:#d7c778}
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif}
+button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-rows:31px 28px 39px minmax(0,1fr) 23px;background:var(--bg)}
+.title{display:flex;align-items:center;padding:0 10px;background:#17232d;border-bottom:1px solid #34414c;font-size:11px}.pg{font-size:18px;margin-right:7px}.brand{font-weight:700}.project{margin-left:10px;color:#d4dde5}.grow{flex:1}.win{letter-spacing:13px;color:#a6b2bd}
+.menu{display:flex;align-items:center;gap:18px;padding:0 12px;background:#202a32;border-bottom:1px solid #3a4650;font-size:10px}
+.toolbar{display:flex;align-items:center;gap:8px;padding:0 10px;background:#253039;border-bottom:1px solid #3a4650;font-size:10px}.tool{height:26px;border:0;background:transparent;border-radius:3px;padding:0 8px}.tool:hover{background:#34434e}.conn{margin-left:auto;border:1px solid #4a5863;border-radius:4px;padding:5px 9px;background:#1a2228;color:#d8e1e8}
+.work{min-height:0;display:grid;grid-template-columns:280px minmax(0,1fr);background:#182027}.left{min-width:0;border-right:1px solid #3a4650;display:grid;grid-template-rows:33px 28px minmax(0,1fr);background:#1f282f}.head{display:flex;align-items:center;padding:0 9px;border-bottom:1px solid #3a4650;font-size:10px;font-weight:600}.head .grow{flex:1}.filter{padding:4px 6px;border-bottom:1px solid #34414c}.filter input{width:100%;height:21px;background:#192127;border:1px solid #4b5964;color:#d7e1e9;border-radius:2px;padding:2px 7px;font-size:9px}
+.tree{overflow:auto;padding:5px 4px;font-size:10px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:4px;white-space:nowrap;border-radius:2px;cursor:default}.row:hover{background:#283640}.row.active{background:#38566e}.tw{width:13px;text-align:center;color:#aab5bf}.ico{width:17px;text-align:center}.node{overflow:hidden;text-overflow:ellipsis}
+.main{min-width:0;min-height:0;display:grid;grid-template-rows:30px 31px minmax(0,1fr) 210px;background:var(--editor)}.workspace-tabs,.query-tabs,.result-tabs{display:flex;align-items:center;border-bottom:1px solid #394650;background:#222c34;font-size:10px}.workspace-tab,.query-tab,.result-tab{height:100%;padding:8px 12px 0;border-right:1px solid #35414a}.activeTab{background:#192126;border-bottom:2px solid #72a9d2}
+.query-tabs{background:#1f282f}.query-tab{padding-top:7px}.query-area{min-height:0;display:grid;grid-template-rows:35px minmax(0,1fr)}.query-tools{display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid #394650;background:#202930;font-size:10px}.query-tools .run{color:var(--green);font-weight:700}.query-tools .stop{color:#d36e75}.sqlwrap{display:grid;grid-template-columns:46px minmax(0,1fr);overflow:auto;background:#171d22}.gutter{padding:10px 7px 40px 0;text-align:right;color:#758590;font:11px/23px Consolas,monospace;user-select:none}.sql{margin:0;padding:10px 16px 40px 9px;white-space:pre;min-width:max-content;font:12px/23px Consolas,monospace}.line{display:block;min-height:23px}.line.focus{background:rgba(72,114,150,.20)}.kw{color:#db73c8}.type{color:#87c7a1}.num{color:#d2b96b}.str{color:#a9c97f}.com{color:#6e9f65}
+.results{min-height:0;border-top:2px solid #38444e;display:grid;grid-template-rows:31px minmax(0,1fr);background:#1e272e}.result-tabs{background:#202930}.result-body{overflow:auto}.messages{padding:12px 15px;font:11px/18px Consolas,monospace;color:#b9c6d0;white-space:pre-wrap}.success{color:#83c98d}.status{display:flex;align-items:center;padding:0 9px;background:#202a32;border-top:1px solid #394650;font-size:9px;color:#bac4cd}.status .grow{flex:1}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="title"><span class="pg">🐘</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><span class="win">— □ ×</span></div>
+  <div class="menu"><span>File</span><span>Object</span><span>Tools</span><span>Help</span></div>
+  <div class="toolbar"><button class="tool">▣ Register Server</button><button class="tool">⌕ Search objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool">↻ Refresh</button><button class="tool">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
+  <div class="work">
+    <aside class="left">
+      <div class="head">Object Explorer<span class="grow"></span><span>＋ &nbsp;↻</span></div>
+      <div class="filter"><input placeholder="Filter objects"></div>
+      <div class="tree" id="tree"></div>
+    </aside>
+    <main class="main">
+      <div class="workspace-tabs"><div class="workspace-tab">Browser</div><div class="workspace-tab activeTab">Query Tool</div></div>
+      <div class="query-tabs"><div class="query-tab activeTab" id="queryTab">java_practice/postgres@Local PostgreSQL</div></div>
+      <section class="query-area">
+        <div class="query-tools"><span>▢</span><span>💾</span><span>↓</span><span>＋</span><span>⌕</span><span class="run" id="run">▶</span><span class="stop">■</span><span>⌘</span><span>📊</span><span>✓</span><span>↶</span><span>☑ Auto Commit</span></div>
+        <div class="sqlwrap" id="sqlwrap"><div class="gutter" id="gutter"></div><pre class="sql" id="sql"></pre></div>
+      </section>
+      <section class="results">
+        <div class="result-tabs"><div class="result-tab">Data Output</div><div class="result-tab activeTab">Messages</div><div class="result-tab">Query History</div><div class="result-tab">Scratch Pad</div><div class="result-tab">Explain</div></div>
+        <div class="result-body"><div class="messages" id="messages">Ready.</div></div>
+      </section>
+    </main>
+  </div>
+  <div class="status"><span id="status">Ready</span><span class="grow"></span><span id="rows"></span><span>Ln 1, Col 1 &nbsp; UTF-8</span></div>
+</div>
+<script>
+(() => {
+"use strict";
+const $=id=>document.getElementById(id);
+const refs={tree:$("tree"),sql:$("sql"),gutter:$("gutter"),messages:$("messages"),status:$("status"),connection:$("connection"),queryTab:$("queryTab"),run:$("run"),newQuery:$("newQuery"),sqlwrap:$("sqlwrap")};
+let baseline=null,state=null,sqlText="",selected="",openQuery=false,changedLines=[];
+const clone=v=>JSON.parse(JSON.stringify(v??null));
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function syntax(line){
+ let e=esc(line);
+ if(/^\s*--/.test(line))return '<span class="com">'+e+'</span>';
+ e=e.replace(/\b(CREATE|TABLE|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|PRIMARY|KEY|NOT|NULL|BOOLEAN|VARCHAR|INTEGER|REAL|ARRAY)\b/gi,'<span class="kw">$1</span>')
+    .replace(/\b(\d+)\b/g,'<span class="num">$1</span>')
+    .replace(/('[^']*')/g,'<span class="str">$1</span>');
+ return e;
+}
+function makeTree(){
+ const db=state?.database||"java_practice", hasStudent=!!state?.studentCreated;
+ const nodes=[
+  {d:0,t:"⌄",i:"▤",n:"Servers",p:"Servers"},
+  {d:1,t:"⌄",i:"▣",n:"Local PostgreSQL",p:"Servers/Local PostgreSQL"},
+  {d:2,t:"⌄",i:"▤",n:"Databases (2)",p:"Servers/Local PostgreSQL/Databases"},
+  {d:3,t:"⌄",i:"◉",n:db,p:"Servers/Local PostgreSQL/Databases/"+db},
+  {d:4,t:"⌄",i:"▤",n:"Schemas",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas"},
+  {d:5,t:"⌄",i:"▤",n:"public",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public"},
+  {d:6,t:"⌄",i:"▤",n:"Tables"+(hasStudent?" (1)":""),p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables"}
+ ];
+ if(hasStudent)nodes.push({d:7,t:"",i:"▦",n:"student",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables/student"});
+ refs.tree.innerHTML="";
+ for(const x of nodes){
+  const r=document.createElement("div");r.className="row"+(x.p===selected?" active":"");r.dataset.path=x.p;r.style.paddingLeft=(x.d*13)+"px";
+  r.innerHTML='<span class="tw">'+x.t+'</span><span class="ico">'+x.i+'</span><span class="node">'+x.n+'</span>';
+  r.onclick=()=>{selected=x.p;makeTree();refs.status.textContent="Selected "+x.n};refs.tree.appendChild(r);
+ }
+}
+function renderSql(){
+ const lines=String(sqlText||"").split("\n");refs.gutter.innerHTML="";refs.sql.innerHTML="";
+ lines.forEach((line,i)=>{
+   const no=i+1,g=document.createElement("div");g.textContent=no;refs.gutter.appendChild(g);
+   const s=document.createElement("span");s.className="line"+(changedLines.includes(no)&&line.trim()?" focus":"");s.innerHTML=syntax(line);refs.sql.appendChild(s);
+ });
+ refs.sqlwrap.scrollTop=refs.sqlwrap.scrollHeight;
+}
+function reset(){
+ state=clone(baseline||{database:"java_practice"});sqlText=state.initialSql||"";selected=state.initialSelection||"";openQuery=!!state.queryOpen;changedLines=[];refs.messages.textContent="Ready.";refs.status.textContent="Ready";refs.connection.textContent=(state.database||"java_practice")+"/postgres@Local PostgreSQL";refs.queryTab.textContent=refs.connection.textContent;makeTree();renderSql();
+}
+async function typeSql(code,animate,token){
+ const start=sqlText.split("\n").length;const add=String(code||"");
+ if(!animate){sqlText+=add;changedLines=add.split("\n").map((l,i)=>l.trim()?start+i:null).filter(Boolean);renderSql();return}
+ let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;sqlText=(state._baseSql||"")+built;renderSql();await sleep(/[\n;{}]/.test(ch)?55:14)}
+}
+let seekToken=0;
+async function apply(st,animate,token){
+ const d=st.data||{};
+ switch(st.action){
+  case"setStatus":refs.status.textContent=d.text||"Ready";break;
+  case"selectTree":selected=d.path||"";makeTree();refs.status.textContent="Selected "+selected.split("/").pop();break;
+  case"openQueryTool":openQuery=true;refs.status.textContent="Query Tool opened";break;
+  case"setSql":sqlText=String(d.sql||"");changedLines=[];renderSql();break;
+  case"typeSql":{
+    state._baseSql=sqlText;const before=sqlText.split("\n").length;const code=String(d.sql||d.code||"");await typeSql(code,animate,token);sqlText=state._baseSql+code;
+    changedLines=code.split("\n").map((l,i)=>l.trim()?before+i:null).filter(Boolean);renderSql();delete state._baseSql;break;
+  }
+  case"executeQuery":
+    refs.run.style.background="#365872";if(animate)await sleep(180);refs.run.style.background="";
+    if(/CREATE\s+TABLE\s+student/i.test(sqlText)){state.studentCreated=true;makeTree()}
+    refs.messages.innerHTML='<span class="success">'+esc(d.message||"Query returned successfully in 48 msec.")+'</span>';
+    refs.status.textContent=d.statusText||"Query complete";break;
+ }
+}
+async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){await apply(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}}
+window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.pgadmin||{});reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)});
+refs.newQuery.onclick=()=>{openQuery=true;refs.status.textContent="Query Tool opened"};refs.run.onclick=()=>{if(/CREATE\s+TABLE\s+student/i.test(sqlText)){state.studentCreated=true;makeTree()}refs.messages.innerHTML='<span class="success">Query returned successfully.</span>';refs.status.textContent="Query complete"};
+refs.tree.innerHTML='<div style="padding:12px;color:#8fa0ae">Waiting for pgAdmin lesson package…</div>';
+parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","executeQuery","setStatus"]},"*");
+})();
+</script>
+</body>
+</html>
