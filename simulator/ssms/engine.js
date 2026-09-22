@@ -601,10 +601,48 @@
   document.addEventListener("scroll",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const g=ed.parentElement?.querySelector(".sqlGutter");if(g)g.scrollTop=ed.scrollTop;}},true);
   document.addEventListener("keydown",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const t=tabById(ed.dataset.sqlEditor);if(!t)return;if(e.key==="Tab"){e.preventDefault();const s=ed.selectionStart,en=ed.selectionEnd;ed.setRangeText("    ",s,en,"end");ed.dispatchEvent(new Event("input",{bubbles:true}));return;}if(e.key==="F5"||(e.ctrlKey&&e.key.toLowerCase()==="e")){e.preventDefault();t.result=Object.assign(t.result||{},executeVirtualSql(t,ed.value));state.statusText="Query executed successfully";ui.resultTab=(t.result?.columns||[]).length?"results":"messages";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="l"){e.preventDefault();const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="m"){e.preventDefault();t.includeActualPlan=!t.includeActualPlan;state.statusText=t.includeActualPlan?"Include Actual Execution Plan enabled":"Include Actual Execution Plan disabled";renderStatus();return;}if(e.ctrlKey&&e.key.toLowerCase()==="s"){e.preventDefault();const path=t.savedPath||t.title;t.savedPath=path;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";renderTabs();renderStatus();return;}if(e.ctrlKey&&e.code==="Space"){e.preventDefault();ui.intelli={items:clone(state.intellisenseCache||[]),index:0};renderIntelli();return;}return;}if((e.key==="ArrowRight"||e.key==="ArrowLeft")&&!e.ctrlKey&&!e.altKey&&!e.metaKey){parent.postMessage({type:"SIM_NAVIGATE",app:APP_ID,direction:e.key==="ArrowRight"?"next":"prev"},"*");}});
 
+  function invokeMenuCommand(label){
+    const t=activeTab();
+    if(label==="Connect Object Explorer..."){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});}
+    else if(label==="New"){addTab({});}
+    else if(label==="Save"&&t){const p=t.savedPath||t.title;t.savedPath=p;t.dirty=false;state.files[p]=t.sql;state.statusText="Query saved";}
+    else if(label==="Execute"&&t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";}
+    else if(label==="Cancel Executing Query"){state.statusText="Query cancelled";}
+    else if(label==="Parse"&&t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}
+    else if(label==="Display Estimated Execution Plan"&&t){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";}
+    else if(label==="Object Explorer"){state.objectExplorerVisible=true;}
+    else if(label==="Registered Servers"){ui.featurePanel={title:"Registered Servers",text:"Local Server Groups\n"+(state.connection?.serverName||"SQL Server")};}
+    else if(label==="Options..."){ui.featurePanel={title:"Options",text:"Environment\nText Editor\nQuery Execution\nDesigners"};}
+    else if(label==="SQL Server Profiler"){ui.featurePanel={title:"SQL Server Profiler",text:"Trace window opened in simulator."};}
+    else if(label==="New Vertical Tab Group"){splitGroup("vertical",{});}
+    else if(label==="New Horizontal Tab Group"){splitGroup("horizontal",{});}
+    else if(label==="Windows..."){ui.windowsDialogOpen=true;}
+    else if(label==="About SQL Server Management Studio"){ui.featurePanel={title:"About SQL Server Management Studio",text:"SQL Server Management Studio simulator"};}
+    else state.statusText=label+" invoked";
+    ui.menu=null;renderAll();
+  }
+
   document.addEventListener("mousedown", e=>{
     if(!e.target.closest(".boundary")) manualClear();
+    const menuItem=e.target.closest(".menuItem");
+    if(menuItem){invokeMenuCommand(menuItem.textContent.trim());e.preventDefault();return;}
+    const dialogBtn=e.target.closest(".dialogBtn");
+    if(dialogBtn&&!dialogBtn.dataset.target&&["Close","Cancel","OK"].includes(dialogBtn.textContent.trim())){
+      ui.connectOpen=false;ui.featurePanel=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;renderAll();e.preventDefault();return;
+    }
     const menu=e.target.closest(".menuTop"); if(menu){ui.menu={name:menu.dataset.menu,items:defaultMenuItems(menu.dataset.menu)};renderTransients();e.preventDefault();return;}
-    const tool=e.target.closest("[data-target]"); if(tool){const target=tool.dataset.target;if(target==="connect"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});}else if(target==="newQuery"){addTab({});}else if(target==="execute"){const t=activeTab();if(t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));if(t.includeActualPlan){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);}ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";}}else if(target==="parse"){const t=activeTab();if(t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}}else if(target==="cancel"){state.statusText="Query cancelled";}else if(target==="save"){const t=activeTab();if(t){const p=t.savedPath||t.title;t.savedPath=p;t.dirty=false;state.files[p]=t.sql;state.statusText="Query saved";}}else if(target==="grid"||target==="text"||target==="file"){const t=activeTab();if(t)t.resultMode=target;}else if(target==="refreshObjectExplorer"){state.lastRefresh="manual";state.statusText="Object Explorer refreshed";}renderAll();return;}
+    const tool=e.target.closest("[data-target]"); if(tool){const target=tool.dataset.target;if(target==="connect"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});}
+      else if(target==="connectDialogButton"){
+        state.connection=Object.assign({},state.connection||{},ui.connectionDraft||{},{
+          serverType:document.querySelector("#connServerType")?.value||"Database Engine",
+          serverName:document.querySelector("#connServerName")?.value||state.connection?.serverName||"localhost",
+          authentication:document.querySelector("#connAuthentication")?.value||"Windows Authentication",
+          userName:document.querySelector("#connUserName")?.value||"",
+          database:document.querySelector("#connDatabase")?.value||"master"
+        });
+        state.connected=true;state.currentDatabase=state.connection.database||"master";state.statusText="Connected";ui.connectOpen=false;setExpanded("server",true);
+      }
+      else if(target==="newQuery"){addTab({});}else if(target==="execute"){const t=activeTab();if(t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));if(t.includeActualPlan){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);}ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";}}else if(target==="parse"){const t=activeTab();if(t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}}else if(target==="cancel"){state.statusText="Query cancelled";}else if(target==="save"){const t=activeTab();if(t){const p=t.savedPath||t.title;t.savedPath=p;t.dirty=false;state.files[p]=t.sql;state.statusText="Query saved";}}else if(target==="grid"||target==="text"||target==="file"){const t=activeTab();if(t)t.resultMode=target;}else if(target==="refreshObjectExplorer"){state.lastRefresh="manual";state.statusText="Object Explorer refreshed";}renderAll();return;}
     const row=e.target.closest(".treeRow"); if(row){const id=row.dataset.node;state.selectedObject=id;if(row.querySelector(".twisty")?.textContent.trim()){setExpanded(id,!expanded(id));}renderAll();return;}
     const tab=e.target.closest(".docTab[data-tab]"); if(tab&&!e.target.closest("[data-close-tab]")){state.activeQueryId=tab.dataset.tab;renderAll();return;}
     const close=e.target.closest("[data-close-tab]"); if(close){removeTab(close.dataset.closeTab);renderAll();return;}
