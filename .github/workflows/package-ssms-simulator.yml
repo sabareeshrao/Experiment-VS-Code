@@ -24,22 +24,22 @@ jobs:
           cp simulator/shared/highlighter.js SSMS-Simulator/simulator/shared/
           cp simulator/shared/explanation-controls.js SSMS-Simulator/simulator/shared/
           cp simulator/shared/layout-resize.js SSMS-Simulator/simulator/shared/
-          cat > SSMS-Simulator/README.txt <<'EOF'
-SQL Server Management Studio Simulator
-=====================================
-
-Main simulator:
-  simulator/ssms/index.html
-  simulator/ssms/engine.js
-
-Shared dependencies:
-  simulator/shared/highlighter.js
-  simulator/shared/explanation-controls.js
-  simulator/shared/layout-resize.js
-
-Keep the relative folder structure intact while editing.
-Send the upgraded ZIP back when finished.
-EOF
+          printf '%s\n' \
+            'SQL Server Management Studio Simulator' \
+            '=====================================' \
+            '' \
+            'Main simulator:' \
+            '  simulator/ssms/index.html' \
+            '  simulator/ssms/engine.js' \
+            '' \
+            'Shared dependencies:' \
+            '  simulator/shared/highlighter.js' \
+            '  simulator/shared/explanation-controls.js' \
+            '  simulator/shared/layout-resize.js' \
+            '' \
+            'Keep the relative folder structure intact while editing.' \
+            'Send the upgraded ZIP back when finished.' \
+            > SSMS-Simulator/README.txt
       - uses: actions/upload-artifact@v4
         with:
           name: SSMS-Simulator-Upgradable
