@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>pgAdmin 4 Educational Simulator</title>
 <style>
-:root{--bg:#1d252c;--chrome:#202b34;--chrome2:#25323c;--panel:#1f272e;--editor:#171d22;--line:#3a4650;--text:#d8e1e8;--muted:#8fa0ae;--blue:#4b7599;--blue2:#365872;--green:#6fbf7b;--pink:#d979c6;--yellow:#d7c778}
+:root{--bg:#20252b;--chrome:#27313a;--chrome2:#303a43;--panel:#252b31;--editor:#1f2328;--line:#3d4750;--text:#e5e9ed;--muted:#98a6b3;--blue:#3f78a3;--blue2:#315f81;--green:#64b875;--pink:#d979c6;--yellow:#d7c778;--pgHeader:#326690;--pgHeader2:#2c5b80}
 *{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif}
-button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-rows:31px 28px 39px minmax(0,1fr) 23px;background:var(--bg)}
-.title{display:flex;align-items:center;padding:0 10px;background:#17232d;border-bottom:1px solid #34414c;font-size:11px}.pg{font-size:18px;margin-right:7px}.brand{font-weight:700}.project{margin-left:10px;color:#d4dde5}.grow{flex:1}.win{letter-spacing:13px;color:#a6b2bd}
-.menu{display:flex;align-items:center;gap:18px;padding:0 12px;background:#202a32;border-bottom:1px solid #3a4650;font-size:10px}
-.toolbar{display:flex;align-items:center;gap:8px;padding:0 10px;background:#253039;border-bottom:1px solid #3a4650;font-size:10px}.tool{height:26px;border:0;background:transparent;border-radius:3px;padding:0 8px}.tool:hover{background:#34434e}.conn{margin-left:auto;border:1px solid #4a5863;border-radius:4px;padding:5px 9px;background:#1a2228;color:#d8e1e8}
-.work{min-height:0;display:grid;grid-template-columns:280px minmax(0,1fr);background:#182027}.left{min-width:0;border-right:1px solid #3a4650;display:grid;grid-template-rows:33px 28px minmax(0,1fr);background:#1f282f}.head{display:flex;align-items:center;padding:0 9px;border-bottom:1px solid #3a4650;font-size:10px;font-weight:600}.head .grow{flex:1}.filter{padding:4px 6px;border-bottom:1px solid #34414c}.filter input{width:100%;height:21px;background:#192127;border:1px solid #4b5964;color:#d7e1e9;border-radius:2px;padding:2px 7px;font-size:9px}
+button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-rows:42px 31px 38px minmax(0,1fr) 24px;background:var(--bg);position:relative}
+.title{display:flex;align-items:center;padding:0 12px;background:linear-gradient(180deg,var(--pgHeader),var(--pgHeader2));border-bottom:1px solid rgba(0,0,0,.28);font-size:11px;color:#fff}.pgMark{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;margin-right:8px;background:#fff;color:var(--pgHeader);font:bold 11px/1 "Segoe UI",Arial,sans-serif;letter-spacing:-.5px}.brand{font-weight:700;font-size:13px}.project{margin-left:12px;color:rgba(255,255,255,.82);font-size:10px}.grow{flex:1}.win{letter-spacing:13px;color:rgba(255,255,255,.86)}
+.menu{display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--menu-bg,#242c33);border-bottom:1px solid var(--line);font-size:10px}.menu span{height:30px;display:flex;align-items:center;padding:0 10px;border-radius:2px}.menu span:hover{background:var(--hover-bg,#303b45)}
+.toolbar{display:flex;align-items:center;gap:3px;padding:0 8px;background:var(--toolbar-bg,#2c343b);border-bottom:1px solid var(--line);font-size:10px}.tool{height:27px;border:1px solid transparent;background:transparent;border-radius:3px;padding:0 9px}.tool:hover{background:var(--hover-bg,#36424c);border-color:var(--line)}.conn{margin-left:auto;border:1px solid var(--line);border-radius:3px;padding:5px 9px;background:var(--input-bg,#1d2329);color:var(--text);white-space:nowrap}
+.work{min-height:0;display:grid;grid-template-columns:300px minmax(0,1fr);background:var(--bg)}.left{min-width:0;border-right:1px solid var(--line);display:grid;grid-template-rows:36px 29px minmax(0,1fr);background:var(--left-bg,#252b31)}.head{display:flex;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);font-size:10px;font-weight:650;letter-spacing:.15px}.head .grow{flex:1}.browserTools{display:flex;gap:8px;color:var(--muted);font-size:12px}.filter{padding:4px 6px;border-bottom:1px solid #34414c}.filter input{width:100%;height:21px;background:#192127;border:1px solid #4b5964;color:#d7e1e9;border-radius:2px;padding:2px 7px;font-size:9px}
 .tree{overflow:auto;padding:5px 4px;font-size:10px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:4px;white-space:nowrap;border-radius:2px;cursor:default}.row:hover{background:#283640}.row.active{background:#38566e}.tw{width:13px;text-align:center;color:#aab5bf}.ico{width:17px;text-align:center}.node{overflow:hidden;text-overflow:ellipsis}
-.main{min-width:0;min-height:0;display:grid;grid-template-rows:30px 31px minmax(0,1fr) 210px;background:var(--editor)}.workspace-tabs,.query-tabs,.result-tabs{display:flex;align-items:center;border-bottom:1px solid #394650;background:#222c34;font-size:10px}.workspace-tab,.query-tab,.result-tab{height:100%;padding:8px 12px 0;border-right:1px solid #35414a}.activeTab{background:#192126;border-bottom:2px solid #72a9d2}
-.query-tabs{background:#1f282f}.query-tab{padding-top:7px}.query-area{min-height:0;display:grid;grid-template-rows:35px minmax(0,1fr)}.query-tools{display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid #394650;background:#202930;font-size:10px}.query-tools .run{color:var(--green);font-weight:700}.query-tools .stop{color:#d36e75}.sqlwrap{display:grid;grid-template-columns:46px minmax(0,1fr);overflow:auto;background:#171d22}.gutter{padding:10px 7px 40px 0;text-align:right;color:#758590;font:11px/23px Consolas,monospace;user-select:none}.sql{margin:0;padding:10px 16px 40px 9px;white-space:pre;min-width:max-content;font:12px/23px Consolas,monospace}.line{display:block;min-height:23px}.line.focus{background:rgba(72,114,150,.20)}.kw{color:#db73c8}.type{color:#87c7a1}.num{color:#d2b96b}.str{color:#a9c97f}.com{color:#6e9f65}
-.results{min-height:0;border-top:2px solid #38444e;display:grid;grid-template-rows:31px minmax(0,1fr);background:#1e272e}.result-tabs{background:#202930}.result-body{overflow:auto}.messages{padding:12px 15px;font:11px/18px Consolas,monospace;color:#b9c6d0;white-space:pre-wrap}.success{color:#83c98d}.status{display:flex;align-items:center;padding:0 9px;background:#202a32;border-top:1px solid #394650;font-size:9px;color:#bac4cd}.status .grow{flex:1}
+.main{min-width:0;min-height:0;display:grid;grid-template-rows:35px 32px minmax(0,1fr) 220px;background:var(--editor)}.workspace-tabs,.query-tabs,.result-tabs{display:flex;align-items:center;border-bottom:1px solid var(--line);background:var(--tab-bg,#29323a);font-size:10px;overflow-x:auto;white-space:nowrap}.workspace-tab,.query-tab,.result-tab{height:100%;display:flex;align-items:center;padding:0 12px;border-right:1px solid var(--line);color:var(--muted)}.workspace-tab{font-weight:600}.activeTab{background:var(--panel);color:var(--text);box-shadow:inset 0 -2px var(--blue)}
+.query-tabs{background:var(--panel)}.query-tab{padding-top:0}.query-tab::before{content:"SQL";display:inline-grid;place-items:center;width:22px;height:19px;margin-right:7px;border-radius:2px;background:var(--blue2);color:#fff;font-size:8px;font-weight:700}.query-area{min-height:0;display:grid;grid-template-rows:35px minmax(0,1fr)}.query-tools{display:flex;align-items:center;gap:3px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--query-tools-bg,#293138);font-size:10px}.query-tools span{height:27px;min-width:27px;display:grid;place-items:center;padding:0 5px;border-radius:3px}.query-tools span:hover{background:var(--hover-bg)}.query-tools .run{color:var(--green);font-weight:700}.query-tools .stop{color:#d36e75}.querySep{width:1px!important;min-width:1px!important;height:18px!important;padding:0!important;margin:0 3px;background:var(--line)}.sqlwrap{display:grid;grid-template-columns:50px minmax(0,1fr);overflow:auto;background:var(--sql-bg,#1f2328);position:relative}.gutter{padding:10px 8px 40px 0;text-align:right;color:var(--muted);font:12px/23px Consolas,"Courier New",monospace;user-select:none;border-right:1px solid var(--line)}.sql{margin:0;padding:10px 18px 40px 12px;white-space:pre;min-width:max-content;font:12px/23px Consolas,"Courier New",monospace;tab-size:4}.line{display:block;min-height:23px;position:relative}.line.focus{background:rgba(72,114,150,.20)}.kw{color:#db73c8}.type{color:#87c7a1}.num{color:#d2b96b}.str{color:#a9c97f}.com{color:#6e9f65}
+.results{min-height:0;border-top:1px solid var(--line);display:grid;grid-template-rows:32px minmax(0,1fr);background:var(--result-bg,#252b31)}.result-tabs{background:#202930}.result-body{overflow:auto}.messages{padding:12px 15px;font:11px/18px Consolas,monospace;color:#b9c6d0;white-space:pre-wrap}.success{color:#83c98d}.status{display:flex;align-items:center;padding:0 9px;background:#202a32;border-top:1px solid #394650;font-size:9px;color:#bac4cd}.status .grow{flex:1}
 .pgAssistant{position:absolute;z-index:300;right:16px;bottom:38px;width:310px;max-width:calc(100vw - 28px);background:#253039;border:1px solid #4a5965;border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,.42);overflow:hidden;color:#dce4ea;user-select:none;touch-action:none}
 .pgAssistant.hidden{display:none!important}.pgAssistantHead{height:33px;display:flex;align-items:center;gap:8px;padding:0 7px;background:#202a32;border-bottom:1px solid #3b4852;cursor:grab}.pgAssistantIcon{width:20px;height:20px;border-radius:4px;display:grid;place-items:center;background:#355c79;color:#dceeff;font-size:9px;font-weight:800}.pgAssistantTitles{min-width:0;flex:1}.pgAssistantTitles strong,.pgAssistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pgAssistantTitles strong{font-size:10px}.pgAssistantTitles span{font-size:9px;color:#91a0ac;margin-top:1px}.pgAssistantAction{width:24px;height:24px;border:0;background:transparent;color:#9aa8b3;border-radius:4px;padding:0}.pgAssistantAction:hover{background:#34434e;color:#fff}.pgAssistantBody{padding:9px 10px 11px;background:#253039;font:10.5px/1.55 "Segoe UI",Arial,sans-serif;cursor:grab}.pgAssistantBody p{margin:0}.pgAssistantTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#1d2830;color:#9ec2de;font-size:9px}.pgAssistant.minimized{width:225px}.pgAssistant.minimized .pgAssistantBody{display:none}.pgAssistant.dragging{opacity:.96}.pgAssistantLanguage{font-size:8px;color:#72a9d2;margin-left:4px}
 .hidden{display:none!important}
@@ -26,7 +26,7 @@ body.theme-dark{
   --text:#d8e1e8;--muted:#8fa0ae;--blue:#4b7599;--blue2:#365872;--green:#6fbf7b;--pink:#d979c6;--yellow:#d7c778;
   --title-bg:#17232d;--menu-bg:#202a32;--toolbar-bg:#253039;--left-bg:#1f282f;--tab-bg:#222c34;--query-tools-bg:#202930;
   --sql-bg:#171d22;--status-bg:#202a32;--input-bg:#192127;--hover-bg:#283640;--active-bg:#38566e;--popup-bg:#253039;
-  --assistant-bg:#253039;--assistant-head:#202a32;--result-bg:#1e272e;--result-head:#253039;
+  --assistant-bg:#253039;--assistant-head:#202a32;--result-bg:#1e272e;--result-head:#253039;--pgHeader:#326690;--pgHeader2:#2b587d;
   --kw:#db73c8;--type:#87c7a1;--num:#d2b96b;--str:#a9c97f;--com:#6e9f65;--focus:rgba(72,114,150,.20);
 }
 body.theme-light{
@@ -34,11 +34,11 @@ body.theme-light{
   --text:#20252a;--muted:#64707a;--blue:#2b6f9e;--blue2:#d9ebf7;--green:#207a35;--pink:#8b2a78;--yellow:#8a711f;
   --title-bg:#f7f8fa;--menu-bg:#ffffff;--toolbar-bg:#f2f4f6;--left-bg:#ffffff;--tab-bg:#eef1f4;--query-tools-bg:#f5f6f7;
   --sql-bg:#ffffff;--status-bg:#f2f4f6;--input-bg:#ffffff;--hover-bg:#eef3f7;--active-bg:#d8eaf6;--popup-bg:#ffffff;
-  --assistant-bg:#ffffff;--assistant-head:#eef1f4;--result-bg:#ffffff;--result-head:#f3f5f7;
+  --assistant-bg:#ffffff;--assistant-head:#eef1f4;--result-bg:#ffffff;--result-head:#f3f5f7;--pgHeader:#326690;--pgHeader2:#2b587d;
   --kw:#7b2f88;--type:#26734d;--num:#8c6115;--str:#a31515;--com:#2f7d32;--focus:rgba(0,120,212,.10);
 }
 body.theme-dark,body.theme-light{color-scheme:light dark}
-.title{background:var(--title-bg)!important;border-color:var(--line)!important;color:var(--text)!important}
+.title{background:linear-gradient(180deg,var(--pgHeader),var(--pgHeader2))!important;border-color:rgba(0,0,0,.28)!important;color:#fff!important}
 .menu{background:var(--menu-bg)!important;border-color:var(--line)!important;color:var(--text)!important}
 .toolbar{background:var(--toolbar-bg)!important;border-color:var(--line)!important;color:var(--text)!important}
 .tool{color:var(--text)!important}.tool:hover{background:var(--hover-bg)!important}
@@ -50,7 +50,7 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 .workspace-tab,.query-tab,.result-tab{border-color:var(--line)!important;color:var(--text)!important}.activeTab{background:var(--panel)!important;border-bottom-color:var(--blue)!important}
 .query-tools{background:var(--query-tools-bg)!important;border-color:var(--line)!important;color:var(--text)!important}
 .sqlwrap,.gutter,.sql{background:var(--sql-bg)!important;color:var(--text)!important}.gutter{color:var(--muted)!important}
-.line.focus{background:var(--focus)!important;box-shadow:inset 3px 0 var(--blue)}
+.line.focus{background:var(--focus)!important;box-shadow:none!important;position:relative}.line.focus::before{content:"";position:absolute;left:-8px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none}
 .kw{color:var(--kw)!important}.type{color:var(--type)!important}.num{color:var(--num)!important}.str{color:var(--str)!important}.com{color:var(--com)!important}
 .results{background:var(--result-bg)!important;border-color:var(--line)!important;color:var(--text)!important}.result-body{background:var(--result-bg)!important;color:var(--text)!important}
 .messages{color:var(--text)!important}.status{background:var(--status-bg)!important;border-color:var(--line)!important;color:var(--text)!important}
@@ -75,20 +75,20 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 </head>
 <body class="theme-dark" data-sim-app="pgadmin">
 <div class="app">
-  <div class="title"><span class="pg">🐘</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><button type="button" class="themeButton" id="themeToggle" title="Switch to light theme" aria-label="Switch to light theme" aria-pressed="true">☀</button><span class="win">— □ ×</span></div>
+  <div class="title"><span class="pgMark">pg</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><button type="button" class="themeButton" id="themeToggle" title="Switch to light theme" aria-label="Switch to light theme" aria-pressed="true">☀</button><span class="win">— □ ×</span></div>
   <div class="menu"><span>File</span><span>Object</span><span>Tools</span><span>Help</span></div>
-  <div class="toolbar"><button class="tool">▣ Register Server</button><button class="tool">⌕ Search objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool" id="pgRefresh">↻ Refresh</button><button class="tool" id="pgPreferences">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
+  <div class="toolbar"><button class="tool">＋ Register Server</button><button class="tool">⌕ Search Objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool" id="pgRefresh">↻ Refresh</button><button class="tool" id="pgPreferences">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
   <div class="work">
     <aside class="left">
-      <div class="head">Object Explorer<span class="grow"></span><span>＋ &nbsp;↻</span></div>
+      <div class="head">Browser<span class="grow"></span><span class="browserTools">＋ ⟳ ⋮</span></div>
       <div class="filter"><input placeholder="Filter objects"></div>
       <div class="tree" id="tree"></div>
     </aside>
     <main class="main">
-      <div class="workspace-tabs"><div class="workspace-tab">Browser</div><div class="workspace-tab activeTab">Query Tool</div></div>
+      <div class="workspace-tabs"><div class="workspace-tab">Dashboard</div><div class="workspace-tab">Properties</div><div class="workspace-tab">SQL</div><div class="workspace-tab">Statistics</div><div class="workspace-tab">Dependencies</div><div class="workspace-tab">Dependents</div><div class="workspace-tab activeTab">Query Tool</div></div>
       <div class="query-tabs"><div class="query-tab activeTab" id="queryTab">java_practice/postgres@Local PostgreSQL</div></div>
       <section class="query-area">
-        <div class="query-tools"><span>▢</span><span>💾</span><span>↓</span><span>＋</span><span>⌕</span><span class="run" id="run">▶</span><span class="stop">■</span><span>⌘</span><span>📊</span><span>✓</span><span>↶</span><span>☑ Auto Commit</span></div>
+        <div class="query-tools"><span title="Open file">▱</span><span title="Save">▣</span><span title="Download">↓</span><span class="querySep"></span><span title="Find">⌕</span><span class="run" id="run" title="Execute">▶</span><span class="stop" title="Cancel">■</span><span title="Explain">EX</span><span title="Explain Analyze">EA</span><span class="querySep"></span><span title="Commit">✓</span><span title="Rollback">↶</span><span style="min-width:auto;padding:0 8px">☑ Auto Commit</span></div>
         <div class="sqlwrap" id="sqlwrap"><div class="gutter" id="gutter"></div><pre class="sql" id="sql"></pre></div>
       </section>
       <section class="results">
@@ -109,7 +109,7 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
       <p id="pgAssistantText"></p>
     </div>
   </div>
-  <div class="status"><span id="status">Ready</span><span class="grow"></span><span id="rows"></span><span>Ln 1, Col 1 &nbsp; UTF-8</span></div>
+  <div class="status"><span id="status">Ready</span><span style="margin-left:14px;color:var(--muted)">PostgreSQL 16</span><span class="grow"></span><span id="rows"></span><span>Ln 1, Col 1 &nbsp; UTF-8</span></div>
 </div>
 <script>
 (() => {
