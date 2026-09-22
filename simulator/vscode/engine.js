@@ -14,6 +14,7 @@ var R={
 };
 
 var baseline={},state={},files={},activeFile=null,openedTabs=[],changedLines=[],expandedFolders=new Set(),panelVisible=false,markdownPreviewOpen=false,seekToken=0,contextPath=null;
+var panelHeightLevel=Math.max(-1,Math.min(4,parseInt(localStorage.getItem("sim.vscode.panelHeight.v1")||"0",10)||0));
 
 function fileKind(path){
  var n=(path||"").split("/").pop()||"";
@@ -362,6 +363,9 @@ function renderMarkdownPreview(){
 }
 function renderPanel(){
  R.editorGroup.classList.toggle("panelOpen",panelVisible);
+ var maxHeight=Math.max(150,Math.floor(innerHeight*0.68));
+ var height=Math.max(120,Math.min(maxHeight,185+(panelHeightLevel*75)));
+ R.editorGroup.style.setProperty("--panel-h",panelVisible?height+"px":"0px");
  R.terminal.textContent=state.terminal||"PS Java Practice> ";
 }
 function renderChrome(){
@@ -501,6 +505,9 @@ $("newFileBtn").onclick=function(){
 $("newFolderBtn").onclick=function(){expandedFolders.add("new-folder");renderTree();};
 $("panelClose").onclick=function(){panelVisible=false;renderPanel();};
 $("panelCollapse").onclick=function(){panelVisible=!panelVisible;renderPanel();};
+$("panelShrink").onclick=function(){panelHeightLevel=Math.max(-1,panelHeightLevel-1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));renderPanel();};
+$("panelGrow").onclick=function(){panelHeightLevel=Math.min(4,panelHeightLevel+1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));panelVisible=true;renderPanel();};
+window.addEventListener("resize",renderPanel);
 R.markdownPreviewBtn.onclick=function(){
  if(!activeFile||!/\.md$/i.test(activeFile))return;
  markdownPreviewOpen=!markdownPreviewOpen;
