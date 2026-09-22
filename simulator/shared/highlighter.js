@@ -13,6 +13,8 @@ style.textContent=[
 "body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important}",
 "body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
+"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important}",
+"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none;z-index:2}",
 ".sim-line-text{position:relative;z-index:3}"
 ].join("");
 document.head.appendChild(style);
