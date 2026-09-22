@@ -553,6 +553,34 @@
     }
   });
 
+  function installFrameNavigationBridge(frame) {
+    if (!frame) return;
+    const attach = () => {
+      try {
+        const doc = frame.contentDocument;
+        if (!doc || doc.__lessonNavBridgeInstalled) return;
+        doc.__lessonNavBridgeInstalled = true;
+        doc.addEventListener("keydown", event => {
+          if (fullCodeMode || !flat.length) return;
+          if (!event.altKey || event.ctrlKey || event.metaKey) return;
+          if (event.key === "ArrowRight" && current < flat.length - 1) {
+            event.preventDefault();
+            event.stopPropagation();
+            goToStep(current + 1, true);
+          } else if (event.key === "ArrowLeft" && current > 0) {
+            event.preventDefault();
+            event.stopPropagation();
+            goToStep(current - 1, false);
+          }
+        }, true);
+      } catch (_) {}
+    };
+    frame.addEventListener("load", attach);
+    attach();
+  }
+
+  Object.values(frames).forEach(installFrameNavigationBridge);
+
   fullCodeBtn.onclick = loadFullCode;
 
   prevBtn.onclick = () => goToStep(current - 1, false);
