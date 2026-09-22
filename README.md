@@ -61,3 +61,14 @@ IntelliJ IDEA
 ```
 
 Each step declares its active software. The outer player keeps the lesson/stage navigation constant while it switches the center simulator. Direct step URLs reconstruct only the actions belonging to the active application through that point, so returning to IntelliJ restores the Java project state instead of starting a new lesson.
+
+
+## Bookshelf / book navigation
+
+The repository root is the journey library. The playback simulator lives at `player.html`.
+
+Books are an organizational layer only. They must never create a separate lesson timeline or reset simulator state. A chapter always maps to its existing stage, and opening that chapter uses the first global step of the stage. The player then reconstructs all applicable earlier actions through that global step.
+
+Book ranges are declared in `window.COURSE.books` inside `lessons.js` using `chapterStart` and `chapterEnd`. Future books can therefore group hundreds of stages without changing the cumulative playback engine.
+
+The player stores the last visited global step under `developerJourney.lastStep.v1`, allowing the landing page to offer a Continue action.
