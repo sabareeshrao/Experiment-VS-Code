@@ -20,15 +20,15 @@ function syntax(line,lang="java"){
  let out="",i=0,kws=new Set(["package","import","public","private","protected","class","interface","extends","implements","return","if","else","for","while","new","throw","throws","try","catch","finally","static","final","void","int","long","double","boolean","null","true","false","this","super","enum"]);
  while(i<line.length){if(line.startsWith("//",i)){out+='<span class="com">'+esc(line.slice(i))+'</span>';break}if(line[i]==='"'){let j=i+1;while(j<line.length){if(line[j]==="\\"){j+=2;continue}if(line[j]==='"'){j++;break}j++}out+='<span class="str">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(line[i]==="@"){let j=i+1;while(j<line.length&&/[\w.]/.test(line[j]))j++;out+='<span class="ann">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(/[A-Za-z_$]/.test(line[i])){let j=i+1;while(j<line.length&&/[\w$]/.test(line[j]))j++;const w=line.slice(i,j);out+=kws.has(w)?'<span class="kw">'+w+'</span>':(/^[A-Z]/.test(w)?'<span class="type">'+esc(w)+'</span>':esc(w));i=j;continue}if(/\d/.test(line[i])){let j=i+1;while(j<line.length&&/[\d._]/.test(line[j]))j++;out+='<span class="num">'+esc(line.slice(i,j))+'</span>';i=j;continue}out+=esc(line[i]);i++}return out
 }
-function icon(n){if(n.type==="folder"||n.type==="package")return "◆";if(n.language==="java")return "J";if(n.language==="xml")return "x";if(n.language==="properties")return "p";return "·"}
+function icon(n){if(n.type==="folder"||n.type==="package")return "";if(n.language==="java")return "C";if(n.language==="xml")return "x";if(n.language==="properties")return "p";return "·"}
 function iconClass(n){if(n.type==="folder"||n.type==="package")return "ico-folder";if(n.language==="java")return "ico-java";if(n.language==="xml")return "ico-xml";if(n.language==="properties")return "ico-props";return "ico-file"}
-function renderTreeNodes(nodes,depth=0){for(const n of nodes||[]){const p=n.path||n.name,d=document.createElement("div");d.className="treeRow"+(p===activeFile?" active":"");d.dataset.path=p;d.style.paddingLeft=(depth*12)+"px";d.innerHTML='<span class="twist">'+(n.children?.length?(n.open?"▾":"▸"):"")+'</span><span class="ico '+iconClass(n)+'">'+icon(n)+'</span><span class="nodeText">'+esc(n.name||p)+'</span>';const gm=state.git?.changes?.find?.(x=>x.file===p);if(gm){const s=document.createElement("span");s.className="gitMark "+(gm.status==="A"?"a":"m");s.textContent=gm.status;d.appendChild(s)}d.onclick=()=>{if(n.type==="file"&&files[p])openFile(p);else if(n.children){n.open=!n.open;renderTree()}};refs.tree.appendChild(d);treeMap.set(p,d);if(n.children&&n.open!==false)renderTreeNodes(n.children,depth+1)}}
+function renderTreeNodes(nodes,depth=0){for(const n of nodes||[]){const p=n.path||n.name,d=document.createElement("div");d.className="treeRow"+(p===activeFile?" active":"");d.dataset.path=p;d.style.paddingLeft=(depth*14)+"px";d.innerHTML='<span class="twist">'+(n.children?.length?(n.open?"▾":"▸"):"")+'</span><span class="ico '+iconClass(n)+'">'+icon(n)+'</span><span class="nodeText">'+esc(n.name||p)+'</span>';const gm=state.git?.changes?.find?.(x=>x.file===p);if(gm){const s=document.createElement("span");s.className="gitMark "+(gm.status==="A"?"a":"m");s.textContent=gm.status;d.appendChild(s)}d.onclick=()=>{if(n.type==="file"&&files[p])openFile(p);else if(n.children){n.open=!n.open;renderTree()}};refs.tree.appendChild(d);treeMap.set(p,d);if(n.children&&n.open!==false)renderTreeNodes(n.children,depth+1)}}
 function renderTree(){
  refs.tree.innerHTML="";
  treeMap.clear();
  const root=document.createElement("div");
  root.className="treeRoot";
- root.innerHTML='<span class="twist">▾</span><span class="ico ico-folder">◆</span><span class="nodeText">'+esc(state.project?.name||"Project")+'</span>';
+ root.innerHTML='<span class="twist">▾</span><span class="ico ico-folder"></span><span class="nodeText">'+esc(state.project?.name||"Project")+'</span>';
  refs.tree.appendChild(root);
  renderTreeNodes(state.tree,1);
  const ext=document.createElement("div");ext.className="treeAux";ext.innerHTML='<span class="twist">▸</span><span class="ico">◫</span><span>External Libraries</span>';refs.tree.appendChild(ext);
@@ -50,7 +50,16 @@ function renderRight(){
  refs.right.innerHTML=matches.map(m=>'<div class="structureRow">'+esc(m[2]||m[4]||"symbol")+'</div>').join("")||'<div class="structureRow">No symbols</div>'
 }
 function card(t,v){return '<div class="card"><h3>'+esc(t)+'</h3><div class="metric">'+esc(v??"")+'</div></div>'}
-function setBottom(name,content,html=false){activeBottom=name;document.querySelectorAll(".bottomTab").forEach(t=>t.classList.toggle("active",t.dataset.bottom===name));refs.bottom.className="bottomBody "+(name==="terminal"?"terminal":"");if(html)refs.bottom.innerHTML=content||"";else refs.bottom.textContent=content||""}
+function setBottom(name,content,html=false){
+ activeBottom=name;
+ document.querySelectorAll(".bottomTab").forEach(t=>t.classList.toggle("active",t.dataset.bottom===name));
+ refs.bottom.className="bottomBody"+(name==="terminal"?" terminal":"");
+ if(name==="terminal"){
+   refs.bottom.innerHTML='<div class="terminalSessionBar"><span class="activeSession">Local</span><span class="terminalGrow"></span><span class="terminalAction">＋</span><span class="terminalAction">⌄</span><span class="terminalAction">⋮</span></div><div class="terminalViewport"><pre>'+esc(content||"$ ")+'</pre></div>';
+   const v=refs.bottom.querySelector(".terminalViewport"); if(v)v.scrollTop=v.scrollHeight;
+ }else if(html)refs.bottom.innerHTML=content||"";
+ else refs.bottom.textContent=content||""
+}
 function renderBottom(){
  const b=state.bottomCache?.[activeBottom];if(b){setBottom(activeBottom,b.content,b.html);return}
  if(activeBottom==="terminal")setBottom("terminal",state.terminal||"$ ");
@@ -69,12 +78,15 @@ function renderFeatureVisibility(){
  const visible=new Set(state.visibleFeatures||[]);
  document.querySelectorAll("[data-feature]").forEach(el=>el.classList.toggle("hidden",!visible.has(el.dataset.feature)));
  const bottomFeatures=["run","debug","tests","terminal","problems","git","spring"];
- const anyBottom=bottomFeatures.some(x=>visible.has(x));
+ const availableBottom=bottomFeatures.filter(x=>visible.has(x));
+ const anyBottom=availableBottom.length>0;
+ if(anyBottom&&!visible.has(activeBottom))activeBottom=availableBottom[0];
  refs.bottomPanel?.classList.toggle("hidden",!anyBottom);
  refs.splitH?.classList.toggle("hidden",!anyBottom);
  refs.work?.classList.toggle("noBottom",!anyBottom);
  const hasRight=visible.has("maven")||visible.has("database");
- refs.work?.classList.toggle("hasRightTools",hasRight)
+ refs.work?.classList.toggle("hasRightTools",hasRight);
+ if(anyBottom)renderBottom()
 }
 function renderAll(){refs.project.textContent=state.project.name||"Project";refs.branch.textContent=state.git.branch||"main";refs.sdk.textContent=state.project.sdk||"Project SDK";refs.lang.textContent="Java "+(state.project.languageLevel||"");refs.runConfig.textContent=state.activeRunConfiguration||state.runConfigurations[0]?.name||"Current File";renderTree();renderTabs();renderEditor();renderRight();renderBottom();renderFeatureVisibility()}
 function notify(text,type=""){clearTimeout(notificationTimer);refs.notification.textContent=String(text||"");refs.notification.className="notification show"+(type==="error"?" error":"");notificationTimer=setTimeout(()=>refs.notification.classList.remove("show"),2200)}
@@ -247,7 +259,7 @@ async function applyStep(st,animate,token){
   case"showTableData":{const r={columns:d.columns||Object.keys(d.rows?.[0]||{}),rows:d.rows||[]};activeBottom="run";setBottom("run",resultTable(r.columns,r.rows),true);break}
 
   case"openTerminal":activeBottom="terminal";renderBottom();break;
-  case"typeTerminal":{const cmd=String(d.command||d.text||"");await typeText(cmd,part=>setBottom("terminal",(state.terminal||"")+"\n$ "+part),animate,token);state.terminal+=(state.terminal?"\n":"")+"$ "+cmd+(d.output!==undefined?"\n"+d.output:"");renderBottom();break}
+  case"typeTerminal":{const cmd=String(d.command||d.text||"");const prefix=state.terminal?(state.terminal+"\n"):"";await typeText(cmd,part=>setBottom("terminal",prefix+"$ "+part),animate,token);state.terminal=prefix+"$ "+cmd+(d.output!==undefined?"\n"+d.output:"");renderBottom();break}
   case"appendTerminal":state.terminal+=(state.terminal?"\n":"")+String(d.text||"");activeBottom="terminal";renderBottom();break;
   case"clearTerminal":state.terminal="";activeBottom="terminal";renderBottom();break;
 
