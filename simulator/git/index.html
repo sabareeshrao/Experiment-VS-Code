@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="simulation-app" content="git">
+<meta name="simulation-label" content="Git">
+<title>Git Local Repository Simulator</title>
+
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+:root{--sideW:218px;--detailsW:310px;--termH:164px;--bg:#f5f5f5;--surface:#fff;--surface2:#f1f1f1;--surface3:#e8e8e8;--line:#c9c9c9;--text:#222;--muted:#666;--accent:#f05033;--blue:#1677d2;--green:#16843b;--red:#c42b1c;--yellow:#9b7700;--shadow:rgba(0,0,0,.18);--terminal:#0c0c0c;--terminalText:#f2f2f2}
+body.theme-dark{--bg:#181818;--surface:#202020;--surface2:#252526;--surface3:#2d2d30;--line:#3e3e42;--text:#f0f0f0;--muted:#a6a6a6;--accent:#f06a4a;--blue:#4daafc;--green:#4ec27a;--red:#f1707a;--yellow:#e5c95e;--shadow:rgba(0,0,0,.45);--terminal:#090909;--terminalText:#f3f3f3}
+button,input,select,textarea{font:inherit}.app{height:100%;display:grid;grid-template-rows:32px 29px 1fr 22px;position:relative;background:var(--bg)}
+.titlebar{display:flex;align-items:center;gap:8px;padding:0 10px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:11px;user-select:none}.gitmark{width:20px;height:20px;display:grid;place-items:center;transform:rotate(45deg);border-radius:3px;background:var(--accent);color:#fff;font-weight:800}.gitmark span{transform:rotate(-45deg);font-size:10px}.titleText{font-weight:600}.repoPath{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.grow{flex:1}.branchPill{display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);padding:3px 8px;border-radius:3px;color:var(--text);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sync{font-size:10px;color:var(--muted)}
+.toolbar{display:flex;align-items:center;gap:3px;padding:3px 7px;background:var(--surface);border-bottom:1px solid var(--line);user-select:none}.tool{height:22px;border:1px solid transparent;background:transparent;color:var(--text);border-radius:2px;padding:0 7px;font-size:10px}.tool:hover{background:var(--surface3);border-color:var(--line)}.tool.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.sep{width:1px;height:16px;background:var(--line);margin:0 4px}
+.workspace{min-height:0;min-width:0;display:grid;grid-template-columns:minmax(150px,var(--sideW)) 5px minmax(0,1fr) 5px minmax(220px,var(--detailsW));background:var(--bg);overflow:hidden}.sidebar{min-width:0;border-right:1px solid var(--line);background:var(--surface2);overflow:auto}.sideHead{height:29px;display:flex;align-items:center;padding:0 9px;border-bottom:1px solid var(--line);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}.navItem{display:flex;align-items:center;gap:7px;min-height:29px;padding:5px 9px;font-size:11px;color:var(--text);border-left:2px solid transparent}.navItem:hover{background:var(--surface3)}.navItem.active{background:var(--surface3);border-left-color:var(--accent)}.count{margin-left:auto;min-width:18px;text-align:center;border-radius:9px;padding:1px 5px;background:var(--surface);border:1px solid var(--line);font-size:9px;color:var(--muted)}.sectionLabel{padding:10px 9px 4px;font-size:9px;color:var(--muted);text-transform:uppercase}.listItem{min-height:27px;padding:5px 12px 5px 19px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listItem:hover,.listItem.active{background:var(--surface3)}
+.center{min-width:0;min-height:0;display:grid;grid-template-rows:31px minmax(0,1fr) 5px clamp(90px,var(--termH),42vh);background:var(--surface);overflow:hidden}.tabs{display:flex;align-items:end;background:var(--surface2);border-bottom:1px solid var(--line);padding-left:5px}.tab{height:30px;padding:8px 12px 0;font-size:10px;border-right:1px solid var(--line);color:var(--muted)}.tab.active{background:var(--surface);color:var(--text);box-shadow:inset 0 2px var(--accent)}.mainView{min-height:0;overflow:auto}.viewHead{height:34px;display:flex;align-items:center;gap:7px;padding:0 10px;border-bottom:1px solid var(--line);background:var(--surface);font-size:10px}.viewTitle{font-weight:700}.fileList,.historyList{min-width:520px}.fileRow{display:grid;grid-template-columns:24px minmax(180px,1fr) 78px 74px;align-items:center;min-height:31px;border-bottom:1px solid var(--line);font-size:10px;padding:0 9px}.fileRow:hover,.fileRow.active{background:var(--surface2)}.statusCode{font-family:Consolas,monospace;font-weight:700}.statusM{color:#d7a018}.statusA{color:var(--green)}.statusD{color:var(--red)}.statusU{color:var(--blue)}.stageBox{display:grid;place-items:center;width:15px;height:15px;border:1px solid var(--line);background:var(--surface);border-radius:2px;font-size:10px}.stageBox.checked{background:var(--green);border-color:var(--green);color:#fff}.muted{color:var(--muted)}.empty{padding:30px;text-align:center;color:var(--muted);font-size:11px}.commitRow{display:grid;grid-template-columns:90px minmax(180px,1fr) 140px 125px;gap:8px;align-items:center;min-height:34px;padding:0 10px;border-bottom:1px solid var(--line);font-size:10px}.commitRow:hover,.commitRow.active{background:var(--surface2)}.hash{font:10px Consolas,monospace;color:var(--blue)}.branchTag,.tag{display:inline-block;border:1px solid var(--line);border-radius:9px;padding:1px 6px;margin-left:5px;font-size:8px;background:var(--surface2)}.branchTag{color:var(--green)}.tag{color:var(--yellow)}
+.diff{font:11px/17px Consolas,"Courier New",monospace;white-space:pre;overflow:auto;padding:9px;background:var(--surface)}.diffLine{display:block;min-height:17px}.diffAdd{background:rgba(46,160,67,.16);color:var(--green)}.diffDel{background:rgba(248,81,73,.13);color:var(--red)}.diffMeta{color:var(--blue)}
+.terminalPane{min-height:0;border-top:1px solid var(--line);background:var(--terminal);color:var(--terminalText);display:grid;grid-template-rows:25px 1fr}.terminalHead{display:flex;align-items:center;padding:0 8px;background:#1c1c1c;color:#ddd;border-bottom:1px solid #333;font-size:9px}.terminalBody{overflow:auto;padding:6px 8px;font:11px/17px Consolas,"Courier New",monospace;white-space:pre-wrap;word-break:break-word}.cmdLine{color:#fff}.cmdPrompt{color:#73d216}.terminalMuted{color:#aaa}.caret{display:inline-block;width:6px;height:13px;background:#ddd;vertical-align:-2px;animation:blink .8s step-end infinite}@keyframes blink{50%{opacity:0}}
+.details{min-width:0;border-left:1px solid var(--line);background:var(--surface2);display:grid;grid-template-rows:31px 1fr}.detailsHead{display:flex;align-items:center;padding:0 9px;border-bottom:1px solid var(--line);font-size:10px;font-weight:700}.detailsBody{overflow:auto;padding:10px}.field{margin-bottom:9px}.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:3px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:2px;padding:6px;font-size:10px}.field textarea{height:70px;resize:none;font-family:Consolas,monospace}.commitButton{width:100%;height:28px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:2px;font-size:10px;font-weight:600}.commitButton:disabled{opacity:.45}.detailCard{border:1px solid var(--line);background:var(--surface);margin-bottom:8px}.detailTitle{padding:6px 7px;border-bottom:1px solid var(--line);font-size:9px;font-weight:700}.detailBody{padding:7px;font-size:10px;line-height:1.5;white-space:pre-wrap}.kv{display:grid;grid-template-columns:85px 1fr;gap:5px;font-size:9px;margin-bottom:4px}.statusbar{display:flex;align-items:center;gap:12px;padding:0 8px;background:var(--accent);color:#fff;font-size:9px;user-select:none}.statusbar .grow{flex:1}.toast{position:absolute;right:12px;bottom:34px;max-width:330px;padding:8px 10px;border:1px solid var(--line);background:var(--surface);color:var(--text);box-shadow:0 6px 20px var(--shadow);font-size:10px;display:none;z-index:80}.toast.show{display:block}.toast.success{border-left:3px solid var(--green)}.toast.error{border-left:3px solid var(--red)}.toast.warning{border-left:3px solid var(--yellow)}
+.boundary{position:absolute;display:none;pointer-events:none;border:3px solid #ffd400;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.85),0 0 12px rgba(255,212,0,.72);z-index:120}.boundary.show{display:block}
+body.compact{--sideW:185px;--detailsW:260px}.hidden{display:none!important}
+
+.splitV,.splitH{background:var(--line);opacity:.7}.splitV{cursor:col-resize}.splitH{cursor:row-resize}.splitV:hover,.splitH:hover{background:var(--accent);opacity:.55}
+.sidebar{grid-column:1}.splitL{grid-column:2}.center{grid-column:3}.splitR{grid-column:4}.details{grid-column:5}
+.center>.tabs{grid-row:1}.center>.mainView{grid-row:2}.center>.splitH{grid-row:3}.center>.terminalPane{grid-row:4}
+.utilityShade{position:absolute;inset:0;z-index:180;background:rgba(0,0,0,.42);display:none;align-items:center;justify-content:center;padding:20px}.utilityShade.show{display:flex}
+.utilityPanel{width:min(900px,92vw);max-height:min(690px,88vh);background:var(--surface);color:var(--text);border:1px solid var(--line);box-shadow:0 14px 45px var(--shadow);display:grid;grid-template-rows:36px minmax(0,1fr);border-radius:4px;overflow:hidden}
+.utilityHead{display:flex;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);background:var(--surface2);font-size:11px;font-weight:700}.utilityHead .grow{flex:1}.utilityHead button{border:0;background:transparent;color:var(--text);font-size:17px;cursor:pointer}
+.utilityBody{min-height:0;overflow:auto;padding:11px;font:10px/16px "Segoe UI",Arial,sans-serif;white-space:pre-wrap}
+.utilityGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.utilityCard{border:1px solid var(--line);background:var(--surface2);padding:8px;border-radius:3px}.utilityCard h3{margin:0 0 6px;font-size:10px}.utilityCard pre{margin:4px 0 0;font:10px/15px Consolas,monospace;white-space:pre-wrap}
+.rebaseRow,.reflogRow,.blameRow{display:grid;gap:8px;border-bottom:1px solid var(--line);padding:6px 4px;font-size:10px}.rebaseRow{grid-template-columns:68px 85px 1fr}.reflogRow{grid-template-columns:90px 90px 1fr}.blameRow{grid-template-columns:78px 110px 1fr}.actionBadge{display:inline-block;padding:1px 6px;border-radius:8px;background:var(--surface3);border:1px solid var(--line);font-size:8px}
+.conflictBlock{border:1px solid var(--line);margin:7px 0}.conflictHead{padding:6px 8px;background:var(--surface2);font-weight:700}.conflictPane{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}.conflictPane pre{margin:0;padding:8px;background:var(--surface);font:10px/15px Consolas,monospace;white-space:pre-wrap}
+:root{--scrollTrack:#ededed;--scrollThumb:#b7b7b7;--scrollHover:#8f8f8f}body.theme-dark{--scrollTrack:#1b1b1b;--scrollThumb:#4b4b4f;--scrollHover:#68686d}
+*{scrollbar-width:thin;scrollbar-color:var(--scrollThumb) var(--scrollTrack)}*::-webkit-scrollbar{width:9px;height:9px}*::-webkit-scrollbar-track{background:var(--scrollTrack)}*::-webkit-scrollbar-thumb{background:var(--scrollThumb);border:2px solid var(--scrollTrack);border-radius:8px}*::-webkit-scrollbar-thumb:hover{background:var(--scrollHover)}
+@media(max-width:900px){.workspace{grid-template-columns:minmax(150px,var(--sideW)) 5px minmax(0,1fr)}.details,.splitR{display:none}.center{grid-column:3}}
+@media(max-width:650px){.workspace{grid-template-columns:minmax(0,1fr)}.sidebar,.splitL,.details,.splitR{display:none}.center{grid-column:1}.titlebar .repoPath,.toolbar .sep,.toolbar .tool:nth-of-type(n+7){display:none}}
+@media(max-height:650px){:root{--termH:125px}.center{grid-template-rows:31px minmax(0,1fr) 4px clamp(80px,var(--termH),32vh)}}
+@media(max-height:500px){:root{--termH:95px}.app{grid-template-rows:28px 27px minmax(0,1fr) 20px}.center{grid-template-rows:29px minmax(0,1fr) 4px clamp(70px,var(--termH),28vh)}.toolbar{padding-top:2px;padding-bottom:2px}.tool{height:20px}}
+@media(max-width:650px){.utilityGrid{grid-template-columns:1fr}}
+
+
+/* Tutorial assistant hook; shared controller handles drag/size/persistence. */
+.productAssistant{position:fixed;right:16px;bottom:38px;width:340px;z-index:150;display:none;background:var(--surface,#202020);color:var(--text,#eee);border:1px solid var(--line,#444);box-shadow:0 8px 24px rgba(0,0,0,.35);border-radius:6px;overflow:hidden}
+.productAssistant.show{display:block}.productAssistantHead{height:34px;display:flex;align-items:center;gap:6px;padding:0 8px;background:var(--surface2,#292929);border-bottom:1px solid var(--line,#444);font-size:10px;font-weight:700}.productAssistantHead .grow{flex:1}.productAssistantHead button{border:0;background:transparent;color:inherit;width:24px;height:24px}.productAssistantBody{padding:10px;font-size:10.5px;line-height:1.5;max-height:210px;overflow:auto;user-select:text}
+
+.ctxMenu{position:fixed;z-index:210;display:none;min-width:240px;padding:4px;background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 24px var(--shadow)}.ctxMenu.show{display:block}.ctxItem{position:relative;display:grid;grid-template-columns:1fr auto 12px;gap:10px;align-items:center;min-height:27px;padding:4px 8px;font-size:10px}.ctxItem:hover{background:var(--surface3)}.ctxSub{display:none;position:absolute;left:calc(100% - 2px);top:-4px;min-width:220px;padding:4px;background:var(--surface);border:1px solid var(--line);box-shadow:0 7px 20px var(--shadow)}.ctxItem.has:hover>.ctxSub{display:block}.ctxSep{height:1px;background:var(--line);margin:4px}
+</style>
+<link rel="stylesheet" href="../fidelity.css">
+</head>
+<body data-sim-app="git" class="theme-dark" data-sim-app="git">
+<div class="app" id="app">
+  <div class="titlebar">
+    <div class="gitmark"><span>G</span></div><div class="titleText">Git</div><div class="repoPath" id="repoPath">No repository selected</div><div class="grow"></div>
+    <button class="branchPill" id="branchButton">⑂ <span id="activeBranch">main</span></button><span class="sync" id="syncText">Local repository</span>
+  </div>
+  <div class="toolbar">
+    <button class="tool" id="openRepoBtn">Open Repository</button><button class="tool" id="initBtn">Init</button><button class="tool" id="cloneBtn">Clone</button><span class="sep"></span>
+    <button class="tool" id="fetchBtn">Fetch</button><button class="tool" id="pullBtn">Pull</button><button class="tool" id="pushBtn">Push</button><span class="sep"></span>
+    <button class="tool" id="stageAllBtn">Stage All</button><button class="tool" id="refreshBtn">Refresh</button><span class="sep"></span><button class="tool" id="settingsBtn">Settings</button><button class="tool" id="advancedBtn">Advanced</button><div class="grow"></div><button class="tool primary" id="commitTopBtn">Commit</button>
+  </div>
+  <div class="workspace">
+    <aside class="sidebar" id="sidebar">
+      <div class="sideHead">Repository</div>
+      <div class="navItem active" data-view="changes" id="navChanges">◫ Changes <span class="count" id="changeCount">0</span></div>
+      <div class="navItem" data-view="history" id="navHistory">◴ History <span class="count" id="commitCount">0</span></div>
+      <div class="navItem" data-view="graph" id="navGraph">⑂ Graph</div>
+      <div class="sectionLabel">Branches</div><div id="branchList"></div>
+      <div class="sectionLabel">Remotes</div><div id="remoteList"></div>
+      <div class="sectionLabel">Tags</div><div id="tagList"></div>
+      <div class="sectionLabel">Stashes</div><div id="stashList"></div>
+    </aside>
+    <div class="splitV splitL" id="splitL"></div>
+    <section class="center">
+      <div class="tabs"><div class="tab active" id="mainTab">Working Tree</div><div class="tab" id="diffTab">Diff</div></div>
+      <div class="mainView" id="mainView"></div>
+      <div class="splitH" id="splitH"></div>
+      <div class="terminalPane" id="terminalPane"><div class="terminalHead"><b>TERMINAL</b><div class="grow"></div><span id="terminalShell">Git</span></div><div class="terminalBody" id="terminalBody"></div></div>
+    </section>
+    <div class="splitV splitR" id="splitR"></div>
+    <aside class="details"><div class="detailsHead" id="detailsHead">Commit</div><div class="detailsBody" id="detailsBody"></div></aside>
+  </div>
+  <div class="statusbar"><span id="statusRepo">No repository</span><span id="statusBranch">⑂ main</span><span id="statusChanges">0 changes</span><div class="grow"></div><span id="statusText">Ready</span></div>
+  <div class="utilityShade" id="utilityShade">
+    <div class="utilityPanel">
+      <div class="utilityHead"><span id="utilityTitle">Git</span><span class="grow"></span><button id="utilityClose">×</button></div>
+      <div class="utilityBody" id="utilityBody"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div><div class="boundary" id="targetBoundary"></div><div class="ctxMenu" id="ctxMenu"></div><aside class="productAssistant" data-sim-explanation id="assistant"><div class="productAssistantHead" data-sim-explanation-drag><strong>Git</strong><span class="grow"></span><button id="assistantMin" title="Minimize">−</button><button id="assistantClose" title="Close">×</button></div><div class="productAssistantBody" data-sim-explanation-body><div data-sim-explanation-text id="assistantText"></div></div></aside>
+</div>
+<script src="capabilities.js?v=1"></script>
+<script src="engine.js?v=2"></script>
+</body>
+</html>

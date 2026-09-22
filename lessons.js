@@ -3589,6 +3589,413 @@ window.COURSE = {
         ],
         "ribbonCollapsed": false,
         "keytips": false
+      },
+      "git": {
+        "title": "Git",
+        "version": "Local Repository",
+        "repository": {
+          "name": "Java-Practice",
+          "path": "C:\\Users\\developer\\Java-Practice",
+          "initialized": true
+        },
+        "activeBranch": "main",
+        "branches": [
+          {
+            "name": "main",
+            "current": true
+          },
+          {
+            "name": "feature/student-api"
+          }
+        ],
+        "remotes": [
+          {
+            "name": "origin",
+            "url": "https://github.com/sabareeshrao/Java-Practice.git"
+          }
+        ],
+        "tags": [
+          {
+            "name": "v1.0.0",
+            "hash": "a17b6f1"
+          }
+        ],
+        "stashes": [],
+        "files": [
+          {
+            "path": "src/Student.java",
+            "status": "M",
+            "staged": false,
+            "content": "public class Student {\\n    private int rollNo;\\n    private String name;\\n}\\n",
+            "oldContent": "public class Student {\\n    private int rollNo;\\n}\\n"
+          },
+          {
+            "path": "README.md",
+            "status": "M",
+            "staged": true,
+            "content": "# Java Practice\\n\\nHands-on Java developer workflow.\\n",
+            "oldContent": "# Java Practice\\n"
+          }
+        ],
+        "commits": [
+          {
+            "hash": "a17b6f1",
+            "message": "Add Student domain model",
+            "author": "Developer",
+            "date": "Today",
+            "branch": "main",
+            "files": [
+              "src/Student.java"
+            ]
+          },
+          {
+            "hash": "8ef31aa",
+            "message": "Initialize Java practice project",
+            "author": "Developer",
+            "date": "Yesterday",
+            "branch": "main",
+            "files": [
+              "README.md"
+            ]
+          }
+        ],
+        "conflicts": [],
+        "terminalOpen": true,
+        "terminalShell": "Git",
+        "terminalHistory": [],
+        "config": {
+          "user": {
+            "name": "Developer",
+            "email": "developer@example.com"
+          },
+          "settings": {},
+          "credentialHelper": "manager",
+          "signingKey": "",
+          "signCommits": false
+        },
+        "remoteBranches": [
+          {
+            "name": "origin/main",
+            "remote": "origin"
+          }
+        ],
+        "reflog": [],
+        "rebasePlan": [],
+        "gitignore": "*.class\\nout/\\n.idea/\\n",
+        "hooks": {},
+        "lfs": {
+          "patterns": []
+        },
+        "submodules": [],
+        "worktrees": []
+      },
+      "github": {
+        "user": "sabareeshrao",
+        "displayName": "Java Developer",
+        "contributions": 64,
+        "activeRepo": "Java-Practice",
+        "repositories": [
+          {
+            "owner": "sabareeshrao",
+            "name": "Java-Practice",
+            "description": "Hands-on Java developer practice repository",
+            "defaultBranch": "main",
+            "private": false,
+            "stars": 2,
+            "watchers": 1,
+            "forks": 1,
+            "cloneUrl": "https://github.com/sabareeshrao/Java-Practice.git",
+            "branches": [
+              {
+                "name": "main",
+                "protected": true
+              },
+              {
+                "name": "feature/student-api"
+              }
+            ],
+            "tags": [
+              {
+                "name": "v1.0.0",
+                "hash": "a17b6f1",
+                "date": "Today"
+              }
+            ],
+            "releases": [
+              {
+                "name": "Java Practice v1.0.0",
+                "tag": "v1.0.0",
+                "notes": "Initial practice milestone."
+              }
+            ],
+            "files": [
+              {
+                "path": "src/Student.java",
+                "content": "public class Student {\\n    private int rollNo;\\n    private String name;\\n}\\n",
+                "message": "Add Student domain model",
+                "time": "Today"
+              },
+              {
+                "path": "README.md",
+                "content": "# Java Practice\\n\\nHands-on Java developer workflow.",
+                "message": "Update README",
+                "time": "Today"
+              },
+              {
+                "path": ".github/workflows/ci.yml",
+                "content": "name: CI\\non: [push, pull_request]\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n",
+                "message": "Add CI workflow",
+                "time": "Today"
+              }
+            ],
+            "readme": "# Java Practice\\n\\nHands-on Java developer workflow.",
+            "commits": [
+              {
+                "hash": "a17b6f1",
+                "message": "Add Student domain model",
+                "author": "Developer",
+                "date": "Today",
+                "files": [
+                  "src/Student.java"
+                ],
+                "diff": [
+                  "@@ Student.java",
+                  "-    int rollNo;",
+                  "+    private int rollNo;",
+                  "+    private String name;"
+                ]
+              },
+              {
+                "hash": "8ef31aa",
+                "message": "Initialize Java practice project",
+                "author": "Developer",
+                "date": "Yesterday",
+                "files": [
+                  "README.md"
+                ]
+              }
+            ],
+            "issues": [
+              {
+                "number": 1,
+                "title": "Add validation for student roll number",
+                "body": "Reject invalid roll numbers before persistence.",
+                "author": "sabareeshrao",
+                "state": "open",
+                "labels": [
+                  "enhancement"
+                ],
+                "assignee": "sabareeshrao",
+                "comments": []
+              }
+            ],
+            "pullRequests": [
+              {
+                "number": 2,
+                "title": "Add Student REST endpoint",
+                "head": "feature/student-api",
+                "base": "main",
+                "author": "sabareeshrao",
+                "state": "open",
+                "merged": false,
+                "reviewers": [
+                  "reviewer"
+                ],
+                "comments": [
+                  {
+                    "author": "reviewer",
+                    "text": "Please add one validation test."
+                  }
+                ],
+                "checks": [
+                  {
+                    "name": "build",
+                    "status": "success"
+                  },
+                  {
+                    "name": "tests",
+                    "status": "success"
+                  }
+                ],
+                "filesChanged": [
+                  "src/StudentController.java"
+                ],
+                "diff": [
+                  "+@RestController",
+                  "+class StudentController {",
+                  "+}"
+                ]
+              }
+            ],
+            "projects": [
+              {
+                "name": "Java Practice Board",
+                "description": "Backlog, in progress, review and done"
+              }
+            ],
+            "discussions": [
+              {
+                "title": "API error response conventions",
+                "category": "General",
+                "author": "sabareeshrao",
+                "comments": 2
+              }
+            ],
+            "security": {
+              "dependabot": 0,
+              "codeScanning": 0,
+              "secretScanning": 0,
+              "policy": true
+            },
+            "insights": {
+              "contributors": 2,
+              "clones": 14,
+              "visitors": 8
+            },
+            "settings": {},
+            "branchProtection": [
+              {
+                "branch": "main",
+                "rule": "Require pull request review and passing checks"
+              }
+            ],
+            "collaborators": [
+              {
+                "name": "reviewer",
+                "role": "Write"
+              }
+            ]
+          }
+        ]
+      },
+      "github_actions": {
+        "owner": "sabareeshrao",
+        "repository": "Java-Practice",
+        "workflows": [
+          {
+            "id": "ci",
+            "name": "Java CI",
+            "file": "ci.yml",
+            "enabled": true,
+            "events": [
+              "push",
+              "pull_request",
+              "workflow_dispatch"
+            ],
+            "dispatch": true,
+            "permissions": "contents: read",
+            "concurrency": "ci-main",
+            "yaml": "name: Java CI\\non:\\n  push:\\n    branches: [ main ]\\n  pull_request:\\n    branches: [ main ]\\n  workflow_dispatch:\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n    steps:\\n      - uses: actions/checkout@v4\\n      - uses: actions/setup-java@v4\\n        with:\\n          java-version: '17'\\n      - run: mvn -B verify"
+          }
+        ],
+        "runs": [
+          {
+            "id": "42",
+            "name": "Java CI",
+            "event": "push",
+            "branch": "main",
+            "status": "success",
+            "commit": "a17b6f1",
+            "actor": "sabareeshrao",
+            "runner": "ubuntu-latest",
+            "duration": "1m 42s",
+            "jobs": [
+              {
+                "name": "build",
+                "status": "success",
+                "runner": "ubuntu-latest",
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "success",
+                    "log": "Runner image: ubuntu-latest"
+                  },
+                  {
+                    "name": "Checkout",
+                    "status": "success",
+                    "log": "Checked out a17b6f1"
+                  },
+                  {
+                    "name": "Set up Java",
+                    "status": "success",
+                    "log": "Java 17 configured"
+                  },
+                  {
+                    "name": "Maven verify",
+                    "status": "success",
+                    "log": "BUILD SUCCESS"
+                  }
+                ]
+              }
+            ],
+            "summary": "Build and tests passed.",
+            "annotations": [],
+            "artifacts": [
+              {
+                "name": "java-practice-jar",
+                "size": "24 KB",
+                "retention": "90 days"
+              }
+            ]
+          }
+        ],
+        "templates": [
+          {
+            "name": "Java with Maven",
+            "description": "Build and test with Maven."
+          },
+          {
+            "name": "Java with Gradle",
+            "description": "Build and test with Gradle."
+          }
+        ],
+        "secrets": [
+          {
+            "name": "SONAR_TOKEN",
+            "updated": "Today"
+          }
+        ],
+        "variables": [
+          {
+            "name": "JAVA_VERSION",
+            "value": "17",
+            "updated": "Today"
+          }
+        ],
+        "caches": [
+          {
+            "key": "maven-Linux-pom",
+            "ref": "refs/heads/main",
+            "size": "18 MB",
+            "lastAccessed": "Today"
+          }
+        ],
+        "artifacts": [],
+        "environments": [
+          {
+            "name": "production",
+            "reviewers": [
+              "reviewer"
+            ],
+            "waitTimer": 0,
+            "secrets": [
+              "DEPLOY_TOKEN"
+            ]
+          }
+        ],
+        "runners": [
+          {
+            "name": "linux-java17-agent",
+            "os": "Linux",
+            "labels": [
+              "self-hosted",
+              "linux",
+              "java17"
+            ],
+            "status": "online"
+          }
+        ],
+        "marketplace": []
       }
     }
   },

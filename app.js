@@ -14,7 +14,10 @@
     ssms: $("ssmsFrame"),
     jira: $("jiraFrame"),
     jenkins: $("jenkinsFrame"),
-    powerbi: $("powerbiFrame")
+    powerbi: $("powerbiFrame"),
+    git: $("gitFrame"),
+    github: $("githubFrame"),
+    github_actions: $("githubActionsFrame")
   };
 
   const appIds = {
@@ -27,7 +30,10 @@
     ssms: "sql_server_management_studio",
     jira: "jira",
     jenkins: "jenkins",
-    powerbi: "power_bi"
+    powerbi: "power_bi",
+    git: "git",
+    github: "github",
+    github_actions: "github_actions"
   };
 
   const appLabels = {
@@ -40,7 +46,10 @@
     ssms: "SQL Server Management Studio",
     jira: "Jira",
     jenkins: "Jenkins",
-    powerbi: "Power BI Desktop"
+    powerbi: "Power BI Desktop",
+    git: "Git",
+    github: "GitHub",
+    github_actions: "GitHub Actions"
   };
 
   const engineReady = {
@@ -53,7 +62,10 @@
     ssms: false,
     jira: false,
     jenkins: false,
-    powerbi: false
+    powerbi: false,
+    git: false,
+    github: false,
+    github_actions: false
   };
 
   function ensureGlobalSimulatorRuntime(frame) {
@@ -148,6 +160,9 @@
     if (value === "jira") return "jira";
     if (value === "jenkins") return "jenkins";
     if (value === "powerbi") return "powerbi";
+    if (value === "git") return "git";
+    if (value === "github") return "github";
+    if (value === "github_actions" || value === "github-actions" || value === "githubactions") return "github_actions";
     return "intellij";
   }
 
@@ -170,6 +185,9 @@
     softwareBadge.classList.toggle("jira", activeSoftware === "jira");
     softwareBadge.classList.toggle("jenkins", activeSoftware === "jenkins");
     softwareBadge.classList.toggle("powerbi", activeSoftware === "powerbi");
+    softwareBadge.classList.toggle("git", activeSoftware === "git");
+    softwareBadge.classList.toggle("github", activeSoftware === "github");
+    softwareBadge.classList.toggle("github-actions", activeSoftware === "github_actions");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -274,6 +292,24 @@
       if (action === "openTmdlView") return plan(["#tmdlViewBtn"]);
       if (action === "scriptTmdlObject") return plan(["#scriptTmdlBtn"]);
       if (action === "openReportView") return plan(["#reportViewBtn"]);
+    }
+    if (software === "git") {
+      if (action === "stageFile" || action === "unstageFile") return plan(["#mainView"]);
+      if (action === "commit" || action === "setCommitMessage") return plan(["#detailsBody"]);
+      if (action === "push") return plan(["#pushBtn"]);
+      if (action === "pull") return plan(["#pullBtn"]);
+      if (action === "fetch") return plan(["#fetchBtn"]);
+    }
+    if (software === "github") {
+      if (action === "openFile") return plan(["#content"]);
+      if (action === "createIssue" || action === "openIssue") return plan(["#content"]);
+      if (action === "createPullRequest" || action === "openPullRequest") return plan(["#content"]);
+      if (action === "showClone") return plan(["#content"]);
+    }
+    if (software === "github_actions") {
+      if (action === "openNewWorkflow" || action === "openWorkflowFile") return plan(["#content"]);
+      if (action === "triggerRun" || action === "openRun") return plan(["#content"]);
+      if (action === "openSecrets" || action === "openCaches" || action === "openRunners") return plan(["#content"]);
     }
     if (software === "jenkins") {
       if (action === "typeSearch") return plan(["#search"]);

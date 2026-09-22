@@ -361,6 +361,162 @@
         "Mobile layout",
         "Publish workflow"
       ]
+    },
+    "git": {
+      "registry": "GIT_CAPABILITIES",
+      "features": [
+        "working-tree",
+        "staging",
+        "commit-history",
+        "commit-graph",
+        "branching",
+        "remotes",
+        "tags",
+        "stashes",
+        "diff",
+        "terminal",
+        "merge",
+        "rebase",
+        "conflict-resolution",
+        "reflog",
+        "bisect",
+        "blame",
+        "file-history",
+        "patches",
+        "hooks",
+        "git-lfs",
+        "submodules",
+        "worktrees",
+        "context-menu",
+        "adaptive-dialog",
+        "persistent-layout"
+      ],
+      "menus": [
+        "file",
+        "commit",
+        "branch",
+        "terminal"
+      ],
+      "toolWindows": [
+        "Advanced Git Tools",
+        "Repository Information",
+        "Settings"
+      ],
+      "dialogPresets": [
+        "adaptive"
+      ]
+    },
+    "github": {
+      "registry": "GITHUB_CAPABILITIES",
+      "features": [
+        "repository-header",
+        "file-browser",
+        "file-history",
+        "blame",
+        "commit-history",
+        "commit-diff",
+        "branches",
+        "tags",
+        "releases",
+        "issues",
+        "issue-timeline",
+        "labels",
+        "milestones",
+        "pull-requests",
+        "review",
+        "checks",
+        "files-changed",
+        "merge-conflicts",
+        "discussions",
+        "projects",
+        "security",
+        "dependabot",
+        "code-scanning",
+        "insights",
+        "contributors",
+        "traffic",
+        "settings",
+        "branch-protection",
+        "collaborators",
+        "web-editor",
+        "upload",
+        "clone",
+        "stars-watch-forks",
+        "context-menu",
+        "adaptive-dialog",
+        "persistent-layout"
+      ],
+      "menus": [
+        "file",
+        "issue",
+        "pull",
+        "repository"
+      ],
+      "toolWindows": [
+        "Security",
+        "Insights",
+        "Settings"
+      ],
+      "dialogPresets": [
+        "adaptive"
+      ]
+    },
+    "github_actions": {
+      "registry": "GITHUB_ACTIONS_CAPABILITIES",
+      "features": [
+        "workflow-list",
+        "workflow-editor",
+        "yaml",
+        "workflow-dispatch",
+        "run-filters",
+        "run-detail",
+        "cancel-run",
+        "rerun",
+        "delete-run",
+        "job-steps",
+        "expandable-logs",
+        "artifacts",
+        "summaries",
+        "annotations",
+        "matrix-jobs",
+        "environments",
+        "approvals",
+        "variables",
+        "secrets",
+        "caches",
+        "hosted-runners",
+        "self-hosted-runners",
+        "runner-groups",
+        "reusable-workflows",
+        "concurrency",
+        "permissions",
+        "enable-disable",
+        "badges",
+        "marketplace",
+        "context-menu",
+        "adaptive-dialog",
+        "persistent-layout"
+      ],
+      "menus": [
+        "workflow",
+        "run",
+        "job",
+        "artifact"
+      ],
+      "toolWindows": [
+        "Caches",
+        "Artifacts",
+        "Environments",
+        "Runners",
+        "Secrets and variables"
+      ],
+      "dialogPresets": [
+        "workflow dispatch",
+        "secret",
+        "variable",
+        "environment",
+        "runner"
+      ]
     }
   }
 }
