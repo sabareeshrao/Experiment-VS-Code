@@ -66,3 +66,12 @@ For future simulators, prefer:
 - `data-sim-explanation-text` on the explanation text
 
 This keeps explanation behavior identical across IntelliJ, VS Code, pgAdmin, Postman, CMD, Linux, SSMS, Jira, Jenkins, and future software.
+
+
+### Software-owned UI adaptability
+
+Each simulator owns its UI implementation. Do not add a shared visual component system for menus, dialogs, trees, grids, designers, drag/drop or tool windows.
+
+The outer player may standardize only the message/navigation contract. New visual behavior for one product must be implemented inside that product folder and must not modify another simulator's DOM, CSS or interaction model.
+
+A simulator may maintain its own capability registry for transcript-driven expansion. SSMS uses `simulator/ssms/capabilities.js`; future SSMS transcripts should be checked against that registry before lessons are generated. Missing capabilities are added to SSMS only.
