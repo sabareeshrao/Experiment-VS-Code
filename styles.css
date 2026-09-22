@@ -80,3 +80,13 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
   opacity:0;visibility:hidden;pointer-events:none;z-index:1
 }
 .sim-frame.active{opacity:1;visibility:visible;pointer-events:auto;z-index:2}
+
+/* Step-level software labels */
+.step-link{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:0;padding-right:8px}
+.step-number{grid-column:1;grid-row:1/3}
+.step-main{grid-column:2;grid-row:1;min-width:0}
+.step-software{grid-column:2;grid-row:2;justify-self:start;margin-top:3px;font-size:8px;font-weight:700;letter-spacing:.02em;color:#777d87}
+.step-software.pgadmin{color:#6f9fc6}
+.step-software.intellij{color:#9c88bc}
+.step-link.active .step-software.pgadmin{color:#9cc9ec}
+.step-link.active .step-software.intellij{color:#cbb5e8}
