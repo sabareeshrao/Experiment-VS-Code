@@ -122,6 +122,55 @@ window.COURSE = {
         "debug": {},
         "tests": [],
         "extensions": []
+      },
+      "postman": {
+        "workspaceName": "Java Practice API Workspace",
+        "activeEnvironment": "Local",
+        "environments": {
+          "Local": {
+            "baseUrl": "http://localhost:8080"
+          }
+        },
+        "globals": {},
+        "collections": [
+          {
+            "name": "Java Practice API",
+            "description": "Requests used to test the Java Practice application during the developer journey.",
+            "variables": {},
+            "requests": [
+              {
+                "id": "get-student",
+                "name": "Get Student",
+                "method": "GET",
+                "url": "{{baseUrl}}/api/students/101",
+                "params": [],
+                "headers": {
+                  "Accept": "application/json"
+                },
+                "auth": {
+                  "type": "No Auth",
+                  "fields": {}
+                },
+                "bodyMode": "raw",
+                "body": "",
+                "tests": "",
+                "examples": []
+              }
+            ],
+            "folders": []
+          }
+        ],
+        "initialRequest": "get-student",
+        "history": [],
+        "console": [],
+        "cookies": [],
+        "mocks": [],
+        "monitors": [],
+        "runner": {},
+        "websocket": {},
+        "grpc": {},
+        "documentation": {},
+        "liveNetwork": false
       }
     }
   },
@@ -436,6 +485,131 @@ window.COURSE = {
         {
           "title": "Return to Student.java",
           "why": "Ippudu developer malli IntelliJ ki vastadu. pgAdmin ki vellina mundu unna Java project state ade vidham ga reconstruct avuthundi. Ila oka lesson lo multiple applications continuous ga pani cheyyagalavani prove avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "3: API Testing Software Handoff",
+      "subtitle": "Test a realistic IntelliJ → Postman → IntelliJ workflow while preserving one continuous project timeline.",
+      "steps": [
+        {
+          "title": "Review Student model before API testing",
+          "why": "API response ni test cheyyadaniki mundu developer Student model structure ni IntelliJ lo quick ga review chestadu. Expected JSON fields enti ani mundhe clear ga untundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        },
+        {
+          "title": "Open the Get Student request in Postman",
+          "why": "Backend endpoint ni manual ga verify cheyyadaniki developer Postman ki switch ayi already prepared Get Student request ni open chestadu.",
+          "software": "postman",
+          "action": {
+            "action": "openRequest",
+            "data": {
+              "id": "get-student"
+            }
+          }
+        },
+        {
+          "title": "Select the Local environment",
+          "why": "Local environment select chesthe baseUrl laanti environment variables local Spring Boot server values ni use chestayi. Environment marchina request structure same ga untundi.",
+          "software": "postman",
+          "action": {
+            "action": "setEnvironment",
+            "data": {
+              "name": "Local"
+            }
+          }
+        },
+        {
+          "title": "Confirm the GET method",
+          "why": "Student record ni read cheyyali kabatti HTTP GET method use chestunnam. GET normally server nundi resource ni retrieve cheyyadaniki use avuthundi.",
+          "software": "postman",
+          "action": {
+            "action": "setMethod",
+            "data": {
+              "method": "GET"
+            }
+          }
+        },
+        {
+          "title": "Type the Student API URL",
+          "why": "Developer request URL lo baseUrl environment variable ni use chesi student endpoint ni target chestadu. Ila localhost value hard-code cheyyakunda environments madhya easy ga switch avvachu.",
+          "software": "postman",
+          "action": {
+            "action": "typeUrl",
+            "data": {
+              "url": "{{baseUrl}}/api/students/101",
+              "boundary": true
+            }
+          }
+        },
+        {
+          "title": "Set the Accept JSON header",
+          "why": "Accept application/json header tho client JSON response expect chestundi ani backend ki clear ga cheptham.",
+          "software": "postman",
+          "action": {
+            "action": "setHeaders",
+            "data": {
+              "headers": {
+                "Accept": "application/json"
+              }
+            }
+          }
+        },
+        {
+          "title": "Send the request and receive 200 OK",
+          "why": "Send click chesina taruvatha simulator deterministic API response ni chupistundi. 200 OK ante request successful ga process ayindi ani ardham.",
+          "software": "postman",
+          "action": {
+            "action": "sendRequest",
+            "data": {
+              "boundary": true,
+              "status": 200,
+              "statusText": "OK",
+              "time": 43,
+              "size": "118 B",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "rollNo": 101,
+                "present": true,
+                "marks": [
+                  86.5,
+                  91,
+                  88.5
+                ],
+                "name": "Ravi"
+              }
+            }
+          }
+        },
+        {
+          "title": "Inspect the JSON response",
+          "why": "Pretty response view lo returned JSON ni developer model expectations tho compare chestadu. Fields and values correct ga unnaya ani fast ga verify cheyyachu.",
+          "software": "postman",
+          "action": {
+            "action": "selectResponseTab",
+            "data": {
+              "tab": "pretty"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java after API verification",
+          "why": "API check complete ayyaka developer malli IntelliJ ki vastadu. Postman ki switch ayina sare Java project state continuous ga preserve avuthundi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
