@@ -8,7 +8,7 @@ public class TaskService {
     public List<Task> findAll() {
         return List.of(
             new Task(1, "Learn cumulative playback"),
-            new Task(2, "Test fullscreen mode")
+            new Task(2, "Test IntelliJ simulation")
         );
     }
 }
