@@ -354,7 +354,16 @@
       }
     }
 
-    if (!software || event.data?.type !== "ENGINE_READY") return;
+    if (!software) return;
+
+    if (event.data?.type === "SIM_NAVIGATE") {
+      if (fullCodeMode || !flat.length) return;
+      if (event.data.direction === "next" && current < flat.length - 1) goToStep(current + 1, true);
+      if (event.data.direction === "prev" && current > 0) goToStep(current - 1, false);
+      return;
+    }
+
+    if (event.data?.type !== "ENGINE_READY") return;
 
     engineReady[software] = true;
 
