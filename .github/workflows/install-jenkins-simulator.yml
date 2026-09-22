@@ -1,0 +1,37 @@
+name: Install Jenkins Simulator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".integration/jenkins/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct Jenkins simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .integration/jenkins/part-* > /tmp/jenkins.b64
+          base64 -d /tmp/jenkins.b64 > /tmp/jenkins.zip
+          rm -rf /tmp/jenkins-unpack simulator/jenkins
+          mkdir -p /tmp/jenkins-unpack simulator/jenkins
+          unzip -q /tmp/jenkins.zip -d /tmp/jenkins-unpack
+          cp -R /tmp/jenkins-unpack/jenkins/. simulator/jenkins/
+          rm -rf .integration/jenkins
+      - name: Commit Jenkins simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Install Jenkins simulator"
+          git push
