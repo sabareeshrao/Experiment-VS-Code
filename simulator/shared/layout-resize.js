@@ -362,11 +362,22 @@
     return list;
   }
 
+  function isTerminalFocusTarget(el){
+    if(!el)return false;
+    const own=((el.id||"")+" "+(typeof el.className==="string"?el.className:"")).toLowerCase();
+    if(/cmdinput|terminalcommand|promptline|historycommand/.test(own)) return true;
+    return !!el.closest?.("[data-sim-terminal],.terminal,.terminalWrap,.terminalViewport,.console,.consoleBox,#terminal,#terminalWrap,#termWrap,#console");
+  }
+
   function revealFocus(target,options={}){
     const el=typeof target==="string"?document.querySelector(target):target;
     if(!el||!el.isConnected)return false;
-    const margin=Number(options.margin??18);
-    const block=options.block||"center";
+    const terminalLike=isTerminalFocusTarget(el);
+    const margin=Number(options.margin??(terminalLike?6:18));
+    let block=options.block||(terminalLike?"end":"center");
+    // A command line should stay near the terminal bottom. Re-centering it
+    // after every typed character is what caused the visible scroll shaking.
+    if(terminalLike&&block==="center"&&options.forceCenter!==true) block="end";
     const parents=nearestScrollParents(el);
 
     // Work from the innermost scroll container outward so nested editors,
@@ -402,15 +413,10 @@
     focusRaf=requestAnimationFrame(()=>revealFocus(lastFocusEl,options||{}));
   }
 
-  const focusSelector=[
-    "[data-sim-focus='true']",
-    ".sim-emphasis",
-    ".terminalCommandFocus",
-    ".focusLine",
-    ".codeLine.focus",
-    ".codeLine.changed",
-    ".sim-code-change"
-  ].join(",");
+  // Only explicit focus markers are observed globally. Generic highlight/code
+  // classes change repeatedly while simulators render and must never trigger a
+  // second competing scroll path.
+  const focusSelector="[data-sim-focus='true']";
 
   const focusObserver=new MutationObserver(records=>{
     let candidate=null;
@@ -426,13 +432,12 @@
         if(nested)candidate=nested;
       }
     }
-    if(candidate)queueFocusReveal(candidate,{block:"center"});
+    if(candidate)queueFocusReveal(candidate,{});
   });
-  focusObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["class","data-sim-focus"]});
+  focusObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["data-sim-focus"]});
 
-  // Programmatic simulators should call SIM_FOCUS.reveal() while auto-typing.
-  // Future simulators can instead mark the current element with
-  // data-sim-focus="true" and the shared observer will follow it automatically.
+  // Programmatic simulators should call SIM_FOCUS.follow() while auto-typing.
+  // Future simulators may instead opt in with data-sim-focus="true".
   window.SIM_FOCUS={
     reveal(target,options){return revealFocus(target,options||{})},
     follow(target,options){queueFocusReveal(typeof target==="string"?document.querySelector(target):target,options||{});},
