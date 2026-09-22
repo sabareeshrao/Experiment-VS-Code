@@ -11,7 +11,7 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeControls{display:flex;align-items:center;gap:2px;margin-left:4px}",
     ".simExplainSizeBtn{width:24px!important;min-width:24px!important;height:24px!important;padding:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#c9c9c9!important;font:600 14px/24px 'Segoe UI',Arial,sans-serif!important;text-align:center!important}",
     ".simExplainSizeBtn:hover{background:rgba(255,255,255,.10)!important;color:#fff!important}",
-    ".simExplainActions{display:block!important;margin:0 0 7px!important;padding:3px 7px!important;border-radius:4px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.10)!important;color:#c6c9cf!important;font-size:.88em!important;line-height:1.4!important;white-space:normal!important;overflow-wrap:anywhere!important}",
+    ".simExplainActions,[data-sim-explain-actions]{display:none!important}",
     ".assistantLang,.pgAssistantLanguage{display:none!important}",
     "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant{position:fixed!important;z-index:20000!important}",
     "*{scrollbar-width:thin;scrollbar-color:rgba(128,134,142,.58) transparent}",
@@ -221,14 +221,14 @@ function ensureControls(){
 
   applyScale();
 }
-function setActions(text){
-  var box=getAssistant();
-  if(!box)return;
-  var meta=getMeta(box);
-  if(!meta)return;
-  meta.classList.add("simExplainActions");
-  meta.textContent=text||"Action";
-  meta.removeAttribute("title");
+function hideExplanationMeta(box){
+  var selectors=metaSelectors.concat(["[data-sim-explain-actions]"]);
+  selectors.forEach(function(selector){
+    Array.prototype.forEach.call(box.querySelectorAll(selector),function(el){
+      el.style.display="none";
+      el.setAttribute("aria-hidden","true");
+    });
+  });
 }
 function hideLanguageLabels(box){
   Array.prototype.forEach.call(box.querySelectorAll(".assistantLang,.pgAssistantLanguage"),function(el){el.style.display="none";});
@@ -241,7 +241,7 @@ function refresh(m){
   box.style.display="";
   ensureControls();
   hideLanguageLabels(box);
-  setActions(m&&m.actionTrail?m.actionTrail:"Actions performed");
+  hideExplanationMeta(box);
   applyScale();
   requestAnimationFrame(restorePosition);
 }
