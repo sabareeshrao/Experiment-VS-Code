@@ -336,9 +336,18 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
       await window.SimEngine.apply(list[i], !!animateFinal && i === list.length - 1);
     }
   }
+  const announceReady = () => parent.postMessage({
+    type: "ENGINE_READY",
+    app: APP_ID,
+    actions: SUPPORTED_ACTIONS,
+    capabilities: window.MYSQL_WORKBENCH_CAPABILITIES?.snapshot?.() || null
+  }, "*");
+
   window.addEventListener("message", e => {
     const m = e.data || {};
-    if (m.type === "SIM_PACKAGE") {
+    if (m.type === "SIM_PING") {
+      announceReady();
+    } else if (m.type === "SIM_PACKAGE") {
       universalPackage = m.package || null;
       window.SimEngine.setAutoType(m.autoType !== false);
       if (universalPackage) window.SimEngine.loadPackage(universalPackage);
@@ -348,5 +357,10 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
       seek(m.steps, !!m.animateFinal);
     }
   });
-  parent.postMessage({ type: "ENGINE_READY", app: APP_ID, actions: SUPPORTED_ACTIONS }, "*");
+
+  announceReady();
+  window.addEventListener("DOMContentLoaded", announceReady, { once: true });
+  window.addEventListener("load", announceReady, { once: true });
+  setTimeout(announceReady, 80);
+  setTimeout(announceReady, 300);
 })();

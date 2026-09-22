@@ -106,9 +106,49 @@
 
   // Every simulator iframe, including software added later, automatically gets
   // universal explanation dragging, UI persistence and focus-follow scrolling.
-  document.querySelectorAll("iframe.sim-frame").forEach(frame => {
-    frame.addEventListener("load", () => ensureGlobalSimulatorRuntime(frame));
-    setTimeout(() => ensureGlobalSimulatorRuntime(frame), 0);
+  // A simulator may finish loading before this parent script installs its message
+  // listener, so frame-load probing also recovers a missed ENGINE_READY handshake.
+  function recoverFrameHandshake(name, frame) {
+    if (!frame) return;
+    const attempt = () => {
+      try {
+        ensureGlobalSimulatorRuntime(frame);
+        const child = frame.contentWindow;
+        if (!child) return false;
+
+        // New/adaptive engines expose SimEngine. Mark them ready even if their
+        // one-time ENGINE_READY postMessage raced ahead of the parent listener.
+        if (child.SimEngine) {
+          engineReady[name] = true;
+          sendCoursePackage(name);
+
+          if (
+            !fullCodeMode &&
+            flat.length &&
+            normalizeSoftware(flat[current].software) === name
+          ) {
+            seekSoftware(current, name, false);
+            scheduleCurrentExplanation(140);
+          }
+          return true;
+        }
+
+        // Engines using only the universal protocol can answer a ping.
+        child.postMessage({ type: "SIM_PING" }, "*");
+      } catch (_) {}
+      return false;
+    };
+
+    attempt();
+    [40, 140, 400, 900].forEach(delay => setTimeout(() => {
+      if (!engineReady[name]) attempt();
+    }, delay));
+  }
+
+  Object.entries(frames).forEach(([name, frame]) => {
+    if (!frame) return;
+    frame.addEventListener("load", () => recoverFrameHandshake(name, frame));
+    setTimeout(() => recoverFrameHandshake(name, frame), 0);
   });
 
   const stageList = $("stageList");
@@ -378,7 +418,8 @@
     if (!flat.length || fullCodeMode) return;
     const step = flat[current];
     const target = normalizeSoftware(step.software);
-    if (!engineReady[target]) return;
+    const frame = frames[target];
+    if (!frame?.contentWindow) return;
 
     const stage = course.stages[step.stageIndex];
 
