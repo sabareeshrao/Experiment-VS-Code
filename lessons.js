@@ -1,6 +1,22 @@
 window.COURSE = {
   "title": "Java Practice Developer Playback",
   "subtitle": "Lesson-by-lesson reconstruction of the Java teaching repository.",
+  "books": [
+    {
+      "id": "book-1",
+      "title": "Java & Developer Tool Foundations",
+      "subtitle": "Java fundamentals, PostgreSQL, API testing, VS Code, and Windows command-line development.",
+      "chapterStart": 1,
+      "chapterEnd": 5
+    },
+    {
+      "id": "book-2",
+      "title": "Linux, Database & Delivery Workflow",
+      "subtitle": "Linux workstation work, SQL Server, Jira collaboration, and Jenkins CI/CD.",
+      "chapterStart": 6,
+      "chapterEnd": 9
+    }
+  ],
   "package": {
     "apps": {
       "intellij_idea": {
