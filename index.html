@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dev Playback Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="course-shell">
+    <aside class="lesson-sidebar">
+      <div class="brand"><div class="brand-mark">▶</div><div><strong>Dev Playback Lab</strong><span>Java Trial Project</span></div></div>
+      <div class="sidebar-heading"><span>Development lessons</span><span id="progressText">1 / 5</span></div>
+      <div class="progress-track"><div id="progressBar"></div></div>
+      <nav id="lessonList" class="lesson-list"></nav>
+      <div class="sidebar-note"><strong>Cumulative playback</strong><span>Lesson N shows everything built through Lesson N.</span></div>
+    </aside>
+
+    <main class="main-stage">
+      <header class="topbar">
+        <div><div class="eyebrow">EXPERIMENTAL SOFTWARE SIMULATION</div><h1 id="lessonTitle">Lesson 1</h1></div>
+        <div class="top-actions"><button id="focusBtn">Focus mode</button><button id="fullscreenBtn">Fullscreen</button></div>
+      </header>
+
+      <section class="vscode" id="vscode">
+        <div class="vs-titlebar"><span class="vs-logo">◇</span><span>Task API — Visual Studio Code</span><span class="window-controls">— □ ×</span></div>
+        <div class="vs-menubar">File&nbsp;&nbsp; Edit&nbsp;&nbsp; Selection&nbsp;&nbsp; View&nbsp;&nbsp; Go&nbsp;&nbsp; Run&nbsp;&nbsp; Terminal&nbsp;&nbsp; Help</div>
+        <div class="vs-body">
+          <div class="activitybar"><button class="activity active">▱</button><button class="activity">⌕</button><button class="activity">⑂</button><button class="activity">▷</button><button class="activity">▦</button></div>
+          <aside class="explorer"><div class="explorer-title">EXPLORER</div><div class="workspace-title">TASK-API</div><div id="fileTree" class="file-tree"></div></aside>
+          <section class="editor-column">
+            <div id="tabs" class="tabs"></div>
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <div class="editor-wrap">
+              <div id="gutter" class="gutter"></div>
+              <pre id="editor" class="editor"></pre>
+              <div id="explanation" class="explanation-card"></div>
+            </div>
+            <div class="terminal-panel">
+              <div class="terminal-tabs"><span class="active">TERMINAL</span><span>PROBLEMS</span><span>OUTPUT</span></div>
+              <pre id="terminal" class="terminal"></pre>
+            </div>
+          </section>
+        </div>
+        <div class="statusbar"><span>main*</span><span>✓ 0&nbsp;&nbsp; ⚠ 0</span><span class="status-spacer"></span><span id="statusFile">Java</span><span>UTF-8</span></div>
+      </section>
+
+      <footer class="player">
+        <button id="previousBtn">← Previous</button>
+        <button id="replayBtn">↻ Replay lesson</button>
+        <div class="lesson-counter"><span id="lessonNumber">1</span> / 5</div>
+        <button id="nextBtn">Next →</button>
+      </footer>
+    </main>
+  </div>
+  <script src="lessons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
