@@ -5,7 +5,7 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{position:relative!important;z-index:2147483000!important;outline:2px solid #4da3ff!important;outline-offset:2px!important;box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)!important;border-radius:4px!important;transition:box-shadow .12s ease,outline-color .12s ease!important}",
+".simActionHighlight{outline:2px solid #4da3ff!important;outline-offset:2px!important;box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)!important;border-radius:4px!important;transition:box-shadow .12s ease,outline-color .12s ease!important}",
 ".simActionHighlight.simActionPulse{animation:simActionPulse .75s ease-out 1}",
 "@keyframes simActionPulse{0%{box-shadow:0 0 0 0 rgba(77,163,255,.55),0 0 10px rgba(77,163,255,.35)}65%{box-shadow:0 0 0 7px rgba(77,163,255,.10),0 0 20px rgba(77,163,255,.42)}100%{box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)}}"
 ].join("");
