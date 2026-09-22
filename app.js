@@ -492,6 +492,7 @@
     setPlaybackVisibility();
     renderSidebar();
     updateUrlForStep();
+    try { localStorage.setItem("developerJourney.lastStep.v1", String(current + 1)); } catch (_) {}
   }
 
   function goToStep(index, animateFinal) {
