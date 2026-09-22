@@ -15,6 +15,13 @@ window.COURSE = {
       "subtitle": "Linux workstation work, SQL Server, Jira collaboration, and Jenkins CI/CD.",
       "chapterStart": 6,
       "chapterEnd": 9
+    },
+    {
+      "id": "book-3",
+      "title": "Analytics & Business Intelligence",
+      "subtitle": "Power BI Desktop data shaping, modeling, DAX, TMDL, and report authoring.",
+      "chapterStart": 10,
+      "chapterEnd": 10
     }
   ],
   "package": {
@@ -1372,6 +1379,87 @@ window.COURSE = {
             "INFO Connected agent linux-java21-agent"
           ]
         }
+      },
+      "power_bi": {
+        "title": "Untitled - Power BI Desktop",
+        "reportName": "Untitled",
+        "activeView": "report",
+        "theme": "light",
+        "ribbonTab": "Home",
+        "paneTab": "filters",
+        "statusText": "Ready",
+        "canvasZoom": 100,
+        "canvasFit": "Fit to page",
+        "storageMode": "Import",
+        "sources": [],
+        "navigator": {
+          "items": [],
+          "selected": []
+        },
+        "tables": [],
+        "queries": [],
+        "relationships": [],
+        "measures": [],
+        "calculatedColumns": [],
+        "calculatedTables": [],
+        "pages": [
+          {
+            "id": "page1",
+            "name": "Page 1",
+            "hidden": false,
+            "visuals": [],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          }
+        ],
+        "activePageId": "page1",
+        "filters": {
+          "report": [],
+          "page": {},
+          "visual": {}
+        },
+        "bookmarks": [],
+        "interactions": [],
+        "hierarchies": [],
+        "performance": {
+          "recording": false,
+          "events": []
+        },
+        "publish": {
+          "workspace": null,
+          "status": ""
+        },
+        "mobile": {
+          "enabled": false,
+          "visuals": []
+        },
+        "daxQueries": [
+          {
+            "id": "dax1",
+            "name": "Query 1",
+            "text": "",
+            "results": []
+          }
+        ],
+        "activeDaxQueryId": "dax1",
+        "tmdlScripts": [
+          {
+            "id": "tmdl1",
+            "name": "TMDL Script 1",
+            "text": "",
+            "preview": "No pending changes."
+          }
+        ],
+        "activeTmdlScriptId": "tmdl1",
+        "openPanes": [
+          "filters",
+          "visualizations",
+          "data"
+        ]
       }
     }
   },
@@ -3974,6 +4062,393 @@ window.COURSE = {
             "action": "openFile",
             "data": {
               "path": "src/Student.java"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "10: Power BI Desktop Analytics Workflow",
+      "steps": [
+        {
+          "title": "Create a blank Student Analytics report",
+          "why": "Power BI Desktop lo fresh PBIX report create chesi analytics workflow start chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "newBlankReport",
+            "data": {
+              "name": "Student Analytics"
+            }
+          }
+        },
+        {
+          "title": "Open Get Data from the Home ribbon",
+          "why": "Student application data ni report loki teesukuraavadaniki Get Data experience open chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openGetData",
+            "data": {}
+          }
+        },
+        {
+          "title": "Choose the SQL Server connector",
+          "why": "Application database SQL Server lo undi kabatti matching connector ni select chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectConnector",
+            "data": {
+              "connector": "SQL Server"
+            }
+          }
+        },
+        {
+          "title": "Connect to the JavaPracticeDb source",
+          "why": "Power BI source connection details set chesi database metadata fetch cheyyadaniki ready chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "connectDataSource",
+            "data": {
+              "source": {
+                "name": "JavaPracticeDb",
+                "connector": "SQL Server"
+              },
+              "items": [
+                {
+                  "name": "Student"
+                },
+                {
+                  "name": "Course"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Open Navigator and inspect source tables",
+          "why": "Navigator lo available tables preview chesi report ki kavalsina entities select chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openNavigator",
+            "data": {}
+          }
+        },
+        {
+          "title": "Send Student and Course to Power Query",
+          "why": "Direct load badulu Transform Data route use chesi data cleaning steps demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "transformNavigatorSelection",
+            "data": {
+              "queries": [
+                {
+                  "id": "Student",
+                  "name": "Student",
+                  "columns": [
+                    {
+                      "name": "id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "name",
+                      "type": "Text"
+                    },
+                    {
+                      "name": "course_id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "score",
+                      "type": "Whole Number"
+                    }
+                  ],
+                  "rows": [
+                    [
+                      1,
+                      "Asha",
+                      101,
+                      92
+                    ],
+                    [
+                      2,
+                      "Ravi",
+                      102,
+                      84
+                    ],
+                    [
+                      3,
+                      "Maya",
+                      101,
+                      96
+                    ]
+                  ],
+                  "steps": [
+                    {
+                      "name": "Source",
+                      "action": "source"
+                    }
+                  ]
+                },
+                {
+                  "id": "Course",
+                  "name": "Course",
+                  "columns": [
+                    {
+                      "name": "id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "course_name",
+                      "type": "Text"
+                    }
+                  ],
+                  "rows": [
+                    [
+                      101,
+                      "Java"
+                    ],
+                    [
+                      102,
+                      "Database"
+                    ]
+                  ],
+                  "steps": [
+                    {
+                      "name": "Source",
+                      "action": "source"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Focus the Student query in Power Query",
+          "why": "Queries pane nundi Student dataset select chesi transformations exact table meeda apply chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openPowerQuery",
+            "data": {
+              "query": "Student"
+            }
+          }
+        },
+        {
+          "title": "Rename the student name column",
+          "why": "Report-friendly naming kosam raw name field ni Student Name ga rename chestam; Applied Steps lo transformation persist avuthundi.",
+          "software": "powerbi",
+          "action": {
+            "action": "renameColumn",
+            "data": {
+              "query": "Student",
+              "column": "name",
+              "newName": "Student Name",
+              "stepName": "Renamed Columns"
+            }
+          }
+        },
+        {
+          "title": "Close and Apply transformed data",
+          "why": "Power Query changes ni semantic model ki commit chesi report/model views lo tables available cheyyadam.",
+          "software": "powerbi",
+          "action": {
+            "action": "closeAndApply",
+            "data": {
+              "tables": [
+                {
+                  "name": "Student",
+                  "columns": [
+                    {
+                      "name": "id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "Student Name",
+                      "type": "Text"
+                    },
+                    {
+                      "name": "course_id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "score",
+                      "type": "Whole Number"
+                    }
+                  ],
+                  "rows": [
+                    [
+                      1,
+                      "Asha",
+                      101,
+                      92
+                    ],
+                    [
+                      2,
+                      "Ravi",
+                      102,
+                      84
+                    ],
+                    [
+                      3,
+                      "Maya",
+                      101,
+                      96
+                    ]
+                  ]
+                },
+                {
+                  "name": "Course",
+                  "columns": [
+                    {
+                      "name": "id",
+                      "type": "Whole Number"
+                    },
+                    {
+                      "name": "course_name",
+                      "type": "Text"
+                    }
+                  ],
+                  "rows": [
+                    [
+                      101,
+                      "Java"
+                    ],
+                    [
+                      102,
+                      "Database"
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Open Model view",
+          "why": "Student mariyu Course tables relationship visually inspect cheyyadaniki Model view use chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openModelView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create the Student-to-Course relationship",
+          "why": "course_id foreign key ni Course id tho one-to-many semantic relationship ga connect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addRelationship",
+            "data": {
+              "relationship": {
+                "id": "student_course",
+                "fromTable": "Course",
+                "fromColumn": "id",
+                "toTable": "Student",
+                "toColumn": "course_id",
+                "cardinality": "1:*",
+                "crossFilter": "Single",
+                "active": true
+              }
+            }
+          }
+        },
+        {
+          "title": "Open DAX Query View",
+          "why": "Current Power BI DAX Query View lo semantic model ni query code tho inspect cheyyachu; simulator lo dedicated modern code surface ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openDaxQueryView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Type a DAX query for student scores",
+          "why": "DAX query editor lo EVALUATE statement type chesi model data ni code-based ga verify chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "typeDaxQuery",
+            "data": {
+              "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Course[course_name],\n    \"Average Score\", AVERAGE(Student[score])\n)"
+            }
+          }
+        },
+        {
+          "title": "Run the DAX query and inspect results",
+          "why": "DAX query execute chesi Java and Database course score summary result grid lo verify chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "runDaxQuery",
+            "data": {
+              "results": [
+                [
+                  "Course",
+                  "Average Score"
+                ],
+                [
+                  "Java",
+                  "94"
+                ],
+                [
+                  "Database",
+                  "84"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "title": "Open TMDL View",
+          "why": "Modern Power BI semantic model metadata ni code form lo inspect/edit cheyyadaniki TMDL View open chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openTmdlView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Script the Student table to TMDL",
+          "why": "Model object ni TMDL script ga generate chesi future metadata changes reusable code form lo demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "scriptTmdlObject",
+            "data": {
+              "table": "Student"
+            }
+          }
+        },
+        {
+          "title": "Return to Report view",
+          "why": "Data shaping, relationship, DAX and TMDL verification complete ayyaka report authoring canvas ki return avutham.",
+          "software": "powerbi",
+          "action": {
+            "action": "openReportView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Add the course performance visual",
+          "why": "Final report canvas lo transformed/modelled data ni clustered column visual ga present chesi end-to-end Power BI workflow complete chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addVisual",
+            "data": {
+              "id": "coursePerformance",
+              "type": "clusteredColumn",
+              "title": "Average Student Score by Course",
+              "x": 90,
+              "y": 75,
+              "w": 520,
+              "h": 290,
+              "data": {
+                "categories": [
+                  "Java",
+                  "Database"
+                ],
+                "values": [
+                  94,
+                  84
+                ]
+              }
             }
           }
         }
