@@ -135,6 +135,48 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 @media(max-width:950px){:root{--leftW:205px;--rightW:230px}.work{padding-right:0;grid-template-columns:var(--leftW) 3px minmax(0,1fr)}.rightRail,.right,.splitR{display:none!important}}
 @media(max-width:650px){:root{--leftW:0px;--bottomH:135px}.work{padding-left:0}.leftRail,.left,.splitL{display:none}.toolbar{padding-left:7px}.menu{padding-left:0}}
 
+
+/* v8: editor clipping + Project tree + terminal polish */
+.projectHead{gap:2px}
+.projectHeadTitle{font-weight:600;color:#d7d8dc}
+.projectHeadTool{width:22px;height:22px;border:0;background:transparent;color:#8d919a;border-radius:4px;padding:0;font-size:11px;line-height:22px}
+.projectHeadTool:hover{background:#2b2d32;color:#e0e1e5}
+
+.tree{padding:4px 5px 12px 4px!important}
+.treeRoot,.treeRow,.treeAux{font-size:10px}
+.treeRoot{height:24px!important;padding-left:3px!important}
+.treeRow{height:23px!important}
+.treeAux{height:23px!important}
+.twist{width:13px!important;font-size:9px;color:#747881}
+.ico{width:18px!important;min-width:18px;height:18px!important;display:inline-grid!important;place-items:center!important;position:relative;overflow:visible}
+.ico-folder{font-size:0!important;background:transparent!important}
+.ico-folder::before{content:"";width:12px;height:8px;border:1px solid #b97d43;border-radius:2px;background:#493321;position:absolute;left:3px;top:6px}
+.ico-folder::after{content:"";width:6px;height:3px;border:1px solid #b97d43;border-bottom:0;border-radius:2px 2px 0 0;background:#493321;position:absolute;left:4px;top:3px}
+.ico-java{width:15px!important;height:15px!important;min-width:15px;border:1px solid #4b86d9;border-radius:50%!important;background:transparent!important;color:#66a6ff!important;font-size:8px!important;font-weight:700!important;margin-left:1px;margin-right:2px}
+.ico-xml,.ico-props,.ico-file{width:14px!important;height:16px!important;min-width:14px;border:1px solid #69707a;border-radius:2px!important;background:#25282d!important;color:#c0c3c8!important;font-size:8px!important;margin-left:1px;margin-right:2px}
+.ico-xml{color:#d591e8!important;border-color:#825895}.ico-props{color:#8eb5d4!important;border-color:#526c80}
+.gitMark{font-size:9px;margin-right:4px}
+
+.editorWrap{grid-template-columns:50px minmax(max-content,1fr)!important}
+.gutter{padding-right:7px!important}
+.code{padding-left:14px!important;overflow:visible!important}
+.codeLine{padding-left:2px!important;box-shadow:none!important;outline:none!important}
+.codeLine.focus,.sim-emphasis{background:rgba(53,116,240,.12)!important;box-shadow:none!important;outline:none!important}
+.codeLine::before{content:none!important}
+
+.bottom{border-top:1px solid #2b2d32}
+.bottomTabs{padding-left:5px}
+.bottomTab{height:29px;display:flex;align-items:center;padding:0 9px!important}
+.bottomBody{position:relative;min-height:0}
+.bottomBody.terminal{padding:0!important;background:#1e1f22!important;color:#bcbec4!important;overflow:hidden!important;font:10.5px/17px "JetBrains Mono","Cascadia Code",Consolas,monospace!important}
+.terminalSessionBar{height:27px;display:flex;align-items:center;gap:8px;padding:0 8px;background:#202124;border-bottom:1px solid #2c2e33;color:#a5a8b0;font:9.5px "Segoe UI",Arial,sans-serif}
+.terminalSessionBar .activeSession{color:#d4d6da}
+.terminalSessionBar .terminalGrow{flex:1}
+.terminalAction{color:#81858e;padding:0 3px}
+.terminalViewport{height:calc(100% - 27px);overflow:auto;padding:8px 11px 18px;background:#1e1f22}
+.terminalViewport pre{margin:0;white-space:pre-wrap;word-break:break-word;font:10.5px/17px "JetBrains Mono","Cascadia Code",Consolas,monospace;color:#c7c9ce}
+.console{font:10.5px/17px "JetBrains Mono","Cascadia Code",Consolas,monospace!important;color:#c7c9ce!important}
+
 </style>
 </head>
 <body class="theme-dark" data-sim-app="intellij_idea">
@@ -149,7 +191,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  <div class="work" id="work">
    <div class="toolRail leftRail"><button class="rail active" title="Project">▣</button><button class="rail" title="Commit">⌁</button><button class="rail" title="Run">▷</button><div class="railGrow"></div><button class="rail" title="Terminal">⌘</button></div>
    <div class="toolRail rightRail"><button class="rail" title="Notifications">○</button><button class="rail" title="Database">▤</button><button class="rail" title="Maven">m</button></div>
-   <div class="left" id="leftPanel"><div class="head">Project <div class="grow"></div><span id="projectViewLabel">Project</span></div><div class="tree" id="tree"></div></div>
+   <div class="left" id="leftPanel"><div class="head projectHead"><span class="projectHeadTitle">Project⌄</span><div class="grow"></div><button class="projectHeadTool" title="New">＋</button><button class="projectHeadTool" title="Autoscroll">⌖</button><button class="projectHeadTool" title="Collapse All">⌃</button><button class="projectHeadTool" title="Expand All">⌄</button><button class="projectHeadTool" title="More">⋮</button><span id="projectViewLabel" class="hidden">Project</span></div><div class="tree" id="tree"></div></div>
    <div class="splitV splitL" id="splitL"></div>
    <div class="editorPane" id="editorPane"><div class="tabs" id="tabs"></div><div class="editorWrap" id="editorWrap"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre><div class="popup completion" id="completion"></div><div class="popup intentions" id="intentions"></div></div></div>
    <div class="splitV splitR" id="splitR"></div>
@@ -169,6 +211,6 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  </div>
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
-<script src="engine.js?v=7"></script>
+<script src="engine.js?v=8"></script>
 </body>
 </html>
