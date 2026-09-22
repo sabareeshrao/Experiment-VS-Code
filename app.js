@@ -1,206 +1,143 @@
 (() => {
-  const lessons = window.LESSONS;
-  const byId = id => document.getElementById(id);
+  "use strict";
+  const course = window.COURSE;
+  const $ = id => document.getElementById(id);
+  const frame = $("ideFrame");
+  const stageList = $("stageList");
+  const stepTitle = $("stepTitle");
+  const stageLabel = $("stageLabel");
+  const assistantCopy = $("assistantCopy");
+  const assistantMeta = $("assistantMeta");
+  const assistantCard = $("assistantCard");
+  const prevBtn = $("prevBtn");
+  const nextBtn = $("nextBtn");
+  const replayBtn = $("replayBtn");
+  const stepCounter = $("stepCounter");
+  const stepProgress = $("stepProgress");
+  const stepSearch = $("stepSearch");
+  const toggleSidebar = $("toggleSidebar");
+  const ideFullscreen = $("ideFullscreen");
+  const pinBtn = $("pinBtn");
+  const pinCount = $("pinCount");
 
-  let current = 0;
-  let activeFile = "";
-  let animationToken = 0;
+  const flat = [];
+  course.stages.forEach((stage, stageIndex) => stage.steps.forEach((step, localIndex) => {
+    flat.push({...step, stageIndex, localIndex, globalIndex: flat.length});
+  }));
 
-  const lessonList = byId("lessonList");
-  const lessonTitle = byId("lessonTitle");
-  const lessonNumber = byId("lessonNumber");
-  const progressText = byId("progressText");
-  const progressBar = byId("progressBar");
-  const fileTree = byId("fileTree");
-  const tabs = byId("tabs");
-  const breadcrumb = byId("breadcrumb");
-  const editor = byId("editor");
-  const gutter = byId("gutter");
-  const terminal = byId("terminal");
-  const explanation = byId("explanation");
-  const previousBtn = byId("previousBtn");
-  const nextBtn = byId("nextBtn");
-  const replayBtn = byId("replayBtn");
-  const focusBtn = byId("focusBtn");
-  const fullscreenBtn = byId("fullscreenBtn");
-  const vscode = byId("vscode");
-  const statusFile = byId("statusFile");
+  let current = Math.max(0, Math.min(flat.length - 1, (Number(new URL(location.href).searchParams.get("step")) || 1) - 1));
+  let engineReady = false;
+  let openStages = new Set([flat[current].stageIndex]);
+  let pins = new Set(JSON.parse(localStorage.getItem("devPlaybackPins") || "[]"));
 
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+  function engineStepsThrough(index) {
+    return flat.slice(0, index + 1).map(s => s.action);
   }
 
-  function syntaxJava(code) {
-    return escapeHtml(code);
+  function sendPackage() {
+    frame.contentWindow.postMessage({type:"SIM_PACKAGE", package:course.package, theme:"dark", autoType:true}, "*");
   }
 
-  function renderLessonList() {
-    lessonList.innerHTML = "";
-    lessons.forEach((lesson, index) => {
-      const button = document.createElement("button");
-      button.className = "lesson-item" + (index === current ? " active" : "");
-      button.innerHTML =
-        '<span class="lesson-index">' + (index + 1) + '</span>' +
-        '<span><span class="lesson-name">' + lesson.title + '</span>' +
-        '<span class="lesson-sub">' + lesson.summary + '</span></span>';
-      button.addEventListener("click", () => goToLesson(index, false));
-      lessonList.appendChild(button);
-    });
+  function seek(index, animateFinal) {
+    if (!engineReady) return;
+    frame.contentWindow.postMessage({type:"SIM_SEEK", steps:engineStepsThrough(index), animateFinal:!!animateFinal, autoType:true}, "*");
   }
 
-  function treeFromPaths(paths) {
-    const root = {};
-    paths.forEach(path => {
-      let node = root;
-      const parts = path.split("/");
-      parts.forEach((part, index) => {
-        if (!node[part]) node[part] = { children: {}, file: index === parts.length - 1 };
-        if (index < parts.length - 1) node = node[part].children;
+  function savePins() {
+    localStorage.setItem("devPlaybackPins", JSON.stringify([...pins]));
+    pinCount.textContent = pins.size;
+  }
+
+  function renderSidebar() {
+    const q = stepSearch.value.trim().toLowerCase();
+    stageList.innerHTML = "";
+    let global = 0;
+    course.stages.forEach((stage, stageIndex) => {
+      const indices = stage.steps.map((_,i)=>global+i);
+      global += stage.steps.length;
+      const matches = !q || stage.title.toLowerCase().includes(q) || stage.steps.some(s => s.title.toLowerCase().includes(q));
+      if (!matches) return;
+
+      const block = document.createElement("section");
+      const isCurrent = flat[current].stageIndex === stageIndex;
+      const isOpen = openStages.has(stageIndex) || !!q;
+      block.className = "stage-block" + (isCurrent ? " current" : "") + (isOpen ? " open" : "");
+
+      const head = document.createElement("button");
+      head.className = "stage-head";
+      head.innerHTML = '<span>'+stage.title+'</span><span class="stage-count">'+stage.steps.length+' steps</span><span class="stage-chevron">'+(isOpen?'⌃':'⌄')+'</span>';
+      head.onclick = () => { if (openStages.has(stageIndex)) openStages.delete(stageIndex); else openStages.add(stageIndex); renderSidebar(); };
+      block.appendChild(head);
+
+      const wrap = document.createElement("div");
+      wrap.className = "steps-wrap";
+      stage.steps.forEach((step, localIndex) => {
+        const gi = indices[localIndex];
+        if (q && !step.title.toLowerCase().includes(q) && !stage.title.toLowerCase().includes(q)) return;
+        const b = document.createElement("button");
+        b.className = "step-link" + (gi === current ? " active" : "") + (gi < current ? " done" : "");
+        b.innerHTML = '<span class="step-number">'+(gi+1)+'.</span>'+step.title;
+        b.onclick = () => go(gi, false);
+        wrap.appendChild(b);
       });
-    });
-    return root;
-  }
-
-  function renderTreeNode(node, depth, parent) {
-    const names = Object.keys(node).sort((a, b) => {
-      if (node[a].file !== node[b].file) return node[a].file ? 1 : -1;
-      return a.localeCompare(b);
-    });
-
-    names.forEach(name => {
-      const info = node[name];
-      const full = parent ? parent + "/" + name : name;
-      const row = document.createElement("div");
-      row.className = "tree-row " + (info.file ? "file" : "folder") + (full === activeFile ? " active" : "");
-      row.style.paddingLeft = (9 + depth * 12) + "px";
-      row.innerHTML = '<span class="tree-icon">' + (info.file ? "J" : "▾") + '</span>' + name;
-
-      if (info.file) {
-        row.addEventListener("click", () => {
-          activeFile = full;
-          renderWorkspace(false);
-        });
-      }
-
-      fileTree.appendChild(row);
-      if (!info.file) renderTreeNode(info.children, depth + 1, full);
+      block.appendChild(wrap);
+      stageList.appendChild(block);
     });
   }
 
-  function renderFileTree(files) {
-    fileTree.innerHTML = "";
-    renderTreeNode(treeFromPaths(Object.keys(files)), 0, "");
+  function renderCurrent() {
+    const step = flat[current];
+    const stage = course.stages[step.stageIndex];
+    openStages.add(step.stageIndex);
+    stageLabel.textContent = stage.title.toUpperCase();
+    stepTitle.textContent = (current + 1) + ". " + step.title;
+    assistantMeta.textContent = "Why this developer step?";
+    assistantCopy.textContent = step.why;
+    assistantCard.classList.remove("flash");
+    requestAnimationFrame(() => assistantCard.classList.add("flash"));
+    stepCounter.textContent = (current + 1) + " / " + flat.length;
+    stepProgress.style.width = (((current + 1) / flat.length) * 100) + "%";
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === flat.length - 1;
+    pinBtn.classList.toggle("active", pins.has(current));
+    pinCount.textContent = pins.size;
+    renderSidebar();
+    const url = new URL(location.href); url.searchParams.set("step", current + 1); history.replaceState({}, "", url);
   }
 
-  function renderTabs() {
-    tabs.innerHTML = "";
-    if (!activeFile) return;
-    const tab = document.createElement("div");
-    tab.className = "tab active";
-    tab.textContent = activeFile.split("/").pop();
-    tabs.appendChild(tab);
-    breadcrumb.textContent = activeFile.split("/").join("  ›  ");
+  function go(index, animateFinal) {
+    current = Math.max(0, Math.min(flat.length - 1, index));
+    renderCurrent();
+    seek(current, animateFinal);
   }
 
-  function renderCode(content) {
-    const lines = content.split("\n");
-    gutter.innerHTML = lines.map((_, i) => "<span>" + (i + 1) + "</span>").join("");
-    editor.innerHTML = syntaxJava(content);
-    statusFile.textContent = activeFile.endsWith(".java") ? "Java" : "Plain Text";
-  }
-
-  async function typeCode(content, token) {
-    editor.textContent = "";
-    const lines = content.split("\n");
-    gutter.innerHTML = lines.map((_, i) => "<span>" + (i + 1) + "</span>").join("");
-    let shown = "";
-
-    for (let i = 0; i < content.length; i++) {
-      if (token !== animationToken) return;
-      shown += content[i];
-      editor.innerHTML = syntaxJava(shown);
-      editor.scrollTop = editor.scrollHeight;
-      if (i % 3 === 0) await new Promise(resolve => setTimeout(resolve, 8));
-    }
-  }
-
-  function showExplanation(text) {
-    explanation.innerHTML = "<strong>💡 CONCEPT EXPLAINED</strong>" + text;
-  }
-
-  function renderWorkspace(animate) {
-    const lesson = lessons[current];
-    if (!lesson.files[activeFile]) activeFile = lesson.activeFile;
-
-    renderFileTree(lesson.files);
-    renderTabs();
-    terminal.textContent = lesson.terminal;
-    showExplanation(lesson.explanation);
-
-    animationToken += 1;
-    const token = animationToken;
-    const content = lesson.files[activeFile];
-
-    if (animate && activeFile === lesson.activeFile) typeCode(content, token);
-    else renderCode(content);
-  }
-
-  function updateUrl() {
-    const url = new URL(window.location.href);
-    url.searchParams.set("lesson", String(current + 1));
-    window.history.replaceState({}, "", url);
-  }
-
-  function goToLesson(index, animate) {
-    current = Math.max(0, Math.min(lessons.length - 1, index));
-    const lesson = lessons[current];
-    activeFile = lesson.activeFile;
-
-    lessonTitle.textContent = "Lesson " + lesson.id + ": " + lesson.title;
-    lessonNumber.textContent = lesson.id;
-    progressText.textContent = lesson.id + " / " + lessons.length;
-    progressBar.style.width = ((lesson.id / lessons.length) * 100) + "%";
-
-    previousBtn.disabled = current === 0;
-    nextBtn.disabled = current === lessons.length - 1;
-
-    renderLessonList();
-    renderWorkspace(animate);
-    updateUrl();
-  }
-
-  previousBtn.addEventListener("click", () => goToLesson(current - 1, false));
-  nextBtn.addEventListener("click", () => goToLesson(current + 1, true));
-  replayBtn.addEventListener("click", () => renderWorkspace(true));
-
-  focusBtn.addEventListener("click", () => {
-    document.body.classList.toggle("focus");
-    focusBtn.textContent = document.body.classList.contains("focus") ? "Exit focus" : "Focus mode";
-  });
-
-  fullscreenBtn.addEventListener("click", async () => {
-    try {
-      if (!document.fullscreenElement) await vscode.requestFullscreen();
-      else await document.exitFullscreen();
-    } catch (error) {
-      console.warn("Fullscreen request failed", error);
+  window.addEventListener("message", e => {
+    if (e.source !== frame.contentWindow) return;
+    if (e.data?.type === "ENGINE_READY") {
+      engineReady = true;
+      sendPackage();
+      setTimeout(() => seek(current, false), 0);
     }
   });
 
-  document.addEventListener("keydown", event => {
-    if (event.key === "ArrowRight" && current < lessons.length - 1) goToLesson(current + 1, true);
-    if (event.key === "ArrowLeft" && current > 0) goToLesson(current - 1, false);
-    if (event.key.toLowerCase() === "r") renderWorkspace(true);
-    if (event.key === "Escape" && document.body.classList.contains("focus")) {
-      document.body.classList.remove("focus");
-      focusBtn.textContent = "Focus mode";
-    }
+  prevBtn.onclick = () => go(current - 1, false);
+  nextBtn.onclick = () => go(current + 1, true);
+  replayBtn.onclick = () => seek(current, true);
+  stepSearch.oninput = renderSidebar;
+  toggleSidebar.onclick = () => {
+    document.body.classList.toggle("sidebar-hidden");
+    toggleSidebar.textContent = document.body.classList.contains("sidebar-hidden") ? "Show progress" : "Hide progress";
+  };
+  ideFullscreen.onclick = async () => {
+    try { if (!document.fullscreenElement) await frame.requestFullscreen(); else await document.exitFullscreen(); } catch (_) {}
+  };
+  pinBtn.onclick = () => { if (pins.has(current)) pins.delete(current); else pins.add(current); savePins(); renderCurrent(); };
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" && current < flat.length - 1) go(current + 1, true);
+    if (e.key === "ArrowLeft" && current > 0) go(current - 1, false);
+    if (e.key.toLowerCase() === "r" && !/input|textarea/i.test(document.activeElement?.tagName || "")) seek(current, true);
   });
 
-  const requested = Number(new URL(window.location.href).searchParams.get("lesson"));
-  const initial = Number.isFinite(requested) && requested >= 1 && requested <= lessons.length ? requested - 1 : 0;
-  goToLesson(initial, true);
+  savePins();
+  renderCurrent();
 })();
