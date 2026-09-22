@@ -7,25 +7,29 @@
   const frames = {
     intellij: $("ideFrame"),
     vscode: $("vscodeFrame"),
-    pgadmin: $("pgadminFrame")
+    pgadmin: $("pgadminFrame"),
+    postman: $("postmanFrame")
   };
 
   const appIds = {
     intellij: "intellij_idea",
     vscode: "vscode",
-    pgadmin: "pgadmin"
+    pgadmin: "pgadmin",
+    postman: "postman"
   };
 
   const appLabels = {
     intellij: "IntelliJ IDEA",
     vscode: "VS Code",
-    pgadmin: "pgAdmin 4"
+    pgadmin: "pgAdmin 4",
+    postman: "Postman"
   };
 
   const engineReady = {
     intellij: false,
     vscode: false,
-    pgadmin: false
+    pgadmin: false,
+    postman: false
   };
 
   const stageList = $("stageList");
@@ -74,6 +78,7 @@
   function normalizeSoftware(value) {
     if (value === "pgadmin") return "pgadmin";
     if (value === "vscode") return "vscode";
+    if (value === "postman") return "postman";
     return "intellij";
   }
 
@@ -89,6 +94,7 @@
     softwareBadge.textContent = appLabels[activeSoftware];
     softwareBadge.classList.toggle("pgadmin", activeSoftware === "pgadmin");
     softwareBadge.classList.toggle("vscode", activeSoftware === "vscode");
+    softwareBadge.classList.toggle("postman", activeSoftware === "postman");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
