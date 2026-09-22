@@ -209,6 +209,266 @@ window.COURSE = {
         },
         "promptSuffix": ">",
         "initialOutput": "Microsoft Windows [Version 11.0.26100.6584]\\n(c) Microsoft Corporation. All rights reserved.\\n"
+      },
+      "linux": {
+        "distro": "Ubuntu 24.04 LTS",
+        "user": "developer",
+        "hostname": "java-dev",
+        "home": "/home/developer",
+        "currentPath": "/home/developer/JavaPractice",
+        "activeWindow": "terminal",
+        "files": {
+          "/home/developer": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-x---",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/src": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/src/Student.java": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "public class Student {\n    int rollNo;\n    boolean isPresent;\n    float[] marks;\n    String name;\n}\n"
+          },
+          "/home/developer/JavaPractice/README.md": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "# Java Practice\n\nJava 21 developer journey project.\n"
+          },
+          "/home/developer/JavaPractice/pom.xml": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>com.javapractice</groupId>\n  <artifactId>java-practice</artifactId>\n  <version>1.0.0</version>\n</project>\n"
+          },
+          "/home/developer/JavaPractice/scripts": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/scripts/health-check.sh": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "#!/usr/bin/env bash\necho Health check passed\n"
+          },
+          "/home/developer/JavaPractice/logs": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/logs/app.log": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "2026-09-22 10:58:00 INFO JavaPracticeApplication ready\n2026-09-22 10:59:14 INFO GET /api/students/101 200\n"
+          },
+          "/etc": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "12 KB"
+          },
+          "/var": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/var/log": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/tmp": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxrwxrwt",
+            "size": "4.0 KB"
+          }
+        },
+        "terminal": {
+          "env": {
+            "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+            "MAVEN_HOME": "/opt/apache-maven-3.9.9",
+            "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/opt/apache-maven-3.9.9/bin"
+          },
+          "history": [],
+          "commandHistory": []
+        },
+        "processes": [
+          {
+            "pid": 1,
+            "name": "systemd",
+            "user": "root",
+            "cpu": 0.1,
+            "memory": "18M"
+          },
+          {
+            "pid": 822,
+            "name": "postgres",
+            "user": "postgres",
+            "cpu": 0.4,
+            "memory": "96M"
+          },
+          {
+            "pid": 1307,
+            "name": "dockerd",
+            "user": "root",
+            "cpu": 0.3,
+            "memory": "132M"
+          }
+        ],
+        "services": [
+          {
+            "name": "java-practice.service",
+            "description": "Java Practice Spring Boot API",
+            "status": "inactive",
+            "enabled": true
+          },
+          {
+            "name": "postgresql.service",
+            "description": "PostgreSQL database server",
+            "status": "active",
+            "enabled": true
+          },
+          {
+            "name": "docker.service",
+            "description": "Docker Application Container Engine",
+            "status": "active",
+            "enabled": true
+          }
+        ],
+        "packages": [
+          {
+            "name": "openjdk-21-jdk",
+            "version": "21.0.5",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "maven",
+            "version": "3.9.9",
+            "status": "installed",
+            "repository": "apache"
+          },
+          {
+            "name": "git",
+            "version": "2.43.0",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "curl",
+            "version": "8.5.0",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "docker.io",
+            "version": "28.4.0",
+            "status": "installed",
+            "repository": "docker"
+          }
+        ],
+        "network": {
+          "interfaces": [
+            {
+              "name": "lo",
+              "state": "up",
+              "address": "127.0.0.1/8",
+              "gateway": ""
+            },
+            {
+              "name": "eth0",
+              "state": "up",
+              "address": "192.168.1.42/24",
+              "gateway": "192.168.1.1"
+            }
+          ],
+          "routes": [
+            {
+              "destination": "default",
+              "gateway": "192.168.1.1",
+              "dev": "eth0"
+            }
+          ],
+          "sockets": [
+            {
+              "protocol": "tcp",
+              "state": "LISTEN",
+              "local": "127.0.0.1:5432",
+              "remote": "0.0.0.0:*",
+              "process": "postgres/822"
+            },
+            {
+              "protocol": "tcp",
+              "state": "LISTEN",
+              "local": "0.0.0.0:22",
+              "remote": "0.0.0.0:*",
+              "process": "sshd/940"
+            }
+          ]
+        },
+        "logs": [
+          {
+            "id": "l1",
+            "time": "10:58:00",
+            "level": "info",
+            "unit": "java-practice.service",
+            "message": "Java Practice service configuration loaded"
+          },
+          {
+            "id": "l2",
+            "time": "10:58:05",
+            "level": "info",
+            "unit": "postgresql.service",
+            "message": "database system is ready to accept connections"
+          },
+          {
+            "id": "l3",
+            "time": "10:59:00",
+            "level": "info",
+            "unit": "docker.service",
+            "message": "Docker daemon ready"
+          }
+        ],
+        "disks": [
+          {
+            "device": "/dev/nvme0n1p2",
+            "fs": "ext4",
+            "size": "120G",
+            "used": "38G",
+            "available": "76G",
+            "percent": "32%",
+            "mount": "/"
+          },
+          {
+            "device": "tmpfs",
+            "fs": "tmpfs",
+            "size": "7.8G",
+            "used": "12M",
+            "available": "7.8G",
+            "percent": "1%",
+            "mount": "/run"
+          }
+        ]
       }
     }
   },
@@ -1107,6 +1367,254 @@ window.COURSE = {
         {
           "title": "Return to Student.java after command-line checks",
           "why": "Command-line verification complete ayyaka developer malli IntelliJ ki vastadu. CMD state separate ga reconstruct avuthundi, Java project timeline continuity kuda preserve avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "6: Linux Developer Workstation",
+      "subtitle": "Test a realistic IntelliJ → Ubuntu/Linux terminal → system tools → IntelliJ workflow with a stateful virtual Bash environment.",
+      "steps": [
+        {
+          "title": "Review Student.java before Linux work",
+          "why": "Linux terminal ki switch avvadaniki mundu developer Java project context ni IntelliJ lo review chestadu. Ee workflow same Java Practice project meeda continue avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        },
+        {
+          "title": "Open the Linux project terminal",
+          "why": "Production-style Java work lo Linux terminal common. Project root directory lo shell open chesi commands correct project meeda run avuthunnaya ani start chestam.",
+          "software": "linux",
+          "action": {
+            "action": "setCwd",
+            "data": {
+              "path": "/home/developer/JavaPractice"
+            }
+          }
+        },
+        {
+          "title": "Confirm the current Linux directory",
+          "why": "pwd current working directory ni print chestundi. Developer expected JavaPractice folder lo unnado idi confirm chestundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "pwd"
+            }
+          }
+        },
+        {
+          "title": "Inspect project files with Linux permissions",
+          "why": "ls -la hidden files, permissions, owner mariyu project files ni detailed ga chupistundi. Linux deployment/debugging lo ee information chala useful.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "ls -la"
+            }
+          }
+        },
+        {
+          "title": "Verify Java 21 on Linux",
+          "why": "Linux machine expected Java runtime ni use chesthundha ani java -version tho verify chestam.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "java -version"
+            }
+          }
+        },
+        {
+          "title": "Check JAVA_HOME",
+          "why": "Java tools correct JDK ni locate cheyyadaniki JAVA_HOME important. Bash variable expansion kuda ee step lo test avuthundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo $JAVA_HOME"
+            }
+          }
+        },
+        {
+          "title": "Set the application environment",
+          "why": "export command current Bash session lo environment variable set chestundi. Local, QA, prod laanti runtime profiles ni ila control cheyyadam common.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "export APP_ENV=local && echo $APP_ENV"
+            }
+          }
+        },
+        {
+          "title": "Create build files from the shell",
+          "why": "mkdir -p mariyu touch commands virtual Linux filesystem ni actually modify chestayi. Playback text matrame kaakunda filesystem state preserve avuthundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "mkdir -p build && touch build/status.txt"
+            }
+          }
+        },
+        {
+          "title": "Redirect output into a Linux file",
+          "why": "> redirection shell output ni file lo write chestundi. Taruvatha cat tho same file content ni read chesi redirection state verify chestam.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo build=verified > build/status.txt && cat build/status.txt"
+            }
+          }
+        },
+        {
+          "title": "Filter project text through a pipe",
+          "why": "Linux lo pipes daily workflow lo important. cat output ni grep ki pampinchi Java text ni filter chestunnam.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "cat README.md | grep Java"
+            }
+          }
+        },
+        {
+          "title": "Make the health script executable",
+          "why": "Linux permissions executable scripts ni control chestayi. chmod +x tho health-check script run cheyyadaniki permission add chestam.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "chmod +x scripts/health-check.sh"
+            }
+          }
+        },
+        {
+          "title": "Run the Bash health-check script",
+          "why": "Shell script execution Linux developer workflow lo common. Previous permission change taruvatha script command execute ayi output generate chestundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "./scripts/health-check.sh"
+            }
+          }
+        },
+        {
+          "title": "Check the Java service status",
+          "why": "systemctl status tho deployed service running state ni inspect chestam. Linux production troubleshooting lo idi core command.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "systemctl status java-practice.service"
+            }
+          }
+        },
+        {
+          "title": "Restart the Java service",
+          "why": "Configuration or deployment change taruvatha developer service ni restart cheyyalsi vastundi. Simulator service state ni inactive nundi active ki update chestundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "sudo systemctl restart java-practice.service"
+            }
+          }
+        },
+        {
+          "title": "Inspect recent service logs",
+          "why": "journalctl service logs ni inspect cheyyadaniki use chestam. Restart event and application logs ni terminal nundi verify cheyyachu.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "journalctl -u java-practice.service -n 5"
+            }
+          }
+        },
+        {
+          "title": "Inspect Linux network addresses",
+          "why": "ip addr server interfaces mariyu IP addresses ni show chestundi. Connectivity issues troubleshoot cheyyadaniki idi common first check.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "ip addr"
+            }
+          }
+        },
+        {
+          "title": "Inspect listening ports",
+          "why": "ss -tulpn tho application, PostgreSQL, SSH laanti services e ports meeda listen chestunnayo verify cheyyachu.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "ss -tulpn"
+            }
+          }
+        },
+        {
+          "title": "Check disk usage",
+          "why": "df -h filesystem usage ni human-readable format lo chupistundi. Disk-full production issues identify cheyyadaniki idi important.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "df -h"
+            }
+          }
+        },
+        {
+          "title": "Run the Maven test workflow",
+          "why": "Linux CI/server environment lo Maven commands frequently run chestaru. mvn test deterministic build output tho Java build workflow ni simulate chestundi.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "mvn test"
+            }
+          }
+        },
+        {
+          "title": "Start and stop Spring Boot on Linux",
+          "why": "mvn spring-boot:run long-running Java process ni start chestundi. Taruvatha Ctrl+C behavior ni separate simulator action tho stop chestam.",
+          "software": "linux",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "mvn spring-boot:run"
+            }
+          }
+        },
+        {
+          "title": "Stop the running Spring Boot process",
+          "why": "Terminal lo Ctrl+C long-running foreground process ni terminate chestundi. Linux developer ki idi daily interaction.",
+          "software": "linux",
+          "action": {
+            "action": "stopProcess",
+            "data": {
+              "output": "^C"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java after Linux checks",
+          "why": "Linux verification complete ayyaka developer malli IntelliJ ki return avuthadu. Multi-software timeline continuity preserve avuthundi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
