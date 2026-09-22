@@ -161,10 +161,49 @@ async function apply(st,animate,token){
 async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){await apply(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}}
 window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.pgadmin||{});reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);if(m.type==="SIM_EXPLAIN")showAssistant(m)});
 refs.newQuery.onclick=()=>{openQuery=true;refs.status.textContent="Query Tool opened"};refs.run.onclick=()=>{if(/CREATE\s+TABLE\s+student/i.test(sqlText)){state.studentCreated=true;makeTree()}refs.messages.innerHTML='<span class="success">Query returned successfully.</span>';refs.status.textContent="Query complete"};
+const pgPopup=document.createElement("div");
+pgPopup.style.cssText="position:fixed;z-index:21000;display:none;min-width:210px;max-width:360px;padding:5px;background:#253039;border:1px solid #4a5965;border-radius:5px;box-shadow:0 10px 28px rgba(0,0,0,.48);font:11px/1.45 Segoe UI,Arial,sans-serif;color:#dce4ea";
+document.body.appendChild(pgPopup);
+function closePgPopup(){pgPopup.style.display="none"}
+function showPgPopup(anchorEl,html){
+ const q=anchorEl.getBoundingClientRect();pgPopup.innerHTML=html;pgPopup.style.left=Math.max(5,Math.min(innerWidth-370,q.left))+"px";pgPopup.style.top=Math.min(innerHeight-220,q.bottom+3)+"px";pgPopup.style.display="block";
+}
+const pgMenus={
+ File:["New pgAdmin Window","Preferences","Reset Layout","Exit"],
+ Object:["Create","Refresh","Properties","Scripts"],
+ Tools:["Query Tool","Search Objects","Backup","Restore","Maintenance"],
+ Help:["Online Help","Keyboard Shortcuts","About pgAdmin 4"]
+};
+document.querySelectorAll(".menu span").forEach(el=>el.addEventListener("click",e=>{
+ e.stopPropagation();const name=el.textContent.trim(),items=pgMenus[name]||[];
+ showPgPopup(el,items.map(x=>'<div class="pgMenuItem" data-pg-item="'+esc(x)+'" style="padding:6px 8px;border-radius:3px;cursor:default">'+esc(x)+'</div>').join(""));
+ pgPopup.querySelectorAll("[data-pg-item]").forEach(item=>item.onclick=()=>{
+   const v=item.dataset.pgItem;
+   if(v==="Query Tool"){openQuery=true;refs.status.textContent="Query Tool opened"}
+   else if(v==="Refresh"){makeTree();refs.status.textContent="Object Explorer refreshed"}
+   else refs.status.textContent=v+" opened";
+   closePgPopup();
+ });
+}));
+document.querySelectorAll(".toolbar .tool").forEach(btn=>{
+ if(btn===refs.newQuery)return;
+ btn.addEventListener("click",e=>{
+   e.stopPropagation();const text=btn.textContent.trim();
+   if(/Refresh/i.test(text)){makeTree();refs.status.textContent="Object Explorer refreshed";return}
+   if(/Search objects/i.test(text)){showPgPopup(btn,'<div style="padding:6px"><b>Search objects</b><input id="pgObjectSearch" placeholder="table, schema, database" style="display:block;width:100%;margin-top:7px;height:27px;background:#171d22;color:#dce4ea;border:1px solid #4a5965;padding:0 7px"></div>');return}
+   if(/Register Server/i.test(text)){showPgPopup(btn,'<div style="padding:7px"><b>Register - Server</b><div style="margin-top:7px;color:#91a0ac">Server registration dialog opened in simulator.</div></div>');refs.status.textContent="Register Server opened";return}
+   if(/Preferences/i.test(text)){showPgPopup(btn,'<div style="padding:7px"><b>Preferences</b><div style="margin-top:7px">Browser · Query Tool · Paths · Miscellaneous</div></div>');refs.status.textContent="Preferences opened";return}
+ });
+});
+document.addEventListener("click",e=>{if(!e.target.closest(".menu")&&!e.target.closest(".toolbar")&&!e.target.closest("#pgAssistant")&&!pgPopup.contains(e.target))closePgPopup()});
+document.addEventListener("mouseover",e=>{const i=e.target.closest?.(".pgMenuItem");if(i)i.style.background="#34434e"});
+document.addEventListener("mouseout",e=>{const i=e.target.closest?.(".pgMenuItem");if(i)i.style.background=""});
+
 refs.tree.innerHTML='<div style="padding:12px;color:#8fa0ae">Waiting for pgAdmin lesson package…</div>';
 parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","executeQuery","setStatus"]},"*");
 })();
 </script>
-  <script src="../shared/highlighter.js?v=3"></script>\n  <script src="../shared/explanation-controls.js?v=3"></script>  <script src="../shared/layout-resize.js?v=3"></script>
+  <script src="../shared/highlighter.js?v=3"></script>
+  <script src="../shared/explanation-controls.js?v=4"></script>  <script src="../shared/layout-resize.js?v=3"></script>
 </body>
 </html>
