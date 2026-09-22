@@ -242,7 +242,43 @@ refs.editor.addEventListener("input",()=>{if(currentFile&&nodeAt(currentFile)?.t
 refs.terminal.addEventListener("pointerdown",e=>{if(e.button===0)setTimeout(focusInput,0)});
 document.querySelectorAll(".windowBtns .winBtn").forEach(btn=>btn.addEventListener("click",e=>{__clearTargetBoundary();const win=e.currentTarget.closest(".window"),action=e.currentTarget.dataset.action;if(!win)return;if(action==="maximize")win.classList.toggle("maximized");else if(action==="minimize"||action==="close")win.classList.remove("show")}));
 refs.assistantMin.onclick=e=>{e.stopPropagation();refs.assistant.classList.toggle("minimized")};refs.assistantClose.onclick=e=>{e.stopPropagation();refs.assistant.classList.remove("show")};
-refs.assistantHead.addEventListener("pointerdown",e=>{if(e.target.tagName==="BUTTON")return;const r=refs.assistant.getBoundingClientRect();assistantDrag={dx:e.clientX-r.left,dy:e.clientY-r.top};refs.assistant.setPointerCapture?.(e.pointerId)});refs.assistantHead.addEventListener("pointermove",e=>{if(!assistantDrag)return;const host=refs.app.getBoundingClientRect(),w=refs.assistant.offsetWidth,h=refs.assistant.offsetHeight;refs.assistant.style.left=Math.max(0,Math.min(host.width-w,e.clientX-host.left-assistantDrag.dx))+"px";refs.assistant.style.top=Math.max(30,Math.min(host.height-h,e.clientY-host.top-assistantDrag.dy))+"px";refs.assistant.style.right="auto";refs.assistant.style.bottom="auto"});refs.assistantHead.addEventListener("pointerup",()=>assistantDrag=null);
+let assistantDragFrame=0,assistantDragPoint=null;
+function finishAssistantDrag(e){
+  if(!assistantDrag)return;
+  if(assistantDragFrame){cancelAnimationFrame(assistantDragFrame);assistantDragFrame=0}
+  assistantDragPoint=null;
+  try{if(e&&refs.assistantHead.hasPointerCapture?.(e.pointerId))refs.assistantHead.releasePointerCapture(e.pointerId)}catch(_){}
+  assistantDrag=null;
+  refs.assistant.classList.remove("dragging");
+}
+function paintAssistantDrag(){
+  assistantDragFrame=0;
+  if(!assistantDrag||!assistantDragPoint)return;
+  const host=refs.app.getBoundingClientRect(),w=refs.assistant.offsetWidth,h=refs.assistant.offsetHeight;
+  const x=Math.max(6,Math.min(host.width-w-6,assistantDragPoint.x-host.left-assistantDrag.dx));
+  const y=Math.max(36,Math.min(host.height-h-6,assistantDragPoint.y-host.top-assistantDrag.dy));
+  refs.assistant.style.left=x+"px";
+  refs.assistant.style.top=y+"px";
+  refs.assistant.style.right="auto";
+  refs.assistant.style.bottom="auto";
+}
+refs.assistantHead.addEventListener("pointerdown",e=>{
+  if(e.button!==0||e.target.closest("button"))return;
+  e.preventDefault();
+  const r=refs.assistant.getBoundingClientRect();
+  assistantDrag={pointerId:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
+  assistantDragPoint={x:e.clientX,y:e.clientY};
+  refs.assistant.classList.add("dragging");
+  refs.assistantHead.setPointerCapture?.(e.pointerId);
+});
+refs.assistantHead.addEventListener("pointermove",e=>{
+  if(!assistantDrag||e.pointerId!==assistantDrag.pointerId)return;
+  assistantDragPoint={x:e.clientX,y:e.clientY};
+  if(!assistantDragFrame)assistantDragFrame=requestAnimationFrame(paintAssistantDrag);
+});
+refs.assistantHead.addEventListener("pointerup",finishAssistantDrag);
+refs.assistantHead.addEventListener("pointercancel",finishAssistantDrag);
+refs.assistantHead.addEventListener("lostpointercapture",finishAssistantDrag);
 window.addEventListener("message",e=>{const m=e.data;if(m?.type==="SIM_PACKAGE"){autoType=!!m.autoType;applyTheme(m.theme||"dark");loadPackage(m.package)}else if(m?.type==="SIM_SETTING"&&m.key==="theme")applyTheme(m.value);else if(m?.type==="SIM_SETTING"&&m.key==="autoType")autoType=!!m.value;else if(m?.type==="SIM_SEEK"){autoType=!!m.autoType;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)}else if(m?.type==="SIM_EXPLAIN")showAssistant(m)});
 
 /* target-boundary hygiene */
