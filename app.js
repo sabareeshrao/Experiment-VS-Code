@@ -283,13 +283,17 @@
 
     if (!engineReady[target]) return;
 
+    const actionNumber = step.localIndex + 1;
+    const actionTrail = actionNumber <= 5
+      ? Array.from({ length: actionNumber }, (_, i) => "Action " + (i + 1)).join(" > ")
+      : "Action 1 > … > Action " + (actionNumber - 2) + " > Action " + (actionNumber - 1) + " > Action " + actionNumber;
+
     frames[target].contentWindow.postMessage({
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
-      step: current + 1,
       stage: course.stages[step.stageIndex].title,
-      language: "Telugu (Romanized)"
+      actionTrail: "Actions performed: " + actionTrail
     }, "*");
   }
 
