@@ -3,74 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Java Practice Developer Playback</title>
-  <link rel="stylesheet" href="styles.css?v=25">
+  <title>Java Developer Journey Library</title>
+  <script>
+    (() => {
+      const q = new URLSearchParams(location.search);
+      if (q.has("step") || q.get("view") === "full") {
+        location.replace("player.html" + location.search + location.hash);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="library.css?v=1">
 </head>
 <body>
-  <div class="learning-shell" id="learningShell">
-    <aside class="progress-sidebar">
-      <div class="brand-row">
-        <div class="brand-mark"><span></span><span></span><span></span></div>
-        <div><strong>Java Project Playback</strong><small>Developer build simulation</small></div>
-      </div>
-
-      <div class="sidebar-tools">
-        <label class="search-box">
-          <span>⌕</span>
-          <input id="stepSearch" placeholder="Search steps...">
-        </label>
-        <button id="fullCodeBtn" class="full-code-btn" type="button">
-          <span class="full-code-icon">◫</span>
-          <span>View Full Code</span>
-        </button>
-      </div>
-
-      <nav id="stageList" class="stage-list" aria-label="Project stages"></nav>
-    </aside>
-
-    <main class="workspace">
-      <header class="workspace-head">
+  <main class="library-shell">
+    <header class="library-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
         <div>
-          <div class="head-meta"><div class="eyebrow" id="stageLabel">PROJECT PREVIEW</div><span class="software-badge" id="softwareBadge">IntelliJ IDEA</span></div>
-          <h1 id="stepTitle">Java Practice</h1>
+          <div class="eyebrow">DEVELOPER JOURNEY LIBRARY</div>
+          <h1>Java Full Stack Developer Playback</h1>
+          <p>Choose a book, open a chapter, and continue the same cumulative developer workspace.</p>
         </div>
-        <div class="head-actions">
-          <button id="toggleSidebar">Hide progress</button>
-          <button id="ideFullscreen">IDE fullscreen</button>
+      </div>
+      <a class="full-code-link" href="player.html?view=full">View Full Code</a>
+    </header>
+
+    <section class="journey-overview" aria-label="Journey overview">
+      <div class="overview-copy">
+        <span class="kicker">ONE CONTINUOUS JOURNEY</span>
+        <h2>Books organize the course. They never reset the project.</h2>
+        <p>Chapter and step numbers stay global across every book. Opening a later chapter reconstructs everything the developer has already done up to that point.</p>
+      </div>
+      <button id="continueBtn" class="continue-card" type="button">
+        <span class="continue-label">CONTINUE</span>
+        <strong id="continueTitle">Start the journey</strong>
+        <span id="continueMeta">Chapter 1 · Step 1</span>
+        <i>→</i>
+      </button>
+    </section>
+
+    <section class="stats" aria-label="Course totals">
+      <div><strong id="bookCount">0</strong><span>Books</span></div>
+      <div><strong id="chapterCount">0</strong><span>Chapters</span></div>
+      <div><strong id="stepCount">0</strong><span>Steps</span></div>
+      <div><strong>1</strong><span>Continuous workspace</span></div>
+    </section>
+
+    <section class="books-section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">BOOKSHELF</span>
+          <h2>Choose a book</h2>
         </div>
-      </header>
+        <p>Click a book to see its chapters.</p>
+      </div>
+      <div id="bookshelf" class="bookshelf"></div>
+    </section>
+  </main>
 
-      <section class="ide-shell" id="ideShell">
-        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" src="simulator/intellij/index.html?v=14" title="IntelliJ IDEA simulator"></iframe>
-        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" src="simulator/pgadmin/index.html?v=15" title="pgAdmin simulator"></iframe>
-        <iframe id="vscodeFrame" class="sim-frame" data-app="vscode" src="simulator/vscode/index.html?v=22" title="Visual Studio Code simulator"></iframe>
-        <iframe id="postmanFrame" class="sim-frame" data-app="postman" src="simulator/postman/index.html?v=14" title="Postman simulator"></iframe>
-        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" src="simulator/cmd/index.html?v=16" title="Windows Command Prompt simulator"></iframe>
-        <iframe id="linuxFrame" class="sim-frame" data-app="linux" src="simulator/linux/index.html?v=19" title="Linux workstation simulator"></iframe>
-        <iframe id="ssmsFrame" class="sim-frame" data-app="ssms" src="simulator/ssms/index.html?v=17" title="SQL Server Management Studio simulator"></iframe>
-        <iframe id="jiraFrame" class="sim-frame" data-app="jira" src="simulator/jira/index.html?v=11" title="Jira simulator"></iframe>
-        <iframe id="jenkinsFrame" class="sim-frame" data-app="jenkins" src="simulator/jenkins/index.html?v=3" title="Jenkins simulator"></iframe>
-      </section>
-
-      <footer class="playback-bar hidden" id="playbackBar">
-        <button id="prevBtn">← Prev</button>
-        <button id="replayBtn">↻ Replay step</button>
-        <div class="step-meter"><span id="stepCounter">0 / 0</span><div><i id="stepProgress"></i></div></div>
-        <button id="nextBtn" class="primary">Next →</button>
-      </footer>
-    </main>
-  </div>
-
-  <script src="project-data/part-01.js?v=1"></script>
-  <script src="project-data/part-02.js?v=1"></script>
-  <script src="project-data/part-03.js?v=1"></script>
-  <script src="project-data/part-04.js?v=1"></script>
-  <script src="project-data/part-05.js?v=1"></script>
-  <script src="project-data/part-06.js?v=1"></script>
-  <script src="project-data/part-07.js?v=1"></script>
-  <script src="project-data/part-08.js?v=1"></script>
-  <script src="project-data/index.js?v=1"></script>
-  <script src="lessons.js?v=27"></script>
-  <script src="app.js?v=31"></script>
+  <script src="lessons.js?v=28"></script>
+  <script src="library.js?v=1"></script>
 </body>
 </html>
