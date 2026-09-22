@@ -257,6 +257,12 @@ function visualBody(v){
  if(t==="scatter")return `<svg class="chartSvg" viewBox="0 0 240 120">${[[30,80],[70,60],[110,72],[145,40],[190,52],[215,25]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#4c8bf5"/>`).join("")}</svg>`;
  if(t==="gauge")return `<svg class="chartSvg" viewBox="0 0 220 120"><path d="M30 100 A80 80 0 0 1 190 100" fill="none" stroke="#ddd" stroke-width="18"/><path d="M30 100 A80 80 0 0 1 150 36" fill="none" stroke="#f2c811" stroke-width="18"/></svg>`;
  if(t==="funnel")return `<svg class="chartSvg" viewBox="0 0 220 120"><polygon points="20,15 200,15 170,42 50,42" fill="#f2c811"/><polygon points="50,48 170,48 145,75 75,75" fill="#d8ac00"/><polygon points="75,81 145,81 125,108 95,108" fill="#b58f00"/></svg>`;
+ if(t==="decomposition")return '<div class="aiVisual"><div class="aiRoot">Average Score <b>88.7</b></div><div class="aiBranch">Department</div><div class="aiLeaves"><span>CS 88</span><span>GIS 89</span><span>Data Science 95</span></div></div>';
+ if(t==="keyInfluencers")return '<div class="aiVisual"><b>What influences high scores?</b><div class="influenceRow"><span>Attendance ≥ 95%</span><i style="width:88%"></i></div><div class="influenceRow"><span>Java / Data Viz</span><i style="width:72%"></i></div><div class="influenceRow"><span>On Track status</span><i style="width:58%"></i></div></div>';
+ if(t==="qna")return '<div class="qnaVisual"><div class="qnaInput">Ask a question about your data</div><div>Try: average score by course</div></div>';
+ if(["map","filledMap"].includes(t))return '<svg class="chartSvg" viewBox="0 0 240 120"><path d="M25 25l55-12 45 18 55-8 35 32-20 45-62 8-44-16-60 9z" fill="#e7eef8" stroke="#8ca4bf"/><circle cx="75" cy="55" r="8" fill="#f2c811"/><circle cx="132" cy="72" r="6" fill="#4c8bf5"/><circle cx="175" cy="48" r="5" fill="#72b7b2"/></svg>';
+ if(t==="treemap")return '<div class="treeMap"><span style="flex:4">Java</span><span style="flex:3">GIS</span><span style="flex:2">Data</span><span style="flex:1">Business</span></div>';
+
  if(["clusteredColumn","stackedColumn","clusteredBar","stackedBar"].includes(t)&&arr(d.values).length){
   const vals=arr(d.values).map(Number),cats=arr(d.categories),max=Math.max(1,...vals);
   return `<svg class="chartSvg" viewBox="0 0 300 160"><line x1="35" y1="125" x2="285" y2="125" stroke="#999"/><line x1="35" y1="15" x2="35" y2="125" stroke="#bbb"/>${vals.map((v,i)=>{const h=Math.round(v/max*92),x=65+i*95;return `<rect x="${x}" y="${125-h}" width="48" height="${h}" rx="2" fill="${i%2?"#5b8ff9":"#f2c811"}"/><text x="${x+24}" y="${119-h}" text-anchor="middle" font-size="10" fill="currentColor">${esc(v)}</text><text x="${x+24}" y="143" text-anchor="middle" font-size="10" fill="currentColor">${esc(cats[i]??"")}</text>`}).join("")}</svg>`;
@@ -285,8 +291,24 @@ function renderFiltersPane(){
  const p=currentPage(),v=currentVisual();refs.filtersPane.innerHTML=`<div class="paneTitle">Filters</div><div class="filterCard"><b>Filters on this visual</b>${arr(state.filters.visual?.[v?.id]).map(f=>`<div>${esc(f.field)}: ${esc(f.value)}</div>`).join("")||"<div style='color:var(--muted)'>Add data fields here</div>"}</div><div class="filterCard"><b>Filters on this page</b>${arr(state.filters.page?.[p?.id]).map(f=>`<div>${esc(f.field)}: ${esc(f.value)}</div>`).join("")||"<div style='color:var(--muted)'>Add data fields here</div>"}</div><div class="filterCard"><b>Filters on all pages</b>${arr(state.filters.report).map(f=>`<div>${esc(f.field)}: ${esc(f.value)}</div>`).join("")||"<div style='color:var(--muted)'>Add data fields here</div>"}</div>`;
 }
 const visualTypes=["clusteredBar","clusteredColumn","stackedBar","stackedColumn","line","area","combo","ribbon","waterfall","funnel","scatter","pie","donut","treemap","map","filledMap","gauge","card","kpi","table","matrix","slicer","decomposition","keyInfluencers","qna"];
+function visualTypeIcon(t){
+ const common='viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"';
+ if(/bar/i.test(t))return '<svg '+common+'><path d="M5 6h12v3H5zm0 5h8v3H5zm0 5h15v3H5z" fill="currentColor"/></svg>';
+ if(/column|waterfall|funnel/i.test(t))return '<svg '+common+'><path d="M5 17V9h3v8zm5 0V5h3v12zm5 0v-6h3v6z" fill="currentColor"/></svg>';
+ if(/line|area|combo|ribbon/i.test(t))return '<svg '+common+'><polyline points="3,17 8,11 12,14 17,6 21,9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="11" r="1.3"/><circle cx="17" cy="6" r="1.3"/></svg>';
+ if(/pie|donut|treemap/i.test(t))return '<svg '+common+'><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 12V4a8 8 0 016.5 12.7z" fill="currentColor"/></svg>';
+ if(/scatter/i.test(t))return '<svg '+common+'><circle cx="7" cy="16" r="2"/><circle cx="11" cy="10" r="2"/><circle cx="16" cy="13" r="2"/><circle cx="19" cy="6" r="2"/></svg>';
+ if(/map/i.test(t))return '<svg '+common+'><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 12h16M12 4c3 3 3 13 0 16M12 4c-3 3-3 13 0 16" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+ if(/gauge/i.test(t))return '<svg '+common+'><path d="M5 17a7 7 0 0114 0M12 17l4-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+ if(/card|kpi/i.test(t))return '<svg '+common+'><rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 10h7M7 14h10" stroke="currentColor" stroke-width="1.5"/></svg>';
+ if(/table|matrix/i.test(t))return '<svg '+common+'><path d="M4 5h16v14H4zM4 10h16M10 5v14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+ if(/slicer/i.test(t))return '<svg '+common+'><path d="M4 5h16l-6 7v6l-4 2v-8z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+ if(/decomposition|influencer|qna/i.test(t))return '<svg '+common+'><path d="M12 3l1.4 4.1L18 9l-4.1 1.4L12 15l-1.4-4.1L6 9l4.1-1.9zM18 15l.7 2 2.1.8-2.1.7-.7 2.1-.8-2.1-2-.7 2-.8z" fill="currentColor"/></svg>';
+ return window.PBI_ICON?window.PBI_ICON("visual",18):"▥";
+}
+
 function renderVisualPane(){
- const v=currentVisual();refs.visualizationsPane.innerHTML=`<div class="paneTitle">Build visual</div><div class="visualGallery">${visualTypes.map(t=>`<button class="visualTypeBtn ${v?.type===t?"active":""}" title="${esc(prettyType(t))}" data-vtype="${t}">${esc(t.slice(0,2).toUpperCase())}</button>`).join("")}</div><div class="paneTitle">Field wells</div>${["x","y","legend","values","tooltips"].map(w=>`<div class="well"><div class="wellLabel">${w.toUpperCase()}</div>${arr(v?.fields?.[w]).map(f=>`<div class="chip">${esc(f)}</div>`).join("")}</div>`).join("")}<div class="paneTitle">Format visual</div><div class="filterCard">Title • Background • Border • Shadow • Data colors • Labels • Axes • Legend</div>`;
+ const v=currentVisual();refs.visualizationsPane.innerHTML=`<div class="paneTitle">Build visual</div><div class="visualGallery">${visualTypes.map(t=>`<button class="visualTypeBtn ${v?.type===t?"active":""}" title="${esc(prettyType(t))}" data-vtype="${t}">${visualTypeIcon(t)}</button>`).join("")}</div><div class="paneTitle">Field wells</div>${["x","y","legend","values","tooltips"].map(w=>`<div class="well"><div class="wellLabel">${w.toUpperCase()}</div>${arr(v?.fields?.[w]).map(f=>`<div class="chip">${esc(f)}</div>`).join("")}</div>`).join("")}<div class="paneTitle">Format visual</div><div class="filterCard">Title • Background • Border • Shadow • Data colors • Labels • Axes • Legend</div>`;
  refs.visualizationsPane.querySelectorAll("[data-vtype]").forEach(b=>b.onclick=()=>{if(v){v.type=b.dataset.vtype;renderAll();}});
 }
 function renderDataPane(){
