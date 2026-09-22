@@ -100,7 +100,7 @@ window.COURSE = {
       "steps": [
         {
           "title": "Create the Java project",
-          "why": "A developer begins with an empty Java project. This establishes the project name, JDK, and Java language level before source files are added.",
+          "why": "Oka developer empty Java project tho start chestadu. Source files rayadaniki mundu project peru, JDK, mariyu Java language level set avuthayi.",
           "action": {
             "action": "newProject",
             "data": {
@@ -113,7 +113,7 @@ window.COURSE = {
         },
         {
           "title": "Create the src folder",
-          "why": "Java source code needs a source location. In this teaching repository, Student.java lives directly under src.",
+          "why": "Java source code ki oka source location kavali. Ee teaching repo lo Student.java direct ga src folder kinda untundi.",
           "action": {
             "action": "createPackage",
             "data": {
@@ -125,7 +125,7 @@ window.COURSE = {
         },
         {
           "title": "Create Student.java",
-          "why": "We create the source file first. The class body starts empty so every member can be added deliberately.",
+          "why": "Munduga source file ni create chestam. Class body empty ga untundi kabatti prati member ni step-by-step ga add cheyyachu.",
           "action": {
             "action": "createFile",
             "data": {
@@ -138,7 +138,7 @@ window.COURSE = {
         },
         {
           "title": "Declare the Student class",
-          "why": "The class declaration defines a new Student type. Everything that describes a student will live inside these braces.",
+          "why": "Ee class declaration Student ane kottha type ni define chestundi. Student gurinchi data mariyu methods anni ee braces lopala untayi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -151,7 +151,7 @@ window.COURSE = {
         },
         {
           "title": "Add the rollNo field",
-          "why": "rollNo stores the student's roll number. The int type is appropriate because the value is numeric and whole.",
+          "why": "rollNo student roll number ni store chestundi. Idi whole number kabatti int type use chestunnam.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -164,7 +164,7 @@ window.COURSE = {
         },
         {
           "title": "Add the attendance field",
-          "why": "isPresent stores a true/false condition, so boolean expresses the intent directly.",
+          "why": "isPresent attendance true leka false ani store chestundi. Kabatti boolean type ee data ki correct choice.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -177,7 +177,7 @@ window.COURSE = {
         },
         {
           "title": "Add the marks array",
-          "why": "A student can have multiple marks. float[] lets one field hold several decimal numeric values.",
+          "why": "Oka student ki multiple marks untayi. float[] use chesthe chala decimal marks ni oka array lo store cheyyachu.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -190,7 +190,7 @@ window.COURSE = {
         },
         {
           "title": "Add the name field",
-          "why": "name stores text, so Java's String type is used.",
+          "why": "name text value kabatti Java lo String type use chestunnam.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -203,7 +203,7 @@ window.COURSE = {
         },
         {
           "title": "Add getRollNo",
-          "why": "A getter returns the current field value. It gives callers a clear method for reading rollNo.",
+          "why": "Getter current field value ni return chestundi. getRollNo() dwara caller rollNo ni clear ga read cheyyagaladu.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -216,7 +216,7 @@ window.COURSE = {
         },
         {
           "title": "Add setRollNo",
-          "why": "A setter receives a new value and assigns it to the object's field. this.rollNo makes it explicit that we are updating the current Student object.",
+          "why": "Setter kottha value ni teesukoni object field lo assign chestundi. this.rollNo ante current Student object lo unna rollNo field ani clear ga chupistundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -229,7 +229,7 @@ window.COURSE = {
         },
         {
           "title": "Add the presence getter",
-          "why": "For boolean properties, Java commonly uses an is... method name. isPresent() returns the attendance state.",
+          "why": "Boolean properties ki Java lo is... ane method naming common. isPresent() attendance state ni return chestundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -242,7 +242,7 @@ window.COURSE = {
         },
         {
           "title": "Add setPresent",
-          "why": "setPresent changes the boolean attendance value while keeping the field assignment inside the Student class.",
+          "why": "setPresent() student attendance boolean value ni update chestundi. Assignment Student class lopale control lo untundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -255,7 +255,7 @@ window.COURSE = {
         },
         {
           "title": "Add getMarks",
-          "why": "getMarks returns the marks array so callers can read the student's stored marks.",
+          "why": "getMarks() marks array ni return chestundi. Dini dwara caller student marks ni read cheyyagaladu.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -268,7 +268,7 @@ window.COURSE = {
         },
         {
           "title": "Add setMarks",
-          "why": "setMarks lets the caller provide the student's marks array and stores that array in the object.",
+          "why": "setMarks() caller ichina marks array ni teesukoni current Student object lo store chestundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -281,7 +281,7 @@ window.COURSE = {
         },
         {
           "title": "Add getName",
-          "why": "getName exposes the student's name through a method instead of requiring callers to work directly with the field.",
+          "why": "getName() student name ni return chestundi. Field ni direct ga access cheyyakunda method dwara read cheyyachu.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -294,7 +294,7 @@ window.COURSE = {
         },
         {
           "title": "Add setName",
-          "why": "setName receives a String and assigns it to this student's name field.",
+          "why": "setName() oka String value ni teesukoni current Student object yokka name field lo assign chestundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -307,7 +307,7 @@ window.COURSE = {
         },
         {
           "title": "Close the Student class",
-          "why": "The final closing brace completes the class definition. At this point Student.java matches the repository source.",
+          "why": "Final closing brace tho Student class complete avuthundi. Ee point lo Student.java repository source structure ni match chestundi.",
           "action": {
             "action": "typeCode",
             "data": {
@@ -320,7 +320,7 @@ window.COURSE = {
         },
         {
           "title": "Review the completed class structure",
-          "why": "A developer can now inspect the class members together: four fields plus getters and setters. The Structure view is useful for seeing the shape of a class without scanning every line.",
+          "why": "Structure view lo class motham scan cheyyakunda four fields, getters, setters anni oka sari choodachu. Developer ki class shape fast ga ardham avuthundi.",
           "action": {
             "action": "showFileStructure",
             "data": {}
@@ -335,7 +335,7 @@ window.COURSE = {
       "steps": [
         {
           "title": "Review Student fields before database work",
-          "why": "Before designing the table, the developer looks at the Java model so the database columns correspond to the data the application already represents.",
+          "why": "Database table design cheyyadaniki mundu developer Java model ni chustadu. App lo unna fields ki database columns correct ga correspond avvalani idi help chestundi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
@@ -346,7 +346,7 @@ window.COURSE = {
         },
         {
           "title": "Open pgAdmin",
-          "why": "Database work happens in a different application. The learning player now switches the center workspace from IntelliJ to pgAdmin without changing the project timeline.",
+          "why": "Database work vere application lo jaruguthundi. Project timeline marchakunda center workspace IntelliJ nundi pgAdmin ki switch avuthundi.",
           "software": "pgadmin",
           "action": {
             "action": "setStatus",
@@ -357,7 +357,7 @@ window.COURSE = {
         },
         {
           "title": "Select the java_practice database",
-          "why": "The query must run against the intended PostgreSQL database, so the developer selects java_practice in pgAdmin's Object Explorer.",
+          "why": "SQL correct PostgreSQL database meeda run avvali. Anduke developer Object Explorer lo java_practice database ni select chestadu.",
           "software": "pgadmin",
           "action": {
             "action": "selectTree",
@@ -368,7 +368,7 @@ window.COURSE = {
         },
         {
           "title": "Open the Query Tool",
-          "why": "pgAdmin's Query Tool is where the developer writes and executes SQL against the selected database.",
+          "why": "Selected database meeda SQL rayadaniki mariyu execute cheyyadaniki pgAdmin Query Tool ni open chestam.",
           "software": "pgadmin",
           "action": {
             "action": "openQueryTool",
@@ -379,7 +379,7 @@ window.COURSE = {
         },
         {
           "title": "Create the student table SQL",
-          "why": "The table mirrors the core Student fields: roll number, attendance, marks, and name. The simulator types the SQL as a developer would.",
+          "why": "student table lo Java Student class core fields ni mirror chestunnam: roll number, attendance, marks, mariyu name. SQL ni developer type chestunnattu simulator step-by-step ga chupistundi.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
@@ -390,7 +390,7 @@ window.COURSE = {
         },
         {
           "title": "Execute CREATE TABLE",
-          "why": "Executing the statement sends the schema change to PostgreSQL. A successful message confirms that the database accepted the command.",
+          "why": "CREATE TABLE execute chesthe schema change PostgreSQL ki pampabaduthundi. Success message vachindante database command ni accept chesindi ani ardham.",
           "software": "pgadmin",
           "action": {
             "action": "executeQuery",
@@ -403,7 +403,7 @@ window.COURSE = {
         },
         {
           "title": "Return to Student.java",
-          "why": "The developer switches back to IntelliJ. The Java project is reconstructed to the same state it had before the database handoff, proving that multiple applications can share one continuous lesson.",
+          "why": "Ippudu developer malli IntelliJ ki vastadu. pgAdmin ki vellina mundu unna Java project state ade vidham ga reconstruct avuthundi. Ila oka lesson lo multiple applications continuous ga pani cheyyagalavani prove avuthundi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
