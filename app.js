@@ -252,19 +252,12 @@
     if (!engineReady[target]) return;
 
     const stage = course.stages[step.stageIndex];
-    const completed = (stage.steps || [])
-      .slice(0, step.localIndex + 1)
-      .map(item => item.title);
-    const visibleActions = completed.length <= 4
-      ? completed
-      : ["…", ...completed.slice(-4)];
 
     frames[target].contentWindow.postMessage({
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
-      stage: stage.title,
-      actionTrail: "Actions performed: " + visibleActions.join(" > ")
+      stage: stage.title
     }, "*");
   }
 
