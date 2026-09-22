@@ -1949,15 +1949,6 @@ window.COURSE = {
           }
         },
         {
-          "title": "Open Activity Monitor",
-          "why": "Database sessions mariyu running commands troubleshoot cheyyadaniki Activity Monitor use chestam. Developer connection status ni ikkada inspect cheyyachu.",
-          "software": "ssms",
-          "action": {
-            "action": "openActivityMonitor",
-            "data": {}
-          }
-        },
-        {
           "title": "Save the SQL script",
           "why": "Useful schema and test queries ni source control lo preserve cheyyadaniki .sql file ga save chestam.",
           "software": "ssms",
@@ -1967,6 +1958,15 @@ window.COURSE = {
               "path": "C:\\JavaPractice\\sql\\student_setup.sql",
               "fileName": "student_setup.sql"
             }
+          }
+        },
+        {
+          "title": "Open Activity Monitor",
+          "why": "Database sessions mariyu running commands troubleshoot cheyyadaniki Activity Monitor use chestam. Developer connection status ni ikkada inspect cheyyachu.",
+          "software": "ssms",
+          "action": {
+            "action": "openActivityMonitor",
+            "data": {}
           }
         },
         {
