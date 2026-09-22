@@ -248,6 +248,59 @@
         "parameter",
         "credential"
       ]
+    },
+    "ssms": {
+      "registry": "SSMS_CAPABILITIES",
+      "features": [
+        "context-menu",
+        "nested-submenu",
+        "menu-shortcuts",
+        "menu-disabled-state",
+        "menu-check-state",
+        "adaptive-dialog",
+        "property-pages",
+        "radio-options",
+        "checkbox-options",
+        "dialog-tree",
+        "tool-window",
+        "tool-window-pin",
+        "object-explorer-tree",
+        "query-editor",
+        "result-grid",
+        "query-tabs",
+        "split-tab-groups",
+        "intellisense",
+        "execution-plan",
+        "client-statistics",
+        "object-dependencies",
+        "template-explorer",
+        "solution-explorer",
+        "registered-servers",
+        "properties-window",
+        "standard-reports",
+        "connection-color"
+      ],
+      "menus": [
+        "queryEditor",
+        "table",
+        "view",
+        "procedure",
+        "function",
+        "database",
+        "server",
+        "resultGrid"
+      ],
+      "toolWindows": [
+        "Template Explorer",
+        "Solution Explorer",
+        "Registered Servers",
+        "Properties"
+      ],
+      "dialogPresets": [
+        "Object Dependencies",
+        "Server Properties",
+        "Adaptive Dialog"
+      ]
     }
   }
 }
