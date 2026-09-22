@@ -11,14 +11,14 @@ if(!document.getElementById(STYLE_ID)){
     /* One explanation-card UI for every simulator.  Postman's compact card is
        the visual reference: neutral surface, quiet header, clear controls. */
     "[data-sim-explanation].simExplainUnified{position:fixed!important;z-index:20000!important;width:min(360px,calc(100vw - 18px));max-width:calc(100vw - 18px)!important;background:#242424!important;color:#e8e8e8!important;border:1px solid #4b4b4b!important;border-radius:6px!important;box-shadow:0 10px 34px rgba(0,0,0,.42)!important;overflow:hidden!important;user-select:none!important;touch-action:none!important}",
-    "body.theme-light [data-sim-explanation].simExplainUnified{background:#fff!important;color:#222!important;border-color:#888!important;box-shadow:0 10px 34px rgba(0,0,0,.25)!important}",
+    "body.theme-light [data-sim-explanation].simExplainUnified,body[data-sim-app='postman']:not(.theme-dark) [data-sim-explanation].simExplainUnified{background:#fff!important;color:#222!important;border-color:#888!important;box-shadow:0 10px 34px rgba(0,0,0,.25)!important}",
     "[data-sim-explanation].simExplainUnified.hidden{display:none!important}",
     "[data-sim-explanation].simExplainUnified.show{display:block!important}",
     "[data-sim-explanation].simExplainUnified.minimized,[data-sim-explanation].simExplainUnified.min{height:auto!important;max-height:none!important}",
     "[data-sim-explanation].simExplainUnified.minimized .simExplainGlobalBody,[data-sim-explanation].simExplainUnified.min .simExplainGlobalBody{display:none!important}",
 
     ".simExplainGlobalHead{height:34px!important;min-height:34px!important;display:flex!important;align-items:center!important;gap:6px!important;padding:0 7px 0 9px!important;background:#2b2b2b!important;color:#f1f1f1!important;border:0!important;border-bottom:1px solid #444!important;font:700 10px/1 'Segoe UI',Arial,sans-serif!important;cursor:grab!important;touch-action:none!important;user-select:none!important}",
-    "body.theme-light .simExplainGlobalHead{background:#f5f5f5!important;color:#222!important;border-bottom-color:#ddd!important}",
+    "body.theme-light .simExplainGlobalHead,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead{background:#f5f5f5!important;color:#222!important;border-bottom-color:#ddd!important}",
     ".simExplainDragging .simExplainGlobalHead{cursor:grabbing!important}",
     ".simExplainGlobalHead .grow{flex:1!important;min-width:6px!important}",
     ".simExplainGlobalHead strong,.simExplainGlobalHead #assistantTitle,.simExplainGlobalHead #pgAssistantTitle,.simExplainGlobalHead #ideAssistantTitle,.simExplainGlobalHead #ssmsAssistantTitle,.simExplainGlobalHead #jenkinsAssistantTitle{font:700 10px/1.2 'Segoe UI',Arial,sans-serif!important;color:inherit!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}",
@@ -28,15 +28,15 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainGlobalHead .ideAssistantTitles,.simExplainGlobalHead .assistantTitles,.simExplainGlobalHead .pgAssistantTitles,.simExplainGlobalHead .assistantTitles{min-width:0!important;flex:1!important}",
 
     ".simExplainGlobalHead button,.simExplainSizeBtn{box-sizing:border-box!important;width:25px!important;min-width:25px!important;height:25px!important;min-height:25px!important;padding:0!important;margin:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#ddd!important;box-shadow:none!important;outline:0!important;display:grid!important;place-items:center!important;font:600 15px/25px 'Segoe UI',Arial,sans-serif!important;text-align:center!important;opacity:1!important;visibility:visible!important;cursor:pointer!important}",
-    "body.theme-light .simExplainGlobalHead button,body.theme-light .simExplainSizeBtn{color:#555!important}",
+    "body.theme-light .simExplainGlobalHead button,body.theme-light .simExplainSizeBtn,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead button,body[data-sim-app='postman']:not(.theme-dark) .simExplainSizeBtn{color:#555!important}",
     ".simExplainGlobalHead button:hover,.simExplainSizeBtn:hover{background:#3a3a3a!important;color:#fff!important}",
-    "body.theme-light .simExplainGlobalHead button:hover,body.theme-light .simExplainSizeBtn:hover{background:#e7e7e7!important;color:#111!important}",
+    "body.theme-light .simExplainGlobalHead button:hover,body.theme-light .simExplainSizeBtn:hover,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead button:hover,body[data-sim-app='postman']:not(.theme-dark) .simExplainSizeBtn:hover{background:#e7e7e7!important;color:#111!important}",
     ".simExplainGlobalHead button:focus-visible,.simExplainSizeBtn:focus-visible{outline:2px solid #ff6c37!important;outline-offset:1px!important}",
     ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
     ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
 
     ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif!important;line-height:1.55!important;max-height:210px!important;overflow:auto!important;user-select:text!important}",
-    "body.theme-light .simExplainGlobalBody{background:#fff!important;color:#222!important}",
+    "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
     ".simExplainGlobalBody p{margin:0!important}",
     ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
 
