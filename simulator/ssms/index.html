@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL Server Management Studio Simulator</title>
+<style>
+:root{
+  --bg:#f3f3f3;--panel:#ffffff;--panel2:#f6f6f6;--toolbar:#eeeeee;--line:#c9c9c9;--line2:#dedede;
+  --text:#1f1f1f;--muted:#666;--blue:#0e639c;--blue2:#007acc;--sel:#cde8ff;--code:#ffffff;--codeText:#111;
+  --status:#007acc;--statusText:#fff;--accent:#005a9e;--yellow:#ffd400;--err:#d13438;--green:#107c10;
+  --scroll-thumb:rgba(96,96,96,.42);--scroll-thumb-hover:rgba(72,72,72,.62);--scroll-thumb-active:rgba(52,52,52,.75);--scroll-track:transparent;
+}
+body.theme-dark{
+  --bg:#1e1e1e;--panel:#252526;--panel2:#2d2d30;--toolbar:#2d2d30;--line:#3f3f46;--line2:#333337;
+  --text:#e7e7e7;--muted:#a8a8a8;--blue:#0e639c;--blue2:#1177bb;--sel:#264f78;--code:#1e1e1e;--codeText:#d4d4d4;
+  --status:#007acc;--statusText:#fff;--accent:#4aa3df;--err:#f14c4c;--green:#4ec9b0;
+  --scroll-thumb:rgba(185,185,185,.30);--scroll-thumb-hover:rgba(205,205,205,.48);--scroll-thumb-active:rgba(225,225,225,.60);--scroll-track:transparent;
+}
+*{box-sizing:border-box}
+
+/* Clean SSMS-style scrollbars -------------------------------------------------
+   Keep the track visually quiet and use a narrow floating thumb.  This applies
+   consistently to Object Explorer, query editors, result grids, IntelliSense,
+   modal content, document tabs and the toolbar. */
+*{
+  scrollbar-width:thin;
+  scrollbar-color:var(--scroll-thumb) var(--scroll-track);
+}
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-track{background:var(--scroll-track)}
+*::-webkit-scrollbar-thumb{
+  min-width:28px;min-height:28px;
+  background:var(--scroll-thumb);
+  border:3px solid transparent;
+  background-clip:padding-box;
+  border-radius:999px;
+}
+*::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover);border:2px solid transparent;background-clip:padding-box}
+*::-webkit-scrollbar-thumb:active{background:var(--scroll-thumb-active);border:2px solid transparent;background-clip:padding-box}
+*::-webkit-scrollbar-corner{background:transparent}
+*::-webkit-scrollbar-button{display:none;width:0;height:0}
+
+/* Scrollable SSMS work areas stay contained instead of chaining page scroll. */
+.toolbar,.objectTree,.docTabs,.codeViewport,.intelli,.resultBody,.gridWrap,.modal{
+  overscroll-behavior:contain;
+}
+
+/* Horizontal-only strips use an even slimmer bar so tabs/tools stay clean. */
+.toolbar::-webkit-scrollbar,.docTabs::-webkit-scrollbar{height:7px}
+.toolbar::-webkit-scrollbar-thumb,.docTabs::-webkit-scrollbar-thumb{border-width:2px}
+
+html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:12px}
+button,input,select{font:inherit}
+.app{width:100%;height:100vh;height:100dvh;display:grid;grid-template-rows:30px 26px 40px minmax(0,1fr) 22px;overflow:hidden;background:var(--bg)}
+.titlebar{display:flex;align-items:center;gap:8px;padding:0 8px;background:var(--panel);border-bottom:1px solid var(--line);min-width:0}
+.appMark{width:18px;height:18px;border-radius:2px;background:linear-gradient(135deg,#1878c7,#0c4f86);color:#fff;display:grid;place-items:center;font-size:9px;font-weight:700;flex:0 0 auto}
+.titleText{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.grow{flex:1}.winControls{display:flex;align-self:stretch}.winBtn{width:42px;border:0;background:transparent;color:var(--text)}.winBtn:hover{background:var(--panel2)}.winBtn.close:hover{background:#c42b1c;color:white}
+.menubar{display:flex;align-items:center;gap:1px;padding:0 5px;background:var(--panel);border-bottom:1px solid var(--line);min-width:0;overflow:hidden}.menuTop{border:0;background:transparent;color:var(--text);padding:4px 7px;border-radius:2px;white-space:nowrap}.menuTop:hover,.menuTop.active{background:var(--sel)}
+.toolbar{display:flex;align-items:center;gap:4px;padding:4px 6px;background:var(--toolbar);border-bottom:1px solid var(--line);min-width:0;overflow-x:auto;overflow-y:hidden;white-space:nowrap}.toolSep{width:1px;height:24px;background:var(--line);margin:0 2px;flex:0 0 auto}.toolBtn{height:28px;border:1px solid transparent;background:transparent;color:var(--text);padding:0 7px;border-radius:2px;display:flex;align-items:center;gap:5px;white-space:nowrap;flex:0 0 auto}.toolBtn:hover{border-color:var(--line);background:var(--panel)}.toolBtn.primary{color:#0a6f17}.toolIcon{font-size:14px}.dbSelect{height:27px;min-width:120px;max-width:180px;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:0 5px}
+.shell{min-width:0;min-height:0;overflow:hidden;display:grid;grid-template-columns:clamp(180px,23vw,300px) minmax(0,1fr)}
+.leftPane{min-width:0;min-height:0;display:grid;grid-template-rows:28px minmax(0,1fr);background:var(--panel);border-right:1px solid var(--line);overflow:hidden}.paneTitle{display:flex;align-items:center;gap:6px;padding:0 7px;font-weight:600;background:var(--panel2);border-bottom:1px solid var(--line)}.paneTitle .grow{flex:1}.miniBtn{border:0;background:transparent;color:var(--text);padding:2px 5px;border-radius:2px}.miniBtn:hover{background:var(--sel)}
+.objectTree{overflow:auto;padding:4px 0;min-height:0}.treeRow{height:22px;display:flex;align-items:center;gap:3px;white-space:nowrap;cursor:default;padding-right:5px}.treeRow:hover{background:var(--panel2)}.treeRow.selected{background:var(--sel)}.twisty{width:15px;text-align:center;color:var(--muted);flex:0 0 auto}.treeIcon{width:17px;text-align:center;flex:0 0 auto}.treeLabel{overflow:hidden;text-overflow:ellipsis}.treeMeta{color:var(--muted);font-size:10px;margin-left:4px}
+.workspace{min-width:0;min-height:0;overflow:hidden;display:grid;grid-template-rows:28px minmax(0,1fr)}.docTabs{display:flex;align-items:end;background:var(--panel2);border-bottom:1px solid var(--line);min-width:0;overflow-x:auto;overflow-y:hidden}.docTab{height:28px;min-width:120px;max-width:220px;display:flex;align-items:center;gap:5px;padding:0 8px;border-right:1px solid var(--line);background:var(--panel2);cursor:default}.docTab.active{background:var(--panel);border-top:2px solid var(--blue2)}.docTab .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.docTab .x{margin-left:auto;color:var(--muted)}
+.editorArea{min-width:0;min-height:0;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) clamp(92px,25vh,220px)}.queryGroups{min-width:0;min-height:0;overflow:hidden;display:grid;background:var(--code)}.queryGroups.single{grid-template-columns:1fr}.queryGroups.vertical{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.queryGroups.horizontal{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}.queryGroup{min-width:0;min-height:0;display:grid;grid-template-rows:24px minmax(0,1fr);overflow:hidden;border-right:1px solid var(--line)}.queryGroups.horizontal .queryGroup{border-right:0;border-bottom:1px solid var(--line)}.queryHead{display:flex;align-items:center;gap:8px;padding:0 7px;background:var(--panel2);border-bottom:1px solid var(--line);color:var(--muted);font-size:10px;min-width:0}.queryHead .qhTitle{color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.queryHead .qhMeta{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.codeViewport{position:relative;overflow:auto;background:var(--code);color:var(--codeText);font:13px/1.5 Consolas,"Courier New",monospace;min-height:0}.codeLines{min-width:max-content;padding:7px 0 30px}.codeLine{display:grid;grid-template-columns:44px minmax(500px,1fr);min-height:20px}.codeLine.selection{background:rgba(0,122,204,.18)}.lineNo{color:#858585;text-align:right;padding-right:10px;user-select:none}.lineText{white-space:pre;padding-right:30px}.lineText.syntaxError{text-decoration-line:underline;text-decoration-style:wavy;text-decoration-color:var(--err);text-decoration-thickness:1.5px}.kw{color:#0000ff}.fn{color:#795e26}.str{color:#a31515}.num{color:#098658}.com{color:#008000}.ident{color:inherit}body.theme-dark .kw{color:#569cd6}body.theme-dark .fn{color:#dcdcaa}body.theme-dark .str{color:#ce9178}body.theme-dark .num{color:#b5cea8}body.theme-dark .com{color:#6a9955}
+.intelli{position:absolute;z-index:30;min-width:210px;max-height:190px;overflow:auto;background:var(--panel);border:1px solid var(--line);box-shadow:0 3px 12px rgba(0,0,0,.3);display:none}.intelli.show{display:block}.intelliItem{padding:4px 7px;display:flex;gap:7px}.intelliItem.active,.intelliItem:hover{background:var(--sel)}.intelliKind{color:var(--muted);font-size:10px}.caretFake{display:inline-block;width:1px;height:14px;background:var(--codeText);vertical-align:-2px;animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+.resultsPane{min-width:0;min-height:0;display:grid;grid-template-rows:27px minmax(0,1fr);background:var(--panel);border-top:1px solid var(--line);overflow:hidden}.resultTabs{display:flex;align-items:end;background:var(--panel2);border-bottom:1px solid var(--line);padding-left:4px}.resultTab{height:26px;border:0;background:transparent;color:var(--text);padding:0 12px}.resultTab.active{background:var(--panel);border-top:2px solid var(--blue2)}.resultBody{min-height:0;overflow:auto;background:var(--panel)}.gridWrap{overflow:auto;min-height:100%}.resultGrid{border-collapse:collapse;min-width:100%;font-size:11px}.resultGrid th,.resultGrid td{border:1px solid var(--line2);padding:4px 7px;white-space:nowrap}.resultGrid th{background:var(--panel2);font-weight:600;text-align:left;position:sticky;top:0}.resultGrid tr.selected td{background:var(--sel)}.textResult,.messages{margin:0;padding:8px 10px;white-space:pre-wrap;font:11px/1.45 Consolas,monospace;color:var(--text)}.fileResult{padding:12px}.fileBadge{display:inline-block;padding:5px 8px;border:1px solid var(--line);background:var(--panel2)}
+.statusbar{display:flex;align-items:center;gap:12px;padding:0 7px;background:var(--status);color:var(--statusText);font-size:10px;min-width:0;overflow:hidden;white-space:nowrap}.statusbar .right{margin-left:auto;display:flex;gap:12px;min-width:0}.statusbar span{overflow:hidden;text-overflow:ellipsis}
+.popup{position:fixed;z-index:100;background:var(--panel);border:1px solid var(--line);box-shadow:0 4px 18px rgba(0,0,0,.28);display:none}.popup.show{display:block}.menuPopup{min-width:170px;padding:3px}.menuItem{padding:6px 9px;border-radius:2px;white-space:nowrap}.menuItem:hover{background:var(--sel)}
+.modalBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.18);z-index:110;display:none;align-items:center;justify-content:center}.modalBackdrop.show{display:flex}.modal{width:min(500px,calc(100vw - 30px));max-height:min(560px,calc(100vh - 30px));overflow:auto;background:var(--panel);border:1px solid #777;box-shadow:0 10px 30px rgba(0,0,0,.45)}.modalTitle{padding:9px 12px;background:var(--panel2);border-bottom:1px solid var(--line);font-weight:600}.modalBody{padding:14px}.formGrid{display:grid;grid-template-columns:135px minmax(0,1fr);gap:9px 8px;align-items:center}.formGrid input,.formGrid select{height:28px;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:0 6px;min-width:0}.modalActions{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--panel2)}.dialogBtn{min-width:78px;height:28px;border:1px solid #8c8c8c;background:var(--panel);color:var(--text)}.dialogBtn.primary{background:#0078d4;color:#fff;border-color:#0078d4}.connectLogo{display:flex;align-items:center;gap:10px;margin-bottom:12px}.connectMark{width:38px;height:38px;border-radius:4px;background:#0e639c;color:white;display:grid;place-items:center;font-weight:700}.smallNote{font-size:10px;color:var(--muted)}
+.notification{position:fixed;right:12px;bottom:34px;z-index:140;max-width:340px;padding:9px 12px;background:#323232;color:#fff;border-radius:3px;box-shadow:0 4px 14px rgba(0,0,0,.35);display:none}.notification.show{display:block}.boundary,.boundary.show{display:none!important}.sim-emphasis{background:rgba(53,116,240,.12)!important;box-shadow:none!important;outline:none!important}.treeRow.sim-emphasis,.docTab.sim-emphasis,.toolBtn.sim-emphasis,.resultTab.sim-emphasis{background:rgba(53,116,240,.15)!important}
+.emptyWorkspace{display:grid;place-items:center;height:100%;color:var(--muted);background:var(--code)}.emptyCard{text-align:center;max-width:360px}.emptyCard b{color:var(--text);font-size:16px}
+@media(max-width:900px){
+  .app{grid-template-rows:28px 24px 36px minmax(0,1fr) 20px}.shell{grid-template-columns:clamp(145px,25vw,220px)}
+  .toolbar{gap:2px}.toolBtn{height:26px;padding:0 5px;font-size:10px}.toolBtn .toolText{display:none}.dbSelect{min-width:90px;max-width:120px}.treeRow{height:20px;font-size:10px}
+  .editorArea{grid-template-rows:minmax(0,1fr) clamp(80px,23vh,160px)}.codeViewport{font-size:11px}.codeLine{grid-template-columns:34px minmax(420px,1fr)}.lineNo{padding-right:7px}
+}
+@media(max-width:600px){
+  *::-webkit-scrollbar{width:8px;height:8px}
+  .toolbar::-webkit-scrollbar,.docTabs::-webkit-scrollbar{height:6px}
+  .menubar .menuTop:nth-child(n+5){display:none}.shell{grid-template-columns:clamp(105px,32vw,160px) minmax(0,1fr)}.paneTitle{font-size:10px}.treeIcon{display:none}.treeRow{font-size:9px}.queryHead .qhMeta{display:none}
+  .queryGroups.vertical{grid-template-columns:1fr}.queryGroups.vertical .queryGroup:nth-child(2){display:none}.resultGrid{font-size:9px}.resultGrid th,.resultGrid td{padding:3px 5px}.statusbar{font-size:8px}
+}
+@media(max-height:430px){
+  .app{grid-template-rows:24px 22px 31px minmax(0,1fr) 18px}.titlebar{font-size:10px}.toolbar{padding:2px 4px}.toolBtn{height:24px}.editorArea{grid-template-rows:minmax(0,1fr) clamp(60px,22vh,100px)}.resultsPane{grid-template-rows:22px minmax(0,1fr)}.resultTab{height:21px;font-size:9px}.queryGroup{grid-template-rows:20px minmax(0,1fr)}.queryHead{font-size:8px}.codeViewport{font-size:9px}.codeLine{min-height:16px}.objectTree{font-size:9px}
+}
+
+/* Upgraded interactive query editor */
+.sqlEditorShell{position:absolute;inset:0;display:grid;grid-template-columns:44px minmax(0,1fr);background:var(--code);overflow:hidden}
+.sqlGutter{overflow:hidden;padding:7px 8px 30px 0;text-align:right;color:#858585;background:var(--code);font:13px/1.5 Consolas,"Courier New",monospace;user-select:none;white-space:pre}
+.sqlTextarea{width:100%;height:100%;resize:none;border:0;outline:0;padding:7px 30px 30px 8px;margin:0;background:var(--code);color:var(--codeText);font:13px/1.5 Consolas,"Courier New",monospace;tab-size:4;white-space:pre;overflow:auto;caret-color:var(--codeText)}
+.sqlTextarea::selection{background:rgba(0,122,204,.28)}
+.sqlEditorShell.sim-emphasis{background:rgba(53,116,240,.08)!important}.sqlEditorShell.sim-emphasis .sqlTextarea{background:rgba(53,116,240,.055)!important}
+.planView{padding:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;min-width:max-content}.planOp{min-width:130px;padding:10px;border:1px solid var(--line);background:var(--panel2);border-radius:4px;text-align:center;position:relative}.planOp+.planOp:before{content:'→';position:absolute;left:-17px;color:var(--muted);font-size:16px}.planCost{display:block;color:var(--muted);font-size:9px;margin-top:4px}
+.clientStats{padding:10px;display:grid;grid-template-columns:180px 1fr;gap:6px 12px;font:11px Consolas,monospace}.featurePanel{padding:10px}.featureTable{width:100%;border-collapse:collapse;font-size:11px}.featureTable th,.featureTable td{border:1px solid var(--line2);padding:5px 7px;text-align:left}.featureTable th{background:var(--panel2)}
+.ssmsAssistant{position:fixed;right:18px;bottom:34px;width:min(360px,44vw);z-index:220;background:#252629;color:#dfe1e5;border:1px solid #45474d;border-radius:6px;box-shadow:0 12px 32px rgba(0,0,0,.48);display:none;overflow:hidden}.ssmsAssistant.show{display:block}.ssmsAssistant.minimized .assistantBody{display:none}.assistantHead{height:31px;display:flex;align-items:center;gap:7px;padding:0 7px;background:#202124;border-bottom:1px solid #34363b;cursor:move;user-select:none}.assistantIcon{width:19px;height:19px;border-radius:4px;display:grid;place-items:center;background:#315f9c;color:#fff;font-size:8px;font-weight:800}.assistantTitles{min-width:0;flex:1}.assistantTitles strong,.assistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.assistantTitles strong{font-size:10px}.assistantTitles span{font-size:9px;color:#9da1a8}.assistantHead button{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px}.assistantHead button:hover{background:#34363b;color:#fff}.assistantBody{padding:9px 10px 10px;font:10.5px/1.5 "Segoe UI",Arial,sans-serif}.assistantMeta{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
+
+</style>
+</head>
+<body class="theme-light" data-sim-app="sql_server_management_studio">
+<div class="app" id="app">
+  <div class="titlebar" id="titlebar">
+    <div class="appMark">SS</div>
+    <div class="titleText" id="titleText">SQL Server Management Studio</div>
+    <div class="grow"></div>
+    <div class="winControls" aria-hidden="true"><button class="winBtn">—</button><button class="winBtn">□</button><button class="winBtn close">×</button></div>
+  </div>
+  <div class="menubar" id="menubar">
+    <button class="menuTop" data-menu="File">File</button><button class="menuTop" data-menu="Edit">Edit</button><button class="menuTop" data-menu="View">View</button><button class="menuTop" data-menu="Query">Query</button><button class="menuTop" data-menu="Project">Project</button><button class="menuTop" data-menu="Tools">Tools</button><button class="menuTop" data-menu="Window">Window</button><button class="menuTop" data-menu="Help">Help</button>
+  </div>
+  <div class="toolbar" id="toolbar">
+    <button class="toolBtn" data-target="connect"><span class="toolIcon">🔌</span><span class="toolText">Connect</span></button>
+    <button class="toolBtn" data-target="newQuery"><span class="toolIcon">▤</span><span class="toolText">New Query</span></button>
+    <button class="toolBtn" data-target="open"><span class="toolIcon">📂</span></button>
+    <button class="toolBtn" data-target="save"><span class="toolIcon">💾</span></button>
+    <div class="toolSep"></div>
+    <button class="toolBtn primary" data-target="execute"><span class="toolIcon">▶</span><span class="toolText">Execute</span></button>
+    <button class="toolBtn" data-target="parse"><span class="toolIcon">✓</span><span class="toolText">Parse</span></button>
+    <button class="toolBtn" data-target="cancel"><span class="toolIcon">■</span></button>
+    <div class="toolSep"></div>
+    <span class="smallNote">Database:</span><select class="dbSelect" id="dbSelect"></select>
+    <div class="toolSep"></div>
+    <button class="toolBtn" data-target="grid">▦</button><button class="toolBtn" data-target="text">≡</button><button class="toolBtn" data-target="file">⇩</button>
+  </div>
+  <div class="shell">
+    <aside class="leftPane" id="leftPane">
+      <div class="paneTitle"><span>Object Explorer</span><span class="grow"></span><button class="miniBtn" data-target="refreshObjectExplorer">⟳</button><button class="miniBtn" data-target="collapseAll">⌃</button></div>
+      <div class="objectTree" id="objectTree"></div>
+    </aside>
+    <main class="workspace" id="workspace">
+      <div class="docTabs" id="docTabs"></div>
+      <div class="editorArea" id="editorArea">
+        <div class="queryGroups single" id="queryGroups"></div>
+        <div class="resultsPane" id="resultsPane">
+          <div class="resultTabs"><button class="resultTab active" data-resulttab="results">Results</button><button class="resultTab" data-resulttab="messages">Messages</button><button class="resultTab" data-resulttab="plan">Execution Plan</button><button class="resultTab" data-resulttab="stats">Client Statistics</button></div>
+          <div class="resultBody" id="resultBody"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="statusbar" id="statusbar"><span id="statusLeft">Disconnected</span><div class="right"><span id="statusServer">No server</span><span id="statusDb">No database</span><span id="statusUser">—</span></div></div>
+</div>
+<div class="popup menuPopup" id="menuPopup"></div>
+<div class="intelli" id="intelli"></div>
+<div class="modalBackdrop" id="modalBackdrop"><div class="modal" id="modal"></div></div>
+<div class="notification" id="notification"></div>
+<div class="boundary" id="boundary"></div>
+<div class="ssmsAssistant" id="ssmsAssistant">
+  <div class="assistantHead" id="ssmsAssistantDrag"><div class="assistantIcon">AI</div><div class="assistantTitles"><strong id="ssmsAssistantTitle">Step explanation</strong><span id="ssmsAssistantStage">Developer guidance</span></div><button id="ssmsAssistantMin" title="Minimize">—</button><button id="ssmsAssistantClose" title="Hide">×</button></div>
+  <div class="assistantBody"><div class="assistantMeta" id="ssmsAssistantMeta">Step</div><div id="ssmsAssistantText"></div></div>
+</div>
+<script src="engine.js?v=2"></script>
+</body>
+</html>
