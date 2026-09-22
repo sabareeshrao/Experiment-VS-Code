@@ -326,14 +326,176 @@
     document.addEventListener("pointerup",persist,true);
   }
 
+  function applyIfDifferent(el,prop,value){
+    if(!el || value==null) return;
+    if(el.style[prop]!==value) el.style[prop]=value;
+  }
+
+  function restoreGenericPersistentElements(){
+    const generic=saved.generic||{};
+    document.querySelectorAll("[data-sim-persist]").forEach(el=>{
+      const key=el.dataset.simPersist;
+      if(!key) return;
+      const s=generic[key];
+      if(s){
+        const props=(el.dataset.simPersistProps||"width,height,left,top").split(",").map(x=>x.trim()).filter(Boolean);
+        for(const prop of props){
+          if(Number.isFinite(Number(s[prop]))) applyIfDifferent(el,prop,px(Number(s[prop])));
+        }
+        const vars=(el.dataset.simPersistVars||"").split(",").map(x=>x.trim()).filter(Boolean);
+        for(const name of vars){
+          if(s.vars && s.vars[name]!=null && el.style.getPropertyValue(name)!==String(s.vars[name])) el.style.setProperty(name,String(s.vars[name]));
+        }
+      }
+
+      if(el.dataset.simPersistWired==="1") return;
+      el.dataset.simPersistWired="1";
+      const capture=()=>{
+        if(root.classList.contains("sim-layout-dragging")) return;
+        const r=el.getBoundingClientRect();
+        const props=(el.dataset.simPersistProps||"width,height,left,top").split(",").map(x=>x.trim()).filter(Boolean);
+        const next={};
+        for(const prop of props){
+          if(prop==="width") next.width=r.width;
+          else if(prop==="height") next.height=r.height;
+          else if(prop==="left") next.left=r.left;
+          else if(prop==="top") next.top=r.top;
+        }
+        const vars=(el.dataset.simPersistVars||"").split(",").map(x=>x.trim()).filter(Boolean);
+        if(vars.length){
+          next.vars={};
+          for(const name of vars) next.vars[name]=el.style.getPropertyValue(name)||getComputedStyle(el).getPropertyValue(name);
+        }
+        commit({generic:{...(saved.generic||{}),[key]:next}});
+      };
+      el.addEventListener("pointerup",()=>requestAnimationFrame(capture),true);
+      if(typeof ResizeObserver==="function"){
+        const obs=new ResizeObserver(()=>{ if(!root.classList.contains("sim-layout-dragging")) capture(); });
+        obs.observe(el);
+      }
+    });
+  }
+
+  function reapplyKnownLayout(){
+    if(root.classList.contains("sim-layout-dragging")) return;
+
+    if(app==="intellij"){
+      if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",250)));
+      if(saved.rightW) root.style.setProperty("--rightW",px(get("rightW",270)));
+      if(saved.bottomH) root.style.setProperty("--bottomH",px(get("bottomH",190)));
+    }
+
+    if(app==="postman"){
+      const main=document.querySelector(".main");
+      if(main&&saved.sideW) main.style.setProperty("--sideW",px(get("sideW",255)));
+      if(saved.respH) root.style.setProperty("--respH",px(get("respH",270)));
+    }
+
+    if(app==="jira"){
+      if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",220)));
+      const panel=document.getElementById("issuePanel");
+      if(panel&&saved.issueW) panel.style.width=px(get("issueW",560));
+    }
+
+    if(app==="vscode"){
+      const work=document.querySelector(".workbench"),side=document.querySelector(".sidebar"),editor=document.getElementById("editorGroup");
+      if(work&&side&&innerWidth>=620&&saved.sideW){
+        const act=document.querySelector(".activityBar")?.getBoundingClientRect().width||48;
+        const w=clamp(get("sideW",300),140,Math.max(160,work.clientWidth-act-240));
+        const wanted=px(act)+" "+px(w)+" minmax(0,1fr)";
+        if(work.style.gridTemplateColumns!==wanted) work.style.gridTemplateColumns=wanted;
+        const h=document.getElementById("vscodeSideResize");if(h) h.style.left=px(act+w);
+      }
+      if(editor&&editor.classList.contains("panelOpen")&&Number.isFinite(Number(saved.panelH))&&Number(saved.panelH)>30){
+        const max=Math.max(90,editor.clientHeight-120);
+        const ph=clamp(Number(saved.panelH),90,max);
+        const wanted=px(ph);
+        if(editor.style.getPropertyValue("--panel-h")!==wanted) editor.style.setProperty("--panel-h",wanted);
+        const h=document.getElementById("vscodePanelResize");if(h) h.style.top=px(Math.max(2,editor.clientHeight-ph));
+      }
+    }
+
+    if(app==="pgadmin"){
+      const work=document.querySelector(".work"),main=document.querySelector(".work > .main");
+      if(work&&saved.sideW){
+        const w=clamp(get("sideW",280),150,Math.max(180,work.clientWidth-320));
+        work.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)";
+      }
+      if(main&&saved.resultsH){
+        const rh=clamp(get("resultsH",210),90,Math.max(110,main.clientHeight-150));
+        main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(rh);
+      }
+    }
+
+    if(app==="ssms"){
+      const shell=document.querySelector(".shell"),editor=document.getElementById("editorArea");
+      if(shell&&saved.sideW){
+        const w=clamp(get("sideW",260),160,Math.max(190,shell.clientWidth-360));
+        shell.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)";
+      }
+      if(editor&&saved.resultsH){
+        const rh=clamp(get("resultsH",180),90,Math.max(110,editor.clientHeight-130));
+        editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(rh);
+      }
+    }
+
+    if(app==="linux"){
+      const workspace=document.querySelector(".workspace"),winState=saved.windows||{};
+      if(workspace){
+        for(const w of workspace.querySelectorAll(".window")){
+          const s=winState[w.id];if(!s||w.classList.contains("maximized"))continue;
+          Object.assign(w.style,{left:px(s.left),top:px(s.top),width:px(s.width),height:px(s.height),right:"auto",bottom:"auto"});
+        }
+      }
+      const fileBody=document.querySelector(".fileBody");
+      if(fileBody&&saved.placesW) fileBody.style.gridTemplateColumns=px(get("placesW",150))+" 5px minmax(0,1fr)";
+    }
+
+    restoreGenericPersistentElements();
+  }
+
+  function scheduleRestore(){
+    for(const delay of [0,40,160,600,1250]) setTimeout(()=>requestAnimationFrame(reapplyKnownLayout),delay);
+  }
+
   const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,cmd:()=>{}};
-  requestAnimationFrame(()=>{try{setups[app]?.();setupAssistantPersistence()}catch(err){console.warn("layout-resize",app,err)}});
+  requestAnimationFrame(()=>{
+    try{
+      setups[app]?.();
+      setupAssistantPersistence();
+      restoreGenericPersistentElements();
+      reapplyKnownLayout();
+    }catch(err){console.warn("layout-resize",app,err)}
+  });
+
+  window.addEventListener("message",e=>{
+    const type=e.data?.type;
+    if(type==="SIM_SEEK"||type==="SIM_PACKAGE"||type==="SIM_SETTING") scheduleRestore();
+  });
+  window.addEventListener("resize",scheduleRestore);
+
+  // Global persistence contract for current and future simulators:
+  // - use SIM_UI_STATE.get/set for custom layout values
+  // - or add data-sim-persist="key" to a resizable/movable element
+  //   (optional data-sim-persist-props and data-sim-persist-vars).
+  window.SIM_UI_STATE={
+    app,
+    storageKey,
+    get(key,fallback){return saved[key]!==undefined?saved[key]:fallback},
+    set(key,value){commit({[key]:value});scheduleRestore();return value},
+    merge(patch){commit(patch||{});scheduleRestore();return {...saved}},
+    restore(){reapplyKnownLayout()},
+    snapshot(){return {...saved}}
+  };
 
   window.SIM_LAYOUT={
     reset(){
       try{localStorage.removeItem(storageKey)}catch(_){}
       location.reload();
     },
-    get(){return {...saved}}
+    get(){return {...saved}},
+    getValue(key,fallback){return saved[key]!==undefined?saved[key]:fallback},
+    set(patch){commit(patch||{});scheduleRestore();return {...saved}},
+    restore(){reapplyKnownLayout()}
   };
 })();
