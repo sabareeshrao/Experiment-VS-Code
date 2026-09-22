@@ -4,10 +4,30 @@
   const course = window.COURSE || { stages: [] };
   const $ = id => document.getElementById(id);
 
-  const frame = $("ideFrame");
+  const frames = {
+    intellij: $("ideFrame"),
+    pgadmin: $("pgadminFrame")
+  };
+
+  const appIds = {
+    intellij: "intellij_idea",
+    pgadmin: "pgadmin"
+  };
+
+  const appLabels = {
+    intellij: "IntelliJ IDEA",
+    pgadmin: "pgAdmin 4"
+  };
+
+  const engineReady = {
+    intellij: false,
+    pgadmin: false
+  };
+
   const stageList = $("stageList");
   const stepTitle = $("stepTitle");
   const stageLabel = $("stageLabel");
+  const softwareBadge = $("softwareBadge");
   const prevBtn = $("prevBtn");
   const nextBtn = $("nextBtn");
   const replayBtn = $("replayBtn");
@@ -23,7 +43,13 @@
   const flat = [];
   (course.stages || []).forEach((stage, stageIndex) => {
     (stage.steps || []).forEach((step, localIndex) => {
-      flat.push({ ...step, stageIndex, localIndex, globalIndex: flat.length });
+      flat.push({
+        ...step,
+        software: step.software || "intellij",
+        stageIndex,
+        localIndex,
+        globalIndex: flat.length
+      });
     });
   });
 
@@ -32,8 +58,8 @@
     ? Math.max(0, Math.min(flat.length - 1, Number.isFinite(requestedStep) && requestedStep > 0 ? requestedStep - 1 : 0))
     : 0;
 
-  let engineReady = false;
   let fullCodeMode = new URL(location.href).searchParams.get("view") === "full";
+  let activeSoftware = fullCodeMode ? "intellij" : (flat[current]?.software || "intellij");
   let openStages = new Set(flat.length ? [flat[current].stageIndex] : []);
 
   const fullProjectPackage =
@@ -41,8 +67,74 @@
       ? window.buildFullProjectPackage()
       : null;
 
-  function engineStepsThrough(index) {
-    return flat.slice(0, index + 1).map(step => step.action);
+  function normalizeSoftware(value) {
+    return value === "pgadmin" ? "pgadmin" : "intellij";
+  }
+
+  function switchWorkspace(software) {
+    activeSoftware = normalizeSoftware(software);
+
+    Object.entries(frames).forEach(([name, frame]) => {
+      if (!frame) return;
+      frame.classList.toggle("active", name === activeSoftware);
+      frame.setAttribute("aria-hidden", name === activeSoftware ? "false" : "true");
+    });
+
+    softwareBadge.textContent = appLabels[activeSoftware];
+    softwareBadge.classList.toggle("pgadmin", activeSoftware === "pgadmin");
+    softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
+  }
+
+  function stepsThrough(index, software) {
+    const target = normalizeSoftware(software);
+    return flat
+      .slice(0, index + 1)
+      .filter(step => normalizeSoftware(step.software) === target)
+      .map(step => step.action);
+  }
+
+  function sendCoursePackage(software) {
+    const target = normalizeSoftware(software);
+    if (!engineReady[target] || !course.package) return;
+
+    frames[target].contentWindow.postMessage({
+      type: "SIM_PACKAGE",
+      package: course.package,
+      theme: "dark",
+      autoType: true
+    }, "*");
+  }
+
+  function sendCoursePackageToAll() {
+    Object.keys(frames).forEach(sendCoursePackage);
+  }
+
+  function seekSoftware(index, software, animateFinal) {
+    const target = normalizeSoftware(software);
+    if (!engineReady[target] || !flat.length) return;
+
+    frames[target].contentWindow.postMessage({
+      type: "SIM_SEEK",
+      steps: stepsThrough(index, target),
+      animateFinal: !!animateFinal,
+      autoType: true
+    }, "*");
+  }
+
+  function explainCurrentStep() {
+    if (!flat.length || fullCodeMode) return;
+    const step = flat[current];
+    const target = normalizeSoftware(step.software);
+
+    if (target !== "intellij" || !engineReady.intellij) return;
+
+    frames.intellij.contentWindow.postMessage({
+      type: "SIM_EXPLAIN",
+      title: step.title,
+      text: step.why,
+      step: current + 1,
+      stage: course.stages[step.stageIndex].title
+    }, "*");
   }
 
   function updateUrlForFullCode() {
@@ -67,27 +159,37 @@
 
   function renderSidebar() {
     const q = stepSearch.value.trim().toLowerCase();
-    const numericQuery = /^\d+\.?$/.test(q) ? Number(q.replace(/\D/g, "")) : null;
+    const numericQuery = /^\d+\.?$/.test(q)
+      ? Number(q.replace(/\D/g, ""))
+      : null;
 
     stageList.innerHTML = "";
     if (!flat.length) return;
 
     let global = 0;
+
     (course.stages || []).forEach((stage, stageIndex) => {
       const indices = (stage.steps || []).map((_, i) => global + i);
       global += (stage.steps || []).length;
 
       const stageTextMatch = !q || stage.title.toLowerCase().includes(q);
-      const stepMatches = (stage.steps || []).some((step, i) =>
-        step.title.toLowerCase().includes(q) ||
-        (numericQuery !== null && indices[i] + 1 === numericQuery)
-      );
+      const stepMatches = (stage.steps || []).some((step, i) => {
+        const label = appLabels[normalizeSoftware(step.software || "intellij")].toLowerCase();
+        return (
+          step.title.toLowerCase().includes(q) ||
+          label.includes(q) ||
+          (numericQuery !== null && indices[i] + 1 === numericQuery)
+        );
+      });
 
       if (q && !stageTextMatch && !stepMatches) return;
 
       const block = document.createElement("section");
-      const isCurrent = !fullCodeMode && flat[current]?.stageIndex === stageIndex;
+      const isCurrent =
+        !fullCodeMode &&
+        flat[current]?.stageIndex === stageIndex;
       const isOpen = openStages.has(stageIndex) || !!q;
+
       block.className =
         "stage-block" +
         (isCurrent ? " current" : "") +
@@ -105,6 +207,7 @@
         else openStages.add(stageIndex);
         renderSidebar();
       };
+
       block.appendChild(head);
 
       const wrap = document.createElement("div");
@@ -112,10 +215,14 @@
 
       (stage.steps || []).forEach((step, localIndex) => {
         const gi = indices[localIndex];
+        const software = normalizeSoftware(step.software || "intellij");
+        const softwareLabel = appLabels[software];
+
         const numberMatch = numericQuery !== null && gi + 1 === numericQuery;
         const textMatch =
           step.title.toLowerCase().includes(q) ||
-          stage.title.toLowerCase().includes(q);
+          stage.title.toLowerCase().includes(q) ||
+          softwareLabel.toLowerCase().includes(q);
 
         if (q && !numberMatch && !textMatch) return;
 
@@ -124,8 +231,12 @@
           "step-link" +
           (!fullCodeMode && gi === current ? " active" : "") +
           (!fullCodeMode && gi < current ? " done" : "");
+
         button.innerHTML =
-          '<span class="step-number">' + (gi + 1) + ".</span>" + step.title;
+          '<span class="step-number">' + (gi + 1) + ".</span>" +
+          '<span class="step-main">' + step.title + "</span>" +
+          '<span class="step-software ' + software + '">' + softwareLabel + "</span>";
+
         button.onclick = () => goToStep(gi, false);
         wrap.appendChild(button);
       });
@@ -137,24 +248,27 @@
 
   function loadFullCode() {
     fullCodeMode = true;
+    switchWorkspace("intellij");
+
     fullCodeBtn.classList.add("active");
     fullCodeBtn.querySelector("span:last-child").textContent = "Full Code Open";
+
     stageLabel.textContent = "FULL PROJECT";
     stepTitle.textContent = "Java Practice";
     setPlaybackVisibility();
     renderSidebar();
     updateUrlForFullCode();
 
-    if (!engineReady || !fullProjectPackage) return;
+    if (!engineReady.intellij || !fullProjectPackage) return;
 
-    frame.contentWindow.postMessage({
+    frames.intellij.contentWindow.postMessage({
       type: "SIM_PACKAGE",
       package: fullProjectPackage,
       theme: "dark",
       autoType: false
     }, "*");
 
-    frame.contentWindow.postMessage({
+    frames.intellij.contentWindow.postMessage({
       type: "SIM_SEEK",
       steps: [],
       animateFinal: false,
@@ -162,28 +276,9 @@
     }, "*");
   }
 
-  function sendStagePackage() {
-    if (!course.package || !engineReady) return;
-    frame.contentWindow.postMessage({
-      type: "SIM_PACKAGE",
-      package: course.package,
-      theme: "dark",
-      autoType: true
-    }, "*");
-  }
-
-  function seek(index, animateFinal) {
-    if (!engineReady || !flat.length) return;
-    frame.contentWindow.postMessage({
-      type: "SIM_SEEK",
-      steps: engineStepsThrough(index),
-      animateFinal: !!animateFinal,
-      autoType: true
-    }, "*");
-  }
-
   function renderCurrentStep() {
     if (!flat.length) {
+      switchWorkspace("intellij");
       stageLabel.textContent = fullCodeMode ? "FULL PROJECT" : "PROJECT PREVIEW";
       stepTitle.textContent = "Java Practice";
       setPlaybackVisibility();
@@ -193,20 +288,13 @@
 
     const step = flat[current];
     const stage = course.stages[step.stageIndex];
+    const software = normalizeSoftware(step.software);
 
+    switchWorkspace(software);
     openStages.add(step.stageIndex);
+
     stageLabel.textContent = stage.title.toUpperCase();
     stepTitle.textContent = (current + 1) + ". " + step.title;
-
-    if (engineReady) {
-      frame.contentWindow.postMessage({
-        type: "SIM_EXPLAIN",
-        title: step.title,
-        text: step.why,
-        step: current + 1,
-        stage: stage.title
-      }, "*");
-    }
 
     stepCounter.textContent = (current + 1) + " / " + flat.length;
     stepProgress.style.width = (((current + 1) / flat.length) * 100) + "%";
@@ -216,6 +304,7 @@
     setPlaybackVisibility();
     renderSidebar();
     updateUrlForStep();
+    explainCurrentStep();
   }
 
   function goToStep(index, animateFinal) {
@@ -223,31 +312,45 @@
 
     const wasFullCode = fullCodeMode;
     fullCodeMode = false;
+
     fullCodeBtn.classList.remove("active");
     fullCodeBtn.querySelector("span:last-child").textContent = "View Full Code";
 
     current = Math.max(0, Math.min(flat.length - 1, index));
+    const software = normalizeSoftware(flat[current].software);
 
-    if (wasFullCode) sendStagePackage();
+    if (wasFullCode) sendCoursePackageToAll();
+
     renderCurrentStep();
-    seek(current, animateFinal);
+    seekSoftware(current, software, animateFinal);
   }
 
   window.addEventListener("message", event => {
-    if (event.source !== frame.contentWindow) return;
+    let software = null;
 
-    if (event.data?.type === "ENGINE_READY") {
-      engineReady = true;
-
-      if (fullCodeMode) {
-        loadFullCode();
-      } else if (flat.length) {
-        sendStagePackage();
-        setTimeout(() => {
-          seek(current, false);
-          renderCurrentStep();
-        }, 0);
+    for (const [name, frame] of Object.entries(frames)) {
+      if (event.source === frame?.contentWindow) {
+        software = name;
+        break;
       }
+    }
+
+    if (!software || event.data?.type !== "ENGINE_READY") return;
+
+    engineReady[software] = true;
+
+    if (fullCodeMode && software === "intellij") {
+      loadFullCode();
+      return;
+    }
+
+    sendCoursePackage(software);
+
+    if (!fullCodeMode && flat.length && normalizeSoftware(flat[current].software) === software) {
+      setTimeout(() => {
+        seekSoftware(current, software, false);
+        renderCurrentStep();
+      }, 0);
     }
   });
 
@@ -255,7 +358,10 @@
 
   prevBtn.onclick = () => goToStep(current - 1, false);
   nextBtn.onclick = () => goToStep(current + 1, true);
-  replayBtn.onclick = () => seek(current, true);
+  replayBtn.onclick = () => {
+    if (!flat.length || fullCodeMode) return;
+    seekSoftware(current, flat[current].software, true);
+  };
 
   stepSearch.oninput = renderSidebar;
 
@@ -269,6 +375,7 @@
 
   ideFullscreen.onclick = async () => {
     try {
+      const frame = frames[activeSoftware];
       if (!document.fullscreenElement) await frame.requestFullscreen();
       else await document.exitFullscreen();
     } catch (_) {}
@@ -276,20 +383,24 @@
 
   document.addEventListener("keydown", event => {
     if (fullCodeMode || !flat.length) return;
+
     if (event.key === "ArrowRight" && current < flat.length - 1) {
       goToStep(current + 1, true);
     }
+
     if (event.key === "ArrowLeft" && current > 0) {
       goToStep(current - 1, false);
     }
+
     if (
       event.key.toLowerCase() === "r" &&
       !/input|textarea/i.test(document.activeElement?.tagName || "")
     ) {
-      seek(current, true);
+      seekSoftware(current, flat[current].software, true);
     }
   });
 
+  switchWorkspace(activeSoftware);
   renderSidebar();
   setPlaybackVisibility();
 
@@ -297,6 +408,7 @@
     fullCodeBtn.classList.add("active");
     fullCodeBtn.querySelector("span:last-child").textContent = "Full Code Open";
     stageLabel.textContent = "FULL PROJECT";
+    stepTitle.textContent = "Java Practice";
   } else {
     renderCurrentStep();
   }
