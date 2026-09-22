@@ -48,11 +48,13 @@ Use:
 ### Focus-follow during auto typing
 Anything being auto-typed or actively demonstrated must stay visible inside its scrollable editor/terminal/panel.
 
-Use:
-- `window.SIM_FOCUS.follow(element, { block: "center" })` while typing
-- or mark the active element with `data-sim-focus="true"`
-
-The shared runtime also follows common focus classes such as `.sim-emphasis`, `.terminalCommandFocus`, `.focusLine`, `.codeLine.focus`, `.codeLine.changed`, and `.sim-code-change`.
+Rules for every current and future simulator:
+- Call `window.SIM_FOCUS.follow(...)` from the actual auto-typing/render path. Do not rely on generic highlight-class mutations to move scroll positions.
+- Editors/code: follow the current typed/changed line with `{ block: "center" }`.
+- Terminals/consoles: follow the current command/output with `{ block: "end", margin: 6 }`. Never re-center the command line after every character.
+- A future simulator may opt in declaratively with `data-sim-focus="true"`; the shared observer only watches that explicit marker.
+- Highlight only the exact typed code line, terminal command, field, row, or control. Never highlight or scroll an entire editor/window just because one line changed.
+- Terminal typing may use a narrow yellow command focus box like IntelliJ/CMD/Linux; it must not outline the full terminal window.
 
 ### Explanation box
 Do not implement simulator-specific explanation dragging. The shared explanation controller owns dragging, persistence, clamping, sizing, and position.
