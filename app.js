@@ -6,9 +6,6 @@
   const stageList = $("stageList");
   const stepTitle = $("stepTitle");
   const stageLabel = $("stageLabel");
-  const assistantCopy = $("assistantCopy");
-  const assistantMeta = $("assistantMeta");
-  const assistantCard = $("assistantCard");
   const prevBtn = $("prevBtn");
   const nextBtn = $("nextBtn");
   const replayBtn = $("replayBtn");
@@ -91,10 +88,15 @@
     openStages.add(step.stageIndex);
     stageLabel.textContent = stage.title.toUpperCase();
     stepTitle.textContent = (current + 1) + ". " + step.title;
-    assistantMeta.textContent = "Why this developer step?";
-    assistantCopy.textContent = step.why;
-    assistantCard.classList.remove("flash");
-    requestAnimationFrame(() => assistantCard.classList.add("flash"));
+    if (engineReady) {
+      frame.contentWindow.postMessage({
+        type:"SIM_EXPLAIN",
+        title:step.title,
+        text:step.why,
+        step:current + 1,
+        stage:stage.title
+      }, "*");
+    }
     stepCounter.textContent = (current + 1) + " / " + flat.length;
     stepProgress.style.width = (((current + 1) / flat.length) * 100) + "%";
     prevBtn.disabled = current === 0;
@@ -116,7 +118,17 @@
     if (e.data?.type === "ENGINE_READY") {
       engineReady = true;
       sendPackage();
-      setTimeout(() => seek(current, false), 0);
+      setTimeout(() => {
+        seek(current, false);
+        const step = flat[current];
+        frame.contentWindow.postMessage({
+          type:"SIM_EXPLAIN",
+          title:step.title,
+          text:step.why,
+          step:current + 1,
+          stage:course.stages[step.stageIndex].title
+        }, "*");
+      }, 0);
     }
   });
 
