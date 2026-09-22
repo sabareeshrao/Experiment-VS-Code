@@ -929,9 +929,12 @@
     else if(label==="Parse"&&t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}
     else if(label==="Display Estimated Execution Plan"&&t){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";}
     else if(label==="Object Explorer"){state.objectExplorerVisible=true;}
-    else if(label==="Registered Servers"){ui.featurePanel={title:"Registered Servers",text:"Local Server Groups\n"+(state.connection?.serverName||"SQL Server")};}
+    else if(label==="Registered Servers"){openNamedToolWindow("Registered Servers");}
+    else if(label==="Template Explorer"){openNamedToolWindow("Template Explorer");}
+    else if(label==="Solution Explorer"){openNamedToolWindow("Solution Explorer");}
     else if(label==="Options..."){ui.optionsOpen=true;}
-    else if(label==="SQL Server Profiler"){ui.featurePanel={title:"SQL Server Profiler",text:"Trace window opened in simulator."};}
+    else if(label==="SQL Server Profiler"){ui.featurePanel={title:"SQL Server Profiler",text:"Trace Properties\nEvents Selection\nData Columns\nColumn Filters\n\nTrace window ready."};}
+    else if(label==="Database Engine Tuning Advisor"){ui.featurePanel={title:"Database Engine Tuning Advisor",text:"Select workload and databases/tables to tune.\nRecommendations can include indexes and partitions."};}
     else if(label==="New Vertical Tab Group"){splitGroup("vertical",{});}
     else if(label==="New Horizontal Tab Group"){splitGroup("horizontal",{});}
     else if(label==="Windows..."){ui.windowsDialogOpen=true;}
@@ -941,12 +944,18 @@
   }
 
   document.addEventListener("mousedown", e=>{
-    if(!e.target.closest(".boundary,.modal,.sqlTextarea")) manualClear();
+    const contextItem=e.target.closest(".contextMenuItem[data-context-path]");
+    if(contextItem&&!contextItem.classList.contains("hasSubmenu")){
+      const entry=contextEntryAt(contextItem.dataset.contextPath);
+      if(entry?.command)invokeContextCommand(entry.command,entry,ui.contextMenu?.context||currentObjectContext());
+      ui.contextMenu=null;renderAll();e.preventDefault();e.stopPropagation();return;
+    }
+    if(!e.target.closest(".boundary,.modal,.sqlTextarea,.contextMenu,.ssmsToolWindow")) manualClear();
     const menuItem=e.target.closest(".menuItem");
     if(menuItem){invokeMenuCommand(menuItem.textContent.trim());e.preventDefault();return;}
     const dialogBtn=e.target.closest(".dialogBtn");
     if(dialogBtn&&!dialogBtn.dataset.target&&["Close","Cancel","OK"].includes(dialogBtn.textContent.trim())){
-      ui.optionsOpen=false;ui.connectOpen=false;ui.featurePanel=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;renderAll();e.preventDefault();return;
+      ui.optionsOpen=false;ui.connectOpen=false;ui.featurePanel=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;ui.adaptiveDialog=null;ui.dependenciesDialog=null;ui.serverPropertiesDialog=null;renderAll();e.preventDefault();return;
     }
     const menu=e.target.closest(".menuTop"); if(menu){ui.menu={name:menu.dataset.menu,items:defaultMenuItems(menu.dataset.menu)};renderTransients();e.preventDefault();return;}
     const tool=e.target.closest("[data-target]"); if(tool){const target=tool.dataset.target;if(target==="connect"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});}
@@ -969,6 +978,39 @@
     const close=e.target.closest("[data-close-tab]"); if(close){removeTab(close.dataset.closeTab);renderAll();return;}
     const rt=e.target.closest("[data-resulttab]");if(rt){ui.resultTab=rt.dataset.resulttab;renderResults();return;}
     const win=e.target.closest(".winBtn");if(win){state.statusText=win.classList.contains("close")?"Close window invoked":win.textContent.trim()==="□"?"Maximize window invoked":"Minimize window invoked";renderStatus();return;}
+  });
+
+  document.addEventListener("contextmenu",e=>{
+    const ed=e.target.closest?.("[data-sql-editor]");
+    const row=e.target.closest?.(".treeRow");
+    const result=e.target.closest?.(".resultGrid");
+    if(ed){state.activeQueryId=ed.dataset.sqlEditor;openContextMenu("queryEditor",e.clientX,e.clientY,{kind:"queryEditor",tab:state.activeQueryId});e.preventDefault();return;}
+    if(result){openContextMenu("resultGrid",e.clientX,e.clientY,{kind:"resultGrid"});e.preventDefault();return;}
+    if(row){
+      state.selectedObject=row.dataset.node||state.selectedObject;
+      const ctx=currentObjectContext();
+      if(["server","database","table","view","procedure","function"].includes(ctx.kind)){
+        openContextMenu(ctx.kind,e.clientX,e.clientY,ctx);renderObjectTree();e.preventDefault();return;
+      }
+    }
+  });
+
+  refs.toolClose?.addEventListener("click",()=>{ui.toolWindow=null;renderToolWindow();});
+  refs.toolPin?.addEventListener("click",()=>{ui.toolWindowPinned=!ui.toolWindowPinned;renderToolWindow();});
+  refs.toolWindow?.addEventListener("mouseleave",()=>{if(ui.toolWindow&&ui.toolWindowPinned===false)refs.toolWindow.classList.remove("show");});
+  refs.toolWindow?.addEventListener("mouseenter",()=>{if(ui.toolWindow)refs.toolWindow.classList.add("show");});
+
+  document.addEventListener("mousedown",e=>{
+    const page=e.target.closest?.("[data-property-page]");
+    if(page&&ui.serverPropertiesDialog){ui.serverPropertiesDialog.page=page.dataset.propertyPage;renderModal();e.preventDefault();e.stopPropagation();}
+  },true);
+
+  document.addEventListener("change",e=>{
+    if(e.target.matches?.("[data-adaptive-field]")&&ui.adaptiveDialog){
+      const f=(ui.adaptiveDialog.fields||[]).find(x=>x.name===e.target.dataset.adaptiveField);
+      if(f)f.value=e.target.type==="checkbox"?e.target.checked:e.target.value;
+    }
+    if(e.target.name==="dependencyDirection"&&ui.dependenciesDialog){ui.dependenciesDialog.direction=e.target.value;renderModal();}
   });
 
   refs.dbSelect.addEventListener("change",()=>{state.currentDatabase=refs.dbSelect.value;const t=activeTab();if(t)t.database=state.currentDatabase;renderAll();});
@@ -1022,5 +1064,5 @@
   document.addEventListener('click',e=>{if(e.target.matches('[data-sql-editor]'))updatePosition(e.target)});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){ui.optionsOpen=false;ui.connectOpen=false;ui.featurePanel=null;clearTransients();renderTransients()}if(e.key==='F8'){e.preventDefault();state.objectExplorerVisible=!state.objectExplorerVisible;renderAll()}},true);
   state=defaultState();applyTheme(readSavedTheme()||"light",false);renderAll();
-  parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
+  parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS,capabilities:capabilityRegistry().features||[]},"*");
 })();
