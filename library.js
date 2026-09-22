@@ -23,7 +23,6 @@
   const lastRaw=Number(localStorage.getItem("developerJourney.lastStep.v1"));
   const lastStep=Number.isFinite(lastRaw)&&lastRaw>=1&&lastRaw<=totalSteps?lastRaw:1;
   let activeFilter="all";
-  let selectedBook=-1;
 
   function stageForStep(stepNumber){
     const zero=Math.max(0,stepNumber-1);
@@ -39,7 +38,7 @@
 
   function chapterIndices(book){
     const range=chapterRange(book),out=[];
-    for(let c=range.start;c<=range.end;c++) if(stages[c-1]) out.push(c-1);
+    for(let c=range.start;c<=range.end;c++) if(stages[c-1])out.push(c-1);
     return out;
   }
 
@@ -71,7 +70,7 @@
     return tags.slice(0,2);
   }
 
-  const currentStage=stageForStep(lastStep);
+  const resumeStage=stageForStep(lastStep);
 
   $("bookCount").textContent=books.length;
   $("sidebarBookCount").textContent=books.length;
@@ -97,17 +96,35 @@
 
   function setFilter(value){
     activeFilter=value;
-    document.querySelectorAll(".side-filter,.book-filter").forEach(btn=>btn.classList.toggle("active",btn.dataset.filter===value));
+    $("catalogSearch").value="";
+    document.querySelectorAll(".side-filter,.book-filter").forEach(btn=>{
+      btn.classList.toggle("active",btn.dataset.filter===value);
+    });
     renderBooks();
   }
 
-  $("catalogSearch").addEventListener("input",renderBooks);
+  $("catalogSearch").addEventListener("input",()=>{
+    activeFilter="all";
+    document.querySelectorAll(".side-filter,.book-filter").forEach(btn=>{
+      btn.classList.toggle("active",btn.dataset.filter==="all");
+    });
+    renderBooks();
+  });
 
-  function matchesBook(book,index,query){
-    if(activeFilter!=="all"&&String(index)!==activeFilter)return false;
+  function chapterMatches(stage,query){
     if(!query)return true;
-    const stagesText=chapterIndices(book).map(i=>stages[i]?.title||"").join(" ");
-    return ((book.title||"")+" "+(book.subtitle||"")+" "+stagesText).toLowerCase().includes(query);
+    return ((stage?.title||"")+" "+(stage?.subtitle||"")).toLowerCase().includes(query);
+  }
+
+  function matchingChapters(book,query){
+    const indices=chapterIndices(book);
+    if(!query)return indices;
+
+    const direct=indices.filter(i=>chapterMatches(stages[i],query));
+    if(direct.length)return direct;
+
+    const bookText=((book.title||"")+" "+(book.subtitle||"")+" "+tagsForBook(book).join(" ")).toLowerCase();
+    return bookText.includes(query)?indices:[];
   }
 
   function renderBooks(){
@@ -117,16 +134,20 @@
     let visible=0;
 
     books.forEach((book,index)=>{
-      if(!matchesBook(book,index,query))return;
-      visible++;
+      if(activeFilter!=="all"&&String(index)!==activeFilter)return;
+
       const stats=bookStats(book);
+      const shownChapters=matchingChapters(book,query);
+      if(query&&!shownChapters.length)return;
+
+      visible++;
       const range=chapterRange(book);
       const card=document.createElement("article");
-      card.className="book-card"+(selectedBook===index?" selected":"");
+      card.className="book-card";
       const tags=tagsForBook(book).map(tag=>'<span class="tag">'+escapeHtml(tag)+'</span>').join("");
 
       card.innerHTML=
-        '<div class="book-banner" role="button" tabindex="0">'+
+        '<div class="book-banner">'+
           '<span class="book-badge">Book '+(index+1)+'</span>'+
           '<h2>'+escapeHtml(shortText(book.title,42))+'</h2>'+
           '<p>Chapters '+range.start+'–'+range.end+' · '+stats.steps+' continuous steps</p>'+
@@ -135,54 +156,32 @@
         '<div class="book-body">'+
           '<h3 class="book-title">'+escapeHtml(book.title||("Book "+(index+1)))+'</h3>'+
           '<div class="book-meta">'+stats.chapters+' chapters · '+stats.steps+' steps</div>'+
-          '<div class="book-footer"><div class="book-tags">'+tags+'</div><button class="open-book" type="button" title="Open chapters">↗</button></div>'+
-        '</div>';
+          '<div class="book-footer"><div class="book-tags">'+tags+'</div><button class="open-book" type="button" title="Start this book">↗</button></div>'+
+        '</div>'+
+        '<div class="book-chapters"></div>';
 
-      const open=()=>selectBook(index);
-      card.querySelector(".book-banner").onclick=open;
-      card.querySelector(".book-banner").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}};
-      card.querySelector(".open-book").onclick=open;
+      const chapterBox=card.querySelector(".book-chapters");
+      shownChapters.forEach(stageIndex=>{
+        const stage=stages[stageIndex];
+        const first=stepStarts[stageIndex]+1;
+        const count=(stage.steps||[]).length;
+        const last=first+count-1;
+        const row=document.createElement("button");
+        row.type="button";
+        row.className="chapter-row";
+        const resume=stageIndex===resumeStage?'<em class="resume">Resume</em>':'';
+        row.innerHTML=
+          '<strong>Ch '+(stageIndex+1)+' · '+escapeHtml(stage.title.replace(/^\d+:\s*/,""))+'</strong>'+
+          '<span><i>Steps '+first+'–'+last+' · '+count+' steps</i>'+resume+'</span>';
+        row.onclick=()=>go(first);
+        chapterBox.appendChild(row);
+      });
+
+      card.querySelector(".open-book").onclick=()=>go(stepStarts[stats.indices[0]]+1);
       shelf.appendChild(card);
     });
 
     $("emptyState").classList.toggle("hidden",visible>0);
-  }
-
-  function selectBook(index){
-    selectedBook=index;
-    const book=books[index];
-    const stats=bookStats(book);
-    const panel=$("selectedBookPanel");
-    panel.classList.remove("hidden");
-    panel.innerHTML=
-      '<div class="selected-head">'+
-        '<div class="selected-title"><small>Book '+(index+1)+' · '+stats.chapters+' chapters</small><h2>'+escapeHtml(book.title||("Book "+(index+1)))+'</h2></div>'+
-        '<button class="close-panel" type="button" aria-label="Close chapter list">×</button>'+
-      '</div>'+
-      '<div class="chapter-grid"></div>';
-
-    const grid=panel.querySelector(".chapter-grid");
-    stats.indices.forEach(stageIndex=>{
-      const stage=stages[stageIndex];
-      const first=stepStarts[stageIndex]+1;
-      const count=(stage.steps||[]).length;
-      const last=first+count-1;
-      const btn=document.createElement("button");
-      btn.type="button";
-      btn.className="chapter-row"+(stageIndex===currentStage?" current":"");
-      btn.innerHTML='<strong>Ch '+(stageIndex+1)+' · '+escapeHtml(stage.title.replace(/^\d+:\s*/,""))+'</strong><span>Steps '+first+'–'+last+' · '+count+' steps</span>';
-      btn.onclick=()=>go(first);
-      grid.appendChild(btn);
-    });
-
-    panel.querySelector(".close-panel").onclick=()=>{
-      selectedBook=-1;
-      panel.classList.add("hidden");
-      renderBooks();
-    };
-
-    renderBooks();
-    panel.scrollIntoView({block:"nearest",behavior:"smooth"});
   }
 
   function escapeHtml(value){
