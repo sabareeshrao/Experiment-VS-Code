@@ -21,7 +21,7 @@ button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-ro
 .hidden{display:none!important}
 </style>
 </head>
-<body>
+<body data-sim-app="pgadmin">
 <div class="app">
   <div class="title"><span class="pg">🐘</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><span class="win">— □ ×</span></div>
   <div class="menu"><span>File</span><span>Object</span><span>Tools</span><span>Help</span></div>
@@ -165,5 +165,6 @@ refs.tree.innerHTML='<div style="padding:12px;color:#8fa0ae">Waiting for pgAdmin
 parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","executeQuery","setStatus"]},"*");
 })();
 </script>
-  <script src="../shared/highlighter.js?v=3"></script>\n  <script src="../shared/explanation-controls.js?v=2"></script></body>
+  <script src="../shared/highlighter.js?v=3"></script>\n  <script src="../shared/explanation-controls.js?v=2"></script>  <script src="../shared/layout-resize.js?v=1"></script>
+</body>
 </html>
