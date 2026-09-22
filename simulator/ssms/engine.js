@@ -650,6 +650,12 @@
       await applyStep(st,!!animateFinal && i===steps.length-1,token); if(token!==seekToken)return;
     }
     allowBoundary=true;
+    // Auto-typing may focus the SQL textarea. Release only simulator-created
+    // typing focus after replay so lesson Left/Right navigation is usable again.
+    if(ui.typingTab===null){
+      const active=document.activeElement;
+      if(active?.matches?.("[data-sql-editor]")) active.blur();
+    }
   }
 
   function manualClear(){clearBoundary();ui.menu=null;ui.notification="";ui.intelli=null;renderTransients();}
