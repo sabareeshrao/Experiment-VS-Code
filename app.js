@@ -39,12 +39,18 @@
 
   function renderSidebar() {
     const q = stepSearch.value.trim().toLowerCase();
+    const numericQuery = /^\d+\.?$/.test(q) ? Number(q.replace(/\D/g, "")) : null;
     stageList.innerHTML = "";
     let global = 0;
     course.stages.forEach((stage, stageIndex) => {
       const indices = stage.steps.map((_,i)=>global+i);
       global += stage.steps.length;
-      const matches = !q || stage.title.toLowerCase().includes(q) || stage.steps.some(s => s.title.toLowerCase().includes(q));
+      const stageTextMatch = !q || stage.title.toLowerCase().includes(q);
+      const stepMatches = stage.steps.some((s,i) =>
+        s.title.toLowerCase().includes(q) ||
+        (numericQuery !== null && indices[i] + 1 === numericQuery)
+      );
+      const matches = !q || stageTextMatch || stepMatches;
       if (!matches) return;
 
       const block = document.createElement("section");
@@ -62,7 +68,9 @@
       wrap.className = "steps-wrap";
       stage.steps.forEach((step, localIndex) => {
         const gi = indices[localIndex];
-        if (q && !step.title.toLowerCase().includes(q) && !stage.title.toLowerCase().includes(q)) return;
+        const numberMatch = numericQuery !== null && gi + 1 === numericQuery;
+        const textMatch = step.title.toLowerCase().includes(q) || stage.title.toLowerCase().includes(q);
+        if (q && !numberMatch && !textMatch) return;
         const b = document.createElement("button");
         b.className = "step-link" + (gi === current ? " active" : "") + (gi < current ? " done" : "");
         b.innerHTML = '<span class="step-number">'+(gi+1)+'.</span>'+step.title;
