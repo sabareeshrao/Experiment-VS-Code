@@ -1596,12 +1596,12 @@ window.COURSE = {
       ]
     },
     {
-      "title": "2: Database Software Handoff",
-      "subtitle": "Test a realistic IntelliJ → pgAdmin → IntelliJ workflow while keeping one continuous project timeline.",
+      "title": "2: PostgreSQL / pgAdmin Developer Workflow",
+      "subtitle": "21-step IntelliJ → pgAdmin → IntelliJ PostgreSQL workflow with schema creation, data verification, filtering, EXPLAIN, and indexing.",
       "steps": [
         {
-          "title": "Review Student fields before database work",
-          "why": "Database table design cheyyadaniki mundu developer Java model ni chustadu. App lo unna fields ki database columns correct ga correspond avvalani idi help chestundi.",
+          "title": "Review Student fields before PostgreSQL work",
+          "why": "Database schema rayadaniki mundu developer Student.java fields ni review chestadu. Java model mariyu PostgreSQL columns madhya mapping correct ga undali.",
           "software": "intellij",
           "action": {
             "action": "openFile",
@@ -1611,8 +1611,8 @@ window.COURSE = {
           }
         },
         {
-          "title": "Open pgAdmin",
-          "why": "Database work vere application lo jaruguthundi. Project timeline marchakunda center workspace IntelliJ nundi pgAdmin ki switch avuthundi.",
+          "title": "Open pgAdmin for the Java Practice database",
+          "why": "PostgreSQL database work kosam developer pgAdmin ki switch avuthadu. Project timeline same ga untundi, active software matrame maruthundi.",
           "software": "pgadmin",
           "action": {
             "action": "setStatus",
@@ -1623,7 +1623,7 @@ window.COURSE = {
         },
         {
           "title": "Select the java_practice database",
-          "why": "SQL correct PostgreSQL database meeda run avvali. Anduke developer Object Explorer lo java_practice database ni select chestadu.",
+          "why": "SQL correct database context lo execute avvali. Anduke Object Explorer lo java_practice database ni select chestam.",
           "software": "pgadmin",
           "action": {
             "action": "selectTree",
@@ -1633,8 +1633,8 @@ window.COURSE = {
           }
         },
         {
-          "title": "Open the Query Tool",
-          "why": "Selected database meeda SQL rayadaniki mariyu execute cheyyadaniki pgAdmin Query Tool ni open chestam.",
+          "title": "Open the PostgreSQL Query Tool",
+          "why": "DDL, INSERT, SELECT laanti SQL commands rayadaniki pgAdmin Query Tool ni open chestam.",
           "software": "pgadmin",
           "action": {
             "action": "openQueryTool",
@@ -1644,32 +1644,258 @@ window.COURSE = {
           }
         },
         {
-          "title": "Create the student table SQL",
-          "why": "student table lo Java Student class core fields ni mirror chestunnam: roll number, attendance, marks, mariyu name. SQL ni developer type chestunnattu simulator step-by-step ga chupistundi.",
+          "title": "Write the student table DDL",
+          "why": "Student Java model ni PostgreSQL table ga represent cheyyadaniki roll_no, attendance, marks array, name columns create chestunnam.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
             "data": {
-              "sql": "CREATE TABLE student (\n    roll_no INTEGER,\n    is_present BOOLEAN,\n    marks REAL[],\n    name VARCHAR(100)\n);"
+              "replace": true,
+              "sql": "CREATE TABLE public.student (\n    roll_no INTEGER PRIMARY KEY,\n    is_present BOOLEAN NOT NULL,\n    marks REAL[],\n    name VARCHAR(100) NOT NULL\n);"
             }
           }
         },
         {
           "title": "Execute CREATE TABLE",
-          "why": "CREATE TABLE execute chesthe schema change PostgreSQL ki pampabaduthundi. Success message vachindante database command ni accept chesindi ani ardham.",
+          "why": "DDL execute chesthe public schema lo student table create avuthundi. Success message database command accept chesindani confirm chestundi.",
           "software": "pgadmin",
           "action": {
             "action": "executeQuery",
             "data": {
-              "message": "Query returned successfully in 48 msec.",
-              "statusText": "CREATE TABLE completed",
-              "duration": "0.048 s"
+              "message": "CREATE TABLE",
+              "statusText": "student table created"
             }
           }
         },
         {
-          "title": "Return to Student.java",
-          "why": "Ippudu developer malli IntelliJ ki vastadu. pgAdmin ki vellina mundu unna Java project state ade vidham ga reconstruct avuthundi. Ila oka lesson lo multiple applications continuous ga pani cheyyagalavani prove avuthundi.",
+          "title": "Refresh Object Explorer after schema change",
+          "why": "Database object create chesina taruvatha pgAdmin Browser refresh cheyyadam normal workflow. Appudu kotha student table tree lo kanipisthundi.",
+          "software": "pgadmin",
+          "action": {
+            "action": "refreshTree",
+            "data": {
+              "statusText": "Object Explorer refreshed"
+            }
+          }
+        },
+        {
+          "title": "Inspect the new public.student table",
+          "why": "Created table ni tree lo select chesi columns correct ga vachaya ani developer quick ga verify chestadu.",
+          "software": "pgadmin",
+          "action": {
+            "action": "selectTree",
+            "data": {
+              "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public/Tables/student"
+            }
+          }
+        },
+        {
+          "title": "Write sample student INSERT statements",
+          "why": "Application integration test kosam realistic sample rows database lo insert chestam. Ravi mariyu Anita records later SELECT verification ki use avuthayi.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "INSERT INTO public.student (roll_no, is_present, marks, name)\nVALUES\n    (101, TRUE, ARRAY[86.5, 91.0, 88.5], 'Ravi'),\n    (102, TRUE, ARRAY[79.0, 84.5, 88.0], 'Anita');"
+            }
+          }
+        },
+        {
+          "title": "Execute the INSERT",
+          "why": "INSERT execute ayyaka rendu rows PostgreSQL virtual table state lo store avuthayi. Developer affected-row result ni verify chestadu.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "message": "INSERT 0 2",
+              "statusText": "2 rows inserted",
+              "rows": [
+                [
+                  101,
+                  true,
+                  "{86.5,91,88.5}",
+                  "Ravi"
+                ],
+                [
+                  102,
+                  true,
+                  "{79,84.5,88}",
+                  "Anita"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "title": "Write a SELECT for all students",
+          "why": "Inserted data expected ga store ayyinda ani verify cheyyadaniki student table meeda SELECT query run chestam.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT roll_no, is_present, marks, name\nFROM public.student\nORDER BY roll_no;"
+            }
+          }
+        },
+        {
+          "title": "Execute the student SELECT",
+          "why": "SELECT result lo database rows application expectations tho match avuthunnaya ani developer verify chestadu.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "message": "SELECT 2",
+              "statusText": "2 rows returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "roll_no",
+                  "is_present",
+                  "marks",
+                  "name"
+                ],
+                "rows": [
+                  [
+                    101,
+                    true,
+                    "{86.5,91,88.5}",
+                    "Ravi"
+                  ],
+                  [
+                    102,
+                    true,
+                    "{79,84.5,88}",
+                    "Anita"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Inspect Data Output",
+          "why": "pgAdmin Data Output grid lo columns mariyu row values visually inspect chestam. Idi backend debugging lo common database verification step.",
+          "software": "pgadmin",
+          "action": {
+            "action": "showResultTab",
+            "data": {
+              "tab": "data"
+            }
+          }
+        },
+        {
+          "title": "Write a filtered SELECT for student 101",
+          "why": "Specific backend record ni troubleshoot cheyyadaniki roll_no 101 meeda filtered query rayadam normal debugging workflow.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT roll_no, is_present, marks, name\nFROM public.student\nWHERE roll_no = 101;"
+            }
+          }
+        },
+        {
+          "title": "Execute the filtered SELECT",
+          "why": "Filtered result Ravi record matrame return chesthunda ani verify chestam. Application API response tho database row ni compare cheyyadaniki idi useful.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "message": "SELECT 1",
+              "statusText": "1 row returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "roll_no",
+                  "is_present",
+                  "marks",
+                  "name"
+                ],
+                "rows": [
+                  [
+                    101,
+                    true,
+                    "{86.5,91,88.5}",
+                    "Ravi"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Inspect the PostgreSQL EXPLAIN plan",
+          "why": "Query performance behavior ardham chesukodaniki developer EXPLAIN plan ni chustadu. Small table lo sequential scan normal ga untundi.",
+          "software": "pgadmin",
+          "action": {
+            "action": "showExplain",
+            "data": {
+              "statusText": "EXPLAIN plan generated",
+              "plan": [
+                {
+                  "node": "Seq Scan",
+                  "detail": "public.student"
+                },
+                {
+                  "node": "Filter",
+                  "detail": "roll_no = 101"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Write an index for roll_no lookups",
+          "why": "Repeated student ID lookups optimize cheyyadaniki roll_no meeda index create chestam. Real project lo query patterns batti indexes add chestaru.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "CREATE INDEX idx_student_roll_no\nON public.student (roll_no);"
+            }
+          }
+        },
+        {
+          "title": "Execute CREATE INDEX",
+          "why": "Index create ayyaka PostgreSQL filtered lookups ki index structure use cheyyagaladu. Simulator Object Explorer kuda new index state ni preserve chestundi.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "message": "CREATE INDEX",
+              "statusText": "idx_student_roll_no created"
+            }
+          }
+        },
+        {
+          "title": "Refresh Object Explorer after index creation",
+          "why": "Index schema change Browser tree lo kanipinchadaniki Object Explorer ni refresh chestam.",
+          "software": "pgadmin",
+          "action": {
+            "action": "refreshTree",
+            "data": {
+              "statusText": "Object Explorer refreshed after index creation"
+            }
+          }
+        },
+        {
+          "title": "Inspect idx_student_roll_no in the table tree",
+          "why": "Indexes folder lo idx_student_roll_no visible ga unda ani verify chesi database optimization change successful ani confirm chestam.",
+          "software": "pgadmin",
+          "action": {
+            "action": "selectTree",
+            "data": {
+              "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public/Tables/student/Indexes/idx_student_roll_no"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java after PostgreSQL verification",
+          "why": "Schema, sample data, query result, EXPLAIN, index checks complete ayyaka developer malli IntelliJ ki vastadu. Java project state continuous ga preserve avuthundi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
