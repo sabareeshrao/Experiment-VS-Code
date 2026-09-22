@@ -42,3 +42,51 @@ body.theme-dark .sqlLessonLine.active{background:rgba(38,79,120,.36);border-left
 .themeButton:hover{border-color:var(--line);background:var(--sel)}
 .themeButton[aria-pressed=true]{background:var(--sel);border-color:var(--blue2)}
 
+
+
+/* SSMS stability patch -------------------------------------------------------
+   Do not let tutorial guidance or theme controls disturb the editor layout. */
+.themeButton{
+  position:relative;
+  z-index:8;
+  pointer-events:auto!important;
+  cursor:pointer;
+  color:var(--text)!important;
+  background:transparent!important;
+}
+.themeButton:hover{background:var(--sel)!important}
+body.theme-light .themeButton,body.theme-dark .themeButton{color:var(--text)!important}
+
+/* Editor guidance must stay on changed SQL lines only. */
+.sqlEditorShell.simActionHighlight,
+.codeViewport.simActionHighlight,
+.queryGroup.simActionHighlight,
+.queryGroups.simActionHighlight,
+.editorArea.simActionHighlight{
+  outline:none!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.sqlEditorShell.simActionHighlight.simActionPulse,
+.codeViewport.simActionHighlight.simActionPulse,
+.queryGroup.simActionHighlight.simActionPulse,
+.queryGroups.simActionHighlight.simActionPulse,
+.editorArea.simActionHighlight.simActionPulse{animation:none!important}
+
+/* All major surfaces inherit active theme colors. */
+body.theme-light .workspace,body.theme-light .editorArea,body.theme-light .queryGroups,
+body.theme-dark .workspace,body.theme-dark .editorArea,body.theme-dark .queryGroups{
+  background:var(--code);
+  color:var(--codeText);
+}
+body.theme-light .leftPane,body.theme-light .objectTree,body.theme-light .resultsPane,
+body.theme-dark .leftPane,body.theme-dark .objectTree,body.theme-dark .resultsPane{
+  background:var(--panel);
+  color:var(--text);
+}
+body.theme-light input,body.theme-light select,body.theme-light textarea,
+body.theme-dark input,body.theme-dark select,body.theme-dark textarea{
+  background-color:var(--panel);
+  color:var(--text);
+  border-color:var(--line);
+}
