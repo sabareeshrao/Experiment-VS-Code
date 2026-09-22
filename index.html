@@ -12,56 +12,57 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="library.css?v=1">
+  <link rel="stylesheet" href="library.css?v=2">
 </head>
 <body>
-  <main class="library-shell">
-    <header class="library-header">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div>
-          <div class="eyebrow">DEVELOPER JOURNEY LIBRARY</div>
-          <h1>Java Full Stack Developer Playback</h1>
-          <p>Choose a book, open a chapter, and continue the same cumulative developer workspace.</p>
-        </div>
+  <div class="catalog-shell">
+    <aside class="catalog-sidebar">
+      <div class="sidebar-title">
+        <span>Books</span>
+        <b id="sidebarBookCount">0</b>
       </div>
-      <a class="full-code-link" href="player.html?view=full">View Full Code</a>
-    </header>
 
-    <section class="journey-overview" aria-label="Journey overview">
-      <div class="overview-copy">
-        <span class="kicker">ONE CONTINUOUS JOURNEY</span>
-        <h2>Books organize the course. They never reset the project.</h2>
-        <p>Chapter and step numbers stay global across every book. Opening a later chapter reconstructs everything the developer has already done up to that point.</p>
-      </div>
-      <button id="continueBtn" class="continue-card" type="button">
-        <span class="continue-label">CONTINUE</span>
-        <strong id="continueTitle">Start the journey</strong>
-        <span id="continueMeta">Chapter 1 · Step 1</span>
-        <i>→</i>
+      <button class="side-filter active" type="button" data-filter="all">
+        <span>All</span><em id="allChapterCount">0</em>
       </button>
-    </section>
 
-    <section class="stats" aria-label="Course totals">
-      <div><strong id="bookCount">0</strong><span>Books</span></div>
-      <div><strong id="chapterCount">0</strong><span>Chapters</span></div>
-      <div><strong id="stepCount">0</strong><span>Steps</span></div>
-      <div><strong>1</strong><span>Continuous workspace</span></div>
-    </section>
+      <nav id="bookFilters" class="book-filters" aria-label="Book filters"></nav>
 
-    <section class="books-section">
-      <div class="section-head">
-        <div>
-          <span class="kicker">BOOKSHELF</span>
-          <h2>Choose a book</h2>
-        </div>
-        <p>Click a book to see its chapters.</p>
+      <div class="sidebar-bottom">
+        <a href="player.html?view=full">View Full Code</a>
       </div>
-      <div id="bookshelf" class="bookshelf"></div>
-    </section>
-  </main>
+    </aside>
+
+    <main class="catalog-main">
+      <header class="catalog-header">
+        <div class="title-block">
+          <span class="eyebrow">Developer Journey</span>
+          <h1>All Books</h1>
+        </div>
+
+        <label class="catalog-search">
+          <span>⌕</span>
+          <input id="catalogSearch" type="search" placeholder="Search books or chapters">
+        </label>
+
+        <div class="header-pills">
+          <button id="continueBtn" class="pill continue-pill" type="button">Continue</button>
+          <span class="pill"><b id="bookCount">0</b> books</span>
+          <span class="pill"><b id="chapterCount">0</b> chapters</span>
+          <span class="pill"><b id="stepCount">0</b> steps</span>
+        </div>
+      </header>
+
+      <section id="selectedBookPanel" class="selected-book-panel hidden" aria-live="polite"></section>
+
+      <section class="catalog-content">
+        <div id="bookshelf" class="books-grid"></div>
+        <div id="emptyState" class="empty-state hidden">No books or chapters match your search.</div>
+      </section>
+    </main>
+  </div>
 
   <script src="lessons.js?v=28"></script>
-  <script src="library.js?v=1"></script>
+  <script src="library.js?v=2"></script>
 </body>
 </html>
