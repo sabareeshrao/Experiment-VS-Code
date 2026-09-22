@@ -12,7 +12,8 @@
     cmd: $("cmdFrame"),
     linux: $("linuxFrame"),
     ssms: $("ssmsFrame"),
-    jira: $("jiraFrame")
+    jira: $("jiraFrame"),
+    jenkins: $("jenkinsFrame")
   };
 
   const appIds = {
@@ -23,7 +24,8 @@
     cmd: "cmd",
     linux: "linux",
     ssms: "sql_server_management_studio",
-    jira: "jira"
+    jira: "jira",
+    jenkins: "jenkins"
   };
 
   const appLabels = {
@@ -34,7 +36,8 @@
     cmd: "Command Prompt",
     linux: "Linux",
     ssms: "SQL Server Management Studio",
-    jira: "Jira"
+    jira: "Jira",
+    jenkins: "Jenkins"
   };
 
   const engineReady = {
@@ -45,7 +48,8 @@
     cmd: false,
     linux: false,
     ssms: false,
-    jira: false
+    jira: false,
+    jenkins: false
   };
 
   function ensureGlobalUiPersistence(frame) {
@@ -124,6 +128,7 @@
     if (value === "linux") return "linux";
     if (value === "ssms") return "ssms";
     if (value === "jira") return "jira";
+    if (value === "jenkins") return "jenkins";
     return "intellij";
   }
 
@@ -144,6 +149,7 @@
     softwareBadge.classList.toggle("linux", activeSoftware === "linux");
     softwareBadge.classList.toggle("ssms", activeSoftware === "ssms");
     softwareBadge.classList.toggle("jira", activeSoftware === "jira");
+    softwareBadge.classList.toggle("jenkins", activeSoftware === "jenkins");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -235,6 +241,16 @@
       if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]']);
       if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]']);
       if (action === "saveQuery") return plan(['[data-target="save"]']);
+    }
+    if (software === "jenkins") {
+      if (action === "typeSearch") return plan(["#search"]);
+      if (action === "openJob") return plan(["#main"], { text: step.action.data?.name || "", scope: "#main" });
+      if (action === "pressBuildNow") return plan(["#main"], { text: "Build Now", scope: "#main" });
+      if (action === "openBuildWithParameters") return plan(["#main"], { text: "Build with Parameters", scope: "#main" });
+      if (action === "openConfigureJob") return plan(["#main"], { text: "Configure", scope: "#main" });
+      if (action === "validateJenkinsfile") return plan(["#main"], { text: "Jenkinsfile", scope: "#main" });
+      if (action === "openTestResults") return plan(["#main"], { text: "Test Result", scope: "#main" });
+      if (action === "openArtifacts") return plan(["#main"], { text: "Artifacts", scope: "#main" });
     }
     return null;
   }
