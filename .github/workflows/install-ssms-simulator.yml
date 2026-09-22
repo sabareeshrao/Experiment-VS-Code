@@ -1,0 +1,37 @@
+name: Install SSMS Simulator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".integration/ssms/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct SSMS simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .integration/ssms/part-* > /tmp/ssms.b64
+          base64 -d /tmp/ssms.b64 > /tmp/ssms.zip
+          rm -rf /tmp/ssms-unpack simulator/ssms
+          mkdir -p /tmp/ssms-unpack simulator/ssms
+          unzip -q /tmp/ssms.zip -d /tmp/ssms-unpack
+          cp -R /tmp/ssms-unpack/sql_server_management_studio/. simulator/ssms/
+          rm -rf .integration/ssms
+      - name: Commit simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Install upgraded SSMS simulator"
+          git push
