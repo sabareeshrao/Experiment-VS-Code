@@ -14,6 +14,7 @@ var R={
 };
 
 var baseline={},state={},files={},activeFile=null,openedTabs=[],changedLines=[],expandedFolders=new Set(),panelVisible=false,markdownPreviewOpen=false,seekToken=0,contextPath=null;
+var autoType=true,activityView="Explorer",panelView="TERMINAL";
 var panelHeightLevel=Math.max(-1,Math.min(4,parseInt(localStorage.getItem("sim.vscode.panelHeight.v1")||"0",10)||0));
 
 function fileKind(path){
@@ -79,6 +80,10 @@ function sortNodes(a,b){
 }
 function renderTree(){
  R.tree.innerHTML="";
+ if(activityView!=="Explorer"){
+   renderActivityView();
+   return;
+ }
  var root=buildTree();
  function walk(node,depth){
    Object.keys(node.children).map(function(k){return node.children[k];}).sort(sortNodes).forEach(function(child){
@@ -366,12 +371,106 @@ function renderPanel(){
  var maxHeight=Math.max(150,Math.floor(innerHeight*0.68));
  var height=Math.max(120,Math.min(maxHeight,185+(panelHeightLevel*75)));
  R.editorGroup.style.setProperty("--panel-h",panelVisible?height+"px":"0px");
- R.terminal.textContent=state.terminal||"PS Java Practice> ";
+ document.querySelectorAll(".panelTab").forEach(function(btn){
+   btn.classList.toggle("active",btn.textContent.trim()===panelView);
+ });
+ if(panelView==="PROBLEMS") R.terminal.textContent="No problems have been detected in the workspace.";
+ else if(panelView==="OUTPUT") R.terminal.textContent="Java Language Server\nReady.";
+ else if(panelView==="DEBUG CONSOLE") R.terminal.textContent="Debug Console\nNo active debug session.";
+ else R.terminal.textContent=state.terminal||"PS Java Practice> ";
 }
 function renderChrome(){
  R.command.textContent=state.workspaceName||"Java Practice";
  R.branch.textContent=(state.git&&state.git.branch)||"main";
 }
+
+function renderActivityView(){
+ var head=document.querySelector(".sidebarHead strong");
+ if(head)head.textContent=activityView;
+ if(activityView==="Search"){
+   R.tree.innerHTML='<div class="sideToolPanel"><input id="activitySearchInput" class="sideInput" placeholder="Search"><div class="sideHint">Search files in the workspace</div><div id="activitySearchResults"></div></div>';
+   var input=$("activitySearchInput");
+   if(input)input.oninput=function(){
+     var q=input.value.toLowerCase(),matches=Object.keys(files).filter(function(p){return p.toLowerCase().includes(q);}).slice(0,30);
+     $("activitySearchResults").innerHTML=matches.map(function(p){return '<div class="sideResult" data-open="'+esc(p)+'">'+esc(p)+'</div>';}).join("") || (q?'<div class="sideHint">No results</div>':'');
+     document.querySelectorAll("[data-open]").forEach(function(el){el.onclick=function(){activityView="Explorer";openDoc(el.dataset.open,true);renderAll();};});
+   };
+ }else if(activityView==="Source Control"){
+   R.tree.innerHTML='<div class="sideToolPanel"><div class="sideSection">SOURCE CONTROL</div><div class="sideResult">✓ '+esc((state.git&&state.git.branch)||"main")+'</div><div class="sideHint">Working tree ready for lesson changes.</div><button class="sideAction" id="scRefresh">Refresh</button></div>';
+   if($("scRefresh"))$("scRefresh").onclick=function(){showVsNotice("Source Control refreshed");};
+ }else if(activityView==="Run and Debug"){
+   R.tree.innerHTML='<div class="sideToolPanel"><div class="sideSection">RUN AND DEBUG</div><button class="sideAction" id="runJavaBtn">Run Java</button><button class="sideAction" id="debugJavaBtn">Start Debugging</button><div class="sideHint">Launch actions are simulated in this teaching UI.</div></div>';
+   if($("runJavaBtn"))$("runJavaBtn").onclick=function(){panelVisible=true;panelView="TERMINAL";state.terminal=(state.terminal||"PS Java Practice> ")+"java Main\nProcess finished with exit code 0\nPS Java Practice> ";renderPanel();showVsNotice("Run started");};
+   if($("debugJavaBtn"))$("debugJavaBtn").onclick=function(){panelVisible=true;panelView="DEBUG CONSOLE";renderPanel();showVsNotice("Debug session opened");};
+ }else if(activityView==="Extensions"){
+   R.tree.innerHTML='<div class="sideToolPanel"><input class="sideInput" placeholder="Search Extensions in Marketplace"><div class="sideResult">Extension Pack for Java</div><div class="sideResult">Spring Boot Extension Pack</div><div class="sideResult">GitLens</div></div>';
+ }else{
+   R.tree.innerHTML='<div class="sideToolPanel"><div class="sideSection">'+esc(activityView.toUpperCase())+'</div><div class="sideHint">Interactive simulator view.</div></div>';
+ }
+}
+
+function switchActivity(name){
+ if(name==="Accounts"||name==="Manage"){showVsNotice(name+" menu opened");return;}
+ activityView=name;
+ document.querySelectorAll(".activityBtn").forEach(function(btn){btn.classList.toggle("active",btn.title===name);});
+ renderTree();
+}
+
+var vsMenuPopup=document.createElement("div");
+vsMenuPopup.className="vsMenuPopup";
+document.body.appendChild(vsMenuPopup);
+var vsNotice=document.createElement("div");
+vsNotice.className="vsNotice";
+document.body.appendChild(vsNotice);
+var vsNoticeTimer=0;
+
+function showVsNotice(text){
+ clearTimeout(vsNoticeTimer);
+ vsNotice.textContent=text;
+ vsNotice.classList.add("show");
+ vsNoticeTimer=setTimeout(function(){vsNotice.classList.remove("show");},1400);
+}
+
+var menuDefs={
+ File:["New Text File","New File...","Open File...","Save","Save All","Close Editor"],
+ Edit:["Undo","Redo","Cut","Copy","Paste","Find","Replace"],
+ Selection:["Select All","Expand Selection","Shrink Selection","Copy Line Up","Copy Line Down"],
+ View:["Explorer","Search","Source Control","Run and Debug","Extensions","Terminal"],
+ Go:["Back","Forward","Go to File...","Go to Symbol...","Go to Line/Column..."],
+ Run:["Start Debugging","Run Without Debugging","Stop Debugging","Run Active File"],
+ Terminal:["New Terminal","Split Terminal","Run Task...","Toggle Terminal"],
+ Help:["Welcome","Show All Commands","Documentation","Keyboard Shortcuts","About"]
+};
+
+function closeVsMenu(){vsMenuPopup.classList.remove("show");}
+function handleMenuItem(menu,item){
+ if(menu==="View"&&["Explorer","Search","Source Control","Run and Debug","Extensions"].includes(item)){switchActivity(item);return;}
+ if((menu==="View"&&item==="Terminal")||(menu==="Terminal"&&item==="Toggle Terminal")){panelVisible=!panelVisible;panelView="TERMINAL";renderPanel();return;}
+ if(menu==="Terminal"&&(item==="New Terminal"||item==="Split Terminal")){panelVisible=true;panelView="TERMINAL";renderPanel();showVsNotice(item);return;}
+ if(menu==="File"&&(item==="New Text File"||item==="New File...")){$("newFileBtn").click();return;}
+ if(menu==="File"&&item==="Close Editor"){if(activeFile)closeDoc(activeFile);return;}
+ if(menu==="Go"&&item==="Back"){cycleTab(-1);return;}
+ if(menu==="Go"&&item==="Forward"){cycleTab(1);return;}
+ if(menu==="Run"&&(item==="Run Without Debugging"||item==="Run Active File")){panelVisible=true;panelView="TERMINAL";state.terminal=(state.terminal||"PS Java Practice> ")+"java "+(activeFile?activeFile.split("/").pop().replace(/\.java$/,""):"Main")+"\nProcess finished with exit code 0\nPS Java Practice> ";renderPanel();return;}
+ if(menu==="Run"&&item==="Start Debugging"){panelVisible=true;panelView="DEBUG CONSOLE";renderPanel();return;}
+ showVsNotice(item+" invoked");
+}
+function openVsMenu(anchor,name){
+ var items=menuDefs[name]||[];
+ vsMenuPopup.innerHTML=items.map(function(item){return '<div class="vsMenuItem" data-menu-item="'+esc(item)+'">'+esc(item)+'</div>';}).join("");
+ var r=anchor.getBoundingClientRect();
+ vsMenuPopup.style.left=Math.max(4,r.left)+"px";
+ vsMenuPopup.style.top=r.bottom+"px";
+ vsMenuPopup.classList.add("show");
+ vsMenuPopup.querySelectorAll("[data-menu-item]").forEach(function(el){el.onclick=function(e){e.stopPropagation();handleMenuItem(name,el.dataset.menuItem);closeVsMenu();};});
+}
+function cycleTab(dir){
+ if(!openedTabs.length)return;
+ var i=openedTabs.findIndex(function(t){return t.path===activeFile;});
+ i=(i+dir+openedTabs.length)%openedTabs.length;
+ activeFile=openedTabs[i].path;changedLines=[];renderAll();scrollActiveTab();
+}
+
 function renderAll(){
  renderTree();
  renderTabs();
@@ -442,10 +541,25 @@ async function apply(step,animate,token){
    break;
   }
   case"terminalCommand":
-  case"runTerminal":
-   state.terminal=(state.terminal||"PS Java Practice> ")+String(d.command||"")+(d.output!==undefined?"\n"+d.output:"")+"\nPS Java Practice> ";
-   panelVisible=true;
+  case"runTerminal":{
+   panelVisible=true;panelView="TERMINAL";
+   var terminalBase=state.terminal||"PS Java Practice> ";
+   var terminalCommand=String(d.command||"");
+   if(animate&&autoType&&terminalCommand){
+     var builtCommand="";
+     for(var ti=0;ti<terminalCommand.length;ti++){
+       if(token!==seekToken)return;
+       builtCommand+=terminalCommand[ti];
+       state.terminal=terminalBase+builtCommand;
+       renderPanel();
+       await new Promise(function(res){setTimeout(res,Math.min(42,18+(ti%3)*5));});
+     }
+     await new Promise(function(res){setTimeout(res,120);});
+   }
+   state.terminal=terminalBase+terminalCommand+(d.output!==undefined?"\n"+d.output:"")+"\nPS Java Practice> ";
+   renderPanel();
    break;
+  }
   case"setTerminal":
    state.terminal=String(d.text||d.output||"");
    panelVisible=true;
@@ -508,6 +622,16 @@ $("panelCollapse").onclick=function(){panelVisible=!panelVisible;renderPanel();}
 $("panelShrink").onclick=function(){panelHeightLevel=Math.max(-1,panelHeightLevel-1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));renderPanel();};
 $("panelGrow").onclick=function(){panelHeightLevel=Math.min(4,panelHeightLevel+1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));panelVisible=true;renderPanel();};
 window.addEventListener("resize",renderPanel);
+document.querySelectorAll(".panelTab").forEach(function(btn){btn.onclick=function(){panelVisible=true;panelView=btn.textContent.trim();renderPanel();};});
+document.querySelectorAll(".menuItem").forEach(function(item){item.onclick=function(e){e.stopPropagation();openVsMenu(item,item.textContent.trim());};});
+document.querySelectorAll(".activityBtn").forEach(function(btn){btn.onclick=function(){switchActivity(btn.title||"Explorer");};});
+var navButtons=document.querySelectorAll(".navBtn");
+if(navButtons[0])navButtons[0].onclick=function(){cycleTab(-1);};
+if(navButtons[1])navButtons[1].onclick=function(){cycleTab(1);};
+document.querySelectorAll(".winBtn").forEach(function(btn){btn.onclick=function(){showVsNotice(btn.classList.contains("close")?"Close window invoked":btn.textContent.trim()==="□"?"Maximize invoked":"Minimize invoked");};});
+var moreExplorer=document.querySelector('.sidebarActions .iconBtn[title="More Actions"]');
+if(moreExplorer)moreExplorer.onclick=function(e){e.stopPropagation();openVsMenu(moreExplorer,"File");};
+document.addEventListener("click",function(e){if(!e.target.closest(".vsMenuPopup")&&!e.target.closest(".menuItem"))closeVsMenu();});
 R.markdownPreviewBtn.onclick=function(){
  if(!activeFile||!/\.md$/i.test(activeFile))return;
  markdownPreviewOpen=!markdownPreviewOpen;
@@ -575,10 +699,12 @@ $("assistantClose").onclick=function(){R.assistant.classList.add("hidden");};
 window.addEventListener("message",function(e){
  var m=e.data||{};
  if(m.type==="SIM_PACKAGE"){
+   autoType=m.autoType!==false;
    baseline=clone(m.package&&m.package.apps?m.package.apps.vscode:{});
    reset();
  }
- if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);
+ if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);}
+ if(m.type==="SIM_SETTING"&&m.key==="autoType")autoType=!!m.value;
  if(m.type==="SIM_EXPLAIN")explain(m);
 });
 
