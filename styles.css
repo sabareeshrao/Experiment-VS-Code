@@ -65,3 +65,18 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .stage-list:empty{display:none}
 .workspace.no-playback{grid-template-rows:auto minmax(0,1fr)}
 .project-preview-note{font-size:10px;color:#858994;padding:3px 5px 0}
+
+/* Multi-software workspace */
+.head-meta{display:flex;align-items:center;gap:8px}
+.software-badge{
+  display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid #353942;
+  border-radius:999px;background:#1f2125;color:#aeb4bf;font-size:8.5px;font-weight:700;letter-spacing:.02em
+}
+.software-badge.pgadmin{border-color:#3f607a;background:#1d2b36;color:#8fb9db}
+.software-badge.intellij{border-color:#51446b;background:#292238;color:#bca6df}
+.ide-shell{isolation:isolate}
+.sim-frame{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:#1e1f22;
+  opacity:0;visibility:hidden;pointer-events:none;z-index:1
+}
+.sim-frame.active{opacity:1;visibility:visible;pointer-events:auto;z-index:2}
