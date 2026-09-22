@@ -34,11 +34,7 @@
   }
 
   function syntaxJava(code) {
-    let out = escapeHtml(code);
-    out = out.replace(/(".*?")/g, '<span class="str">$1</span>');
-    out = out.replace(/\b(package|import|public|private|protected|class|static|final|void|long|new|return|for|if|else)\b/g, '<span class="kw">$1</span>');
-    out = out.replace(/\b(String|System|List|Task|TaskService|TaskController|TaskApiApplication)\b/g, '<span class="type">$1</span>');
-    return out;
+    return escapeHtml(code);
   }
 
   function renderLessonList() {
