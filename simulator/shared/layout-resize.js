@@ -1,0 +1,339 @@
+(() => {
+  "use strict";
+
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  const pathApp = pathParts[pathParts.length - 2] || "";
+  const rawApp = document.body?.dataset?.simApp || pathApp;
+  const APP_ALIASES = {
+    intellij_idea: "intellij",
+    sql_server_management_studio: "ssms"
+  };
+  const app = APP_ALIASES[rawApp] || rawApp;
+  const storageKey = "developerJourney.layout.v3." + app;
+  const root = document.documentElement;
+  let saved = {};
+
+  try { saved = JSON.parse(localStorage.getItem(storageKey) || "{}") || {}; } catch (_) { saved = {}; }
+
+  const clamp = (n,min,max) => Math.max(min, Math.min(max, n));
+  const px = n => Math.round(n) + "px";
+  const get = (k,fallback) => Number.isFinite(Number(saved[k])) ? Number(saved[k]) : fallback;
+  const commit = (patch) => {
+    saved = {...saved, ...patch};
+    try { localStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_) {}
+  };
+
+  const style = document.createElement("style");
+  style.textContent = `
+    html.sim-layout-dragging,html.sim-layout-dragging *{user-select:none!important}
+    .sim-layout-handle{position:absolute;z-index:180;touch-action:none;background:transparent}
+    .sim-layout-handle::after{content:"";position:absolute;background:transparent;transition:background .12s ease}
+    .sim-layout-handle:hover::after,.sim-layout-handle.active::after{background:rgba(53,116,240,.42)}
+    .sim-layout-handle-v{top:0;bottom:0;width:9px;cursor:col-resize;transform:translateX(-4px)}
+    .sim-layout-handle-v::after{top:0;bottom:0;left:3px;width:3px}
+    .sim-layout-handle-h{left:0;right:0;height:9px;cursor:row-resize;transform:translateY(-4px)}
+    .sim-layout-handle-h::after{left:0;right:0;top:3px;height:3px}
+    .sim-window-resizer{position:absolute;z-index:250;touch-action:none}
+    .sim-window-resizer.n,.sim-window-resizer.s{left:7px;right:7px;height:7px;cursor:ns-resize}
+    .sim-window-resizer.n{top:-2px}.sim-window-resizer.s{bottom:-2px}
+    .sim-window-resizer.e,.sim-window-resizer.w{top:7px;bottom:7px;width:7px;cursor:ew-resize}
+    .sim-window-resizer.e{right:-2px}.sim-window-resizer.w{left:-2px}
+    .sim-window-resizer.ne,.sim-window-resizer.nw,.sim-window-resizer.se,.sim-window-resizer.sw{width:11px;height:11px}
+    .sim-window-resizer.ne{right:-2px;top:-2px;cursor:nesw-resize}.sim-window-resizer.nw{left:-2px;top:-2px;cursor:nwse-resize}
+    .sim-window-resizer.se{right:-2px;bottom:-2px;cursor:nwse-resize}.sim-window-resizer.sw{left:-2px;bottom:-2px;cursor:nesw-resize}
+  `;
+  document.head.appendChild(style);
+
+  function dragHandle(el, axis, onMove, onEnd){
+    if(!el || el.dataset.layoutWired === "1") return;
+    el.dataset.layoutWired = "1";
+    let active = false;
+    el.addEventListener("pointerdown", e => {
+      if(e.button !== 0) return;
+      active = true;
+      el.classList.add("active");
+      root.classList.add("sim-layout-dragging");
+      try { el.setPointerCapture(e.pointerId); } catch (_) {}
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
+    el.addEventListener("pointermove", e => {
+      if(!active) return;
+      onMove(e);
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
+    const end = e => {
+      if(!active) return;
+      active = false;
+      el.classList.remove("active");
+      root.classList.remove("sim-layout-dragging");
+      try { if(el.hasPointerCapture?.(e.pointerId)) el.releasePointerCapture(e.pointerId); } catch (_) {}
+      onEnd?.(e);
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    el.addEventListener("pointerup", end, true);
+    el.addEventListener("pointercancel", end, true);
+  }
+
+  function makeHandle(parent, cls, id){
+    if(!parent) return null;
+    let h = parent.querySelector("#"+id);
+    if(h) return h;
+    if(getComputedStyle(parent).position === "static") parent.style.position = "relative";
+    h = document.createElement("div");
+    h.id = id;
+    h.className = "sim-layout-handle " + cls;
+    h.setAttribute("aria-hidden","true");
+    parent.appendChild(h);
+    return h;
+  }
+
+  function rememberExisting(handle, read){
+    if(!handle) return;
+    const persist = () => commit(read());
+    handle.addEventListener("pointerup", () => requestAnimationFrame(persist), true);
+    handle.addEventListener("pointercancel", () => requestAnimationFrame(persist), true);
+    handle.addEventListener("dblclick", () => {
+      const keys = Object.keys(read());
+      for(const k of keys) delete saved[k];
+      try { localStorage.setItem(storageKey, JSON.stringify(saved)); } catch (_) {}
+      location.reload();
+    });
+  }
+
+  function setupIntelliJ(){
+    if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
+    if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
+    if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
+    rememberExisting(document.getElementById("splitL"), () => ({leftW:parseFloat(getComputedStyle(root).getPropertyValue("--leftW"))||250}));
+    rememberExisting(document.getElementById("splitR"), () => ({rightW:parseFloat(getComputedStyle(root).getPropertyValue("--rightW"))||270}));
+    rememberExisting(document.getElementById("splitH"), () => ({bottomH:parseFloat(getComputedStyle(root).getPropertyValue("--bottomH"))||190}));
+  }
+
+  function setupPostman(){
+    const main=document.querySelector(".main"), request=document.getElementById("requestArea");
+    if(saved.sideW && main) main.style.setProperty("--sideW",px(get("sideW",255)));
+    if(saved.respH) root.style.setProperty("--respH",px(get("respH",270)));
+    rememberExisting(document.getElementById("splitV"),()=>({sideW:parseFloat(getComputedStyle(main).getPropertyValue("--sideW"))||255}));
+    rememberExisting(document.getElementById("splitH"),()=>({respH:parseFloat(getComputedStyle(root).getPropertyValue("--respH"))||270}));
+  }
+
+  function setupJira(){
+    if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",220)));
+    rememberExisting(document.getElementById("splitV"),()=>({leftW:parseFloat(getComputedStyle(root).getPropertyValue("--leftW"))||220}));
+
+    const main=document.getElementById("main");
+    const panel=document.getElementById("issuePanel");
+    if(main && panel){
+      if(saved.issueW) panel.style.width=px(get("issueW",560));
+      const h=makeHandle(panel,"sim-layout-handle-v","jiraIssueResize");
+      h.style.left="0";h.style.right="auto";
+      dragHandle(h,"x",e=>{
+        const mr=main.getBoundingClientRect();
+        const w=clamp(mr.right-e.clientX,320,Math.max(360,mr.width-120));
+        panel.style.width=px(w);
+      },()=>commit({issueW:panel.getBoundingClientRect().width}));
+    }
+  }
+
+  function setupVSCode(){
+    const work=document.querySelector(".workbench"), side=document.querySelector(".sidebar"), editor=document.getElementById("editorGroup");
+    if(!work || !side || !editor) return;
+    work.style.position="relative";
+    const applySide=()=>{
+      const act=document.querySelector(".activityBar")?.getBoundingClientRect().width || 48;
+      const w=clamp(get("sideW",side.getBoundingClientRect().width||300),140,Math.max(160,work.clientWidth-240));
+      work.style.gridTemplateColumns=px(act)+" "+px(w)+" minmax(0,1fr)";
+      v.style.left=px(act+w);
+    };
+    const v=makeHandle(work,"sim-layout-handle-v","vscodeSideResize");
+    applySide();
+    dragHandle(v,"x",e=>{
+      const wr=work.getBoundingClientRect();
+      const act=document.querySelector(".activityBar")?.getBoundingClientRect().width || 48;
+      const w=clamp(e.clientX-wr.left-act,140,Math.max(160,wr.width-act-240));
+      work.style.gridTemplateColumns=px(act)+" "+px(w)+" minmax(0,1fr)";
+      v.style.left=px(act+w);
+    },()=>{
+      const act=document.querySelector(".activityBar")?.getBoundingClientRect().width || 48;
+      commit({sideW:side.getBoundingClientRect().width});
+      v.style.left=px(act+side.getBoundingClientRect().width);
+    });
+
+    editor.style.position="relative";
+    const panel=document.querySelector(".panel");
+    const h=makeHandle(editor,"sim-layout-handle-h","vscodePanelResize");
+    const syncPanel=()=>{
+      const ph=editor.classList.contains("panelOpen") ? (parseFloat(getComputedStyle(editor).getPropertyValue("--panel-h"))||get("panelH",185)) : 0;
+      h.style.top=px(Math.max(2,editor.clientHeight-ph));
+      h.style.display=editor.clientHeight>160?"block":"none";
+    };
+    if(saved.panelH){
+      editor.style.setProperty("--panel-h",px(get("panelH",185)));
+      if(get("panelH",185)>40) editor.classList.add("panelOpen");
+    }
+    syncPanel();
+    dragHandle(h,"y",e=>{
+      const er=editor.getBoundingClientRect();
+      const ph=clamp(er.bottom-e.clientY,0,Math.max(90,er.height-120));
+      if(ph>30) editor.classList.add("panelOpen");
+      editor.style.setProperty("--panel-h",px(ph));
+      h.style.top=px(er.height-ph);
+    },()=>{
+      const ph=parseFloat(getComputedStyle(editor).getPropertyValue("--panel-h"))||0;
+      if(ph<45){editor.classList.remove("panelOpen");editor.style.setProperty("--panel-h","0px");commit({panelH:0});}
+      else commit({panelH:ph});
+      syncPanel();
+    });
+    const mo=new MutationObserver(syncPanel);mo.observe(editor,{attributes:true,attributeFilter:["class","style"]});
+    window.addEventListener("resize",()=>{applySide();syncPanel()});
+  }
+
+  function setupPgAdmin(){
+    const work=document.querySelector(".work"), left=document.querySelector(".work > .left"), main=document.querySelector(".work > .main");
+    const results=main?.querySelector(".results");
+    if(!work||!left||!main||!results)return;
+    const sideW=clamp(get("sideW",280),150,Math.max(180,work.clientWidth-320));
+    work.style.gridTemplateColumns=px(sideW)+" 5px minmax(0,1fr)";
+    const v=document.createElement("div");v.className="sim-layout-handle sim-layout-handle-v";v.id="pgSideResize";v.style.position="relative";v.style.transform="none";work.insertBefore(v,main);
+    dragHandle(v,"x",e=>{const r=work.getBoundingClientRect(),w=clamp(e.clientX-r.left,150,Math.max(180,r.width-320));work.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)"},()=>commit({sideW:left.getBoundingClientRect().width}));
+
+    const resultsH=clamp(get("resultsH",210),90,Math.max(110,main.clientHeight-150));
+    main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(resultsH);
+    const h=document.createElement("div");h.className="sim-layout-handle sim-layout-handle-h";h.id="pgResultsResize";h.style.position="relative";h.style.transform="none";main.insertBefore(h,results);
+    dragHandle(h,"y",e=>{const r=main.getBoundingClientRect(),rh=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-150));main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(rh)},()=>commit({resultsH:results.getBoundingClientRect().height}));
+  }
+
+  function setupSSMS(){
+    const shell=document.querySelector(".shell"), left=document.getElementById("leftPane"), workspace=document.getElementById("workspace");
+    if(shell&&left&&workspace){
+      const sideW=clamp(get("sideW",left.getBoundingClientRect().width||260),160,Math.max(190,shell.clientWidth-360));
+      shell.style.gridTemplateColumns=px(sideW)+" 5px minmax(0,1fr)";
+      const v=document.createElement("div");v.className="sim-layout-handle sim-layout-handle-v";v.id="ssmsSideResize";v.style.position="relative";v.style.transform="none";shell.insertBefore(v,workspace);
+      dragHandle(v,"x",e=>{const r=shell.getBoundingClientRect(),w=clamp(e.clientX-r.left,160,Math.max(190,r.width-360));shell.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)"},()=>commit({sideW:left.getBoundingClientRect().width}));
+    }
+    const editor=document.getElementById("editorArea"), results=document.getElementById("resultsPane");
+    if(editor&&results){
+      const rh=clamp(get("resultsH",results.getBoundingClientRect().height||180),90,Math.max(110,editor.clientHeight-130));
+      editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(rh);
+      const h=document.createElement("div");h.className="sim-layout-handle sim-layout-handle-h";h.id="ssmsResultsResize";h.style.position="relative";h.style.transform="none";editor.insertBefore(h,results);
+      dragHandle(h,"y",e=>{const r=editor.getBoundingClientRect(),x=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-130));editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(x)},()=>commit({resultsH:results.getBoundingClientRect().height}));
+    }
+  }
+
+  function setupLinux(){
+    const workspace=document.querySelector(".workspace");
+    if(!workspace)return;
+    const wsKey="windows";
+    const winState=saved[wsKey]||{};
+    const wins=[...workspace.querySelectorAll(".window")];
+
+    const restoreWindow=w=>{
+      const s=winState[w.id];
+      if(!s)return;
+      Object.assign(w.style,{left:px(s.left),top:px(s.top),width:px(s.width),height:px(s.height),right:"auto",bottom:"auto"});
+    };
+    wins.forEach(w=>{
+      restoreWindow(w);
+      const head=w.querySelector(".windowHead");
+      if(head && head.dataset.layoutWindowDrag!=="1"){
+        head.dataset.layoutWindowDrag="1";
+        let drag=null;
+        head.addEventListener("pointerdown",e=>{
+          if(e.button!==0||e.target.closest("button")||w.classList.contains("maximized"))return;
+          const wr=w.getBoundingClientRect(),sr=workspace.getBoundingClientRect();
+          drag={dx:e.clientX-wr.left,dy:e.clientY-wr.top,sr};
+          try{head.setPointerCapture(e.pointerId)}catch(_){}
+          root.classList.add("sim-layout-dragging");e.preventDefault();
+        },true);
+        head.addEventListener("pointermove",e=>{
+          if(!drag)return;
+          const wr=w.getBoundingClientRect();
+          const left=clamp(e.clientX-drag.sr.left-drag.dx,0,Math.max(0,drag.sr.width-wr.width));
+          const top=clamp(e.clientY-drag.sr.top-drag.dy,0,Math.max(0,drag.sr.height-wr.height));
+          Object.assign(w.style,{left:px(left),top:px(top),right:"auto",bottom:"auto"});
+        },true);
+        const end=e=>{
+          if(!drag)return;drag=null;root.classList.remove("sim-layout-dragging");
+          const wr=w.getBoundingClientRect(),sr=workspace.getBoundingClientRect();
+          const all={...(saved[wsKey]||{})};all[w.id]={left:wr.left-sr.left,top:wr.top-sr.top,width:wr.width,height:wr.height};commit({[wsKey]:all});
+        };
+        head.addEventListener("pointerup",end,true);head.addEventListener("pointercancel",end,true);
+      }
+
+      for(const edge of ["n","e","s","w","ne","nw","se","sw"]){
+        const rh=document.createElement("div");rh.className="sim-window-resizer "+edge;rh.dataset.edge=edge;w.appendChild(rh);
+        let start=null;
+        rh.addEventListener("pointerdown",e=>{
+          if(e.button!==0||w.classList.contains("maximized"))return;
+          const wr=w.getBoundingClientRect(),sr=workspace.getBoundingClientRect();
+          start={x:e.clientX,y:e.clientY,left:wr.left-sr.left,top:wr.top-sr.top,width:wr.width,height:wr.height,sr};
+          try{rh.setPointerCapture(e.pointerId)}catch(_){}
+          root.classList.add("sim-layout-dragging");e.preventDefault();e.stopPropagation();
+        },true);
+        rh.addEventListener("pointermove",e=>{
+          if(!start)return;
+          const dx=e.clientX-start.x,dy=e.clientY-start.y,minW=360,minH=220;
+          let left=start.left,top=start.top,width=start.width,height=start.height;
+          if(edge.includes("e"))width=clamp(start.width+dx,minW,start.sr.width-start.left);
+          if(edge.includes("s"))height=clamp(start.height+dy,minH,start.sr.height-start.top);
+          if(edge.includes("w")){width=clamp(start.width-dx,minW,start.left+start.width);left=start.left+(start.width-width);}
+          if(edge.includes("n")){height=clamp(start.height-dy,minH,start.top+start.height);top=start.top+(start.height-height);}
+          Object.assign(w.style,{left:px(left),top:px(top),width:px(width),height:px(height),right:"auto",bottom:"auto"});
+        },true);
+        const end=e=>{
+          if(!start)return;start=null;root.classList.remove("sim-layout-dragging");
+          const wr=w.getBoundingClientRect(),sr=workspace.getBoundingClientRect();
+          const all={...(saved[wsKey]||{})};all[w.id]={left:wr.left-sr.left,top:wr.top-sr.top,width:wr.width,height:wr.height};commit({[wsKey]:all});
+          e.stopPropagation();
+        };
+        rh.addEventListener("pointerup",end,true);rh.addEventListener("pointercancel",end,true);
+      }
+    });
+
+    const fileBody=document.querySelector(".fileBody"), places=document.querySelector(".places"), fileList=document.getElementById("fileList");
+    if(fileBody&&places&&fileList){
+      const pw=clamp(get("placesW",150),100,Math.max(120,fileBody.clientWidth-240));
+      fileBody.style.gridTemplateColumns=px(pw)+" 5px minmax(0,1fr)";
+      const v=document.createElement("div");v.className="sim-layout-handle sim-layout-handle-v";v.id="linuxPlacesResize";v.style.position="relative";v.style.transform="none";fileBody.insertBefore(v,fileList);
+      dragHandle(v,"x",e=>{const r=fileBody.getBoundingClientRect(),w=clamp(e.clientX-r.left,100,Math.max(120,r.width-240));fileBody.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)"},()=>commit({placesW:places.getBoundingClientRect().width}));
+    }
+  }
+
+  function setupAssistantPersistence(){
+    const selectors={
+      intellij:["#ideAssistant"],vscode:["#assistant"],pgadmin:["#pgAssistant"],postman:["#postmanAssistant"],
+      cmd:["#cmdAssistant"],linux:["#linuxAssistant"],ssms:["#ssmsAssistant"],jira:["#jiraAssistant"]
+    };
+    const el=document.querySelector(selectors[app]?.[0]||"__none__");
+    if(!el)return;
+    const key="assistant";
+    const s=saved[key];
+    if(s && Number.isFinite(s.left)&&Number.isFinite(s.top)){
+      Object.assign(el.style,{left:px(s.left),top:px(s.top),right:"auto",bottom:"auto"});
+    }
+    const obs=new ResizeObserver(()=>{
+      if(!el.offsetParent)return;
+      const r=el.getBoundingClientRect();
+      if(r.width>0&&r.height>0&&el.style.left&&el.style.top) commit({assistant:{left:r.left,top:r.top,width:r.width,height:r.height}});
+    });
+    obs.observe(el);
+    document.addEventListener("pointerup",()=>{
+      if(!el.offsetParent||!el.style.left||!el.style.top)return;
+      const r=el.getBoundingClientRect();commit({assistant:{left:r.left,top:r.top,width:r.width,height:r.height}});
+    },true);
+  }
+
+  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,cmd:()=>{}};
+  requestAnimationFrame(()=>{try{setups[app]?.();setupAssistantPersistence()}catch(err){console.warn("layout-resize",app,err)}});
+
+  window.SIM_LAYOUT={
+    reset(){
+      try{localStorage.removeItem(storageKey)}catch(_){}
+      location.reload();
+    },
+    get(){return {...saved}}
+  };
+})();
