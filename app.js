@@ -237,6 +237,9 @@
     if (software === "pgadmin") {
       if (action === "openQueryTool") return plan(["#newQuery"]);
       if (action === "executeQuery") return plan(["#run"]);
+      if (action === "refreshTree") return plan(["#pgRefresh"]);
+      if (action === "showResultTab") return plan([`[data-result-tab="${step.action.data?.tab || "data"}"]`]);
+      if (action === "showExplain") return plan(['[data-result-tab="explain"]']);
     }
     if (software === "postman") {
       if (action === "setEnvironment") return plan(["#envName"]);
