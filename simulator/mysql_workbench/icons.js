@@ -1,0 +1,26 @@
+(()=>{"use strict";const P={
+home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z" fill="none" stroke="currentColor" stroke-width="1.7"/>',
+connection:'<ellipse cx="8" cy="7" rx="5" ry="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v8c0 1.4 2.2 2.5 5 2.5 1.3 0 2.5-.2 3.4-.6M15 9v10m-3-3h6" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+settings:'<circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1m0-12.8l-2.1 2.1m-8.6 8.6l-2.1 2.1" stroke="currentColor" fill="none" stroke-width="1.4"/>',
+sql:'<path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 9h10M7 13h7M7 17h5" stroke="currentColor" stroke-width="1.5"/>',
+open:'<path d="M3 7h7l2 2h9l-3 10H5z" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+save:'<path d="M5 3h12l3 3v15H4V3zm3 0v6h8V3M7 15h10v6H7z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+schema:'<ellipse cx="12" cy="5" rx="7" ry="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5M5 11v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+refresh:'<path d="M19 8a7 7 0 10.5 6M19 3v5h-5" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+execute:'<path d="M6 3l12 9-12 9z" fill="#e7a600" stroke="#a77500" stroke-width="1"/>',
+stop:'<rect x="6" y="6" width="12" height="12" fill="#bd3d35"/>',
+commit:'<path d="M5 13l4 4L19 7" fill="none" stroke="#3188bd" stroke-width="2.2"/>',
+rollback:'<path d="M9 7H4v5M5 11a8 8 0 101.5-4" fill="none" stroke="#c83c35" stroke-width="1.8"/>',
+format:'<path d="M5 18l9-9 4 4-9 9H5zM14 6l2-2 4 4-2 2" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+star:'<path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+folder:'<path d="M3 6h7l2 2h9v11H3z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+table:'<rect x="4" y="5" width="16" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 9h16M9 5v14" stroke="currentColor" stroke-width="1.3"/>',
+view:'<path d="M3 12s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+column:'<path d="M8 4h8v16H8zM8 9h8M8 14h8" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+index:'<path d="M7 4v16M17 4v16M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.4"/>',
+foreignKey:'<circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 11l8 8m-3-3l2-2m-5 0l2-2" stroke="currentColor" stroke-width="1.5"/>',
+trigger:'<path d="M13 2L5 14h6l-1 8 9-13h-6z" fill="#e0a400"/>',
+procedure:'<rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 16V8h4a2 2 0 010 4H8" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+function:'<path d="M8 20l4-16m-6 6h9m2 7c-2 0-3-1-3-3s1-3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/>'
+};window.MWB_ICONS=P;window.MWB_ICON=(n,s=18)=>'<svg viewBox="0 0 24 24" width="'+s+'" height="'+s+'" aria-hidden="true">'+(P[n]||P.folder)+'</svg>';
+window.addEventListener('DOMContentLoaded',()=>{const map={btnHome:'home',btnNewConnection:'connection',btnManageConnections:'settings',btnNewSql:'sql',btnOpenSql:'open',btnSaveSql:'save',btnCreateSchema:'schema',btnRefresh:'refresh',qOpen:'open',qSave:'save',qExecAll:'execute',qExecCurrent:'execute',qStop:'stop',qCommit:'commit',qRollback:'rollback',qBeautify:'format',qSnippet:'star'};for(const [id,icon] of Object.entries(map)){const el=document.getElementById(id);if(el)el.innerHTML=window.MWB_ICON(icon,18)}});})();
