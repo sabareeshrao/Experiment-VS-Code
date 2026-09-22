@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "policy": "Each simulator owns its adaptive UI. No visual UI primitives are shared.",
+  "actions": [
+    "openContextMenu",
+    "chooseContextMenuPath",
+    "openAdaptiveDialog",
+    "setAdaptiveField",
+    "openToolWindow",
+    "closeToolWindow",
+    "setToolWindowPinned",
+    "closeAdaptiveUi"
+  ],
+  "simulators": {
+    "intellij": {
+      "registry": "INTELLIJ_CAPABILITIES",
+      "features": [
+        "editor-context-menu",
+        "project-context-menu",
+        "refactor-dialog",
+        "settings-dialog",
+        "tool-window",
+        "debugger",
+        "maven",
+        "git",
+        "database"
+      ],
+      "menus": [
+        "editor",
+        "project"
+      ],
+      "toolWindows": [
+        "Project",
+        "Structure",
+        "Maven",
+        "Git",
+        "Database",
+        "Spring",
+        "Terminal",
+        "Problems"
+      ],
+      "dialogPresets": [
+        "refactor",
+        "settings"
+      ]
+    },
+    "vscode": {
+      "registry": "VSCODE_CAPABILITIES",
+      "features": [
+        "editor-context-menu",
+        "explorer-context-menu",
+        "quick-pick",
+        "settings-editor",
+        "tool-panel",
+        "source-control",
+        "debug",
+        "extensions"
+      ],
+      "menus": [
+        "editor",
+        "explorer"
+      ],
+      "toolWindows": [
+        "Explorer",
+        "Search",
+        "Source Control",
+        "Run and Debug",
+        "Extensions",
+        "Terminal",
+        "Problems",
+        "Output"
+      ],
+      "dialogPresets": [
+        "quickPick",
+        "settings"
+      ]
+    },
+    "pgadmin": {
+      "registry": "PGADMIN_CAPABILITIES",
+      "features": [
+        "browser-context-menu",
+        "query-context-menu",
+        "properties-dialog",
+        "maintenance-dialog",
+        "backup-restore",
+        "dashboard",
+        "query-history",
+        "erd",
+        "schema-diff"
+      ],
+      "menus": [
+        "browser",
+        "query"
+      ],
+      "toolWindows": [
+        "Dashboard",
+        "Query History",
+        "ERD Tool",
+        "Schema Diff",
+        "PSQL Tool"
+      ],
+      "dialogPresets": [
+        "properties",
+        "maintenance"
+      ]
+    },
+    "postman": {
+      "registry": "POSTMAN_CAPABILITIES",
+      "features": [
+        "request-context-menu",
+        "collection-context-menu",
+        "response-context-menu",
+        "runner-dialog",
+        "environment-dialog",
+        "mock-monitor",
+        "code-snippet",
+        "variables"
+      ],
+      "menus": [
+        "request",
+        "collection",
+        "response"
+      ],
+      "toolWindows": [
+        "Collection Runner",
+        "Console",
+        "Environments",
+        "Cookies",
+        "Mock Server",
+        "Monitor",
+        "Flows",
+        "Variables"
+      ],
+      "dialogPresets": [
+        "code",
+        "runner"
+      ]
+    },
+    "cmd": {
+      "registry": "CMD_CAPABILITIES",
+      "features": [
+        "terminal-context-menu",
+        "properties-dialog",
+        "defaults-dialog",
+        "find-dialog",
+        "history-panel",
+        "environment-panel",
+        "selection-mode"
+      ],
+      "menus": [
+        "terminal"
+      ],
+      "toolWindows": [
+        "Command History",
+        "Environment",
+        "Selection"
+      ],
+      "dialogPresets": [
+        "properties",
+        "find"
+      ]
+    },
+    "linux": {
+      "registry": "LINUX_CAPABILITIES",
+      "features": [
+        "terminal-context-menu",
+        "files-context-menu",
+        "process-context-menu",
+        "preferences-dialog",
+        "properties-dialog",
+        "system-monitor-details",
+        "service-details",
+        "network-details"
+      ],
+      "menus": [
+        "terminal",
+        "files",
+        "process"
+      ],
+      "toolWindows": [
+        "Terminal Preferences",
+        "File Properties",
+        "System Monitor Details",
+        "Service Details",
+        "Network Information"
+      ],
+      "dialogPresets": [
+        "preferences",
+        "properties"
+      ]
+    },
+    "jira": {
+      "registry": "JIRA_CAPABILITIES",
+      "features": [
+        "issue-context-menu",
+        "board-card-context-menu",
+        "workflow-dialog",
+        "automation-dialog",
+        "activity-panel",
+        "development-panel",
+        "release-panel",
+        "dashboard-gadget"
+      ],
+      "menus": [
+        "issue",
+        "card"
+      ],
+      "toolWindows": [
+        "Activity",
+        "Development",
+        "Automation Audit Log",
+        "Release Details",
+        "Dashboard Gadget"
+      ],
+      "dialogPresets": [
+        "workflow",
+        "automation"
+      ]
+    },
+    "jenkins": {
+      "registry": "JENKINS_CAPABILITIES",
+      "features": [
+        "job-context-menu",
+        "build-context-menu",
+        "stage-context-menu",
+        "configuration-dialog",
+        "parameter-dialog",
+        "credential-dialog",
+        "manage-panel",
+        "plugin-panel",
+        "node-panel"
+      ],
+      "menus": [
+        "job",
+        "build",
+        "stage"
+      ],
+      "toolWindows": [
+        "Manage Jenkins",
+        "Credentials",
+        "Plugins",
+        "Nodes",
+        "System Log",
+        "Pipeline Syntax",
+        "Build Queue"
+      ],
+      "dialogPresets": [
+        "parameter",
+        "credential"
+      ]
+    }
+  }
+}
