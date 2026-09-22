@@ -586,6 +586,307 @@ window.COURSE = {
           "wordWrap": false,
           "includeActualPlan": false
         }
+      },
+      "jira": {
+        "siteName": "Java Practice Team",
+        "user": "Developer",
+        "project": {
+          "key": "JAVA",
+          "name": "Java Practice API"
+        },
+        "boardName": "Java Practice Sprint Board",
+        "activeView": "board",
+        "columns": [
+          {
+            "id": "todo",
+            "name": "TO DO"
+          },
+          {
+            "id": "progress",
+            "name": "IN PROGRESS"
+          },
+          {
+            "id": "review",
+            "name": "CODE REVIEW"
+          },
+          {
+            "id": "done",
+            "name": "DONE"
+          }
+        ],
+        "sprint": {
+          "id": "s12",
+          "name": "Sprint 12",
+          "goal": "Deliver and validate the Student API workflow",
+          "status": "active",
+          "startDate": "2026-09-21",
+          "endDate": "2026-10-02"
+        },
+        "sprints": [
+          {
+            "id": "s12",
+            "name": "Sprint 12",
+            "goal": "Deliver and validate the Student API workflow",
+            "status": "active",
+            "startDate": "2026-09-21",
+            "endDate": "2026-10-02"
+          },
+          {
+            "id": "s13",
+            "name": "Sprint 13",
+            "goal": "Harden validation and monitoring",
+            "status": "future",
+            "startDate": "2026-10-05",
+            "endDate": "2026-10-16"
+          }
+        ],
+        "versions": [
+          {
+            "name": "1.2.0",
+            "status": "unreleased",
+            "releaseDate": "2026-10-02",
+            "description": "Student API release"
+          }
+        ],
+        "issues": [
+          {
+            "key": "JAVA-100",
+            "type": "Epic",
+            "summary": "Student API delivery",
+            "status": "IN PROGRESS",
+            "assignee": "Tech Lead",
+            "reporter": "Product Owner",
+            "priority": "High",
+            "points": 13,
+            "labels": [
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Deliver the Student API from model through database and API validation.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-101",
+            "type": "Story",
+            "summary": "Expose GET /api/students/{rollNo}",
+            "status": "TO DO",
+            "assignee": "Unassigned",
+            "reporter": "Tech Lead",
+            "priority": "High",
+            "points": 5,
+            "parent": "JAVA-100",
+            "labels": [
+              "backend",
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Implement and verify the Student lookup endpoint using the existing Student model and database record.",
+            "sprint": "Sprint 12",
+            "fixVersions": [],
+            "dueDate": "",
+            "originalEstimate": "",
+            "remainingEstimate": "",
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [
+              {
+                "type": "blocks",
+                "key": "JAVA-104"
+              }
+            ],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-102",
+            "type": "Bug",
+            "summary": "Return 404 when student roll number is missing",
+            "status": "IN PROGRESS",
+            "assignee": "Developer",
+            "reporter": "QA Engineer",
+            "priority": "Medium",
+            "points": 3,
+            "parent": "JAVA-100",
+            "labels": [
+              "backend",
+              "validation"
+            ],
+            "component": "Student API",
+            "description": "Handle unknown roll numbers with the expected API error response.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-103",
+            "type": "Story",
+            "summary": "Add Student API integration tests",
+            "status": "CODE REVIEW",
+            "assignee": "Developer",
+            "reporter": "Tech Lead",
+            "priority": "Medium",
+            "points": 3,
+            "parent": "JAVA-100",
+            "labels": [
+              "test",
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Cover success and not-found scenarios with integration tests.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [
+                {
+                  "name": "test/JAVA-103-student-api"
+                }
+              ],
+              "commits": [],
+              "pullRequests": [
+                {
+                  "title": "JAVA-103 integration tests",
+                  "status": "OPEN"
+                }
+              ],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-104",
+            "type": "Task",
+            "summary": "Document Student API contract",
+            "status": "TO DO",
+            "assignee": "Developer",
+            "reporter": "Tech Lead",
+            "priority": "Low",
+            "points": 2,
+            "parent": "JAVA-100",
+            "labels": [
+              "docs"
+            ],
+            "component": "Student API",
+            "description": "Document request, response, and error examples for the Student endpoint.",
+            "sprint": "Sprint 13",
+            "fixVersions": [],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [
+              {
+                "type": "is blocked by",
+                "key": "JAVA-101"
+              }
+            ],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          }
+        ],
+        "components": [
+          {
+            "name": "Student API",
+            "lead": "Tech Lead",
+            "description": "Student REST API and persistence workflow",
+            "issueCount": 5
+          }
+        ],
+        "filters": [
+          {
+            "name": "My active Java work",
+            "jql": "project = JAVA AND assignee = currentUser() AND status != DONE ORDER BY key ASC"
+          }
+        ],
+        "quickFilters": [],
+        "automations": [],
+        "workflows": [
+          {
+            "name": "Java Delivery Workflow",
+            "statuses": [
+              "TO DO",
+              "IN PROGRESS",
+              "CODE REVIEW",
+              "DONE"
+            ]
+          }
+        ],
+        "dashboard": {
+          "gadgets": [
+            {
+              "type": "assigned",
+              "title": "Assigned to me"
+            },
+            {
+              "type": "sprint-health",
+              "title": "Sprint health"
+            },
+            {
+              "type": "created-resolved",
+              "title": "Created vs resolved"
+            },
+            {
+              "type": "activity",
+              "title": "Activity stream"
+            }
+          ]
+        }
       }
     }
   },
@@ -2079,6 +2380,327 @@ window.COURSE = {
         {
           "title": "Return to Student.java after database verification",
           "why": "Database schema, data mariyu query checks complete ayyaka developer malli IntelliJ ki return avuthadu. Project timeline continuity preserve avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "8: Jira Developer Workflow",
+      "subtitle": "Follow a realistic Java developer ticket from sprint board through development, CI, QA, review, release tracking, and reporting.",
+      "steps": [
+        {
+          "title": "Review Student.java before starting the Jira ticket",
+          "why": "Jira ticket start cheyyadaniki mundu developer existing Student.java context ni IntelliJ lo quick ga review chestadu. Ticket requirement code structure tho ela connect avuthundo clarity vastundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        },
+        {
+          "title": "Open the active Jira sprint board",
+          "why": "Office day lo developer first active sprint board open chesi assigned work, current status mariyu team flow ni check chestadu.",
+          "software": "jira",
+          "action": {
+            "action": "openBoard",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open JAVA-101 Student API story",
+          "why": "Implementation start cheyyadaniki mundu story description, parent epic, priority, sprint mariyu dependencies ni issue panel lo review chestam.",
+          "software": "jira",
+          "action": {
+            "action": "openIssue",
+            "data": {
+              "key": "JAVA-101",
+              "boundary": true
+            }
+          }
+        },
+        {
+          "title": "Assign JAVA-101 to the developer",
+          "why": "Ticket ni actively own chestunnappudu assignee ni Developer ga set chestam. Team ki evaru work chestunnaro clear ga kanipistundi.",
+          "software": "jira",
+          "action": {
+            "action": "assignIssue",
+            "data": {
+              "key": "JAVA-101",
+              "assignee": "Developer"
+            }
+          }
+        },
+        {
+          "title": "Move the story to IN PROGRESS",
+          "why": "Actual implementation start ayyaka work item status ni IN PROGRESS ki move chestam. Sprint board current work ni correct ga reflect chestundi.",
+          "software": "jira",
+          "action": {
+            "action": "setStatus",
+            "data": {
+              "key": "JAVA-101",
+              "status": "IN PROGRESS"
+            }
+          }
+        },
+        {
+          "title": "Set the delivery due date",
+          "why": "Target delivery date ni ticket lo record chesthe sprint planning mariyu release coordination easy avuthayi.",
+          "software": "jira",
+          "action": {
+            "action": "setDueDate",
+            "data": {
+              "key": "JAVA-101",
+              "dueDate": "2026-09-28"
+            }
+          }
+        },
+        {
+          "title": "Add the original and remaining estimate",
+          "why": "Work effort track cheyyadaniki original estimate mariyu remaining estimate set chestam. Sprint capacity discussion lo ee values useful.",
+          "software": "jira",
+          "action": {
+            "action": "setEstimate",
+            "data": {
+              "key": "JAVA-101",
+              "original": "6h",
+              "minutes": 360,
+              "remaining": "6h"
+            }
+          }
+        },
+        {
+          "title": "Log the first hour of development work",
+          "why": "Implementation meeda spend chesina time ni Jira worklog lo record chestam. Remaining estimate kuda update chesthe progress realistic ga track avuthundi.",
+          "software": "jira",
+          "action": {
+            "action": "logWork",
+            "data": {
+              "key": "JAVA-101",
+              "author": "Developer",
+              "timeSpent": "1h",
+              "minutes": 60,
+              "remainingEstimate": "5h",
+              "comment": "Reviewed model and API contract",
+              "date": "2026-09-22"
+            }
+          }
+        },
+        {
+          "title": "Add a progress comment",
+          "why": "Team members ki context ivvadaniki concise progress comment add chestam. Stand-up leka handoff mundu ticket history useful ga untundi.",
+          "software": "jira",
+          "action": {
+            "action": "addComment",
+            "data": {
+              "key": "JAVA-101",
+              "author": "Developer",
+              "time": "Today",
+              "text": "Student model and database contract verified. Starting endpoint implementation."
+            }
+          }
+        },
+        {
+          "title": "Create the feature branch from the Jira story",
+          "why": "Jira key branch name lo include chesthe code changes ticket tho traceable ga untayi. Branch, commit, PR development panel lo connect avuthayi.",
+          "software": "jira",
+          "action": {
+            "action": "createBranch",
+            "data": {
+              "key": "JAVA-101",
+              "name": "feature/JAVA-101-student-get"
+            }
+          }
+        },
+        {
+          "title": "Link the implementation commit",
+          "why": "Commit ni Jira story tho link chesthe requirement nundi exact code change varaku traceability maintain avuthundi.",
+          "software": "jira",
+          "action": {
+            "action": "linkCommit",
+            "data": {
+              "key": "JAVA-101",
+              "id": "8f4c2ad",
+              "message": "JAVA-101 implement student lookup endpoint"
+            }
+          }
+        },
+        {
+          "title": "Link the pull request",
+          "why": "Code review status ni Jira nundi choodadaniki pull request ni story tho link chestam. Developer workflow ticket nundi Git review varaku continuous ga untundi.",
+          "software": "jira",
+          "action": {
+            "action": "linkPullRequest",
+            "data": {
+              "key": "JAVA-101",
+              "title": "JAVA-101 Student lookup endpoint",
+              "status": "OPEN"
+            }
+          }
+        },
+        {
+          "title": "Record the successful CI build",
+          "why": "Pull request build green ga undha ani Jira development information lo surface chestam. Review mundu automated validation pass ayyindha ani team verify cheyyachu.",
+          "software": "jira",
+          "action": {
+            "action": "setBuildStatus",
+            "data": {
+              "key": "JAVA-101",
+              "name": "Java CI",
+              "status": "SUCCESS",
+              "number": "184"
+            }
+          }
+        },
+        {
+          "title": "Record the QA deployment",
+          "why": "Build QA environment ki deploy ayyaka deployment status ticket tho link chestam. Code complete nundi test environment varaku lifecycle visible ga untundi.",
+          "software": "jira",
+          "action": {
+            "action": "setDeploymentStatus",
+            "data": {
+              "key": "JAVA-101",
+              "environment": "QA",
+              "status": "SUCCESS",
+              "version": "1.2.0-rc1"
+            }
+          }
+        },
+        {
+          "title": "Assign the story to release 1.2.0",
+          "why": "Fix Version set chesthe JAVA-101 release scope lo officially include avuthundi. Release page progress ticket statuses nundi calculate avuthundi.",
+          "software": "jira",
+          "action": {
+            "action": "setFixVersion",
+            "data": {
+              "key": "JAVA-101",
+              "version": "1.2.0",
+              "replace": true
+            }
+          }
+        },
+        {
+          "title": "Review linked development activity",
+          "why": "Development view lo branch, commit, pull request, build mariyu deployment counts oka place lo verify chestam.",
+          "software": "jira",
+          "action": {
+            "action": "openDevelopment",
+            "data": {}
+          }
+        },
+        {
+          "title": "Search the developer's release work with JQL",
+          "why": "JQL use chesi current user ki assign ayina 1.2.0 release work ni filter chestam. Real Jira lo focused triage kosam advanced search common.",
+          "software": "jira",
+          "action": {
+            "action": "runJql",
+            "data": {
+              "jql": "project = JAVA AND fixVersion = \"1.2.0\" AND assignee = currentUser() ORDER BY key ASC",
+              "boundary": false
+            }
+          }
+        },
+        {
+          "title": "Review the sprint backlog",
+          "why": "Implementation progress madhyalo backlog open chesi current sprint mariyu future sprint work separation ni verify chestam.",
+          "software": "jira",
+          "action": {
+            "action": "openBacklog",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create a review automation rule",
+          "why": "Repetitive status transitions automate cheyyadaniki Jira Automation rule create chestam. CI or PR event taruvatha review status update avvadam common team pattern.",
+          "software": "jira",
+          "action": {
+            "action": "createAutomation",
+            "data": {
+              "name": "JAVA-101 Ready for review",
+              "trigger": "Build succeeded",
+              "condition": "Issue = JAVA-101",
+              "action": "Transition work item",
+              "targetStatus": "CODE REVIEW"
+            }
+          }
+        },
+        {
+          "title": "Run the automation and move JAVA-101 to CODE REVIEW",
+          "why": "Successful CI signal taruvatha automation rule story ni CODE REVIEW ki move chestundi. Manual status maintenance thaggutundi.",
+          "software": "jira",
+          "action": {
+            "action": "runAutomation",
+            "data": {
+              "name": "JAVA-101 Ready for review",
+              "key": "JAVA-101",
+              "status": "CODE REVIEW",
+              "result": "SUCCESS",
+              "time": "Today"
+            }
+          }
+        },
+        {
+          "title": "Open JAVA-101 after automated transition",
+          "why": "Automation correct ga work ayyindha ani issue ni malli open chesi status, development links mariyu worklog context verify chestam.",
+          "software": "jira",
+          "action": {
+            "action": "openIssue",
+            "data": {
+              "key": "JAVA-101"
+            }
+          }
+        },
+        {
+          "title": "Complete JAVA-101 after review",
+          "why": "Review approve ayyaka story ni DONE ki transition chestam. Sprint metrics mariyu release progress automatically updated state ni use chestayi.",
+          "software": "jira",
+          "action": {
+            "action": "transitionIssue",
+            "data": {
+              "key": "JAVA-101",
+              "to": "DONE"
+            }
+          }
+        },
+        {
+          "title": "Review release 1.2.0 progress",
+          "why": "Releases view lo 1.2.0 scope lo unna work items mariyu completed count ni inspect chestam. Ticket completion release planning tho connect avuthundi.",
+          "software": "jira",
+          "action": {
+            "action": "openReleases",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open the Jira team dashboard",
+          "why": "Dashboard gadgets assigned work, sprint health, created-versus-resolved mariyu activity ni quick team summary ga chupistayi.",
+          "software": "jira",
+          "action": {
+            "action": "openDashboard",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect the sprint burndown report",
+          "why": "Sprint end ki progress trend ni check cheyyadaniki burndown report use chestam. Remaining work and scope health ni quick ga assess cheyyachu.",
+          "software": "jira",
+          "action": {
+            "action": "openReport",
+            "data": {
+              "report": "burndown"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java after Jira workflow completion",
+          "why": "Ticket workflow complete ayyaka developer malli IntelliJ ki return avuthadu. Jira, Git-style development data, release tracking mariyu code timeline continuous ga preserve avuthayi.",
           "software": "intellij",
           "action": {
             "action": "openFile",
