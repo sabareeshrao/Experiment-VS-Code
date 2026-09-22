@@ -309,7 +309,7 @@
     const splitL=document.getElementById("splitL"), splitR=document.getElementById("splitR");
     if(!layout||!left||!history)return;
     const apply=()=>{
-      if(innerWidth<800){layout.style.gridTemplateColumns="";return;}
+      if(innerWidth<950){layout.style.gridTemplateColumns="";return;}
       const lw=clamp(get("leftW",left.getBoundingClientRect().width||240),110,320);
       const hw=clamp(get("historyW",history.getBoundingClientRect().width||210),115,320);
       layout.style.gridTemplateColumns=px(lw)+" 5px minmax(0,1fr) 5px "+px(hw);
@@ -416,7 +416,7 @@
     if(app==="jenkins"){
       const layout=document.getElementById("layout"),left=layout?.querySelector(".left"),history=document.getElementById("history");
       if(layout&&left&&history){
-        if(innerWidth<800) layout.style.gridTemplateColumns="";
+        if(innerWidth<950) layout.style.gridTemplateColumns="";
         else if(saved.leftW||saved.historyW){
           const lw=clamp(get("leftW",left.getBoundingClientRect().width||240),110,320);
           const hw=clamp(get("historyW",history.getBoundingClientRect().width||210),115,320);
