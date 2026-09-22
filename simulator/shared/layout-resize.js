@@ -321,6 +321,9 @@
   }
 
   function setupAssistantPersistence(){
+    // Explanation position/dragging is owned by explanation-controls.js so
+    // every simulator uses exactly the same behavior and saved position.
+    if(window.__SIM_EXPLANATION_CONTROLS__) return;
     const selectors={
       intellij:["#ideAssistant"],vscode:["#assistant"],pgadmin:["#pgAssistant"],postman:["#postmanAssistant"],
       cmd:["#cmdAssistant"],linux:["#linuxAssistant"],ssms:["#ssmsAssistant"],jira:["#jiraAssistant"],jenkins:["#jenkinsAssistant"]
@@ -346,6 +349,105 @@
     if(!el || value==null) return;
     if(el.style[prop]!==value) el.style[prop]=value;
   }
+
+  function nearestScrollParents(el){
+    const list=[];
+    let p=el?.parentElement;
+    while(p&&p!==document.body&&p!==document.documentElement){
+      const s=getComputedStyle(p);
+      const oy=s.overflowY,ox=s.overflowX;
+      if(/auto|scroll|overlay/.test(oy+ox)) list.push(p);
+      p=p.parentElement;
+    }
+    return list;
+  }
+
+  function revealFocus(target,options={}){
+    const el=typeof target==="string"?document.querySelector(target):target;
+    if(!el||!el.isConnected)return false;
+    const margin=Number(options.margin??18);
+    const block=options.block||"center";
+    const parents=nearestScrollParents(el);
+
+    // Work from the innermost scroll container outward so nested editors,
+    // terminals, result panes and future simulators keep the focused action
+    // visible while auto-typing/replaying.
+    for(const scroller of parents){
+      const er=el.getBoundingClientRect(),sr=scroller.getBoundingClientRect();
+      const topLimit=sr.top+margin,bottomLimit=sr.bottom-margin;
+      if(er.top<topLimit||er.bottom>bottomLimit){
+        const centerDelta=((er.top+er.bottom)/2)-((sr.top+sr.bottom)/2);
+        if(block==="end") scroller.scrollTop+=er.bottom-bottomLimit;
+        else if(block==="start") scroller.scrollTop+=er.top-topLimit;
+        else scroller.scrollTop+=centerDelta;
+      }
+      const leftLimit=sr.left+margin,rightLimit=sr.right-margin;
+      if(er.left<leftLimit) scroller.scrollLeft+=er.left-leftLimit;
+      else if(er.right>rightLimit) scroller.scrollLeft+=er.right-rightLimit;
+    }
+
+    // If no dedicated scrolling parent exists, keep the element inside the
+    // iframe viewport without changing its layout.
+    if(!parents.length){
+      try{el.scrollIntoView({block:block==="end"?"end":block==="start"?"start":"center",inline:"nearest",behavior:"auto"});}catch(_){}
+    }
+    return true;
+  }
+
+  let focusRaf=0,lastFocusEl=null;
+  function queueFocusReveal(el,options){
+    if(!el||!el.isConnected)return;
+    lastFocusEl=el;
+    cancelAnimationFrame(focusRaf);
+    focusRaf=requestAnimationFrame(()=>revealFocus(lastFocusEl,options||{}));
+  }
+
+  const focusSelector=[
+    "[data-sim-focus='true']",
+    ".sim-emphasis",
+    ".terminalCommandFocus",
+    ".focusLine",
+    ".codeLine.focus",
+    ".codeLine.changed",
+    ".sim-code-change"
+  ].join(",");
+
+  const focusObserver=new MutationObserver(records=>{
+    let candidate=null;
+    for(const record of records){
+      if(record.type==="attributes"){
+        const el=record.target;
+        if(el.matches?.(focusSelector))candidate=el;
+      }
+      for(const node of record.addedNodes||[]){
+        if(node.nodeType!==1)continue;
+        if(node.matches?.(focusSelector))candidate=node;
+        const nested=node.querySelector?.(focusSelector);
+        if(nested)candidate=nested;
+      }
+    }
+    if(candidate)queueFocusReveal(candidate,{block:"center"});
+  });
+  focusObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["class","data-sim-focus"]});
+
+  // Programmatic simulators should call SIM_FOCUS.reveal() while auto-typing.
+  // Future simulators can instead mark the current element with
+  // data-sim-focus="true" and the shared observer will follow it automatically.
+  window.SIM_FOCUS={
+    reveal(target,options){return revealFocus(target,options||{})},
+    follow(target,options){queueFocusReveal(typeof target==="string"?document.querySelector(target):target,options||{});},
+    mark(target,options){
+      const el=typeof target==="string"?document.querySelector(target):target;
+      if(!el)return false;
+      el.setAttribute("data-sim-focus","true");
+      queueFocusReveal(el,options||{});
+      return true;
+    },
+    clear(target){
+      const el=typeof target==="string"?document.querySelector(target):target;
+      if(el)el.removeAttribute("data-sim-focus");
+    }
+  };
 
   function restoreGenericPersistentElements(){
     const generic=saved.generic||{};
