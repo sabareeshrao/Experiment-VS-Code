@@ -197,15 +197,35 @@
     const work=document.querySelector(".work"), left=document.querySelector(".work > .left"), main=document.querySelector(".work > .main");
     const results=main?.querySelector(".results");
     if(!work||!left||!main||!results)return;
-    const sideW=clamp(get("sideW",280),150,Math.max(180,work.clientWidth-320));
-    work.style.gridTemplateColumns=px(sideW)+" 5px minmax(0,1fr)";
-    const v=document.createElement("div");v.className="sim-layout-handle sim-layout-handle-v";v.id="pgSideResize";v.style.position="relative";v.style.transform="none";work.insertBefore(v,main);
-    dragHandle(v,"x",e=>{const r=work.getBoundingClientRect(),w=clamp(e.clientX-r.left,150,Math.max(180,r.width-320));work.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)"},()=>commit({sideW:left.getBoundingClientRect().width}));
 
-    const resultsH=clamp(get("resultsH",210),90,Math.max(110,main.clientHeight-150));
-    main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(resultsH);
-    const h=document.createElement("div");h.className="sim-layout-handle sim-layout-handle-h";h.id="pgResultsResize";h.style.position="relative";h.style.transform="none";main.insertBefore(h,results);
-    dragHandle(h,"y",e=>{const r=main.getBoundingClientRect(),rh=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-150));main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(rh)},()=>commit({resultsH:results.getBoundingClientRect().height}));
+    // Keep pgAdmin's native two-column grid intact. The resize bar floats on
+    // top of the divider instead of becoming a third grid child.
+    const sideW=clamp(get("sideW",left.getBoundingClientRect().width||280),150,Math.max(180,work.clientWidth-320));
+    work.style.gridTemplateColumns=px(sideW)+" minmax(0,1fr)";
+    const v=makeHandle(work,"sim-layout-handle-v","pgSideResize");
+    if(v){
+      v.style.left=px(sideW);
+      dragHandle(v,"x",e=>{
+        const r=work.getBoundingClientRect();
+        const w=clamp(e.clientX-r.left,150,Math.max(180,r.width-320));
+        work.style.gridTemplateColumns=px(w)+" minmax(0,1fr)";
+        v.style.left=px(w);
+      },()=>commit({sideW:left.getBoundingClientRect().width}));
+    }
+
+    // Same rule for Query Tool vs Results: no extra grid row.
+    const resultsH=clamp(get("resultsH",results.getBoundingClientRect().height||210),90,Math.max(110,main.clientHeight-150));
+    main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(resultsH);
+    const h=makeHandle(main,"sim-layout-handle-h","pgResultsResize");
+    if(h){
+      h.style.top="calc(100% - "+px(resultsH)+")";
+      dragHandle(h,"y",e=>{
+        const r=main.getBoundingClientRect();
+        const rh=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-150));
+        main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(rh);
+        h.style.top="calc(100% - "+px(rh)+")";
+      },()=>commit({resultsH:results.getBoundingClientRect().height}));
+    }
   }
 
   function setupSSMS(){
@@ -574,13 +594,21 @@
 
     if(app==="pgadmin"){
       const work=document.querySelector(".work"),main=document.querySelector(".work > .main");
-      if(work&&saved.sideW){
-        const w=clamp(get("sideW",280),150,Math.max(180,work.clientWidth-320));
-        work.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)";
+      if(work){
+        const left=document.querySelector(".work > .left");
+        const fallback=left?.getBoundingClientRect().width||280;
+        const w=clamp(get("sideW",fallback),150,Math.max(180,work.clientWidth-320));
+        work.style.gridTemplateColumns=px(w)+" minmax(0,1fr)";
+        const v=document.getElementById("pgSideResize");
+        if(v)v.style.left=px(w);
       }
-      if(main&&saved.resultsH){
-        const rh=clamp(get("resultsH",210),90,Math.max(110,main.clientHeight-150));
-        main.style.gridTemplateRows="30px 31px minmax(0,1fr) 5px "+px(rh);
+      if(main){
+        const results=main.querySelector(".results");
+        const fallback=results?.getBoundingClientRect().height||210;
+        const rh=clamp(get("resultsH",fallback),90,Math.max(110,main.clientHeight-150));
+        main.style.gridTemplateRows="30px 31px minmax(0,1fr) "+px(rh);
+        const h=document.getElementById("pgResultsResize");
+        if(h)h.style.top="calc(100% - "+px(rh)+")";
       }
     }
 
