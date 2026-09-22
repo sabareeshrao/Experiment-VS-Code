@@ -73,14 +73,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media(max-width:950px){:root{--leftW:190px;--rightW:0px}.right,.splitR{display:none}.work{grid-template-columns:var(--leftW) 5px minmax(0,1fr)}.editorPane,.bottom,.splitH{grid-column:3}}
 @media(max-width:650px){:root{--leftW:0px;--bottomH:145px}.left,.splitL{display:none}.work{grid-template-columns:minmax(0,1fr)}.editorPane,.bottom,.splitH{grid-column:1}.runConfig{min-width:130px}}
 @media(max-height:620px){:root{--bottomH:125px}.app{grid-template-rows:28px 24px 34px minmax(0,1fr) 21px}}
-.ideAssistant{position:absolute;z-index:330;right:18px;top:112px;width:340px;max-width:calc(100vw - 36px);background:#2b2d30;border:1px solid #45474d;border-radius:8px;box-shadow:0 12px 34px rgba(0,0,0,.42);overflow:hidden;color:#dfe1e5}
+.ideAssistant{position:absolute;z-index:330;right:16px;bottom:34px;width:310px;max-width:calc(100vw - 28px);background:#2b2d30;border:1px solid #45474d;border-radius:7px;box-shadow:0 10px 28px rgba(0,0,0,.38);overflow:hidden;color:#dfe1e5;user-select:none;touch-action:none;cursor:grab}
 .ideAssistant.hidden{display:none!important}
-.ideAssistantHead{height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;background:#252629;border-bottom:1px solid #3d3f44;cursor:move;user-select:none}
+.ideAssistantHead{height:32px;display:flex;align-items:center;gap:8px;padding:0 7px;background:#252629;border-bottom:1px solid #3d3f44;cursor:grab;user-select:none;touch-action:none}
 .ideAssistantIcon{width:20px;height:20px;border-radius:4px;display:grid;place-items:center;background:linear-gradient(135deg,#548af7,#b588ff);color:white;font-size:10px;font-weight:800}
 .ideAssistantTitles{min-width:0;flex:1}.ideAssistantTitles strong,.ideAssistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ideAssistantTitles strong{font-size:10px;font-weight:700}.ideAssistantTitles span{font-size:9px;color:#9da1a8;margin-top:1px}
 .ideAssistantClose{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px;padding:0}.ideAssistantClose:hover{background:#34363b;color:#fff}
-.ideAssistantBody{padding:11px 12px 12px;font:11px/1.55 "Segoe UI",Arial,sans-serif;color:#dfe1e5;background:#2b2d30}
-.ideAssistantBody p{margin:0}.ideAssistantBody .stepTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
+.ideAssistantBody{padding:9px 10px 10px;font:10.5px/1.5 "Segoe UI",Arial,sans-serif;color:#dfe1e5;background:#2b2d30;cursor:grab;user-select:none}
+.ideAssistantBody p{margin:0}.ideAssistant.minimized{width:220px}.ideAssistant.minimized .ideAssistantBody{display:none}.ideAssistant.dragging{cursor:grabbing;opacity:.96}.ideAssistant.dragging *{cursor:grabbing!important}.ideAssistantAction{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px;padding:0}.ideAssistantAction:hover{background:#34363b;color:#fff}.ideAssistantBody .stepTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
 </style>
 </head>
 <body class="theme-dark" data-sim-app="intellij_idea">
@@ -107,12 +107,12 @@ button,input,select,textarea{font:inherit;color:inherit}
    <div class="ideAssistantHead" id="ideAssistantDrag">
      <div class="ideAssistantIcon">AI</div>
      <div class="ideAssistantTitles"><strong id="ideAssistantTitle">Step explanation</strong><span id="ideAssistantStage">Developer guidance</span></div>
-     <button class="ideAssistantClose" id="ideAssistantClose" title="Hide">×</button>
+     <button class="ideAssistantAction" id="ideAssistantMin" title="Minimize">—</button><button class="ideAssistantClose ideAssistantAction" id="ideAssistantClose" title="Hide">×</button>
    </div>
    <div class="ideAssistantBody"><div class="stepTag" id="ideAssistantStep">Step</div><p id="ideAssistantText"></p></div>
  </div>
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
-<script src="engine.js"></script>
+<script src="engine.js?v=6"></script>
 </body>
 </html>
