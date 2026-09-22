@@ -13,7 +13,7 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeBtn:hover{background:rgba(255,255,255,.10)!important;color:#fff!important}",
     ".simExplainActions,[data-sim-explain-actions]{display:none!important}",
     ".assistantLang,.pgAssistantLanguage{display:none!important}",
-    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant{position:fixed!important;z-index:20000!important}",
+    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant{position:fixed!important;z-index:20000!important}",
     "*{scrollbar-width:thin;scrollbar-color:rgba(128,134,142,.58) transparent}",
     "*::-webkit-scrollbar{width:8px;height:8px}",
     "*::-webkit-scrollbar-track{background:transparent}",
@@ -24,9 +24,9 @@ if(!document.getElementById(STYLE_ID)){
   document.head.appendChild(style);
 }
 
-var assistantSelectors=["#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant"];
-var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta"];
-var textSelectors=["#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody"];
+var assistantSelectors=["#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
+var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
+var textSelectors=["#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
 var scaleKey="sim.explanationScale.v1";
 var positionKey="sim.explanationPosition.v1";
 var dragPending=false;
@@ -46,10 +46,10 @@ function getAssistant(){
   return null;
 }
 function getHead(box){
-  return firstWithin(box,["#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
+  return firstWithin(box,["#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead","#jenkinsAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
 }
 function getBody(box){
-  return firstWithin(box,[".ideAssistantBody",".assistantBody",".pgAssistantBody"]);
+  return firstWithin(box,[".ideAssistantBody",".assistantBody",".pgAssistantBody",".jenkinsAssistantContent"]);
 }
 function getMeta(box){
   var meta=firstWithin(box,metaSelectors);
