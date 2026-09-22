@@ -6,13 +6,14 @@ var clone=function(v){return JSON.parse(JSON.stringify(v==null?null:v));};
 var esc=function(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");};
 
 var R={
- tree:$("tree"),tabs:$("tabs"),breadcrumbs:$("breadcrumbs"),codeViewport:$("codeViewport"),codeTable:$("codeTable"),minimap:$("minimap"),
+ tree:$("tree"),tabs:$("tabs"),breadcrumbs:$("breadcrumbs"),editorArea:$("editorArea"),codeViewport:$("codeViewport"),codeTable:$("codeTable"),minimap:$("minimap"),
+ markdownPreviewBtn:$("markdownPreviewBtn"),markdownPreview:$("markdownPreview"),markdownPreviewBody:$("markdownPreviewBody"),markdownPreviewTitle:$("markdownPreviewTitle"),
  terminal:$("terminal"),editorGroup:$("editorGroup"),position:$("positionLabel"),language:$("languageLabel"),branch:$("branchLabel"),command:$("commandLabel"),
  context:$("contextMenu"),assistant:$("assistant"),assistantHead:$("assistantHead"),assistantTitle:$("assistantTitle"),assistantStage:$("assistantStage"),
  assistantStep:$("assistantStep"),assistantText:$("assistantText")
 };
 
-var baseline={},state={},files={},activeFile=null,openedTabs=[],changedLines=[],expandedFolders=new Set(),panelVisible=false,seekToken=0,contextPath=null;
+var baseline={},state={},files={},activeFile=null,openedTabs=[],changedLines=[],expandedFolders=new Set(),panelVisible=false,markdownPreviewOpen=false,seekToken=0,contextPath=null;
 
 function fileKind(path){
  var n=(path||"").split("/").pop()||"";
@@ -295,6 +296,70 @@ function renderMinimap(lines){
  v.className="minimapViewport";
  R.minimap.appendChild(v);
 }
+
+function inlineMarkdown(text){
+ var out="",i=0;
+ while(i<text.length){
+   if(text[i]==="`"){
+     var end=text.indexOf("`",i+1);
+     if(end>i){out+='<code>'+esc(text.slice(i+1,end))+'</code>';i=end+1;continue;}
+   }
+   if(text.slice(i,i+2)==="**"){
+     var b=text.indexOf("**",i+2);
+     if(b>i){out+='<strong>'+inlineMarkdown(text.slice(i+2,b))+'</strong>';i=b+2;continue;}
+   }
+   if(text[i]==="[" ){
+     var close=text.indexOf("]",i+1),openParen=close>=0?text.indexOf("(",close+1):-1,closeParen=openParen>=0?text.indexOf(")",openParen+1):-1;
+     if(close>i&&openParen===close+1&&closeParen>openParen){
+       var label=text.slice(i+1,close),href=text.slice(openParen+1,closeParen);
+       out+='<a href="'+esc(href)+'" target="_blank" rel="noreferrer">'+inlineMarkdown(label)+'</a>';
+       i=closeParen+1;continue;
+     }
+   }
+   out+=esc(text[i]);i++;
+ }
+ return out;
+}
+function markdownToHtml(source){
+ var lines=String(source||"").split("\n"),html=[],inCode=false,code=[],listType=null;
+ function closeList(){if(listType){html.push("</"+listType+">");listType=null;}}
+ function closeCode(){if(inCode){html.push("<pre><code>"+esc(code.join("\n"))+"</code></pre>");inCode=false;code=[];}}
+ lines.forEach(function(line){
+   if(/^\s*```/.test(line)){
+     if(inCode)closeCode();else{closeList();inCode=true;}
+     return;
+   }
+   if(inCode){code.push(line);return;}
+   var m;
+   if((m=line.match(/^(#{1,3})\s+(.+)$/))){closeList();var level=m[1].length;html.push("<h"+level+">"+inlineMarkdown(m[2])+"</h"+level+">");return;}
+   if(/^\s*---+\s*$/.test(line)){closeList();html.push("<hr>");return;}
+   if((m=line.match(/^\s*>\s?(.*)$/))){closeList();html.push("<blockquote>"+inlineMarkdown(m[1])+"</blockquote>");return;}
+   if((m=line.match(/^\s*[-*+]\s+(.+)$/))){
+     if(listType!=="ul"){closeList();html.push("<ul>");listType="ul";}
+     html.push("<li>"+inlineMarkdown(m[1])+"</li>");return;
+   }
+   if((m=line.match(/^\s*\d+[.)]\s+(.+)$/))){
+     if(listType!=="ol"){closeList();html.push("<ol>");listType="ol";}
+     html.push("<li>"+inlineMarkdown(m[1])+"</li>");return;
+   }
+   closeList();
+   if(!line.trim()){html.push("");return;}
+   html.push("<p>"+inlineMarkdown(line)+"</p>");
+ });
+ closeList();closeCode();
+ return html.join("");
+}
+function renderMarkdownPreview(){
+ var isMarkdown=!!activeFile&&/\.md$/i.test(activeFile);
+ R.markdownPreviewBtn.classList.toggle("hidden",!isMarkdown);
+ if(!isMarkdown)markdownPreviewOpen=false;
+ R.editorArea.classList.toggle("markdownSplit",isMarkdown&&markdownPreviewOpen);
+ R.markdownPreview.classList.toggle("hidden",!(isMarkdown&&markdownPreviewOpen));
+ if(isMarkdown&&markdownPreviewOpen){
+   R.markdownPreviewTitle.textContent=activeFile.split("/").pop()+" — Preview";
+   R.markdownPreviewBody.innerHTML=markdownToHtml(files[activeFile]?files[activeFile].content:"");
+ }
+}
 function renderPanel(){
  R.editorGroup.classList.toggle("panelOpen",panelVisible);
  R.terminal.textContent=state.terminal||"PS Java Practice> ";
@@ -308,6 +373,7 @@ function renderAll(){
  renderTabs();
  renderBreadcrumbs();
  renderCode();
+ renderMarkdownPreview();
  renderPanel();
  renderChrome();
 }
@@ -315,6 +381,7 @@ function reset(){
  state=clone(baseline||{});
  normalize();
  changedLines=[];
+ markdownPreviewOpen=false;
  renderAll();
 }
 function ensureFile(path){
@@ -434,6 +501,15 @@ $("newFileBtn").onclick=function(){
 $("newFolderBtn").onclick=function(){expandedFolders.add("new-folder");renderTree();};
 $("panelClose").onclick=function(){panelVisible=false;renderPanel();};
 $("panelCollapse").onclick=function(){panelVisible=!panelVisible;renderPanel();};
+R.markdownPreviewBtn.onclick=function(){
+ if(!activeFile||!/\.md$/i.test(activeFile))return;
+ markdownPreviewOpen=!markdownPreviewOpen;
+ renderMarkdownPreview();
+};
+$("markdownPreviewClose").onclick=function(){
+ markdownPreviewOpen=false;
+ renderMarkdownPreview();
+};
 
 document.addEventListener("keydown",function(e){
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="w"){
@@ -455,6 +531,11 @@ document.addEventListener("keydown",function(e){
    e.preventDefault();
    panelVisible=!panelVisible;
    renderPanel();
+ }
+ if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==="v"&&activeFile&&/\.md$/i.test(activeFile)){
+   e.preventDefault();
+   markdownPreviewOpen=!markdownPreviewOpen;
+   renderMarkdownPreview();
  }
 });
 
