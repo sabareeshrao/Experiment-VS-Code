@@ -962,6 +962,61 @@ window.COURSE = {
           }
         },
         {
+          "title": "Navigate into the src folder",
+          "why": "CMD lo folder navigation ki cd command use chestam. Ippudu project root nundi src folder loki move ayyi prompt path change avuthundha ani verify chestunnam.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "cd src"
+            }
+          }
+        },
+        {
+          "title": "List files inside src",
+          "why": "src folder loki vachaka dir /b run chesi current folder content ni verify chestam. Ikkada Student.java kanipinchali.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "dir /b"
+            }
+          }
+        },
+        {
+          "title": "Navigate back to the project root",
+          "why": "cd .. parent folder ki move chestundi. Real CMD navigation lo developer frequently current folder nundi oka level back ki vastadu.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "cd .."
+            }
+          }
+        },
+        {
+          "title": "Navigate using an absolute Windows path",
+          "why": "Relative path tho matrame kaakunda cd /d full Windows path tho kuda folder change cheyyagalali. Ee step direct navigation behavior ni test chestundi.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "cd /d C:\\Users\\developer\\JavaPractice\\docs"
+            }
+          }
+        },
+        {
+          "title": "Return from docs to the project root",
+          "why": "docs nundi cd .. run chesi malli JavaPractice root ki return avutham. Ila forward mariyu backward folder navigation rendu prove avuthayi.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "cd .."
+            }
+          }
+        },
+        {
           "title": "Create a build directory",
           "why": "mkdir command virtual Windows filesystem ni actually update chestundi. Ee step CMD simulator display matrame kakunda stateful filesystem behavior kuda test chestundi.",
           "software": "cmd",
