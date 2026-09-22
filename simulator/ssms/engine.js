@@ -27,6 +27,17 @@
   let autoType = true;
   let seekToken = 0;
   let allowBoundary = true;
+  const THEME_KEY = "developerJourney.ssms.theme.v1";
+
+  function readSavedTheme(){
+    try {
+      const value = String(localStorage.getItem(THEME_KEY) || "").toLowerCase();
+      return value === "dark" || value === "light" ? value : "";
+    } catch (_) { return ""; }
+  }
+  function saveTheme(value){
+    try { localStorage.setItem(THEME_KEY, value); } catch (_) {}
+  }
 
   const ui = {
     menu: null,
@@ -42,7 +53,7 @@
     propertiesDialog: null,
     exportDialog: null,
     copiedText: "",
-    codeFocus: false
+    codeFocus: null
   };
 
   const $ = id => document.getElementById(id);
@@ -133,15 +144,18 @@
     return db;
   }
 
-  function loadPackage(pkg) {
+  function loadPackage(pkg, fallbackTheme="light") {
+    seekToken++;
     packageRef = pkg;
     baseline = normalizeState(pkg?.apps?.[APP_ID] || {});
     reset();
+    const packageTheme = pkg?.apps?.[APP_ID]?.options?.theme;
+    applyTheme(readSavedTheme() || packageTheme || fallbackTheme || "light", false);
   }
 
   function resetUi() {
     ui.menu = null; ui.connectOpen = false; ui.connectionDraft = {}; ui.modalType = null; ui.notification = ""; ui.intelli = null;
-    ui.boundaryTarget = null; ui.resultTab = "results"; ui.windowsDialogOpen = false; ui.propertiesDialog = null; ui.exportDialog = null; ui.copiedText = ""; ui.featurePanel=null; ui.codeFocus=false;
+    ui.boundaryTarget = null; ui.resultTab = "results"; ui.windowsDialogOpen = false; ui.propertiesDialog = null; ui.exportDialog = null; ui.copiedText = ""; ui.featurePanel=null; ui.codeFocus=null; ui.optionsOpen=false; ui.typingTab=null;
     clearBoundary();
   }
 
@@ -151,16 +165,30 @@
     renderAll();
   }
 
-  function applyTheme(value) {
+  function applyTheme(value, persist=false) {
     const dark = String(value).toLowerCase() === "dark" || value === true;
+    const theme = dark ? "dark" : "light";
     document.body.classList.toggle("theme-dark", dark);
     document.body.classList.toggle("theme-light", !dark);
+    document.body.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    if (state?.options) state.options.theme = theme;
+    const toggle = document.getElementById("themeToggle");
+    if(toggle){
+      toggle.textContent = dark ? "☀" : "◐";
+      toggle.title = dark ? "Switch to light theme" : "Switch to dark theme";
+      toggle.setAttribute("aria-label", toggle.title);
+      toggle.setAttribute("aria-pressed", dark ? "true" : "false");
+    }
+    if (persist) saveTheme(theme);
   }
 
   function renderAll() {
     if (!state) state = defaultState();
     refs.titleText.textContent = `${state.title || "SQL Server Management Studio"}${state.connected && state.connection?.serverName ? ` - ${state.connection.serverName}` : ""}`;
+    document.documentElement.style.setProperty("--editor-size",Math.max(10,Math.min(24,Number(state.options.fontSize)||14))+"px");
     renderDbSelect(); renderObjectTree(); renderTabs(); renderEditors(); renderResults(); renderStatus(); renderTransients();
+    decorateChrome();
     requestAnimationFrame(positionBoundary);
   }
 
@@ -234,19 +262,15 @@
     refs.docTabs.innerHTML = state.queryTabs.map(t=>`<div class="docTab ${t.id===state.activeQueryId?"active":""}" data-tab="${esc(t.id)}"><span class="name">${esc(t.title)}${t.dirty?" *":""}</span><span class="x" data-close-tab="${esc(t.id)}">×</span></div>`).join("");
   }
 
-  function sqlTokens(line) {
-    const re = /(--.*$|'(?:''|[^'])*'|\b(?:SELECT|FROM|WHERE|CREATE|TABLE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|DROP|ALTER|USE|GO|JOIN|LEFT|RIGHT|INNER|OUTER|ON|AS|AND|OR|NOT|NULL|PRIMARY|KEY|IDENTITY|INT|VARCHAR|NVARCHAR|DATETIME|DATE|DECIMAL|TOP|ORDER|BY|GROUP|HAVING|DISTINCT|COUNT|SUM|AVG|MIN|MAX|BEGIN|END|EXEC|EXECUTE|PROCEDURE|VIEW|DATABASE|SCHEMA|CONSTRAINT|INDEX|TRIGGER|MERGE|OUTPUT)\b|\b\d+(?:\.\d+)?\b)/gi;
-    let out="", last=0, m;
-    while((m=re.exec(line))){
-      out+=esc(line.slice(last,m.index)); const tok=m[0]; let cls="ident";
-      if(tok.startsWith("--")) cls="com"; else if(tok.startsWith("'")) cls="str"; else if(/^\d/.test(tok)) cls="num"; else cls="kw";
-      out+=`<span class="${cls}">${esc(tok)}</span>`; last=m.index+tok.length;
-      if(tok.startsWith("--")) break;
-    }
-    out+=esc(line.slice(last)); return out || "&nbsp;";
+  function sqlTokens(text) {
+    const keywords=new Set('SELECT FROM WHERE CREATE TABLE INSERT INTO VALUES UPDATE SET DELETE DROP ALTER USE GO JOIN LEFT RIGHT INNER OUTER FULL CROSS ON AS AND OR NOT NULL PRIMARY KEY IDENTITY INT VARCHAR NVARCHAR DATETIME DATE DECIMAL TOP ORDER BY GROUP HAVING DISTINCT BEGIN END EXEC EXECUTE PROCEDURE VIEW DATABASE SCHEMA CONSTRAINT INDEX TRIGGER MERGE OUTPUT WITH UNION ALL CASE WHEN THEN ELSE CAST CONVERT IS IN EXISTS BETWEEN LIKE ASC DESC DECLARE BIT BIGINT FLOAT MONEY COMMIT ROLLBACK TRANSACTION IF WHILE PRINT RETURN OVER PARTITION'.split(' '));
+    const functions=new Set('COUNT SUM AVG MIN MAX GETDATE GETUTCDATE SYSDATETIME ISNULL COALESCE LEN DATALENGTH UPPER LOWER SUBSTRING LTRIM RTRIM TRIM REPLACE CONCAT DATEADD DATEDIFF YEAR MONTH DAY OBJECT_ID SCOPE_IDENTITY NEWID ROW_NUMBER RANK'.split(' '));
+    const re=/(--[^\n]*|\/\*[\s\S]*?(?:\*\/|(?![\s\S]))|N?'(?:''|[^'])*(?:'|$)|\[(?:\]\]|[^\]])*\]|"(?:""|[^"])*"|^:[^\n]*|@@?\w+|\b[\w]+\b|[+*\/%=<>!~&|^-]+)/gim;
+    let out='',last=0,m;while((m=re.exec(text))){out+=esc(text.slice(last,m.index));const token=m[0],upper=token.toUpperCase();let kind='';if(token.startsWith('--')||token.startsWith('/*'))kind='com';else if(/^N?'/i.test(token))kind='str';else if(token.startsWith(':'))kind='sqlcmd';else if(token.startsWith('@@')||functions.has(upper))kind='fn';else if(/^(sys|information_schema)$/i.test(token))kind='sys';else if(/^(sp_|xp_)/i.test(token))kind='proc';else if(keywords.has(upper))kind='kw';else if(/^\d/.test(token))kind='num';else if(/^[+*\/%=<>!~&|^-]+$/.test(token))kind='op';out+=kind?'<span class="'+kind+'">'+esc(token)+'</span>':esc(token);last=m.index+token.length}return out+esc(text.slice(last))+'\n';
   }
 
   function renderEditors() {
+    const saved=new Map([...refs.queryGroups.querySelectorAll("textarea")].map(e=>[e.dataset.sqlEditor,{top:e.scrollTop,left:e.scrollLeft,start:e.selectionStart,end:e.selectionEnd,focus:e===document.activeElement}]));
     const tabs=state.queryTabs;
     if(!tabs.length){refs.queryGroups.className="queryGroups single";refs.queryGroups.innerHTML=`<div class="emptyWorkspace"><div class="emptyCard"><b>SQL Server Management Studio</b><p>Connect to a SQL Server, then select <b>New Query</b> to start writing Transact-SQL.</p></div></div>`;return;}
     refs.queryGroups.className=`queryGroups ${state.groupMode||"single"}`;
@@ -258,13 +282,19 @@
       ids=[a,b];
     }
     refs.queryGroups.innerHTML=ids.map((id,idx)=>renderQueryGroup(tabById(id),idx)).join("");
+    refs.queryGroups.querySelectorAll('textarea').forEach(ed=>{const old=saved.get(ed.dataset.sqlEditor);if(old){ed.scrollTop=old.top;ed.scrollLeft=old.left;ed.setSelectionRange(old.start,old.end);if(old.focus)ed.focus({preventScroll:true})}if(ui.typingTab===ed.dataset.sqlEditor){ed.focus({preventScroll:true});ed.setSelectionRange(ed.value.length,ed.value.length);ed.scrollTop=ed.scrollHeight}syncSqlLayer(ed)});
     renderIntelli();
   }
 
   function renderQueryGroup(tab, idx) {
     if(!tab) return `<div class="emptyWorkspace">No query window</div>`;
-    const lineCount=Math.max(1,String(tab.sql||"").split("\n").length);const nums=Array.from({length:lineCount},(_,i)=>i+1).join("\n");
-    return `<section class="queryGroup" data-query-group="${idx}"><div class="queryHead"><span class="qhTitle">${esc(tab.title)}</span><span class="qhMeta">${esc(tab.connectionName||state.connection?.serverName||"")} · ${esc(tab.database||state.currentDatabase||"")}</span></div><div class="codeViewport" data-code-viewport="${esc(tab.id)}"><div class="sqlEditorShell ${ui.codeFocus&&tab.id===state.activeQueryId?"sim-code-change":""}" data-editor-shell="${esc(tab.id)}"><pre class="sqlGutter" aria-hidden="true">${nums}</pre><textarea class="sqlTextarea" data-sql-editor="${esc(tab.id)}" spellcheck="false" wrap="off">${esc(tab.sql||"")}</textarea></div></div></section>`;
+    const lineCount=Math.max(1,String(tab.sql||"").split("\n").length);
+    const nums=Array.from({length:lineCount},(_,i)=>i+1).join("\n");
+    const focus = ui.codeFocus && ui.codeFocus.tabId===tab.id ? ui.codeFocus : null;
+    const startLine = focus ? Math.max(1,Math.min(lineCount,Number(focus.startLine)||1)) : 0;
+    const endLine = focus ? Math.max(startLine,Math.min(lineCount,Number(focus.endLine)||startLine)) : 0;
+    const lineHighlights = focus ? Array.from({length:lineCount},(_,i)=>`<div class="sqlLessonLine ${i+1>=startLine&&i+1<=endLine?"active":""}"></div>`).join("") : "";
+    return `<section class="queryGroup" data-query-group="${idx}"><div class="queryHead"><span class="qhTitle">${esc(tab.title)}</span><span class="qhMeta">${esc(tab.connectionName||state.connection?.serverName||"")} · ${esc(tab.database||state.currentDatabase||"")}</span></div><div class="codeViewport" data-code-viewport="${esc(tab.id)}"><div class="sqlEditorShell ${state.options.lineNumbers===false?"noNumbers":""}" data-editor-shell="${esc(tab.id)}"><pre class="sqlGutter" aria-hidden="true">${nums}</pre><pre class="sqlColorLayer" aria-hidden="true">${sqlTokens(tab.sql||"")}</pre>${focus?`<div class="sqlLessonLayer" aria-hidden="true"><div class="sqlLessonTrack">${lineHighlights}</div></div>`:""}<textarea aria-label="SQL query editor" class="sqlTextarea" data-sql-editor="${esc(tab.id)}" spellcheck="false" wrap="off">${esc(tab.sql||"")}</textarea></div></div></section>`;
   }
 
   function renderResults() {
@@ -284,7 +314,7 @@
     } else {
       const cols=r.columns||[]; const rows=r.rows||[];
       if(!cols.length){refs.resultBody.innerHTML=`<div class="fileResult smallNote">No result set.</div>`;return;}
-      refs.resultBody.innerHTML=`<div class="gridWrap"><table class="resultGrid"><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr class="${t.selectedAll?"selected":""}">${cols.map((c,ci)=>`<td>${esc(Array.isArray(row)?row[ci]:row?.[c])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+      refs.resultBody.innerHTML=`<div class="gridWrap"><table class="resultGrid"><thead><tr><th class="rowNumber"></th>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map((row,ri)=>`<tr class="${t.selectedAll?"selected":""}"><td class="rowNumber">${ri+1}</td>${cols.map((c,ci)=>{const value=Array.isArray(row)?row[ci]:row?.[c];return `<td class="${value===null?'nullCell':''}">${value===null?'NULL':esc(value)}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
     }
   }
 
@@ -295,6 +325,7 @@
   }
 
   function renderStatus(){
+    document.getElementById("statusbar").classList.toggle("connected",!!state.connected);
     refs.statusLeft.textContent=state.statusText|| (state.connected?"Ready":"Disconnected"); refs.statusServer.textContent=state.connected?(state.connection?.serverName||"Connected"):"No server"; refs.statusDb.textContent=state.connected?(activeTab()?.database||state.currentDatabase||"master"):"No database"; refs.statusUser.textContent=state.connected?(state.currentUser||state.connection?.userName||state.connection?.authentication||""):"—";
   }
 
@@ -313,7 +344,8 @@
 
   function renderModal(){
     let content="";
-    if(ui.connectOpen){
+    if(ui.optionsOpen){content=optionsHtml();}
+    else if(ui.connectOpen){
       const d=Object.assign({},state.connection||{},ui.connectionDraft||{});
       content=`<div class="modalTitle">Connect to Server</div><div class="modalBody"><div class="connectLogo"><div class="connectMark">SQL</div><div><b>Connect to Server</b><div class="smallNote">Specify the SQL Server connection details.</div></div></div><div class="formGrid"><label>Server type:</label><select id="connServerType"><option>${esc(d.serverType||"Database Engine")}</option></select><label>Server name:</label><input id="connServerName" value="${esc(d.serverName||"")}"><label>Authentication:</label><select id="connAuthentication"><option>${esc(d.authentication||"Windows Authentication")}</option><option>SQL Server Authentication</option></select><label>User name:</label><input id="connUserName" value="${esc(d.userName||"")}"><label>Database:</label><input id="connDatabase" value="${esc(d.database||"master")}"></div></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" data-target="connectDialogButton">Connect</button></div>`;
     } else if(ui.featurePanel){
@@ -344,7 +376,7 @@
     return CONNECTION_CHAIN.has(a) || ((a==="highlightTarget"||a==="pressButton") && target==="connectDialogButton");
   }
   function prepareReplayStep(step){
-    clearBoundary(); ui.codeFocus=false; const a=step?.action||"";
+    clearBoundary(); ui.codeFocus=null; const a=step?.action||"";
     if(!connectionContinuation(step)){ui.connectOpen=false;ui.connectionDraft={};}
     const keepIntelli=!!ui.intelli && (a==="acceptIntelliSense" || a==="highlightTarget" || a==="pressButton");
     const previousIntelli=keepIntelli?clone(ui.intelli):null;
@@ -446,9 +478,9 @@
   }
 
   async function animateSql(tab,newSql,token){
-    const full=String(newSql??""); if(!autoType){tab.sql=full;tab.dirty=true;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));return;}
+    const full=String(newSql??""); if(!autoType){tab.sql=full;tab.dirty=true;renderAll();return;}
     ui.typingTab=tab.id;tab.sql=""; const steps=Math.min(full.length,60),chunk=Math.max(1,Math.ceil(full.length/steps)); const delay=Math.min(16,Math.max(4,800/Math.max(1,Math.ceil(full.length/chunk))));
-    for(let i=0;i<full.length;i+=chunk){if(token!==seekToken)return;tab.sql=full.slice(0,Math.min(full.length,i+chunk));tab.dirty=true;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));await sleep(delay);}tab.sql=full;ui.typingTab=null;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));
+    for(let i=0;i<full.length;i+=chunk){if(token!==seekToken)return;tab.sql=full.slice(0,Math.min(full.length,i+chunk));tab.dirty=true;renderAll();await sleep(delay);}if(token!==seekToken)return;tab.sql=full;ui.typingTab=null;renderAll();
   }
 
   async function applyStep(step, animate, token) {
@@ -485,8 +517,25 @@
       case "closeQueryTab": removeTab(d.id||d.tab||state.activeQueryId);break;
       case "closeAllQueries": state.queryTabs=[];state.activeQueryId=null;state.groups={a:[],b:[]};state.groupMode="single";break;
       case "setSql": t=t||addTab(d);t.sql=String(d.sql??d.text??"");t.dirty=d.dirty!==false;t.selection=null;t.syntaxErrors=[];break;
-      case "typeSql": t=t||addTab(d);if(animate)await animateSql(t,d.sql??d.text??"",token);else{t.sql=String(d.sql??d.text??"");t.dirty=true;}if(allowBoundary)ui.codeFocus=true;break;
-      case "appendSql": t=t||addTab(d);{const app=String(d.sql??d.text??"");const newSql=(t.sql||"")+app;if(animate)await animateSql(t,newSql,token);else{t.sql=newSql;t.dirty=true;}}break;
+      case "typeSql": {
+        t=t||addTab(d);
+        const nextSql=String(d.sql??d.text??"");
+        if(animate)await animateSql(t,nextSql,token);else{t.sql=nextSql;t.dirty=true;}
+        if(allowBoundary)ui.codeFocus={tabId:t.id,startLine:1,endLine:Math.max(1,nextSql.split("\n").length)};
+        break;
+      }
+      case "appendSql": {
+        t=t||addTab(d);
+        const before=String(t.sql||"");
+        const app=String(d.sql??d.text??"");
+        const newSql=before+app;
+        if(animate)await animateSql(t,newSql,token);else{t.sql=newSql;t.dirty=true;}
+        if(allowBoundary){
+          const start=Math.max(1,before.split("\n").length-(before.endsWith("\n")?0:1));
+          ui.codeFocus={tabId:t.id,startLine:start,endLine:Math.max(start,newSql.split("\n").length)};
+        }
+        break;
+      }
       case "selectSqlRange": if(t)t.selection={startLine:Number(d.startLine||1),endLine:Number(d.endLine||d.startLine||1)};break;
       case "clearSelection": if(t)t.selection=null;break;
       case "executeQuery": case "executeSqlText": if(t){applyEffects(d.effects);if(d.result||d.columns||d.rows||d.messages!==undefined){if(d.result)t.result=Object.assign({},t.result||{},clone(d.result));else if(d.columns||d.rows)t.result=Object.assign({},t.result||{},{columns:clone(d.columns||[]),rows:clone(d.rows||[])});if(d.messages!==undefined)t.result.messages=String(d.messages);}else t.result=Object.assign(t.result||{},executeVirtualSql(t,d.sql!==undefined?String(d.sql):t.sql));if(t.resultMode==="file"&&d.file)t.result.file=d.file;t.status=d.status||"Query executed";state.statusText=d.statusText||"Query executed successfully";ui.resultTab=d.showTab||((t.result?.columns||[]).length?"results":"messages");}break;
@@ -558,8 +607,8 @@
       case "openRegisteredServers": ui.featurePanel={title:"Registered Servers",html:`<table class="featureTable"><thead><tr><th>Name</th><th>Server</th><th>Group</th></tr></thead><tbody>${(state.registeredServers||[]).map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.server||s.name)}</td><td>${esc(s.group||"Local Server Groups")}</td></tr>`).join("")}</tbody></table>`};break;
       case "showObjectExplorerDetails": ui.featurePanel={title:"Object Explorer Details",text:d.text||`Selected: ${state.selectedObject||"server"}\nDatabase: ${state.currentDatabase}\nObjects: ${(dbByName(state.currentDatabase)?.tables||[]).length} table(s)`};break;
       case "createDatabaseDiagram": ui.featurePanel={title:`Database Diagram - ${d.name||"Java Model"}`,text:d.text||`Tables: ${(d.tables||[]).join(", ")||"dbo.student"}\nRelationships: ${d.relationships||0}`};break;
-      case "openOptions": ui.featurePanel={title:"Options",text:`Text Editor > Transact-SQL\nLine numbers: ${state.options.lineNumbers?"On":"Off"}\nWord wrap: ${state.options.wordWrap?"On":"Off"}\nInclude actual execution plan: ${state.options.includeActualPlan?"On":"Off"}`};break;
-      case "setEditorOption": if(d.name)state.options[d.name]=d.value;state.statusText="Options updated";break;
+      case "openOptions": ui.optionsOpen=true;break;
+      case "setEditorOption": if(d.name)state.options[d.name]=d.value;if(d.name==="theme")applyTheme(d.value);state.statusText="Options updated";break;
 
       case "saveQuery": if(t){const path=d.path||t.savedPath||t.title;t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop()||t.title;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
       case "saveQueryAs": if(t){const path=d.path||d.file||"query.sql";t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop();t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
@@ -597,9 +646,9 @@
 
   function manualClear(){clearBoundary();ui.menu=null;ui.notification="";ui.intelli=null;renderTransients();}
 
-  document.addEventListener("input",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(!ed)return;const t=tabById(ed.dataset.sqlEditor);if(!t)return;t.sql=ed.value;t.dirty=true;const gutter=ed.parentElement?.querySelector(".sqlGutter");if(gutter)gutter.textContent=Array.from({length:Math.max(1,ed.value.split("\n").length)},(_,i)=>i+1).join("\n");});
-  document.addEventListener("scroll",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const g=ed.parentElement?.querySelector(".sqlGutter");if(g)g.scrollTop=ed.scrollTop;}},true);
-  document.addEventListener("keydown",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const t=tabById(ed.dataset.sqlEditor);if(!t)return;if(e.key==="Tab"){e.preventDefault();const s=ed.selectionStart,en=ed.selectionEnd;ed.setRangeText("    ",s,en,"end");ed.dispatchEvent(new Event("input",{bubbles:true}));return;}if(e.key==="F5"||(e.ctrlKey&&e.key.toLowerCase()==="e")){e.preventDefault();t.result=Object.assign(t.result||{},executeVirtualSql(t,ed.value));state.statusText="Query executed successfully";ui.resultTab=(t.result?.columns||[]).length?"results":"messages";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="l"){e.preventDefault();const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="m"){e.preventDefault();t.includeActualPlan=!t.includeActualPlan;state.statusText=t.includeActualPlan?"Include Actual Execution Plan enabled":"Include Actual Execution Plan disabled";renderStatus();return;}if(e.ctrlKey&&e.key.toLowerCase()==="s"){e.preventDefault();const path=t.savedPath||t.title;t.savedPath=path;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";renderTabs();renderStatus();return;}if(e.ctrlKey&&e.code==="Space"){e.preventDefault();ui.intelli={items:clone(state.intellisenseCache||[]),index:0};renderIntelli();return;}return;}if((e.key==="ArrowRight"||e.key==="ArrowLeft")&&!e.ctrlKey&&!e.altKey&&!e.metaKey){parent.postMessage({type:"SIM_NAVIGATE",app:APP_ID,direction:e.key==="ArrowRight"?"next":"prev"},"*");}});
+  document.addEventListener("input",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(!ed)return;const t=tabById(ed.dataset.sqlEditor);if(!t)return;t.sql=ed.value;t.dirty=true;const gutter=ed.parentElement?.querySelector(".sqlGutter");syncSqlLayer(ed,true);renderTabs();updatePosition(ed);if(gutter)gutter.textContent=Array.from({length:Math.max(1,ed.value.split("\n").length)},(_,i)=>i+1).join("\n");});
+  document.addEventListener("scroll",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const g=ed.parentElement?.querySelector(".sqlGutter");if(g)g.scrollTop=ed.scrollTop;syncSqlLayer(ed);}},true);
+  document.addEventListener("keydown",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const t=tabById(ed.dataset.sqlEditor);if(!t)return;if(e.key==="Tab"){e.preventDefault();const s=ed.selectionStart,en=ed.selectionEnd;ed.setRangeText("    ",s,en,"end");ed.dispatchEvent(new Event("input",{bubbles:true}));return;}if(e.key==="F5"||(e.ctrlKey&&e.key.toLowerCase()==="e")){e.preventDefault();t.result=Object.assign(t.result||{},executeVirtualSql(t,ed.value));state.statusText="Query executed successfully";ui.resultTab=(t.result?.columns||[]).length?"results":"messages";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="l"){e.preventDefault();const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="m"){e.preventDefault();t.includeActualPlan=!t.includeActualPlan;state.statusText=t.includeActualPlan?"Include Actual Execution Plan enabled":"Include Actual Execution Plan disabled";renderStatus();return;}if(e.ctrlKey&&e.key.toLowerCase()==="s"){e.preventDefault();const path=t.savedPath||t.title;t.savedPath=path;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";renderTabs();renderStatus();return;}if(e.ctrlKey&&e.code==="Space"){e.preventDefault();ui.intelli={items:clone(state.intellisenseCache||[]),index:0};renderIntelli();return;}return;}if(!e.target.closest("input,textarea,select,[contenteditable=true]")&&(e.key==="ArrowRight"||e.key==="ArrowLeft")&&!e.ctrlKey&&!e.altKey&&!e.metaKey){parent.postMessage({type:"SIM_NAVIGATE",app:APP_ID,direction:e.key==="ArrowRight"?"next":"prev"},"*");}});
 
   function invokeMenuCommand(label){
     const t=activeTab();
@@ -612,7 +661,7 @@
     else if(label==="Display Estimated Execution Plan"&&t){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";}
     else if(label==="Object Explorer"){state.objectExplorerVisible=true;}
     else if(label==="Registered Servers"){ui.featurePanel={title:"Registered Servers",text:"Local Server Groups\n"+(state.connection?.serverName||"SQL Server")};}
-    else if(label==="Options..."){ui.featurePanel={title:"Options",text:"Environment\nText Editor\nQuery Execution\nDesigners"};}
+    else if(label==="Options..."){ui.optionsOpen=true;}
     else if(label==="SQL Server Profiler"){ui.featurePanel={title:"SQL Server Profiler",text:"Trace window opened in simulator."};}
     else if(label==="New Vertical Tab Group"){splitGroup("vertical",{});}
     else if(label==="New Horizontal Tab Group"){splitGroup("horizontal",{});}
@@ -623,12 +672,12 @@
   }
 
   document.addEventListener("mousedown", e=>{
-    if(!e.target.closest(".boundary")) manualClear();
+    if(!e.target.closest(".boundary,.modal,.sqlTextarea")) manualClear();
     const menuItem=e.target.closest(".menuItem");
     if(menuItem){invokeMenuCommand(menuItem.textContent.trim());e.preventDefault();return;}
     const dialogBtn=e.target.closest(".dialogBtn");
     if(dialogBtn&&!dialogBtn.dataset.target&&["Close","Cancel","OK"].includes(dialogBtn.textContent.trim())){
-      ui.connectOpen=false;ui.featurePanel=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;renderAll();e.preventDefault();return;
+      ui.optionsOpen=false;ui.connectOpen=false;ui.featurePanel=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;renderAll();e.preventDefault();return;
     }
     const menu=e.target.closest(".menuTop"); if(menu){ui.menu={name:menu.dataset.menu,items:defaultMenuItems(menu.dataset.menu)};renderTransients();e.preventDefault();return;}
     const tool=e.target.closest("[data-target]"); if(tool){const target=tool.dataset.target;if(target==="connect"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});}
@@ -645,7 +694,7 @@
       else if(target==="newQuery"){addTab({});}
       else if(target==="open"){ui.featurePanel={title:"Open File",text:"Open SQL file dialog invoked.\nChoose a .sql file to open in a query tab."};state.statusText="Open File invoked";}
       else if(target==="collapseAll"){state.expandedNodes=[];state.statusText="Object Explorer collapsed";}
-      else if(target==="execute"){const t=activeTab();if(t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));if(t.includeActualPlan){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);}ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";}}else if(target==="parse"){const t=activeTab();if(t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}}else if(target==="cancel"){state.statusText="Query cancelled";}else if(target==="save"){const t=activeTab();if(t){const p=t.savedPath||t.title;t.savedPath=p;t.dirty=false;state.files[p]=t.sql;state.statusText="Query saved";}}else if(target==="grid"||target==="text"||target==="file"){const t=activeTab();if(t)t.resultMode=target;}else if(target==="refreshObjectExplorer"){state.lastRefresh="manual";state.statusText="Object Explorer refreshed";}renderAll();return;}
+      else if(target==="execute"){const t=activeTab();if(t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));if(t.includeActualPlan){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);}ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";}}else if(target==="parse"){const t=activeTab();if(t){t.result.messages="Command(s) completed successfully.";ui.resultTab="messages";state.statusText="Parse successful";}}else if(target==="cancel"){state.statusText="Query cancelled";}else if(target==="save"){const t=activeTab();if(t){const p=t.savedPath||t.title;t.savedPath=p;t.dirty=false;state.files[p]=t.sql;state.statusText="Query saved";}}else if(target==="grid"||target==="text"||target==="file"){const t=activeTab();if(t)t.resultMode=target;}else if(target==="refreshObjectExplorer"){syncObjectExplorerCache();state.lastRefresh="manual";state.statusText="Object Explorer refreshed";}renderAll();return;}
     const row=e.target.closest(".treeRow"); if(row){const id=row.dataset.node;state.selectedObject=id;if(row.querySelector(".twisty")?.textContent.trim()){setExpanded(id,!expanded(id));}renderAll();return;}
     const tab=e.target.closest(".docTab[data-tab]"); if(tab&&!e.target.closest("[data-close-tab]")){state.activeQueryId=tab.dataset.tab;renderAll();return;}
     const close=e.target.closest("[data-close-tab]"); if(close){removeTab(close.dataset.closeTab);renderAll();return;}
@@ -669,12 +718,25 @@
 
   window.addEventListener("message", e=>{
     const m=e.data||{};
-    if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;loadPackage(m.package);if(m.theme)applyTheme(m.theme);}
+    if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;loadPackage(m.package,m.theme||"light");}
     else if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);}
     else if(m.type==="SIM_EXPLAIN")showAssistant(m);
-    else if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")applyTheme(m.value);}
+    else if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")applyTheme(m.value,true);}
   });
 
-  state=defaultState();renderAll();
+
+  function syncSqlLayer(ed,repaint=false){const shell=ed.closest('.sqlEditorShell'),layer=shell?.querySelector('.sqlColorLayer');if(!layer)return;if(repaint)layer.innerHTML=sqlTokens(ed.value);layer.scrollTop=ed.scrollTop;layer.scrollLeft=ed.scrollLeft;const gutter=shell.querySelector('.sqlGutter');if(gutter)gutter.scrollTop=ed.scrollTop;const track=shell.querySelector('.sqlLessonTrack');if(track)track.style.transform='translateY('+(-ed.scrollTop)+'px)';}
+  function updatePosition(ed){const before=ed.value.slice(0,ed.selectionStart),parts=before.split('\n');$('queryPosition').textContent='Ln '+parts.length+', Col '+(parts.at(-1).length+1);}
+  function ssmsIcon(kind){const paths={database:'M3 5c0-4 16-4 16 0v13c0 4-16 4-16 0zM3 5c0 4 16 4 16 0M3 11c0 4 16 4 16 0',folder:'M2 5h7l2 3h9v12H2z',table:'M3 3h17v17H3zM3 8h17M8 8v12m6-12v12M3 14h17',server:'M5 2h13v19H5zM8 6h7M8 10h7M8 17h2',save:'M3 2h14l3 3v15H3zM7 2v6h8V2M7 20v-8h9v8',file:'M5 2h9l5 5v14H5zM14 2v6h5M8 12h8m-8 4h8',play:'m6 3 13 8-13 8z',check:'m3 11 5 5L19 4',stop:'M5 5h13v13H5z',text:'M3 5h17M3 11h17M3 17h17',download:'M11 2v13m-5-5 5 5 5-5M3 17v4h17v-4',key:'M10 10l10 10m-5-5 3-3',refresh:'M18 7A8 8 0 1 0 19 14M18 2v6h-6'};return '<svg class="ssmsIcon" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'+(kind==='key'?'<circle cx="7" cy="7" r="5"/>':'')+'<path d="'+(paths[kind]||paths.folder)+'"/></svg>';}
+  function decorateChrome(){const icons={connect:'server',newQuery:'file',open:'folder',save:'save',execute:'play',parse:'check',cancel:'stop',grid:'table',text:'text',file:'download'};refs.toolbar.querySelectorAll('[data-target]').forEach(b=>{const key=b.dataset.target;b.title=({execute:'Execute (F5)',parse:'Parse query',cancel:'Cancel executing query',grid:'Results to Grid',text:'Results to Text',file:'Results to File',open:'Open SQL file',save:'Save query'})[key]||b.textContent.trim();b.setAttribute('aria-label',b.title);const el=b.querySelector('.toolIcon');if(el)el.innerHTML=ssmsIcon(icons[key]);else if(icons[key])b.innerHTML=ssmsIcon(icons[key]);if(['grid','text','file'].includes(key))b.setAttribute('aria-pressed',activeTab()?.resultMode===key)});refs.objectTree.querySelectorAll('.treeRow').forEach(row=>{const id=row.dataset.node,kind=id==='server'?'server':id.startsWith('table:')?'table':id.startsWith('db:')?'database':/login|security/.test(id)?'key':'folder';row.querySelector('.treeIcon').innerHTML=ssmsIcon(kind);row.querySelector('.treeIcon').className='treeIcon '+kind;row.tabIndex=0;row.setAttribute('role','treeitem');row.onkeydown=e=>{if(e.key==='Enter'||e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopPropagation();state.selectedObject=id;if(e.key!=='Enter')setExpanded(id,e.key==='ArrowRight');else if(id==='connect-root'){ui.connectOpen=true;ui.connectionDraft=clone(state.connection)}renderAll();refs.objectTree.querySelector('[data-node="'+CSS.escape(id)+'"]')?.focus()}}});document.querySelector('.appMark').innerHTML=ssmsIcon('database');refs.resultBody.querySelectorAll('.resultGrid tbody td:not(.rowNumber)').forEach(cell=>cell.onclick=()=>{refs.resultBody.querySelectorAll('.selectedCell').forEach(x=>x.classList.remove('selectedCell'));cell.classList.add('selectedCell')});}
+  function optionsHtml(){return '<div class="modalTitle">Options — Environment, Fonts and Colors</div><div class="modalBody"><div class="optionsForm"><label for="optionTheme">Color theme</label><select id="optionTheme"><option value="light" '+(!document.body.classList.contains('theme-dark')?'selected':'')+'>Light</option><option value="dark" '+(document.body.classList.contains('theme-dark')?'selected':'')+'>Dark</option></select><label for="optionFont">Query font size (px)</label><input id="optionFont" type="number" min="10" max="24" value="'+(state.options.fontSize||14)+'"><label for="optionNumbers">Line numbers</label><input id="optionNumbers" type="checkbox" '+(state.options.lineNumbers!==false?'checked':'')+'></div><p class="optionsHint">Consolas query font. Classic light SQL colors: blue keywords, red strings, green comments, magenta system functions, maroon system procedures, and teal line numbers.</p></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" id="saveAppearance">OK</button></div>';}
+  $('themeToggle').onclick=()=>{applyTheme(document.body.classList.contains('theme-dark')?'light':'dark',true);renderAll();};
+  document.addEventListener('click',e=>{if(e.target.id==='saveAppearance'){state.options.fontSize=Math.max(10,Math.min(24,Number($('optionFont').value)||14));state.options.lineNumbers=$('optionNumbers').checked;applyTheme($('optionTheme').value,true);ui.optionsOpen=false;renderAll()}});
+  document.addEventListener('mousedown',e=>{if(e.target.id==='saveAppearance')e.stopImmediatePropagation();},true);
+  document.addEventListener('focusin',e=>{if(e.target.matches('[data-sql-editor]')){state.activeQueryId=e.target.dataset.sqlEditor;renderTabs();renderResults();renderStatus();updatePosition(e.target)}});
+  document.addEventListener('keyup',e=>{if(e.target.matches('[data-sql-editor]'))updatePosition(e.target)});
+  document.addEventListener('click',e=>{if(e.target.matches('[data-sql-editor]'))updatePosition(e.target)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){ui.optionsOpen=false;ui.connectOpen=false;ui.featurePanel=null;clearTransients();renderTransients()}if(e.key==='F8'){e.preventDefault();state.objectExplorerVisible=!state.objectExplorerVisible;renderAll()}},true);
+  state=defaultState();applyTheme(readSavedTheme()||"light",false);renderAll();
   parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
 })();
