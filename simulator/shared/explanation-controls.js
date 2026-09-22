@@ -13,7 +13,9 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeBtn:hover{background:rgba(255,255,255,.10)!important;color:#fff!important}",
     ".simExplainActions,[data-sim-explain-actions]{display:none!important}",
     ".assistantLang,.pgAssistantLanguage{display:none!important}",
-    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant{position:fixed!important;z-index:20000!important}",
+    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant,[data-sim-explanation]{position:fixed!important;z-index:20000!important}",
+    "[data-sim-explanation-drag],#ideAssistantDrag,#assistantHead,#pgAssistantHead,#ssmsAssistantDrag,#jiraAssistantHead,#jenkinsAssistantHead,.ideAssistantHead,.assistantHead,.pgAssistantHead{cursor:grab!important;touch-action:none!important;user-select:none!important}",
+    ".simExplainDragging [data-sim-explanation-drag],.simExplainDragging #ideAssistantDrag,.simExplainDragging #assistantHead,.simExplainDragging #pgAssistantHead,.simExplainDragging #ssmsAssistantDrag,.simExplainDragging #jiraAssistantHead,.simExplainDragging #jenkinsAssistantHead,.simExplainDragging .ideAssistantHead,.simExplainDragging .assistantHead,.simExplainDragging .pgAssistantHead{cursor:grabbing!important}",
     "*{scrollbar-width:thin;scrollbar-color:rgba(128,134,142,.58) transparent}",
     "*::-webkit-scrollbar{width:8px;height:8px}",
     "*::-webkit-scrollbar-track{background:transparent}",
@@ -24,12 +26,13 @@ if(!document.getElementById(STYLE_ID)){
   document.head.appendChild(style);
 }
 
-var assistantSelectors=["#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
+var assistantSelectors=["[data-sim-explanation]","#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
 var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
 var textSelectors=["#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
 var scaleKey="sim.explanationScale.v1";
 var positionKey="sim.explanationPosition.v1";
 var dragPending=false;
+var universalDrag=null;
 
 function firstWithin(root,selectors){
   for(var i=0;i<selectors.length;i++){
@@ -46,10 +49,10 @@ function getAssistant(){
   return null;
 }
 function getHead(box){
-  return firstWithin(box,["#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead","#jenkinsAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
+  return firstWithin(box,["[data-sim-explanation-drag]","#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead","#jenkinsAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
 }
 function getBody(box){
-  return firstWithin(box,[".ideAssistantBody",".assistantBody",".pgAssistantBody",".jenkinsAssistantContent"]);
+  return firstWithin(box,["[data-sim-explanation-body]",".ideAssistantBody",".assistantBody",".pgAssistantBody",".jenkinsAssistantContent"]);
 }
 function getMeta(box){
   var meta=firstWithin(box,metaSelectors);
@@ -136,20 +139,58 @@ function bindPositionPersistence(){
   var head=getHead(box);
   if(!head)return;
   box.dataset.simPositionBound="1";
+  box.setAttribute("data-sim-explanation","1");
+  head.setAttribute("data-sim-explanation-drag","1");
 
-  head.addEventListener("pointerdown",function(e){
-    if(e.target.closest("button"))return;
+  // One universal drag implementation for every simulator. We intercept in
+  // document capture phase so legacy per-simulator drag handlers cannot fight
+  // with this shared behavior.
+  document.addEventListener("pointerdown",function(e){
+    var targetHead=e.target.closest("[data-sim-explanation-drag]");
+    if(!targetHead||!box.contains(targetHead)||e.target.closest("button"))return;
+    var r=box.getBoundingClientRect();
+    universalDrag={
+      pointerId:e.pointerId,
+      dx:e.clientX-r.left,
+      dy:e.clientY-r.top
+    };
     dragPending=true;
+    box.classList.add("simExplainDragging");
+    box.style.right="auto";
+    box.style.bottom="auto";
+    box.style.left=Math.round(r.left)+"px";
+    box.style.top=Math.round(r.top)+"px";
+    try{targetHead.setPointerCapture?.(e.pointerId)}catch(_){}
+    e.preventDefault();
+    e.stopImmediatePropagation();
   },true);
 
-  document.addEventListener("pointerup",function(){
-    if(!dragPending)return;
-    dragPending=false;
-    setTimeout(function(){
-      savePosition();
-      restorePosition();
-    },0);
+  document.addEventListener("pointermove",function(e){
+    if(!universalDrag||e.pointerId!==universalDrag.pointerId)return;
+    var r=box.getBoundingClientRect(),pad=4;
+    var left=Math.max(pad,Math.min(innerWidth-r.width-pad,e.clientX-universalDrag.dx));
+    var top=Math.max(pad,Math.min(innerHeight-r.height-pad,e.clientY-universalDrag.dy));
+    box.style.left=Math.round(left)+"px";
+    box.style.top=Math.round(top)+"px";
+    box.style.right="auto";
+    box.style.bottom="auto";
+    e.preventDefault();
+    e.stopImmediatePropagation();
   },true);
+
+  function finishDrag(e){
+    if(!universalDrag||e.pointerId!==universalDrag.pointerId)return;
+    universalDrag=null;
+    dragPending=false;
+    box.classList.remove("simExplainDragging");
+    savePosition();
+    restorePosition();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  document.addEventListener("pointerup",finishDrag,true);
+  document.addEventListener("pointercancel",finishDrag,true);
 }
 function rememberBase(box,body,text){
   if(!box.dataset.simExplainBaseWidth){
