@@ -27,8 +27,8 @@ window.COURSE = {
       "id": "book-4",
       "title": "Source Control & Automation",
       "subtitle": "Git local workflow, GitHub collaboration, and GitHub Actions CI.",
-      "chapterStart": 11,
-      "chapterEnd": 11
+      "chapterStart": 12,
+      "chapterEnd": 12
     }
   ],
   "package": {
@@ -8693,7 +8693,7 @@ window.COURSE = {
       ]
     },
     {
-      "title": "11: MySQL Workbench SQL Development & Database Engineering",
+      "title": "12: MySQL Workbench SQL Development & Database Engineering",
       "steps": [
         {
           "title": "Open the MySQL Workbench Home screen",
