@@ -17,7 +17,8 @@
     "showEstimatedExecutionPlan","showActualExecutionPlan","showClientStatistics","setStatisticsIo","setStatisticsTime",
     "openActivityMonitor","setSessions","killSession","openBackupDialog","backupDatabase","openRestoreDialog","restoreDatabase",
     "openSqlServerAgent","createAgentJob","runAgentJob","showTableDesigner","editTopRows","generateScripts","importData","exportData",
-    "createLogin","createUser","grantPermission","schemaCompare","showQueryStore","showProfiler","showExtendedEvents"
+    "createLogin","createUser","grantPermission","schemaCompare","showQueryStore","showProfiler","showExtendedEvents",
+    "createAgentSchedule","showAgentJobHistory","addLinkedServer","openRegisteredServers","showObjectExplorerDetails","createDatabaseDiagram","openOptions","setEditorOption"
   ];
 
   let packageRef = null;
@@ -78,7 +79,7 @@
       objectExplorerCache: {},
       objectExplorerStale: false,
       lastRefresh: "",
-      activeView: "query", transactionSnapshot:null, statisticsIo:false, statisticsTime:false, sessions:[], logins:[], permissions:[], agentJobs:[], backups:[], featurePanel:null
+      activeView: "query", transactionSnapshot:null, statisticsIo:false, statisticsTime:false, sessions:[], logins:[], permissions:[], agentJobs:[], agentJobHistory:[], backups:[], linkedServers:[], registeredServers:[], options:{lineNumbers:true,wordWrap:false,includeActualPlan:false}, featurePanel:null
     };
   }
 
@@ -101,6 +102,7 @@
       for (const db of s.databases) s.objectExplorerCache[db.name] = clone(db.tables || []);
     }
     s.objectExplorerStale = !!s.objectExplorerStale;
+    s.sessions=Array.isArray(s.sessions)?s.sessions:[];s.logins=Array.isArray(s.logins)?s.logins:[];s.permissions=Array.isArray(s.permissions)?s.permissions:[];s.agentJobs=Array.isArray(s.agentJobs)?s.agentJobs:[];s.agentJobHistory=Array.isArray(s.agentJobHistory)?s.agentJobHistory:[];s.backups=Array.isArray(s.backups)?s.backups:[];s.linkedServers=Array.isArray(s.linkedServers)?s.linkedServers:[];s.registeredServers=Array.isArray(s.registeredServers)?s.registeredServers:[];s.options=Object.assign({lineNumbers:true,wordWrap:false,includeActualPlan:false},s.options||{});
     return s;
   }
 
@@ -194,12 +196,16 @@
         users.forEach(db=>{html+=renderDatabaseNode(db,2);});
       }
       html += treeRow({id:"security",label:"Security",icon:"🔐",level:1,hasChildren:true});
+      if(expanded("security"))(state.logins||[]).forEach(l=>{html+=treeRow({id:`login:${l.name}`,label:l.name,icon:"👤",level:2,meta:l.type||"Login"});});
       html += treeRow({id:"serverObjects",label:"Server Objects",icon:"📦",level:1,hasChildren:true});
+      if(expanded("serverObjects")){html+=treeRow({id:"linkedServers",label:"Linked Servers",icon:"🔗",level:2,hasChildren:(state.linkedServers||[]).length>0});if(expanded("linkedServers"))(state.linkedServers||[]).forEach(s=>{html+=treeRow({id:`linked:${s.name}`,label:s.name,icon:"🖥",level:3,meta:s.provider||""});});}
       html += treeRow({id:"replication",label:"Replication",icon:"⇄",level:1,hasChildren:true});
       html += treeRow({id:"alwaysOn",label:"Always On High Availability",icon:"∞",level:1,hasChildren:true});
       html += treeRow({id:"management",label:"Management",icon:"⚙",level:1,hasChildren:true});
+      if(expanded("management")){html+=treeRow({id:"activityMonitor",label:"Activity Monitor",icon:"▥",level:2});html+=treeRow({id:"extendedEvents",label:"Extended Events",icon:"◉",level:2});}
       html += treeRow({id:"integration",label:"Integration Services Catalogs",icon:"◫",level:1,hasChildren:true});
-      html += treeRow({id:"agent",label:"SQL Server Agent",icon:"▶",level:1,hasChildren:true,meta:"(Agent XPs disabled)"});
+      html += treeRow({id:"agent",label:"SQL Server Agent",icon:"▶",level:1,hasChildren:true,meta:state.connected?"Running":"Stopped"});
+      if(expanded("agent")){html+=treeRow({id:"agentJobs",label:"Jobs",icon:"📁",level:2,hasChildren:(state.agentJobs||[]).length>0});if(expanded("agentJobs"))(state.agentJobs||[]).forEach(j=>{html+=treeRow({id:`agentjob:${j.name}`,label:j.name,icon:"⚙",level:3,meta:j.status||"Idle"});});html+=treeRow({id:"agentAlerts",label:"Alerts",icon:"📁",level:2,hasChildren:false});html+=treeRow({id:"agentOperators",label:"Operators",icon:"📁",level:2,hasChildren:false});}
     }
     refs.objectTree.innerHTML = html;
   }
@@ -532,7 +538,7 @@
       case "restoreDatabase": ensureDb(d.database||state.currentDatabase);state.statusText="Database restored successfully.";break;
       case "openSqlServerAgent": ui.featurePanel={title:"SQL Server Agent",html:`<table class="featureTable"><thead><tr><th>Job</th><th>Status</th><th>Last run</th></tr></thead><tbody>${(state.agentJobs||[]).map(j=>`<tr><td>${esc(j.name)}</td><td>${esc(j.status||"Idle")}</td><td>${esc(j.lastRun||"")}</td></tr>`).join("")}</tbody></table>`};break;
       case "createAgentJob": state.agentJobs.push({name:d.name||"New Job",status:"Idle",steps:clone(d.steps||[]),lastRun:"Never"});break;
-      case "runAgentJob": {const j=(state.agentJobs||[]).find(x=>x.name===d.name);if(j){j.status="Succeeded";j.lastRun=d.time||"just now";}state.statusText="Job completed successfully";break;}
+      case "runAgentJob": {const j=(state.agentJobs||[]).find(x=>x.name===d.name);if(j){j.status="Succeeded";j.lastRun=d.time||"just now";state.agentJobHistory.push({job:j.name,time:j.lastRun,status:"Succeeded",duration:d.duration||"00:00:01"});}state.statusText="Job completed successfully";break;}
       case "showTableDesigner": ui.featurePanel={title:`Table Designer - ${d.table||"Table"}`,text:d.text||"Columns | Data Type | Allow Nulls\nUse the designer to edit table metadata."};break;
       case "editTopRows": {const tb=tableByName(d.database||state.currentDatabase,d.table);if(tb){const nt=addTab({title:`Edit ${d.top||200} Rows - ${tb.name}`,database:d.database||state.currentDatabase,sql:`SELECT TOP (${d.top||200}) * FROM [${tb.schema||"dbo"}].[${tb.name}]`});nt.result={columns:(tb.columns||[]).map(c=>c.name),rows:clone((tb.rows||[]).slice(0,d.top||200)),messages:`${Math.min((tb.rows||[]).length,d.top||200)} row(s)`};}}break;
       case "generateScripts": ui.featurePanel={title:"Generate Scripts",text:d.text||"Choose objects → Set scripting options → Review summary → Generate"};break;
@@ -545,6 +551,14 @@
       case "showQueryStore": ui.featurePanel={title:"Query Store",text:d.text||"Top Resource Consuming Queries\nRegressed Queries\nQuery Wait Statistics"};break;
       case "showProfiler": ui.featurePanel={title:"SQL Server Profiler",text:d.text||"Trace running: RPC:Completed, SQL:BatchCompleted"};break;
       case "showExtendedEvents": ui.featurePanel={title:"Extended Events",text:d.text||"Session: system_health\nEvents: error_reported, xml_deadlock_report"};break;
+      case "createAgentSchedule": {const j=(state.agentJobs||[]).find(x=>x.name===d.job||x.name===d.name);if(j){j.schedules=j.schedules||[];j.schedules.push({name:d.schedule||"Daily",frequency:d.frequency||"Daily",time:d.time||"02:00"});}state.statusText="Job schedule saved";break;
+      case "showAgentJobHistory": ui.featurePanel={title:"Job History",html:`<table class="featureTable"><thead><tr><th>Job</th><th>Run</th><th>Status</th><th>Duration</th></tr></thead><tbody>${(state.agentJobHistory||[]).map(h=>`<tr><td>${esc(h.job)}</td><td>${esc(h.time||"")}</td><td>${esc(h.status||"Succeeded")}</td><td>${esc(h.duration||"00:00:01")}</td></tr>`).join("")}</tbody></table>`};break;
+      case "addLinkedServer": state.linkedServers.push({name:d.name||"REMOTE_SQL",provider:d.provider||"SQL Server",dataSource:d.dataSource||d.name||""});state.statusText="Linked server added";break;
+      case "openRegisteredServers": ui.featurePanel={title:"Registered Servers",html:`<table class="featureTable"><thead><tr><th>Name</th><th>Server</th><th>Group</th></tr></thead><tbody>${(state.registeredServers||[]).map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.server||s.name)}</td><td>${esc(s.group||"Local Server Groups")}</td></tr>`).join("")}</tbody></table>`};break;
+      case "showObjectExplorerDetails": ui.featurePanel={title:"Object Explorer Details",text:d.text||`Selected: ${state.selectedObject||"server"}\nDatabase: ${state.currentDatabase}\nObjects: ${(dbByName(state.currentDatabase)?.tables||[]).length} table(s)`};break;
+      case "createDatabaseDiagram": ui.featurePanel={title:`Database Diagram - ${d.name||"Java Model"}`,text:d.text||`Tables: ${(d.tables||[]).join(", ")||"dbo.student"}\nRelationships: ${d.relationships||0}`};break;
+      case "openOptions": ui.featurePanel={title:"Options",text:`Text Editor > Transact-SQL\nLine numbers: ${state.options.lineNumbers?"On":"Off"}\nWord wrap: ${state.options.wordWrap?"On":"Off"}\nInclude actual execution plan: ${state.options.includeActualPlan?"On":"Off"}`};break;
+      case "setEditorOption": if(d.name)state.options[d.name]=d.value;state.statusText="Options updated";break;
 
       case "saveQuery": if(t){const path=d.path||t.savedPath||t.title;t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop()||t.title;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
       case "saveQueryAs": if(t){const path=d.path||d.file||"query.sql";t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop();t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
