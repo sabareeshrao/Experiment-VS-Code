@@ -8,28 +8,32 @@
     intellij: $("ideFrame"),
     vscode: $("vscodeFrame"),
     pgadmin: $("pgadminFrame"),
-    postman: $("postmanFrame")
+    postman: $("postmanFrame"),
+    cmd: $("cmdFrame")
   };
 
   const appIds = {
     intellij: "intellij_idea",
     vscode: "vscode",
     pgadmin: "pgadmin",
-    postman: "postman"
+    postman: "postman",
+    cmd: "cmd"
   };
 
   const appLabels = {
     intellij: "IntelliJ IDEA",
     vscode: "VS Code",
     pgadmin: "pgAdmin 4",
-    postman: "Postman"
+    postman: "Postman",
+    cmd: "Command Prompt"
   };
 
   const engineReady = {
     intellij: false,
     vscode: false,
     pgadmin: false,
-    postman: false
+    postman: false,
+    cmd: false
   };
 
   const stageList = $("stageList");
@@ -79,6 +83,7 @@
     if (value === "pgadmin") return "pgadmin";
     if (value === "vscode") return "vscode";
     if (value === "postman") return "postman";
+    if (value === "cmd") return "cmd";
     return "intellij";
   }
 
@@ -95,6 +100,7 @@
     softwareBadge.classList.toggle("pgadmin", activeSoftware === "pgadmin");
     softwareBadge.classList.toggle("vscode", activeSoftware === "vscode");
     softwareBadge.classList.toggle("postman", activeSoftware === "postman");
+    softwareBadge.classList.toggle("cmd", activeSoftware === "cmd");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
