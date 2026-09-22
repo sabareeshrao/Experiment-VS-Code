@@ -90,6 +90,38 @@ window.COURSE = {
             ]
           }
         ]
+      },
+      "vscode": {
+        "workspaceName": "Java Practice",
+        "year": 2026,
+        "aiEnabled": false,
+        "initialFile": null,
+        "files": {},
+        "tree": [],
+        "settings": {
+          "theme": "dark",
+          "fontSize": 13,
+          "minimap": true
+        },
+        "git": {
+          "branch": "main",
+          "changes": [],
+          "staged": [],
+          "history": []
+        },
+        "terminals": [
+          {
+            "id": "terminal-1",
+            "name": "PowerShell",
+            "shell": "PowerShell",
+            "text": ""
+          }
+        ],
+        "terminal": "PS Java Practice> ",
+        "problems": [],
+        "debug": {},
+        "tests": [],
+        "extensions": []
       }
     }
   },
