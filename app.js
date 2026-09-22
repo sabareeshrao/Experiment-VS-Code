@@ -126,14 +126,15 @@
     const step = flat[current];
     const target = normalizeSoftware(step.software);
 
-    if (target !== "intellij" || !engineReady.intellij) return;
+    if (!engineReady[target]) return;
 
-    frames.intellij.contentWindow.postMessage({
+    frames[target].contentWindow.postMessage({
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
       step: current + 1,
-      stage: course.stages[step.stageIndex].title
+      stage: course.stages[step.stageIndex].title,
+      language: "Telugu (Romanized)"
     }, "*");
   }
 
