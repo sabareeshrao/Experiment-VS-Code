@@ -235,8 +235,7 @@
 
         button.innerHTML =
           '<span class="step-number">' + (gi + 1) + ".</span>" +
-          '<span class="step-main">' + step.title + "</span>" +
-          '<span class="step-software ' + software + '">' + softwareLabel + "</span>";
+          '<span class="step-main">' + step.title + "</span>";
 
         button.onclick = () => goToStep(gi, false);
         wrap.appendChild(button);
