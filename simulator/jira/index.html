@@ -48,7 +48,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:default}
 @media(max-width:650px){:root{--leftW:125px}.projectBox{padding:8px 6px}.projectIcon{display:none}.navItem{font-size:8px;padding:6px 4px}.navSection{font-size:7px;padding-left:4px}.content{padding:7px}.header{padding:8px}.topSearch{display:none}.globalNav{display:none}.board{grid-auto-columns:minmax(190px,1fr)}.issuePanel{width:92%}.issueSplit{grid-template-columns:1fr}.listHead,.listRow{grid-template-columns:72px minmax(180px,1fr) 80px}.listHead>*:nth-child(n+4),.listRow>*:nth-child(n+4){display:none}.reportGrid{grid-template-columns:1fr}.reportMenu{display:flex;overflow:auto}.reportItem{white-space:nowrap}.modal{width:95vw}.formGrid{grid-template-columns:1fr}.formGrid label{padding-top:0}}
 </style>
 </head>
-<body class="theme-dark">
+<body class="theme-dark" data-sim-app="jira">
 <div class="app" id="app">
  <div class="top">
   <div class="logo">Jira</div>
@@ -103,5 +103,6 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:default}
  <div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="engine.js?v=2"></script>
-  <script src="../shared/highlighter.js?v=3"></script>\n  <script src="../shared/explanation-controls.js?v=2"></script>\n</body>
+  <script src="../shared/highlighter.js?v=3"></script>\n  <script src="../shared/explanation-controls.js?v=2"></script>\n  <script src="../shared/layout-resize.js?v=1"></script>
+</body>
 </html>
