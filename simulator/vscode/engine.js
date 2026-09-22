@@ -14,8 +14,8 @@ var R={
 };
 
 var baseline={},state={},files={},activeFile=null,openedTabs=[],changedLines=[],expandedFolders=new Set(),panelVisible=false,markdownPreviewOpen=false,seekToken=0,contextPath=null;
-var autoType=true,activityView="Explorer",panelView="TERMINAL";
-var panelHeightLevel=Math.max(-1,Math.min(4,parseInt(localStorage.getItem("sim.vscode.panelHeight.v1")||"0",10)||0));
+var autoType=true,activityView="Explorer",panelView="TERMINAL",terminalHighlightText="",currentReplayIsFinal=false;
+var DEFAULT_PANEL_HEIGHT=185;
 
 function fileKind(path){
  var n=(path||"").split("/").pop()||"";
@@ -366,10 +366,38 @@ function renderMarkdownPreview(){
    R.markdownPreviewBody.innerHTML=markdownToHtml(files[activeFile]?files[activeFile].content:"");
  }
 }
+function getPersistedPanelHeight(){
+ var value=null;
+ try{
+   if(window.SIM_UI_STATE&&typeof window.SIM_UI_STATE.get==="function") value=window.SIM_UI_STATE.get("panelH",null);
+   else if(window.SIM_LAYOUT&&typeof window.SIM_LAYOUT.getValue==="function") value=window.SIM_LAYOUT.getValue("panelH",null);
+ }catch(_){}
+ value=Number(value);
+ return Number.isFinite(value)&&value>30?value:null;
+}
+function persistPanelHeight(value){
+ var height=Math.max(90,Math.round(Number(value)||DEFAULT_PANEL_HEIGHT));
+ try{
+   if(window.SIM_UI_STATE&&typeof window.SIM_UI_STATE.set==="function") window.SIM_UI_STATE.set("panelH",height);
+   else if(window.SIM_LAYOUT&&typeof window.SIM_LAYOUT.set==="function") window.SIM_LAYOUT.set({panelH:height});
+ }catch(_){}
+ return height;
+}
+function renderTerminalText(text){
+ var lines=String(text||"").split("\n"),match=-1;
+ if(terminalHighlightText){
+   for(var i=0;i<lines.length;i++) if(lines[i].indexOf(terminalHighlightText)>=0) match=i;
+ }
+ R.terminal.innerHTML=lines.map(function(line,i){
+   return '<span class="terminalLine'+(i===match?' terminalCommandFocus':'')+'">'+(line?esc(line):'&nbsp;')+'</span>';
+ }).join("");
+}
 function renderPanel(){
  R.editorGroup.classList.toggle("panelOpen",panelVisible);
  var maxHeight=Math.max(150,Math.floor(innerHeight*0.68));
- var height=Math.max(120,Math.min(maxHeight,185+(panelHeightLevel*75)));
+ var current=parseFloat(R.editorGroup.style.getPropertyValue("--panel-h"))||DEFAULT_PANEL_HEIGHT;
+ var wanted=getPersistedPanelHeight()||current||DEFAULT_PANEL_HEIGHT;
+ var height=Math.max(120,Math.min(maxHeight,wanted));
  R.editorGroup.style.setProperty("--panel-h",panelVisible?height+"px":"0px");
  document.querySelectorAll(".panelTab").forEach(function(btn){
    btn.classList.toggle("active",btn.textContent.trim()===panelView);
@@ -377,7 +405,7 @@ function renderPanel(){
  if(panelView==="PROBLEMS") R.terminal.textContent="No problems have been detected in the workspace.";
  else if(panelView==="OUTPUT") R.terminal.textContent="Java Language Server\nReady.";
  else if(panelView==="DEBUG CONSOLE") R.terminal.textContent="Debug Console\nNo active debug session.";
- else R.terminal.textContent=state.terminal||"PS Java Practice> ";
+ else renderTerminalText(state.terminal||"PS Java Practice> ");
 }
 function renderChrome(){
  R.command.textContent=state.workspaceName||"Java Practice";
@@ -484,6 +512,8 @@ function reset(){
  state=clone(baseline||{});
  normalize();
  changedLines=[];
+ terminalHighlightText="";
+ currentReplayIsFinal=false;
  markdownPreviewOpen=false;
  renderAll();
 }
@@ -545,17 +575,20 @@ async function apply(step,animate,token){
    panelVisible=true;panelView="TERMINAL";
    var terminalBase=state.terminal||"PS Java Practice> ";
    var terminalCommand=String(d.command||"");
+   terminalHighlightText=currentReplayIsFinal?terminalCommand:"";
    if(animate&&autoType&&terminalCommand){
      var builtCommand="";
      for(var ti=0;ti<terminalCommand.length;ti++){
        if(token!==seekToken)return;
        builtCommand+=terminalCommand[ti];
+       if(currentReplayIsFinal)terminalHighlightText=builtCommand;
        state.terminal=terminalBase+builtCommand;
        renderPanel();
        await new Promise(function(res){setTimeout(res,Math.min(42,18+(ti%3)*5));});
      }
      await new Promise(function(res){setTimeout(res,120);});
    }
+   if(currentReplayIsFinal)terminalHighlightText=terminalCommand;
    state.terminal=terminalBase+terminalCommand+(d.output!==undefined?"\n"+d.output:"")+"\nPS Java Practice> ";
    renderPanel();
    break;
@@ -582,7 +615,8 @@ async function seek(steps,animateFinal){
  var token=++seekToken;
  reset();
  for(var i=0;i<steps.length;i++){
-   await apply(steps[i],animateFinal&&i===steps.length-1,token);
+   currentReplayIsFinal=i===steps.length-1;
+   await apply(steps[i],animateFinal&&currentReplayIsFinal,token);
    if(token!==seekToken)return;
  }
 }
@@ -619,8 +653,14 @@ $("newFileBtn").onclick=function(){
 $("newFolderBtn").onclick=function(){expandedFolders.add("new-folder");renderTree();};
 $("panelClose").onclick=function(){panelVisible=false;renderPanel();};
 $("panelCollapse").onclick=function(){panelVisible=!panelVisible;renderPanel();};
-$("panelShrink").onclick=function(){panelHeightLevel=Math.max(-1,panelHeightLevel-1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));renderPanel();};
-$("panelGrow").onclick=function(){panelHeightLevel=Math.min(4,panelHeightLevel+1);localStorage.setItem("sim.vscode.panelHeight.v1",String(panelHeightLevel));panelVisible=true;renderPanel();};
+$("panelShrink").onclick=function(){
+ var current=getPersistedPanelHeight()||parseFloat(R.editorGroup.style.getPropertyValue("--panel-h"))||DEFAULT_PANEL_HEIGHT;
+ persistPanelHeight(Math.max(90,current-70));panelVisible=true;renderPanel();
+};
+$("panelGrow").onclick=function(){
+ var current=getPersistedPanelHeight()||parseFloat(R.editorGroup.style.getPropertyValue("--panel-h"))||DEFAULT_PANEL_HEIGHT;
+ persistPanelHeight(current+70);panelVisible=true;renderPanel();
+};
 window.addEventListener("resize",renderPanel);
 document.querySelectorAll(".panelTab").forEach(function(btn){btn.onclick=function(){panelVisible=true;panelView=btn.textContent.trim();renderPanel();};});
 document.querySelectorAll(".menuItem").forEach(function(item){item.onclick=function(e){e.stopPropagation();openVsMenu(item,item.textContent.trim());};});
