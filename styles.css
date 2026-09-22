@@ -49,3 +49,19 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 
 @media(max-width:980px){.learning-shell{grid-template-columns:240px minmax(0,1fr)}}
 @media(max-width:760px){.learning-shell{display:block}.progress-sidebar{display:none}.workspace{grid-column:auto;width:100vw;padding:8px}.workspace-head h1{font-size:15px}}
+
+/* Full-project preview mode */
+.hidden{display:none!important}
+.sidebar-tools{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.full-code-btn{
+  width:100%;height:40px;border:1px solid #353840;border-radius:8px;
+  background:#202226;color:#dfe1e6;display:flex;align-items:center;justify-content:flex-start;
+  gap:9px;padding:0 11px;font-size:11px;font-weight:650;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease
+}
+.full-code-btn:hover{background:#292c31;border-color:#474b54}
+.full-code-btn.active{background:#263958;border-color:#416da9;color:#f2f6ff}
+.full-code-icon{width:18px;height:18px;display:grid;place-items:center;color:#79a8ef;font-size:13px}
+.stage-list:empty{display:none}
+.workspace.no-playback{grid-template-rows:auto minmax(0,1fr)}
+.project-preview-note{font-size:10px;color:#858994;padding:3px 5px 0}
