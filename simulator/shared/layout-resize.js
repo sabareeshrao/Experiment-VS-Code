@@ -304,10 +304,26 @@
     }
   }
 
+  function setupJenkins(){
+    const layout=document.getElementById("layout"), left=layout?.querySelector(".left"), history=document.getElementById("history");
+    const splitL=document.getElementById("splitL"), splitR=document.getElementById("splitR");
+    if(!layout||!left||!history)return;
+    const apply=()=>{
+      if(innerWidth<800){layout.style.gridTemplateColumns="";return;}
+      const lw=clamp(get("leftW",left.getBoundingClientRect().width||240),110,320);
+      const hw=clamp(get("historyW",history.getBoundingClientRect().width||210),115,320);
+      layout.style.gridTemplateColumns=px(lw)+" 5px minmax(0,1fr) 5px "+px(hw);
+    };
+    apply();
+    rememberExisting(splitL,()=>({leftW:left.getBoundingClientRect().width,historyW:history.getBoundingClientRect().width}));
+    rememberExisting(splitR,()=>({leftW:left.getBoundingClientRect().width,historyW:history.getBoundingClientRect().width}));
+    window.addEventListener("resize",apply);
+  }
+
   function setupAssistantPersistence(){
     const selectors={
       intellij:["#ideAssistant"],vscode:["#assistant"],pgadmin:["#pgAssistant"],postman:["#postmanAssistant"],
-      cmd:["#cmdAssistant"],linux:["#linuxAssistant"],ssms:["#ssmsAssistant"],jira:["#jiraAssistant"]
+      cmd:["#cmdAssistant"],linux:["#linuxAssistant"],ssms:["#ssmsAssistant"],jira:["#jiraAssistant"],jenkins:["#jenkinsAssistant"]
     };
     const el=document.querySelector(selectors[app]?.[0]||"__none__");
     if(!el)return;
@@ -397,6 +413,19 @@
       if(panel&&saved.issueW) panel.style.width=px(get("issueW",560));
     }
 
+    if(app==="jenkins"){
+      const layout=document.getElementById("layout"),left=layout?.querySelector(".left"),history=document.getElementById("history");
+      if(layout&&left&&history){
+        if(innerWidth<800) layout.style.gridTemplateColumns="";
+        else if(saved.leftW||saved.historyW){
+          const lw=clamp(get("leftW",left.getBoundingClientRect().width||240),110,320);
+          const hw=clamp(get("historyW",history.getBoundingClientRect().width||210),115,320);
+          const wanted=px(lw)+" 5px minmax(0,1fr) 5px "+px(hw);
+          if(layout.style.gridTemplateColumns!==wanted) layout.style.gridTemplateColumns=wanted;
+        }
+      }
+    }
+
     if(app==="vscode"){
       const work=document.querySelector(".workbench"),side=document.querySelector(".sidebar"),editor=document.getElementById("editorGroup");
       if(work&&side&&innerWidth>=620&&saved.sideW){
@@ -458,7 +487,7 @@
     for(const delay of [0,40,160,600,1250]) setTimeout(()=>requestAnimationFrame(reapplyKnownLayout),delay);
   }
 
-  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,cmd:()=>{}};
+  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,jenkins:setupJenkins,cmd:()=>{}};
   requestAnimationFrame(()=>{
     try{
       setups[app]?.();
