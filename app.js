@@ -17,7 +17,8 @@
     powerbi: $("powerbiFrame"),
     git: $("gitFrame"),
     github: $("githubFrame"),
-    github_actions: $("githubActionsFrame")
+    github_actions: $("githubActionsFrame"),
+    mysqlworkbench: $("mysqlWorkbenchFrame")
   };
 
   const appIds = {
@@ -33,7 +34,8 @@
     powerbi: "power_bi",
     git: "git",
     github: "github",
-    github_actions: "github_actions"
+    github_actions: "github_actions",
+    mysqlworkbench: "mysql_workbench"
   };
 
   const appLabels = {
@@ -49,7 +51,8 @@
     powerbi: "Power BI Desktop",
     git: "Git",
     github: "GitHub",
-    github_actions: "GitHub Actions"
+    github_actions: "GitHub Actions",
+    mysqlworkbench: "MySQL Workbench"
   };
 
   const engineReady = {
@@ -65,7 +68,8 @@
     powerbi: false,
     git: false,
     github: false,
-    github_actions: false
+    github_actions: false,
+    mysqlworkbench: false
   };
 
   function ensureGlobalSimulatorRuntime(frame) {
@@ -163,6 +167,7 @@
     if (value === "git") return "git";
     if (value === "github") return "github";
     if (value === "github_actions" || value === "github-actions" || value === "githubactions") return "github_actions";
+    if (value === "mysqlworkbench" || value === "mysql_workbench" || value === "mysql-workbench" || value === "mysql") return "mysqlworkbench";
     return "intellij";
   }
 
@@ -188,6 +193,7 @@
     softwareBadge.classList.toggle("git", activeSoftware === "git");
     softwareBadge.classList.toggle("github", activeSoftware === "github");
     softwareBadge.classList.toggle("github-actions", activeSoftware === "github_actions");
+    softwareBadge.classList.toggle("mysqlworkbench", activeSoftware === "mysqlworkbench");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -310,6 +316,19 @@
       if (action === "openNewWorkflow" || action === "openWorkflowFile") return plan(["#content"]);
       if (action === "triggerRun" || action === "openRun") return plan(["#content"]);
       if (action === "openSecrets" || action === "openCaches" || action === "openRunners") return plan(["#content"]);
+    }
+    if (software === "mysqlworkbench") {
+      if (action === "showHome") return plan(["#homeOverlay"]);
+      if (action === "openConnectionDialog" || action === "openConnectionParameters" || action === "openConnectionSsl" || action === "openConnectionAdvanced") return plan(["#btnManageConnections"]);
+      if (action === "connect") return plan(["#connectionPill"]);
+      if (action === "openSQLTab") return plan(["#btnNewSql"]);
+      if (action === "executeCurrent" || action === "executeAll" || action === "executeSelection") return plan(["#qExecCurrent"]);
+      if (action === "showResult" || action === "showTableData") return plan(["#bottomPanel"]);
+      if (action === "openTableEditor" || action === "openTableEditorTab") return plan(["#workbenchSurface"]);
+      if (action === "openServerStatus" || action === "openPerformanceDashboard" || action === "openUsersPrivileges") return plan(["#workbenchSurface"]);
+      if (action === "openModel" || action === "createEERDiagram" || action === "reverseEngineer") return plan(["#workbenchSurface"]);
+      if (action === "openMigrationWizard") return plan(["#workbenchSurface"]);
+      if (action === "openPreferences") return plan(["#workbenchSurface"]);
     }
     if (software === "jenkins") {
       if (action === "typeSearch") return plan(["#search"]);

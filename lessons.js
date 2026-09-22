@@ -4003,6 +4003,943 @@ window.COURSE = {
           }
         ],
         "marketplace": []
+      },
+      "mysql_workbench": {
+        "title": "Campus Analytics - MySQL Workbench",
+        "version": "MySQL Workbench 8.0 Community",
+        "showHome": false,
+        "connections": [
+          {
+            "id": "local-mysql",
+            "name": "Local instance MySQL80",
+            "host": "localhost",
+            "port": 3306,
+            "user": "root",
+            "schema": "java_practice",
+            "connected": true
+          }
+        ],
+        "activeConnection": "local-mysql",
+        "activeSchema": "java_practice",
+        "tree": [
+          {
+            "name": "java_practice",
+            "type": "schema",
+            "path": "schemas/java_practice",
+            "open": true,
+            "properties": {
+              "Charset": "utf8mb4",
+              "Collation": "utf8mb4_0900_ai_ci"
+            },
+            "children": [
+              {
+                "name": "Tables",
+                "type": "folder",
+                "path": "schemas/java_practice/tables",
+                "open": true,
+                "children": [
+                  {
+                    "name": "department",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/department",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 4,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 4
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`department` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "department_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/department_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "department_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/department_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "dean",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/dean",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/department/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/fks",
+                        "open": true,
+                        "children": []
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "course",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/course",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 5,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 5,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_course_department",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/course/fks/fk_course_department",
+                          "properties": {
+                            "Column": "department_id",
+                            "References": "department.department_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`course` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "course_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/course_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "course_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/course_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(120)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "department_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/department_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "credits",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/credits",
+                            "properties": {
+                              "Datatype": "INT"
+                            }
+                          },
+                          {
+                            "name": "instructor",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/instructor",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/course/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_course_department",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/course/fks/fk_course_department",
+                            "properties": {
+                              "Column": "department_id",
+                              "References": "department.department_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "student",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/student",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 8,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 8,
+                      "triggers": [
+                        {
+                          "name": "before_student_update",
+                          "type": "trigger",
+                          "path": "schemas/java_practice/tables/student/triggers/before_student_update"
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`student` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/student_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(120)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "email",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/email",
+                            "properties": {
+                              "Datatype": "VARCHAR(160)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "city",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/city",
+                            "properties": {
+                              "Datatype": "VARCHAR(80)"
+                            }
+                          },
+                          {
+                            "name": "admission_year",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/admission_year",
+                            "properties": {
+                              "Datatype": "INT"
+                            }
+                          },
+                          {
+                            "name": "risk_status",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/risk_status",
+                            "properties": {
+                              "Datatype": "VARCHAR(40)"
+                            }
+                          },
+                          {
+                            "name": "updated_at",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/updated_at",
+                            "properties": {
+                              "Datatype": "TIMESTAMP",
+                              "Default": "CURRENT_TIMESTAMP"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/student/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/fks",
+                        "open": true,
+                        "children": []
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/triggers",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "before_student_update",
+                            "type": "trigger",
+                            "path": "schemas/java_practice/tables/student/triggers/before_student_update"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "enrollment",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/enrollment",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 10,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 10,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_enrollment_student",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_student",
+                          "properties": {
+                            "Column": "student_id",
+                            "References": "student.student_id"
+                          }
+                        },
+                        {
+                          "name": "fk_enrollment_course",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_course",
+                          "properties": {
+                            "Column": "course_id",
+                            "References": "course.course_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`enrollment` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "enrollment_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/enrollment_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "course_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/course_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "semester",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/semester",
+                            "properties": {
+                              "Datatype": "VARCHAR(30)"
+                            }
+                          },
+                          {
+                            "name": "score",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/score",
+                            "properties": {
+                              "Datatype": "DECIMAL(5,2)"
+                            }
+                          },
+                          {
+                            "name": "grade",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/grade",
+                            "properties": {
+                              "Datatype": "CHAR(1)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/enrollment/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_enrollment_student",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_student",
+                            "properties": {
+                              "Column": "student_id",
+                              "References": "student.student_id"
+                            }
+                          },
+                          {
+                            "name": "fk_enrollment_course",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_course",
+                            "properties": {
+                              "Column": "course_id",
+                              "References": "course.course_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "attendance",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/attendance",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 8,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 8,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_attendance_student",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/attendance/fks/fk_attendance_student",
+                          "properties": {
+                            "Column": "student_id",
+                            "References": "student.student_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`attendance` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "attendance_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "attendance_date",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_date",
+                            "properties": {
+                              "Datatype": "DATE",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "present",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/present",
+                            "properties": {
+                              "Datatype": "TINYINT(1)"
+                            }
+                          },
+                          {
+                            "name": "attendance_pct",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_pct",
+                            "properties": {
+                              "Datatype": "DECIMAL(5,2)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/attendance/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_attendance_student",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/attendance/fks/fk_attendance_student",
+                            "properties": {
+                              "Column": "student_id",
+                              "References": "student.student_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Views",
+                "type": "folder",
+                "path": "schemas/java_practice/views",
+                "open": true,
+                "children": [
+                  {
+                    "name": "vw_student_performance",
+                    "type": "view",
+                    "path": "schemas/java_practice/views/vw_student_performance",
+                    "ddl": "CREATE VIEW vw_student_performance AS SELECT s.student_name,c.course_name,e.score,e.grade FROM student s JOIN enrollment e ON e.student_id=s.student_id JOIN course c ON c.course_id=e.course_id;"
+                  }
+                ]
+              },
+              {
+                "name": "Stored Procedures",
+                "type": "folder",
+                "path": "schemas/java_practice/procedures",
+                "open": true,
+                "children": [
+                  {
+                    "name": "sp_students_at_risk",
+                    "type": "procedure",
+                    "path": "schemas/java_practice/procedures/sp_students_at_risk",
+                    "ddl": "CREATE PROCEDURE sp_students_at_risk() BEGIN SELECT * FROM student WHERE risk_status='At Risk'; END;"
+                  }
+                ]
+              },
+              {
+                "name": "Functions",
+                "type": "folder",
+                "path": "schemas/java_practice/functions",
+                "open": true,
+                "children": [
+                  {
+                    "name": "fn_grade_label",
+                    "type": "function",
+                    "path": "schemas/java_practice/functions/fn_grade_label",
+                    "ddl": "CREATE FUNCTION fn_grade_label(score DECIMAL(5,2)) RETURNS VARCHAR(20) RETURN IF(score>=90,'Excellent',IF(score>=80,'Good','Needs Support'));"
+                  }
+                ]
+              },
+              {
+                "name": "Events",
+                "type": "folder",
+                "path": "schemas/java_practice/events",
+                "open": true,
+                "children": [
+                  {
+                    "name": "evt_weekly_summary",
+                    "type": "event",
+                    "path": "schemas/java_practice/events/evt_weekly_summary",
+                    "ddl": "CREATE EVENT evt_weekly_summary ON SCHEDULE EVERY 1 WEEK DO INSERT INTO audit_log(message) VALUES('weekly summary');"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "initialSelection": "schemas/java_practice/tables/student",
+        "queryTabs": [
+          {
+            "id": "sql-main",
+            "title": "student_analysis.sql",
+            "sql": "SELECT\n    s.student_id,\n    s.student_name,\n    c.course_name,\n    e.score,\n    e.grade\nFROM student s\nJOIN enrollment e ON e.student_id = s.student_id\nJOIN course c ON c.course_id = e.course_id\nORDER BY e.score DESC;",
+            "dirty": false,
+            "savedPath": "C:\\sql\\student_analysis.sql"
+          },
+          {
+            "id": "sql-risk",
+            "title": "risk_report.sql",
+            "sql": "SELECT student_id, student_name, city, risk_status\nFROM student\nWHERE risk_status = 'At Risk';",
+            "dirty": false,
+            "savedPath": "C:\\sql\\risk_report.sql"
+          }
+        ],
+        "initialQuery": "sql-main",
+        "outputs": [
+          {
+            "status": "success",
+            "time": "10:21:04",
+            "action": "Query",
+            "sql": "SELECT student performance...",
+            "response": "5 row(s) returned",
+            "duration": "0.014 sec"
+          },
+          {
+            "status": "success",
+            "time": "10:20:32",
+            "action": "Schema",
+            "message": "USE `java_practice`",
+            "response": "Default schema changed",
+            "duration": "0.001 sec"
+          }
+        ],
+        "results": [
+          {
+            "id": "result-students",
+            "title": "Result Grid",
+            "columns": [
+              "student_id",
+              "student_name",
+              "email",
+              "city",
+              "admission_year",
+              "risk_status"
+            ],
+            "rows": [
+              {
+                "student_id": 1,
+                "student_name": "Asha Patel",
+                "email": "asha@example.edu",
+                "city": "Austin",
+                "admission_year": 2024,
+                "risk_status": "On Track"
+              },
+              {
+                "student_id": 2,
+                "student_name": "Ravi Kumar",
+                "email": "ravi@example.edu",
+                "city": "Round Rock",
+                "admission_year": 2024,
+                "risk_status": "At Risk"
+              },
+              {
+                "student_id": 3,
+                "student_name": "Maya Chen",
+                "email": "maya@example.edu",
+                "city": "Cedar Park",
+                "admission_year": 2025,
+                "risk_status": "High Performer"
+              },
+              {
+                "student_id": 4,
+                "student_name": "Noah Williams",
+                "email": "noah@example.edu",
+                "city": "Leander",
+                "admission_year": 2025,
+                "risk_status": "On Track"
+              },
+              {
+                "student_id": 5,
+                "student_name": "Sofia Garcia",
+                "email": "sofia@example.edu",
+                "city": "Austin",
+                "admission_year": 2024,
+                "risk_status": "High Performer"
+              }
+            ],
+            "editable": true,
+            "pinned": true
+          }
+        ],
+        "activeResult": "result-students",
+        "snippets": [
+          {
+            "id": "sn-risk",
+            "name": "At Risk Students",
+            "sql": "SELECT * FROM student WHERE risk_status = 'At Risk';"
+          },
+          {
+            "id": "sn-top",
+            "name": "Top Scores",
+            "sql": "SELECT * FROM enrollment WHERE score >= 90 ORDER BY score DESC;"
+          }
+        ],
+        "rightMode": "help",
+        "bottomMode": "results",
+        "autoCommit": true,
+        "sqlMode": "STRICT_TRANS_TABLES",
+        "isolationLevel": "REPEATABLE READ",
+        "safeUpdates": true,
+        "rowLimit": 1000,
+        "users": [
+          {
+            "user": "root",
+            "host": "localhost",
+            "privileges": [
+              "ALL PRIVILEGES"
+            ],
+            "locked": false
+          },
+          {
+            "user": "java_app",
+            "host": "localhost",
+            "privileges": [
+              "SELECT",
+              "INSERT",
+              "UPDATE",
+              "DELETE"
+            ],
+            "locked": false
+          },
+          {
+            "user": "report_user",
+            "host": "%",
+            "privileges": [
+              "SELECT"
+            ],
+            "locked": false
+          }
+        ],
+        "serverRunning": true,
+        "serverConnections": [
+          {
+            "id": 21,
+            "user": "root",
+            "host": "localhost",
+            "db": "java_practice",
+            "command": "Query",
+            "time": 0
+          },
+          {
+            "id": 22,
+            "user": "java_app",
+            "host": "localhost",
+            "db": "java_practice",
+            "command": "Sleep",
+            "time": 14
+          },
+          {
+            "id": 23,
+            "user": "report_user",
+            "host": "10.0.0.24",
+            "db": "java_practice",
+            "command": "Sleep",
+            "time": 31
+          }
+        ],
+        "model": {
+          "name": "Campus Analytics Model",
+          "zoom": 100,
+          "tables": [
+            {
+              "name": "department",
+              "columns": [
+                "department_id INT PK",
+                "department_name VARCHAR(100)",
+                "dean VARCHAR(100)"
+              ]
+            },
+            {
+              "name": "course",
+              "columns": [
+                "course_id INT PK",
+                "course_name VARCHAR(120)",
+                "department_id INT FK",
+                "credits INT"
+              ]
+            },
+            {
+              "name": "student",
+              "columns": [
+                "student_id INT PK",
+                "student_name VARCHAR(120)",
+                "email VARCHAR(160)",
+                "city VARCHAR(80)",
+                "risk_status VARCHAR(40)"
+              ]
+            },
+            {
+              "name": "enrollment",
+              "columns": [
+                "enrollment_id INT PK",
+                "student_id INT FK",
+                "course_id INT FK",
+                "semester VARCHAR(30)",
+                "score DECIMAL(5,2)"
+              ]
+            },
+            {
+              "name": "attendance",
+              "columns": [
+                "attendance_id INT PK",
+                "student_id INT FK",
+                "attendance_date DATE",
+                "attendance_pct DECIMAL(5,2)"
+              ]
+            }
+          ],
+          "relationships": [
+            {
+              "from": "department.department_id",
+              "to": "course.department_id",
+              "type": "1:N"
+            },
+            {
+              "from": "course.course_id",
+              "to": "enrollment.course_id",
+              "type": "1:N"
+            },
+            {
+              "from": "student.student_id",
+              "to": "enrollment.student_id",
+              "type": "1:N"
+            },
+            {
+              "from": "student.student_id",
+              "to": "attendance.student_id",
+              "type": "1:N"
+            }
+          ]
+        }
       }
     }
   },
@@ -7750,6 +8687,914 @@ window.COURSE = {
           "software": "github_actions",
           "action": {
             "action": "openSecrets",
+            "data": {}
+          }
+        }
+      ]
+    },
+    {
+      "title": "11: MySQL Workbench SQL Development & Database Engineering",
+      "steps": [
+        {
+          "title": "Open the MySQL Workbench Home screen",
+          "why": "Saved connections, Models mariyu Migration launch areas ekkada untayo Home lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showHome",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect the Local instance MySQL80 connection",
+          "why": "Existing localhost connection card ni realistic Workbench Home lo identify chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "highlight",
+            "data": {
+              "target": {
+                "type": "connection",
+                "id": "local-mysql"
+              }
+            }
+          }
+        },
+        {
+          "title": "Open the full connection setup dialog",
+          "why": "Parameters, SSL, Advanced, Remote Management, System Profile tabs unna real connection editor ni open chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openConnectionDialog",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect Standard TCP/IP connection parameters",
+          "why": "Hostname, port, user, default schema mariyu connection method fields ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openConnectionParameters",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect SSL connection settings",
+          "why": "Workbench SSL tab lo certificates mariyu SSL mode options ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openConnectionSsl",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect Advanced connection settings",
+          "why": "Timeout, SQL mode mariyu extra connector parameters ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openConnectionAdvanced",
+            "data": {}
+          }
+        },
+        {
+          "title": "Connect to Local instance MySQL80",
+          "why": "Saved connection nundi java_practice schema ki active SQL development session start chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "connect",
+            "data": {
+              "id": "local-mysql"
+            }
+          }
+        },
+        {
+          "title": "Open a new SQL query tab",
+          "why": "Multiple SQL editor tabs workflow ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openSQLTab",
+            "data": {
+              "id": "sql-demo",
+              "title": "analysis_demo.sql"
+            }
+          }
+        },
+        {
+          "title": "Type a student performance query",
+          "why": "Workbench SQL editor lo join query type chesi schema objects use chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "queryId": "sql-demo",
+              "sql": "SELECT\n    s.student_name,\n    c.course_name,\n    e.score,\n    e.grade\nFROM student s\nJOIN enrollment e ON e.student_id = s.student_id\nJOIN course c ON c.course_id = e.course_id\nWHERE e.score >= 80\nORDER BY e.score DESC;"
+            }
+          }
+        },
+        {
+          "title": "Open SQL code completion",
+          "why": "Table/column suggestions popup ela kanipistundo SQL editor lo demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showAutocomplete",
+            "data": {
+              "items": [
+                "student",
+                "student_name",
+                "course",
+                "course_name",
+                "enrollment",
+                "score",
+                "grade"
+              ],
+              "selected": 1
+            }
+          }
+        },
+        {
+          "title": "Execute the current statement",
+          "why": "Current query ni Workbench lightning action tho run chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "executeCurrent",
+            "data": {
+              "sql": "SELECT student performance...",
+              "response": "5 row(s) returned",
+              "duration": "0.014 sec",
+              "result": {
+                "id": "r-demo",
+                "title": "Result Grid",
+                "columns": [
+                  "student_name",
+                  "course_name",
+                  "score",
+                  "grade"
+                ],
+                "rows": [
+                  {
+                    "student_name": "Maya Chen",
+                    "course_name": "Java Programming",
+                    "score": 97,
+                    "grade": "A"
+                  },
+                  {
+                    "student_name": "Asha Patel",
+                    "course_name": "Java Programming",
+                    "score": 94,
+                    "grade": "A"
+                  },
+                  {
+                    "student_name": "Sofia Garcia",
+                    "course_name": "Data Visualization",
+                    "score": 95,
+                    "grade": "A"
+                  },
+                  {
+                    "student_name": "Isha Rao",
+                    "course_name": "GIS Applications",
+                    "score": 90,
+                    "grade": "A"
+                  },
+                  {
+                    "student_name": "Noah Williams",
+                    "course_name": "Database Systems",
+                    "score": 86,
+                    "grade": "B"
+                  }
+                ],
+                "editable": true
+              }
+            }
+          }
+        },
+        {
+          "title": "Pin the result grid",
+          "why": "Multiple query runs madhya important result set ni pin chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "pinResult",
+            "data": {
+              "id": "r-demo",
+              "pinned": true
+            }
+          }
+        },
+        {
+          "title": "Sort the result grid by score",
+          "why": "Result grid client-side sorting behavior ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "sortResult",
+            "data": {
+              "column": "score",
+              "direction": "desc"
+            }
+          }
+        },
+        {
+          "title": "Filter the result grid for Java",
+          "why": "Result set filtering control ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "filterResult",
+            "data": {
+              "text": "Java"
+            }
+          }
+        },
+        {
+          "title": "Edit a result cell",
+          "why": "Editable result grid lo value modification state ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "editCell",
+            "data": {
+              "id": "r-demo",
+              "row": 0,
+              "column": "grade",
+              "value": "A+"
+            }
+          }
+        },
+        {
+          "title": "Apply result-grid changes",
+          "why": "Workbench Apply workflow tho editable result changes commit path lo place chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "applyGridChanges",
+            "data": {}
+          }
+        },
+        {
+          "title": "Show Action Output",
+          "why": "Executed statements, response mariyu duration history ni Action Output lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "setBottomTab",
+            "data": {
+              "tab": "output"
+            }
+          }
+        },
+        {
+          "title": "Open Text Output",
+          "why": "Action/query messages ni plain text output surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showTextOutput",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open SQL History",
+          "why": "Previous statements/history workflow ni dedicated history surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showHistoryOutput",
+            "data": {}
+          }
+        },
+        {
+          "title": "Generate EXPLAIN output",
+          "why": "Optimizer access type, key mariyu estimated rows ni tabular EXPLAIN lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "explainQuery",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Visual EXPLAIN",
+          "why": "Execution plan ni graphical Workbench surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showVisualExplain",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect query statistics",
+          "why": "Duration, rows examined mariyu temp/sort information ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showQueryStatistics",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open query profiler",
+          "why": "Statement execution stages and percentages ni profiler surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showQueryProfiler",
+            "data": {}
+          }
+        },
+        {
+          "title": "Save the query as a snippet",
+          "why": "Reusable SQL snippet library workflow ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "saveSnippet",
+            "data": {
+              "id": "sn-demo",
+              "name": "High Performing Students",
+              "sql": "SELECT * FROM enrollment WHERE score >= 90 ORDER BY score DESC;"
+            }
+          }
+        },
+        {
+          "title": "Open the Snippets sidebar",
+          "why": "Saved snippets ni right sidebar lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showSnippets",
+            "data": {}
+          }
+        },
+        {
+          "title": "Return to SQL Context Help",
+          "why": "Keyword-specific SQL help pane ni restore chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showContextHelp",
+            "data": {}
+          }
+        },
+        {
+          "title": "Start an explicit transaction",
+          "why": "Auto-commit outside controlled transaction workflow ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "startTransaction",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create a transaction savepoint",
+          "why": "Partial rollback point ni Workbench session lo create chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "createSavepoint",
+            "data": {
+              "name": "before_update"
+            }
+          }
+        },
+        {
+          "title": "Execute an UPDATE inside the transaction",
+          "why": "Student risk status update ni staged transaction lo execute chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "executeCurrent",
+            "data": {
+              "sql": "UPDATE student SET risk_status='On Track' WHERE student_id=2;",
+              "affectedRows": 1
+            }
+          }
+        },
+        {
+          "title": "Rollback to the savepoint",
+          "why": "Transaction lo later changes matrame rollback cheyyadam demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "rollbackToSavepoint",
+            "data": {
+              "name": "before_update"
+            }
+          }
+        },
+        {
+          "title": "Commit the transaction",
+          "why": "Remaining staged changes ni database ki commit chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "commit",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect the java_practice schema tree",
+          "why": "Navigator lo tables, views, procedures, functions mariyu events structure ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showSchemas",
+            "data": {}
+          }
+        },
+        {
+          "title": "Select the student table",
+          "why": "Navigator lo student object ni select chesi Info/DDL context activate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "selectObject",
+            "data": {
+              "path": "schemas/java_practice/tables/student"
+            }
+          }
+        },
+        {
+          "title": "Open the student table context menu",
+          "why": "Select Rows, Alter Table, Export, SQL generation, Drop actions unna object menu ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openObjectContext",
+            "data": {
+              "path": "schemas/java_practice/tables/student"
+            }
+          }
+        },
+        {
+          "title": "Open Table Inspector",
+          "why": "Rows, engine, indexes mariyu storage information ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableInspector",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "rows": 8,
+              "dataLength": "16 KiB",
+              "indexLength": "16 KiB"
+            }
+          }
+        },
+        {
+          "title": "Open the native Table Editor Columns tab",
+          "why": "Real Workbench-style table editor lo column datatypes/PK/NN/AI/default properties ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditor",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "tab": "Columns"
+            }
+          }
+        },
+        {
+          "title": "Open the Table Editor Indexes tab",
+          "why": "PRIMARY and secondary indexes configuration surface ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditorTab",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "tab": "Indexes"
+            }
+          }
+        },
+        {
+          "title": "Open the Table Editor Foreign Keys tab",
+          "why": "Referenced table/column mariyu update/delete rules ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditorTab",
+            "data": {
+              "path": "schemas/java_practice/tables/enrollment",
+              "tab": "Foreign Keys"
+            }
+          }
+        },
+        {
+          "title": "Open the Table Editor Triggers tab",
+          "why": "Table trigger editor/source area ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditorTab",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "tab": "Triggers"
+            }
+          }
+        },
+        {
+          "title": "Open Partitioning options",
+          "why": "RANGE/HASH/LIST partition design controls ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditorTab",
+            "data": {
+              "path": "schemas/java_practice/tables/enrollment",
+              "tab": "Partitioning"
+            }
+          }
+        },
+        {
+          "title": "Open Table Options",
+          "why": "Engine, charset, collation, row format mariyu comments ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openTableEditorTab",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "tab": "Options"
+            }
+          }
+        },
+        {
+          "title": "Inspect the student object DDL",
+          "why": "Workbench object DDL view lo CREATE TABLE script ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showObjectDDL",
+            "data": {
+              "path": "schemas/java_practice/tables/student"
+            }
+          }
+        },
+        {
+          "title": "Generate SELECT SQL from the student table",
+          "why": "Navigator object nundi SELECT statement generate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "generateSql",
+            "data": {
+              "path": "schemas/java_practice/tables/student",
+              "kind": "select",
+              "run": false
+            }
+          }
+        },
+        {
+          "title": "Show student table data",
+          "why": "Select Rows-style result grid lo current table rows ni display chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showTableData",
+            "data": {
+              "title": "student — Select Rows - Limit 1000",
+              "columns": [
+                "student_id",
+                "student_name",
+                "email",
+                "city",
+                "risk_status"
+              ],
+              "rows": [
+                {
+                  "student_id": 1,
+                  "student_name": "Asha Patel",
+                  "email": "asha@example.edu",
+                  "city": "Austin",
+                  "admission_year": 2024,
+                  "risk_status": "On Track"
+                },
+                {
+                  "student_id": 2,
+                  "student_name": "Ravi Kumar",
+                  "email": "ravi@example.edu",
+                  "city": "Round Rock",
+                  "admission_year": 2024,
+                  "risk_status": "At Risk"
+                },
+                {
+                  "student_id": 3,
+                  "student_name": "Maya Chen",
+                  "email": "maya@example.edu",
+                  "city": "Cedar Park",
+                  "admission_year": 2025,
+                  "risk_status": "High Performer"
+                },
+                {
+                  "student_id": 4,
+                  "student_name": "Noah Williams",
+                  "email": "noah@example.edu",
+                  "city": "Leander",
+                  "admission_year": 2025,
+                  "risk_status": "On Track"
+                },
+                {
+                  "student_id": 5,
+                  "student_name": "Sofia Garcia",
+                  "email": "sofia@example.edu",
+                  "city": "Austin",
+                  "admission_year": 2024,
+                  "risk_status": "High Performer"
+                }
+              ],
+              "editable": true
+            }
+          }
+        },
+        {
+          "title": "Open the Table Data Import Wizard",
+          "why": "CSV source, destination schema/table mariyu mapping steps unna wizard ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openImportWizard",
+            "data": {
+              "file": "C:\\data\\new_students.csv",
+              "schema": "java_practice",
+              "table": "student"
+            }
+          }
+        },
+        {
+          "title": "Run the import",
+          "why": "Educational import execution state ni Action Output lo record chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "importData",
+            "data": {
+              "file": "C:\\data\\new_students.csv",
+              "table": "student",
+              "rows": 25
+            }
+          }
+        },
+        {
+          "title": "Open the Table Data Export Wizard",
+          "why": "Result/table export source, output file and format settings ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openExportWizard",
+            "data": {
+              "table": "student",
+              "file": "C:\\data\\students_export.csv"
+            }
+          }
+        },
+        {
+          "title": "Run the export",
+          "why": "CSV export completion state ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "exportData",
+            "data": {
+              "file": "C:\\data\\students_export.csv",
+              "rows": 8
+            }
+          }
+        },
+        {
+          "title": "Open Server Status",
+          "why": "Server state, uptime, threads, directories mariyu enabled features ni administration surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openServerStatus",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Client Connections",
+          "why": "Active MySQL sessions, users, databases mariyu commands ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openClientConnections",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Users and Privileges",
+          "why": "Accounts, login, roles, schema privileges mariyu account limits surface ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openUsersPrivileges",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect Server Variables",
+          "why": "sql_mode, isolation, autocommit mariyu server settings ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showServerVariables",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect Server Logs",
+          "why": "Workbench server log viewer lo messages ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showServerLogs",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Startup / Shutdown",
+          "why": "MySQL Windows service control and startup log surface ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openServiceControl",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open the Options File editor",
+          "why": "my.ini networking/security/InnoDB options editor ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openOptionsFile",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Performance Dashboard",
+          "why": "Network, MySQL, InnoDB graphs/gauges mariyu live metrics ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openPerformanceDashboard",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Performance Reports",
+          "why": "High Cost SQL and schema/wait reports browser ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openPerformanceReports",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Performance Schema metrics",
+          "why": "Performance Schema-based instrumentation surface ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openPerformanceSchema",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect InnoDB Status",
+          "why": "Buffer pool/history diagnostic text ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showInnoDBStatus",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open the Campus Analytics EER model",
+          "why": "Five-table model diagram, catalog palette and relationships ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openModel",
+            "data": {
+              "name": "Campus Analytics Model"
+            }
+          }
+        },
+        {
+          "title": "Create/open the EER Diagram canvas",
+          "why": "Workbench data-modeling canvas toolbar and table cards ni display chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "createEERDiagram",
+            "data": {
+              "name": "Campus Analytics Model"
+            }
+          }
+        },
+        {
+          "title": "Zoom the EER model to 125 percent",
+          "why": "Large schema diagrams lo zoom behavior ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "setModelZoom",
+            "data": {
+              "zoom": 125
+            }
+          }
+        },
+        {
+          "title": "Open the Model Navigator/Catalog",
+          "why": "Tables and model object palette ni side surface lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openModelNavigator",
+            "data": {}
+          }
+        },
+        {
+          "title": "Reverse engineer the live schema",
+          "why": "java_practice database metadata nundi EER tables/relationships reconstruct cheyyadam demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "reverseEngineer",
+            "data": {
+              "name": "Reverse Engineered java_practice"
+            }
+          }
+        },
+        {
+          "title": "Forward engineer the model",
+          "why": "EER model nundi CREATE SQL generation workflow ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "forwardEngineer",
+            "data": {
+              "script": "Generated CREATE TABLE statements for 5 tables"
+            }
+          }
+        },
+        {
+          "title": "Synchronize model with the database",
+          "why": "Model vs live database difference comparison/apply flow ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "synchronizeModel",
+            "data": {
+              "changes": "1 column difference"
+            }
+          }
+        },
+        {
+          "title": "Compare schemas",
+          "why": "Model/database object differences ni comparison grid lo inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "compareSchemas",
+            "data": {
+              "differences": [
+                {
+                  "object": "student.updated_at",
+                  "source": "Campus Analytics Model",
+                  "target": "java_practice",
+                  "difference": "Default value differs"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Open the Migration Wizard",
+          "why": "Source-to-MySQL migration multi-step Workbench wizard ni open chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openMigrationWizard",
+            "data": {
+              "objects": 24
+            }
+          }
+        },
+        {
+          "title": "Configure the migration source",
+          "why": "SQL Server source DBMS/host configuration step ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "configureMigrationSource",
+            "data": {
+              "source": {
+                "dbms": "Microsoft SQL Server",
+                "host": "legacy-campus-db"
+              }
+            }
+          }
+        },
+        {
+          "title": "Configure the migration target",
+          "why": "Target MySQL localhost connection ni configure chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "configureMigrationTarget",
+            "data": {
+              "target": {
+                "dbms": "MySQL",
+                "host": "localhost:3306"
+              }
+            }
+          }
+        },
+        {
+          "title": "Run schema and data migration",
+          "why": "Object/data migration summary and final report state ni demonstrate chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "runMigration",
+            "data": {
+              "objects": 24,
+              "step": 7,
+              "status": "Migration completed successfully"
+            }
+          }
+        },
+        {
+          "title": "Open Workbench Preferences",
+          "why": "SQL Editor, Administration, Modeling, Fonts/Colors and SSH preferences navigation ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openPreferences",
+            "data": {
+              "page": "SQL Editor"
+            }
+          }
+        },
+        {
+          "title": "Inspect Modeling preferences",
+          "why": "Default storage engine/charset and model placement behavior ni inspect chestam.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "openPreferences",
+            "data": {
+              "page": "Modeling"
+            }
+          }
+        },
+        {
+          "title": "Return to the populated SQL workspace",
+          "why": "Feature tour end lo real query/result/schema workspace state ki return avutham.",
+          "software": "mysqlworkbench",
+          "action": {
+            "action": "showSchemas",
             "data": {}
           }
         }

@@ -517,6 +517,63 @@
         "environment",
         "runner"
       ]
+    },
+    "mysql_workbench": {
+      "registry": "MYSQL_WORKBENCH_CAPABILITIES",
+      "targetFidelity": 92,
+      "features": [
+        "home",
+        "connections",
+        "sql-editor",
+        "result-grid",
+        "schema-navigator",
+        "table-editor",
+        "schema-inspector",
+        "table-inspector",
+        "users-privileges",
+        "server-administration",
+        "performance-dashboard",
+        "visual-explain",
+        "eer-modeling",
+        "reverse-engineering",
+        "forward-engineering",
+        "migration-wizard",
+        "preferences",
+        "import-export",
+        "context-menus",
+        "adaptive-dialogs"
+      ],
+      "actions": [
+        "openPreferences",
+        "openConnectionParameters",
+        "openConnectionSsl",
+        "openConnectionAdvanced",
+        "openTableEditor",
+        "openTableEditorTab",
+        "openOptionsFile",
+        "openServiceControl",
+        "showTextOutput",
+        "showHistoryOutput",
+        "openHomeModels",
+        "openHomeMigration",
+        "openEERPalette",
+        "setModelZoom",
+        "openModelNavigator"
+      ],
+      "sampleProject": "Campus Analytics / java_practice",
+      "lessonFeatureTourSteps": 74,
+      "sampleProjectSurfaces": [
+        "5 tables",
+        "4 relationships",
+        "2 SQL tabs",
+        "editable Result Grid",
+        "schema objects",
+        "Table Editor",
+        "Administration",
+        "Performance Dashboard",
+        "EER Model",
+        "Migration Wizard"
+      ]
     }
   }
 }
