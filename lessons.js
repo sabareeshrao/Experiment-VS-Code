@@ -27,6 +27,13 @@ window.COURSE = {
       "id": "book-4",
       "title": "Source Control & Automation",
       "subtitle": "Git local workflow, GitHub collaboration, and GitHub Actions CI.",
+      "chapterStart": 11,
+      "chapterEnd": 11
+    },
+    {
+      "id": "book-5",
+      "title": "MySQL Workbench: SQL Development & Database Engineering",
+      "subtitle": "A populated MySQL project covering SQL editing, schema objects, table design, administration, performance, EER modeling, migration, and preferences.",
       "chapterStart": 12,
       "chapterEnd": 12
     }
