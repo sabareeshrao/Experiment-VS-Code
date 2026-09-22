@@ -1,23 +1,44 @@
 # Experiment VS Code / IntelliJ Developer Playback
 
-This repository is a proof-of-concept for an **interactive software-development playback simulator**.
+This repository is an experimental **software-development playback simulator**.
 
-The outer UI shows project **stages/progress**. Inside each stage are developer **micro-steps**. A step can create a file, type a line or block, open an IDE tool window, run a command, or explain why that exact action is being taken.
+## Current phase: UI first
 
-## Trial structure
+The project is intentionally **not starting any learning stages yet**.
 
-- 5 project stages
-- line-by-line / action-by-action steps
-- cumulative repository state: step N includes everything built through step N
-- dark IntelliJ IDEA simulator
-- ChatGPT-style explanation card
-- Previous / Next / Replay step controls
-- direct links with `?step=N`
-- IDE fullscreen mode
-- IDE features such as Maven, Run, Terminal, Git, Debug, Tests, and Problems are revealed only when the workflow reaches the stage that needs them
+The left progress area currently contains:
 
-The `project/` directory contains the final Java project for comparison. The browser simulation does not execute Java; it reconstructs the developer workflow using HTML/CSS/JavaScript.
+- Search
+- **View Full Code**
+
+Selecting **View Full Code** opens the complete uploaded **Java Practice** project inside the IntelliJ-style simulator. This gives us a stable finished-project reference so the IDE UI can keep being improved before we author the development timeline.
+
+## Java Practice baseline
+
+The uploaded baseline contains a broad Java practice project covering threads, collections, generics, files, Java 8/21 features, RMI, reflection, inheritance, polymorphism, exceptions, inner classes, interfaces, garbage collection, and more.
+
+- Editable source copy: `/project/`
+- Browser-ready complete project snapshot: `/project-data/`
+- IntelliJ simulator: `/simulator/`
+- Default preview file: `src/Threads/TwoThreads/MyThread.java`
+
+The original archive also contained compiled `.class` files. Those entries are represented in the simulator tree for visual fidelity; the editable `project/` folder focuses on Java source.
+
+## Playback architecture
+
+Later, stages will be added gradually. Each stage will contain developer micro-steps such as creating a file, typing a line, running a command, seeing an error, fixing it, and explaining why that exact action was taken.
+
+When stages are eventually added:
+
+- Step N will reconstruct the repository exactly through Step N.
+- Previous/Next will move through developer micro-steps.
+- View Full Code will remain available as the finished-project reference.
+- IDE features will continue to appear only when the workflow reaches the stage that needs them.
+
+## IntelliJ UI
+
+The simulator uses a dark IntelliJ IDEA New UI-style shell and is being improved iteratively. Current goals include realistic Project structure, editor/gutter behavior, syntax colors, terminal/tool windows, responsive sizing, and a non-blocking explanation assistant.
 
 ## GitHub Pages
 
-Publish the repository root from the `main` branch in **Settings → Pages**.
+Publish `main / (root)` from **Settings → Pages**.
