@@ -8,7 +8,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const APP_ID="cmd";
 const SUPPORTED_ACTIONS=["setCwd","runCommand","executeCommand","typeCommand","showOutput","clearTerminal","highlightText","setTitle","setPrompt","pressKey","highlightTarget","moveCursor","setEnv","unsetEnv","createDirectory","createFile","deletePath","setFilesystem","startProcess","stopProcess","showProperties","setErrorLevel","showHelp"];
 let pkg=null,data=null,autoType=true,seekToken=0,allowBoundary=true;
-let cwd="C:\\",promptSuffix=">",entries=[],env={},persistentEnv={},fs={},history=[],historyIndex=0,errorLevel=0,activeProcess=null,inputDraft="",inputCursor=null;
+let cwd="C:\\",promptSuffix=">",entries=[],env={},persistentEnv={},fs={},history=[],historyIndex=0,errorLevel=0,activeProcess=null,inputDraft="",inputCursor=null,dirStack=[];
 let trackedBoundary=null,boundaryFrame=0,assistantDrag=null;
 
 function applyTheme(theme){document.body.classList.toggle("theme-dark",theme!=="light")}
@@ -53,7 +53,7 @@ function reset(){
   if(!data)return;
   cwd=normalizePath(data.cwd||"C:\\Users\\developer\\JavaPractice","C:\\");promptSuffix=data.promptSuffix!==undefined?String(data.promptSuffix):">";
   env={COMSPEC:"C:\\Windows\\System32\\cmd.exe",USERPROFILE:"C:\\Users\\developer",USERNAME:"developer",OS:"Windows_NT",JAVA_HOME:"C:\\Program Files\\Java\\jdk-21",MAVEN_HOME:"C:\\apache-maven-3.9.9",PATH:"C:\\Windows\\System32;C:\\Program Files\\Java\\jdk-21\\bin;C:\\apache-maven-3.9.9\\bin;C:\\Program Files\\Git\\cmd",...(clone(data.env||{}))};persistentEnv=clone(data.persistentEnv||{});
-  entries=[];history=[];historyIndex=0;errorLevel=0;activeProcess=null;inputDraft="";initFilesystem();
+  entries=[];history=[];historyIndex=0;errorLevel=0;activeProcess=null;inputDraft="";dirStack=[];initFilesystem();
   if(!exists(cwd))ensureDir(cwd);
   if(data.initialOutput)entries.push({type:"output",text:String(data.initialOutput)});
   refs.title.textContent=data.title||"Command Prompt";refs.window.classList.remove("closed","minimized");render();
@@ -124,7 +124,7 @@ function executeSingle(raw,stdin=""){
   let s=expandVars(String(raw||"").trim());if(!s)return {code:0,out:""};
   const red=parseRedirection(s);s=red.cmd;const args=tokenize(s);const cmd=String(args.shift()||"").toLowerCase();let result={code:0,out:""};
   if(/^[a-z]:$/i.test(cmd)){const root=cmd.toUpperCase()+"\\";ensureDir(root);cwd=root;result={code:0,out:""}}
-  else if(cmd==="cd"||cmd==="chdir"){if(!args.length)result={code:0,out:cwd};else{let target=normalizePath(args.join(" "));if(isDir(target)){cwd=target;result={code:0,out:""}}else result={code:1,out:"The system cannot find the path specified."}}}
+  else if(cmd==="cd"||cmd==="chdir"){const cdArgs=args.filter(x=>x.toLowerCase()!=="/d");if(!cdArgs.length)result={code:0,out:cwd};else{let target=normalizePath(cdArgs.join(" "));if(isDir(target)){cwd=target;result={code:0,out:""}}else result={code:1,out:"The system cannot find the path specified."}}}\n  else if(cmd==="pushd"){const target=normalizePath(args.join(" ")||cwd);if(isDir(target)){dirStack.push(cwd);cwd=target;result={code:0,out:""}}else result={code:1,out:"The system cannot find the path specified."}}\n  else if(cmd==="popd"){if(dirStack.length){cwd=dirStack.pop();result={code:0,out:""}}else result={code:1,out:"The directory stack is empty."}}
   else if(cmd==="dir"){const bare=args.some(x=>x.toLowerCase()==="/b"),target=args.find(x=>!x.startsWith("/"))||cwd;result=formatDir(target,bare)}
   else if(cmd==="cls"){entries=[];result={code:0,out:"",clear:true}}
   else if(cmd==="echo"){let t=args.join(" ");if(/^\.$/.test(t))t="";result={code:0,out:t}}
@@ -143,7 +143,7 @@ function executeSingle(raw,stdin=""){
   else if(cmd==="where"){const name=args[0]||"";const map={java:(env.JAVA_HOME||"")+"\\bin\\java.exe",javac:(env.JAVA_HOME||"")+"\\bin\\javac.exe",mvn:(env.MAVEN_HOME||"")+"\\bin\\mvn.cmd",git:"C:\\Program Files\\Git\\cmd\\git.exe",cmd:"C:\\Windows\\System32\\cmd.exe"};result=map[name.toLowerCase()]?{code:0,out:map[name.toLowerCase()]}:{code:1,out:`INFO: Could not find files for the given pattern(s).`}}
   else if(cmd==="find"||cmd==="findstr"){const needle=(args.find(x=>!x.startsWith("/"))||"").replace(/^"|"$/g,"");const source=stdin||"";const lines=source.split(/\r?\n/).filter(x=>cmd==="findstr"?x.toLowerCase().includes(needle.toLowerCase()):x.includes(needle));result={code:lines.length?0:1,out:lines.join("\n")}}
   else if(cmd==="tree"){const root=normalizePath(args[0]||cwd),kids=listChildren(root);result={code:0,out:[baseName(root)||root,...kids.map((n,i)=>(i===kids.length-1?"└── ":"├── ")+baseName(n.path))].join("\n")}}
-  else if(cmd==="help")result={code:0,out:"CD CHDIR CLS COPY DEL DIR ECHO ERASE EXIT FIND FINDSTR HELP MD MKDIR MOVE PATH PROMPT RD RMDIR SET SETX TITLE TREE TYPE VER WHERE"};
+  else if(cmd==="help")result={code:0,out:"CD CHDIR PUSHD POPD CLS COPY DEL DIR ECHO ERASE EXIT FIND FINDSTR HELP MD MKDIR MOVE PATH PROMPT RD RMDIR SET SETX TITLE TREE TYPE VER WHERE"};
   else if(cmd==="path"){if(args.length)env.PATH=args.join(" ");result={code:0,out:`PATH=${env.PATH||""}`}}
   else if(cmd==="exit"){refs.window.classList.add("closed");result={code:0,out:""}}
   else{const known=knownToolOutput(cmd,args,stdin);result=known||{code:9009,out:`'${cmd}' is not recognized as an internal or external command,\noperable program or batch file.`}}
@@ -193,7 +193,7 @@ function loadPackage(p){pkg=clone(p);data=clone(pkg.apps?.cmd||{});reset()}
 
 window.addEventListener("message",e=>{const m=e.data;if(m?.type==="SIM_PACKAGE"){autoType=!!m.autoType;applyTheme(m.theme||"dark");loadPackage(m.package)}else if(m?.type==="SIM_SETTING"&&m.key==="autoType")autoType=!!m.value;else if(m?.type==="SIM_SETTING"&&m.key==="theme")applyTheme(m.value);else if(m?.type==="SIM_SEEK"){autoType=!!m.autoType;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)}else if(m?.type==="SIM_EXPLAIN")showAssistant(m)});
 
-refs.wrap.addEventListener("pointerdown",e=>{if(e.target===refs.wrap||e.target===refs.term)focusInput()});
+refs.wrap.addEventListener("pointerdown",e=>{\n  if(e.button!==0)return;\n  if(e.target.closest?.("button,.cmdAssistant,.modal,.menuPopup"))return;\n  setTimeout(focusInput,0);\n});
 refs.modalClose.onclick=()=>refs.modalShade.classList.remove("show");refs.modalShade.onclick=e=>{if(e.target===refs.modalShade)refs.modalShade.classList.remove("show")};
 $("minBtn").onclick=()=>refs.window.classList.toggle("minimized");$("maxBtn").onclick=()=>refs.window.classList.toggle("maximized");$("closeBtn").onclick=()=>{refs.window.classList.add("closed");flash("Simulated window close")};
 const menuMap={File:["New Window","Open Windows Terminal","Exit"],Edit:["Mark","Copy","Paste","Select All","Scroll","Find"],Defaults:["Options","Font","Layout","Colors","Terminal"],Properties:["Options","Font","Layout","Colors","Terminal"]};
