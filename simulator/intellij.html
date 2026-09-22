@@ -81,11 +81,65 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ideAssistantClose{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px;padding:0}.ideAssistantClose:hover{background:#34363b;color:#fff}
 .ideAssistantBody{padding:9px 10px 10px;font:10.5px/1.5 "Segoe UI",Arial,sans-serif;color:#dfe1e5;background:#2b2d30;cursor:grab;user-select:none}
 .ideAssistantBody p{margin:0}.ideAssistant.minimized{width:220px}.ideAssistant.minimized .ideAssistantBody{display:none}.ideAssistant.dragging{cursor:grabbing;opacity:.96}.ideAssistant.dragging *{cursor:grabbing!important}.ideAssistantAction{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px;padding:0}.ideAssistantAction:hover{background:#34363b;color:#fff}.ideAssistantBody .stepTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
+
+/* IntelliJ New UI visual pass */
+:root{--leftW:250px;--rightW:255px;--bottomH:165px}
+body.theme-dark{
+ --bg:#1e1f22;--surface:#1f2023;--surface2:#202124;--surface3:#2b2d30;--line:#303238;--text:#bcbec4;--muted:#7f848e;
+ --blue:#3574f0;--cyan:#56a8f5;--green:#59a869;--orange:#cf8e6d;--red:#f75464;--purple:#c77dbb;--editor:#1e1f22;--gutter:#1e1f22
+}
+html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
+.app{grid-template-rows:33px 25px 35px minmax(0,1fr) 21px;background:#1e1f22}
+.titlebar{height:33px;padding:0 7px;background:#242529;border-bottom:1px solid #2a2c31;font-size:10px;color:#b9bbc1}
+.hamburger{width:25px;height:25px;border:0;background:transparent;color:#9da1aa;padding:0;border-radius:4px;margin-right:3px}.hamburger:hover{background:#303238;color:#fff}
+.ideaMark{gap:0}.ideaLogo{width:19px;height:19px;border-radius:4px;font-size:7px}
+.projectTitle{margin-left:8px!important;color:#d6d7da!important;font-weight:600}.titleSep{margin:0 6px;color:#60646c}
+.branchPill{border:0!important;background:transparent!important;color:#9da1aa!important;margin:0!important;padding:3px 5px!important}.branchPill:before{content:"⑂ ";color:#7f848e}
+.sdkChip{color:#8d9199;margin-right:12px}.windowGlyphs{color:#777b84;letter-spacing:8px;font-size:9px}
+.menu{height:25px;background:#1f2023;border-bottom:1px solid #292b30;font-size:9.5px;padding-left:29px}
+.menuItem{padding:5px 8px}.menuItem:hover{background:#2a2c31}
+.toolbar{height:35px;padding:3px 8px 3px 34px;background:#202124;border-bottom:1px solid #2d2f34;gap:3px}
+.tool{height:27px;border:0!important;border-radius:4px;color:#aeb1b8;padding:0 7px}.tool:hover{background:#2d2f34}.tool.primary{background:transparent!important;color:#59a869!important;font-size:11px}.tool.debug{color:#59a869}.tool.stop{color:#e36a72}
+.runConfig{height:27px;min-width:175px;border:1px solid #35373d;background:#242529;border-radius:5px;padding:5px 8px;color:#bfc1c7}
+.work{position:relative;padding-left:30px;padding-right:30px;background:#1e1f22;grid-template-columns:var(--leftW) 3px minmax(0,1fr) 0 0;grid-template-rows:minmax(0,1fr) 3px var(--bottomH)}
+.work.hasRightTools{grid-template-columns:var(--leftW) 3px minmax(0,1fr) 3px var(--rightW)}
+.toolRail{position:absolute;top:0;bottom:0;width:30px;background:#1f2023;display:flex;flex-direction:column;align-items:center;padding:5px 3px;z-index:15}
+.leftRail{left:0;border-right:1px solid #2b2d32}.rightRail{right:0;border-left:1px solid #2b2d32}
+.rail{width:24px;height:24px;border:0;background:transparent;color:#7f848e;border-radius:4px;padding:0;font-size:11px}.rail:hover{background:#2b2d32;color:#d6d7dc}.rail.active{background:#2f5fa7;color:#eef4ff}.railGrow{flex:1}
+.left{background:#1f2023;border-right:0;grid-template-rows:31px minmax(0,1fr)}
+.head{height:31px;padding:0 9px;background:#1f2023;border-bottom:1px solid #2b2d32;font-size:10px;color:#c7c9ce}
+.splitV,.splitH{background:#2a2c31}
+.editorPane{background:#1e1f22;grid-template-rows:31px minmax(0,1fr)}
+.tabs{height:31px;background:#202124;border-bottom:1px solid #2a2c31}
+.tab{height:31px;padding:0 10px;border-right:1px solid #2a2c31;color:#92969e;font-size:10px}.tab.active{background:#1e1f22;color:#d3d5da;border-top:0;border-bottom:2px solid #3574f0}
+.tabClose{color:#70747c}.tree{padding:5px 4px 10px 4px;font-size:10px;background:#1f2023}
+.treeRoot{height:24px;display:flex;align-items:center;gap:4px;padding:0 5px;color:#d7d8dc;font-weight:600;border-radius:4px}
+.treeRow{height:23px;gap:3px;border-radius:3px;color:#bfc1c7}.treeRow:hover{background:#27292d}.treeRow.active{background:#2b5b91;color:#f1f5fb}
+.twist{width:13px;color:#767a83}.ico{width:18px;height:18px;display:inline-grid;place-items:center;font-size:9px;font-weight:700;border-radius:3px}
+.ico-folder{color:#d5a94e}.ico-java{color:#d59b62;background:#493a28}.ico-xml{color:#b98bd4;background:#392c43}.ico-props{color:#8eb0ce;background:#293844}.ico-file{color:#9ca0a8}
+.treeAux{height:23px;display:flex;align-items:center;gap:5px;padding:0 5px;color:#969aa3}.treeAux .ico{background:transparent}
+.editorWrap{grid-template-columns:49px minmax(max-content,1fr);background:#1e1f22}
+.gutter{border-right:0;padding:8px 5px 30px 0;font:10.5px/21px "JetBrains Mono","Cascadia Code",Consolas,monospace;color:#62666f}
+.gline{height:21px;grid-template-columns:12px 8px 1fr}
+.code{padding:8px 12px 30px;font:11.5px/21px "JetBrains Mono","Cascadia Code","Fira Code",Consolas,monospace;color:#bcbec4}
+.codeLine{min-height:21px}.codeLine.focus{background:rgba(47,77,121,.30);box-shadow:inset 2px 0 #3574f0}
+.sim-emphasis{background:rgba(53,116,240,.11)!important;box-shadow:inset 2px 0 rgba(53,116,240,.75)!important}
+.theme-dark .kw{color:#cf8e6d}.theme-dark .str{color:#6aab73}.theme-dark .ann{color:#b3ae60}.theme-dark .num{color:#2aacb8}.theme-dark .type{color:#bcbec4}
+.right{background:#1f2023;display:none}.work.hasRightTools .right{display:grid}.work.hasRightTools .splitR{display:block}
+.toolWindowTabs,.bottomTabs{height:29px;background:#202124;border-bottom:1px solid #2b2d32}.twTab,.bottomTab{padding:7px 9px;border-right:0;color:#8f939c}.twTab.active,.bottomTab.active{background:#1f2023;color:#d3d5da;border-top:0;border-bottom:2px solid #3574f0;padding-top:7px}
+.bottom{background:#1f2023;grid-template-rows:29px minmax(0,1fr)}.bottomBody{background:#1f2023;color:#aeb1b8}
+.console{padding:8px 10px;font:10px/16px "JetBrains Mono",Consolas,monospace}.terminal{background:#17181a;color:#d3d4d7;padding:8px 10px}
+.status{height:21px;background:#202124;border-top:1px solid #2a2c31;color:#747983;font-size:8.5px;padding-left:31px}.status span{border-right:0;padding:0 6px}
+.ideAssistant{width:295px;background:#252629;border:1px solid #3b3d42;border-radius:6px;box-shadow:0 10px 26px rgba(0,0,0,.42)}
+.ideAssistantHead{height:30px;background:#202124;border-bottom:1px solid #34363b}.ideAssistantBody{background:#252629;color:#ced0d5;font-size:10px}
+@media(max-width:950px){:root{--leftW:205px;--rightW:230px}.work{padding-right:0;grid-template-columns:var(--leftW) 3px minmax(0,1fr)}.rightRail,.right,.splitR{display:none!important}}
+@media(max-width:650px){:root{--leftW:0px;--bottomH:135px}.work{padding-left:0}.leftRail,.left,.splitL{display:none}.toolbar{padding-left:7px}.menu{padding-left:0}}
+
 </style>
 </head>
 <body class="theme-dark" data-sim-app="intellij_idea">
 <div class="app" id="app">
- <div class="titlebar"><div class="ideaMark"><span class="ideaLogo">IJ</span><span>IntelliJ IDEA</span></div><span class="projectTitle" id="projectTitle">No Project</span><div class="grow"></div><span class="branchPill" id="branchPill">main</span><span id="sdkTitle">Project SDK</span></div>
+ <div class="titlebar"><button class="hamburger" aria-label="Main menu">☰</button><div class="ideaMark"><span class="ideaLogo">IJ</span></div><span class="projectTitle" id="projectTitle">No Project</span><span class="titleSep">›</span><span class="branchPill" id="branchPill">main</span><div class="grow"></div><span class="sdkChip" id="sdkTitle">Project SDK</span><span class="windowGlyphs">— □ ×</span></div>
  <div class="menu" id="menu"><span class="menuItem" data-menu="File">File</span><span class="menuItem" data-menu="Edit">Edit</span><span class="menuItem" data-menu="View">View</span><span class="menuItem" data-menu="Navigate">Navigate</span><span class="menuItem" data-menu="Code">Code</span><span class="menuItem" data-menu="Refactor">Refactor</span><span class="menuItem" data-menu="Build">Build</span><span class="menuItem" data-menu="Run">Run</span><span class="menuItem" data-menu="Tools">Tools</span><span class="menuItem" data-menu="VCS">VCS</span><span class="menuItem" data-menu="Window">Window</span><span class="menuItem" data-menu="Help">Help</span><div class="menuPopup" id="menuPopup"></div></div>
  <div class="toolbar">
    <button class="tool" id="newBtn">＋</button><button class="tool" id="saveBtn">Save</button><div class="runConfig" id="runConfig" data-feature="run">Current File</div>
@@ -93,6 +147,8 @@ button,input,select,textarea{font:inherit;color:inherit}
    <div class="grow"></div><button class="tool" id="searchBtn">Search Everywhere</button><button class="tool" id="gitBtn" data-feature="git">Git</button><button class="tool" id="terminalBtn" data-feature="terminal">Terminal</button>
  </div>
  <div class="work" id="work">
+   <div class="toolRail leftRail"><button class="rail active" title="Project">▣</button><button class="rail" title="Commit">⌁</button><button class="rail" title="Run">▷</button><div class="railGrow"></div><button class="rail" title="Terminal">⌘</button></div>
+   <div class="toolRail rightRail"><button class="rail" title="Notifications">○</button><button class="rail" title="Database">▤</button><button class="rail" title="Maven">m</button></div>
    <div class="left" id="leftPanel"><div class="head">Project <div class="grow"></div><span id="projectViewLabel">Project</span></div><div class="tree" id="tree"></div></div>
    <div class="splitV splitL" id="splitL"></div>
    <div class="editorPane" id="editorPane"><div class="tabs" id="tabs"></div><div class="editorWrap" id="editorWrap"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre><div class="popup completion" id="completion"></div><div class="popup intentions" id="intentions"></div></div></div>
@@ -113,6 +169,6 @@ button,input,select,textarea{font:inherit;color:inherit}
  </div>
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
-<script src="engine.js?v=6"></script>
+<script src="engine.js?v=7"></script>
 </body>
 </html>
