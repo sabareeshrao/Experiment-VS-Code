@@ -17,9 +17,8 @@ body.theme-dark{
  --blue:#548af7;--cyan:#3592ff;--green:#6aab73;--orange:#d19a66;--red:#f75464;--purple:#b588ff;--editor:#1e1f22;--gutter:#1e1f22;
  --scrollTrack:#202125;--scrollThumb:#4d5057;--shadow:rgba(0,0,0,.55)
 }
-*{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:var(--scrollThumb) var(--scrollTrack)}
-*::-webkit-scrollbar{width:9px;height:9px}*::-webkit-scrollbar-track{background:var(--scrollTrack)}
-*::-webkit-scrollbar-thumb{background:var(--scrollThumb);border:2px solid var(--scrollTrack);border-radius:8px}
+*{box-sizing:border-box;scrollbar-width:none}
+*::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
 html,body{height:100%;margin:0;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
 button,input,select,textarea{font:inherit;color:inherit}
 .app{height:100%;display:grid;grid-template-rows:31px 26px 38px minmax(0,1fr) 23px;position:relative;background:var(--surface)}
@@ -52,7 +51,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .gutter{background:var(--gutter);border-right:1px solid var(--line);padding:9px 4px 30px 0;font:11px/21px "JetBrains Mono","Cascadia Code",Consolas,monospace;color:var(--muted);user-select:none}
 .gline{height:20px;display:grid;grid-template-columns:14px 12px 1fr;align-items:center}.bp{width:9px;height:9px;border-radius:50%;justify-self:center}.bp.on{background:var(--red)}.gnum{text-align:right}
 .code{margin:0;padding:9px 12px 30px;white-space:pre;min-width:max-content;font:12px/21px "JetBrains Mono","Cascadia Code","Fira Code",Consolas,monospace;color:var(--text);position:relative;letter-spacing:.05px}
-.codeLine{display:block;min-height:21px;position:relative}.codeLine.current{background:rgba(53,116,240,.08)}.codeLine.focus{background:rgba(255,212,0,.18);box-shadow:inset 3px 0 #e7ad00}
+.codeLine{display:block;min-height:21px;position:relative}.codeLine.current{background:rgba(84,138,247,.055)}.codeLine.focus{background:rgba(84,138,247,.105);box-shadow:inset 2px 0 rgba(84,138,247,.72)}
 .kw{color:#0033b3;font-weight:600}.str{color:#067d17}.com{color:#8c8c8c}.ann{color:#9e880d}.num{color:#1750eb}.type{color:#000}.theme-dark .kw{color:#cf8e6d}.theme-dark .str{color:#6aab73}.theme-dark .ann{color:#b3ae60}.theme-dark .num{color:#2aacb8}.theme-dark .type{color:#bcbec4}
 .popup{position:absolute;z-index:120;display:none;min-width:260px;max-height:190px;overflow:auto;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px var(--shadow);font-size:10px}.popup.show{display:block}
 .completion{left:115px;top:70px}.intentions{left:135px;top:92px}.popupRow{padding:5px 8px}.popupRow.active{background:rgba(53,116,240,.25)}
@@ -66,13 +65,22 @@ button,input,select,textarea{font:inherit;color:inherit}
 .modalFoot button{border:1px solid var(--line);background:var(--surface);padding:5px 12px;border-radius:3px}
 .kv{display:grid;grid-template-columns:170px 1fr;gap:6px 10px;align-items:center}.kv input,.kv select,.kv textarea{border:1px solid var(--line);background:var(--surface);padding:5px 6px}
 .notification{position:absolute;right:14px;top:103px;z-index:300;display:none;max-width:360px;padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--green);box-shadow:0 6px 18px var(--shadow);font-size:10px}.notification.show{display:block}.notification.error{border-left-color:var(--red)}
-.targetBoundary{position:absolute;z-index:350;display:none;pointer-events:none;border:3px solid var(--focus);border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 12px rgba(255,212,0,.7)}.targetBoundary.show{display:block}
+.targetBoundary{display:none!important}.targetBoundary.show{display:none!important}
+.sim-emphasis{background:rgba(84,138,247,.13)!important;box-shadow:inset 0 0 0 1px rgba(84,138,247,.38)!important;transition:background .18s ease}
 .status{display:flex;align-items:center;background:var(--surface2);border-top:1px solid var(--line);font-size:9px;color:var(--muted);padding:0 4px}.status span{padding:0 7px;border-right:1px solid var(--line)}.status .grow{flex:1}
 .hidden{display:none!important}.work.noBottom{grid-template-rows:minmax(0,1fr) 0 0}.distraction .left,.distraction .right,.distraction .splitL,.distraction .splitR{display:none}.distraction .work{grid-template-columns:minmax(0,1fr);}.distraction .editorPane,.distraction .bottom,.distraction .splitH{grid-column:1}
 .zen .menu,.zen .toolbar,.zen .left,.zen .right,.zen .splitL,.zen .splitR,.zen .bottom,.zen .splitH,.zen .status{display:none}.zen .app{grid-template-rows:31px minmax(0,1fr)}.zen .work{grid-column:1;grid-row:2;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}.zen .editorPane{grid-column:1;grid-row:1}
 @media(max-width:950px){:root{--leftW:190px;--rightW:0px}.right,.splitR{display:none}.work{grid-template-columns:var(--leftW) 5px minmax(0,1fr)}.editorPane,.bottom,.splitH{grid-column:3}}
 @media(max-width:650px){:root{--leftW:0px;--bottomH:145px}.left,.splitL{display:none}.work{grid-template-columns:minmax(0,1fr)}.editorPane,.bottom,.splitH{grid-column:1}.runConfig{min-width:130px}}
 @media(max-height:620px){:root{--bottomH:125px}.app{grid-template-rows:28px 24px 34px minmax(0,1fr) 21px}}
+.ideAssistant{position:absolute;z-index:330;right:18px;top:112px;width:340px;max-width:calc(100vw - 36px);background:#2b2d30;border:1px solid #45474d;border-radius:8px;box-shadow:0 12px 34px rgba(0,0,0,.42);overflow:hidden;color:#dfe1e5}
+.ideAssistant.hidden{display:none!important}
+.ideAssistantHead{height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;background:#252629;border-bottom:1px solid #3d3f44;cursor:move;user-select:none}
+.ideAssistantIcon{width:20px;height:20px;border-radius:4px;display:grid;place-items:center;background:linear-gradient(135deg,#548af7,#b588ff);color:white;font-size:10px;font-weight:800}
+.ideAssistantTitles{min-width:0;flex:1}.ideAssistantTitles strong,.ideAssistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ideAssistantTitles strong{font-size:10px;font-weight:700}.ideAssistantTitles span{font-size:9px;color:#9da1a8;margin-top:1px}
+.ideAssistantClose{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px;padding:0}.ideAssistantClose:hover{background:#34363b;color:#fff}
+.ideAssistantBody{padding:11px 12px 12px;font:11px/1.55 "Segoe UI",Arial,sans-serif;color:#dfe1e5;background:#2b2d30}
+.ideAssistantBody p{margin:0}.ideAssistantBody .stepTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
 </style>
 </head>
 <body class="theme-dark" data-sim-app="intellij_idea">
