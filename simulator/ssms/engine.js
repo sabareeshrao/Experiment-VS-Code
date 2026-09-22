@@ -38,6 +38,9 @@
   function saveTheme(value){
     try { localStorage.setItem(THEME_KEY, value); } catch (_) {}
   }
+  function currentTheme(){
+    return document.body.classList.contains("theme-dark") ? "dark" : "light";
+  }
 
   const ui = {
     menu: null,
@@ -635,7 +638,12 @@
   function moveToNextGroup(id){if(!id)return;if(state.groupMode==="single")state.groupMode="vertical";state.groups.a=state.groups.a.filter(x=>x!==id);if(!state.groups.b.includes(id))state.groups.b.push(id);}
 
   async function seek(steps, animateFinal){
-    const token=++seekToken; state=normalizeState(baseline||{}); resetUi(); renderAll();
+    const token=++seekToken;
+    const preferredTheme=readSavedTheme() || currentTheme() || state?.options?.theme || "light";
+    state=normalizeState(baseline||{});
+    resetUi();
+    applyTheme(preferredTheme,false);
+    renderAll();
     for(let i=0;i<steps.length;i++){
       const st=steps[i]; if(st?.app && st.app!==APP_ID) continue;
       allowBoundary=i===steps.length-1; prepareReplayStep(st);
@@ -730,7 +738,22 @@
   function ssmsIcon(kind){const paths={database:'M3 5c0-4 16-4 16 0v13c0 4-16 4-16 0zM3 5c0 4 16 4 16 0M3 11c0 4 16 4 16 0',folder:'M2 5h7l2 3h9v12H2z',table:'M3 3h17v17H3zM3 8h17M8 8v12m6-12v12M3 14h17',server:'M5 2h13v19H5zM8 6h7M8 10h7M8 17h2',save:'M3 2h14l3 3v15H3zM7 2v6h8V2M7 20v-8h9v8',file:'M5 2h9l5 5v14H5zM14 2v6h5M8 12h8m-8 4h8',play:'m6 3 13 8-13 8z',check:'m3 11 5 5L19 4',stop:'M5 5h13v13H5z',text:'M3 5h17M3 11h17M3 17h17',download:'M11 2v13m-5-5 5 5 5-5M3 17v4h17v-4',key:'M10 10l10 10m-5-5 3-3',refresh:'M18 7A8 8 0 1 0 19 14M18 2v6h-6'};return '<svg class="ssmsIcon" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'+(kind==='key'?'<circle cx="7" cy="7" r="5"/>':'')+'<path d="'+(paths[kind]||paths.folder)+'"/></svg>';}
   function decorateChrome(){const icons={connect:'server',newQuery:'file',open:'folder',save:'save',execute:'play',parse:'check',cancel:'stop',grid:'table',text:'text',file:'download'};refs.toolbar.querySelectorAll('[data-target]').forEach(b=>{const key=b.dataset.target;b.title=({execute:'Execute (F5)',parse:'Parse query',cancel:'Cancel executing query',grid:'Results to Grid',text:'Results to Text',file:'Results to File',open:'Open SQL file',save:'Save query'})[key]||b.textContent.trim();b.setAttribute('aria-label',b.title);const el=b.querySelector('.toolIcon');if(el)el.innerHTML=ssmsIcon(icons[key]);else if(icons[key])b.innerHTML=ssmsIcon(icons[key]);if(['grid','text','file'].includes(key))b.setAttribute('aria-pressed',activeTab()?.resultMode===key)});refs.objectTree.querySelectorAll('.treeRow').forEach(row=>{const id=row.dataset.node,kind=id==='server'?'server':id.startsWith('table:')?'table':id.startsWith('db:')?'database':/login|security/.test(id)?'key':'folder';row.querySelector('.treeIcon').innerHTML=ssmsIcon(kind);row.querySelector('.treeIcon').className='treeIcon '+kind;row.tabIndex=0;row.setAttribute('role','treeitem');row.onkeydown=e=>{if(e.key==='Enter'||e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopPropagation();state.selectedObject=id;if(e.key!=='Enter')setExpanded(id,e.key==='ArrowRight');else if(id==='connect-root'){ui.connectOpen=true;ui.connectionDraft=clone(state.connection)}renderAll();refs.objectTree.querySelector('[data-node="'+CSS.escape(id)+'"]')?.focus()}}});document.querySelector('.appMark').innerHTML=ssmsIcon('database');refs.resultBody.querySelectorAll('.resultGrid tbody td:not(.rowNumber)').forEach(cell=>cell.onclick=()=>{refs.resultBody.querySelectorAll('.selectedCell').forEach(x=>x.classList.remove('selectedCell'));cell.classList.add('selectedCell')});}
   function optionsHtml(){return '<div class="modalTitle">Options — Environment, Fonts and Colors</div><div class="modalBody"><div class="optionsForm"><label for="optionTheme">Color theme</label><select id="optionTheme"><option value="light" '+(!document.body.classList.contains('theme-dark')?'selected':'')+'>Light</option><option value="dark" '+(document.body.classList.contains('theme-dark')?'selected':'')+'>Dark</option></select><label for="optionFont">Query font size (px)</label><input id="optionFont" type="number" min="10" max="24" value="'+(state.options.fontSize||14)+'"><label for="optionNumbers">Line numbers</label><input id="optionNumbers" type="checkbox" '+(state.options.lineNumbers!==false?'checked':'')+'></div><p class="optionsHint">Consolas query font. Classic light SQL colors: blue keywords, red strings, green comments, magenta system functions, maroon system procedures, and teal line numbers.</p></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" id="saveAppearance">OK</button></div>';}
-  $('themeToggle').onclick=()=>{applyTheme(document.body.classList.contains('theme-dark')?'light':'dark',true);renderAll();};
+  const themeToggle=$('themeToggle');
+  if(themeToggle){
+    // Theme is a user preference, not lesson state.  Handle it before the
+    // generic SSMS mousedown router so a tutorial replay cannot swallow it.
+    const stopThemePointer=e=>e.stopPropagation();
+    themeToggle.addEventListener('pointerdown',stopThemePointer,true);
+    themeToggle.addEventListener('mousedown',stopThemePointer,true);
+    themeToggle.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const next=currentTheme()==='dark'?'light':'dark';
+      applyTheme(next,true);
+      // CSS variables repaint the entire UI immediately; avoid renderAll()
+      // here so the editor DOM, scroll position and split panes stay intact.
+    },true);
+  }
   document.addEventListener('click',e=>{if(e.target.id==='saveAppearance'){state.options.fontSize=Math.max(10,Math.min(24,Number($('optionFont').value)||14));state.options.lineNumbers=$('optionNumbers').checked;applyTheme($('optionTheme').value,true);ui.optionsOpen=false;renderAll()}});
   document.addEventListener('mousedown',e=>{if(e.target.id==='saveAppearance')e.stopImmediatePropagation();},true);
   document.addEventListener('focusin',e=>{if(e.target.matches('[data-sql-editor]')){state.activeQueryId=e.target.dataset.sqlEditor;renderTabs();renderResults();renderStatus();updatePosition(e.target)}});
