@@ -103,6 +103,14 @@ button,input,select,textarea{font:inherit;color:inherit}
  </div>
  <div class="status"><span id="statusText">Ready</span><span id="languageLevel">Java</span><span class="grow"></span><span id="encoding">UTF-8</span><span id="lineStatus">Ln 1, Col 1</span></div>
  <div class="modalLayer" id="modalLayer"><div class="modal"><div class="modalHead"><span id="modalTitle">Dialog</span><div class="grow"></div><button class="tool" id="modalClose">×</button></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
+ <div class="ideAssistant hidden" id="ideAssistant">
+   <div class="ideAssistantHead" id="ideAssistantDrag">
+     <div class="ideAssistantIcon">AI</div>
+     <div class="ideAssistantTitles"><strong id="ideAssistantTitle">Step explanation</strong><span id="ideAssistantStage">Developer guidance</span></div>
+     <button class="ideAssistantClose" id="ideAssistantClose" title="Hide">×</button>
+   </div>
+   <div class="ideAssistantBody"><div class="stepTag" id="ideAssistantStep">Step</div><p id="ideAssistantText"></p></div>
+ </div>
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="engine.js"></script>
