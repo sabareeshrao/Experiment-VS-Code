@@ -3,53 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dev Playback Lab</title>
+  <title>Task API Developer Playback</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="course-shell">
-    <aside class="lesson-sidebar">
-      <div class="brand"><div class="brand-mark">▶</div><div><strong>Dev Playback Lab</strong><span>Java Trial Project</span></div></div>
-      <div class="sidebar-heading"><span>Development lessons</span><span id="progressText">1 / 5</span></div>
-      <div class="progress-track"><div id="progressBar"></div></div>
-      <nav id="lessonList" class="lesson-list"></nav>
-      <div class="sidebar-note"><strong>Cumulative playback</strong><span>Lesson N shows everything built through Lesson N.</span></div>
+  <div class="learning-shell" id="learningShell">
+    <aside class="progress-sidebar">
+      <div class="brand-row">
+        <div class="brand-mark"><span></span><span></span><span></span></div>
+        <div><strong>Java Project Playback</strong><small>Developer build simulation</small></div>
+      </div>
+      <div class="sidebar-tools">
+        <label class="search-box"><span>⌕</span><input id="stepSearch" placeholder="Search steps..."></label>
+        <button class="pin-pill" id="pinBtn">⌁ <span>Pinned</span><b id="pinCount">0</b></button>
+      </div>
+      <nav id="stageList" class="stage-list" aria-label="Project stages"></nav>
     </aside>
 
-    <main class="main-stage">
-      <header class="topbar">
-        <div><div class="eyebrow">EXPERIMENTAL SOFTWARE SIMULATION</div><h1 id="lessonTitle">Lesson 1</h1></div>
-        <div class="top-actions"><button id="focusBtn">Focus mode</button><button id="fullscreenBtn">Fullscreen</button></div>
+    <main class="workspace">
+      <header class="workspace-head">
+        <div>
+          <div class="eyebrow" id="stageLabel">STAGE</div>
+          <h1 id="stepTitle">Loading simulator…</h1>
+        </div>
+        <div class="head-actions">
+          <button id="toggleSidebar">Hide progress</button>
+          <button id="ideFullscreen">IDE fullscreen</button>
+        </div>
       </header>
 
-      <section class="vscode" id="vscode">
-        <div class="vs-titlebar"><span class="vs-logo">◇</span><span>Task API — Visual Studio Code</span><span class="window-controls">— □ ×</span></div>
-        <div class="vs-menubar">File&nbsp;&nbsp; Edit&nbsp;&nbsp; Selection&nbsp;&nbsp; View&nbsp;&nbsp; Go&nbsp;&nbsp; Run&nbsp;&nbsp; Terminal&nbsp;&nbsp; Help</div>
-        <div class="vs-body">
-          <div class="activitybar"><button class="activity active">▱</button><button class="activity">⌕</button><button class="activity">⑂</button><button class="activity">▷</button><button class="activity">▦</button></div>
-          <aside class="explorer"><div class="explorer-title">EXPLORER</div><div class="workspace-title">TASK-API</div><div id="fileTree" class="file-tree"></div></aside>
-          <section class="editor-column">
-            <div id="tabs" class="tabs"></div>
-            <div id="breadcrumb" class="breadcrumb"></div>
-            <div class="editor-wrap">
-              <div id="gutter" class="gutter"></div>
-              <pre id="editor" class="editor"></pre>
-              <div id="explanation" class="explanation-card"></div>
-            </div>
-            <div class="terminal-panel">
-              <div class="terminal-tabs"><span class="active">TERMINAL</span><span>PROBLEMS</span><span>OUTPUT</span></div>
-              <pre id="terminal" class="terminal"></pre>
-            </div>
-          </section>
-        </div>
-        <div class="statusbar"><span>main*</span><span>✓ 0&nbsp;&nbsp; ⚠ 0</span><span class="status-spacer"></span><span id="statusFile">Java</span><span>UTF-8</span></div>
+      <section class="ide-shell" id="ideShell">
+        <iframe id="ideFrame" src="simulator/intellij.html" title="IntelliJ IDEA simulator"></iframe>
+        <aside class="assistant-card" id="assistantCard">
+          <div class="assistant-head"><div class="assistant-avatar">✦</div><div><strong>Step explanation</strong><span id="assistantMeta">Why this code?</span></div></div>
+          <div class="assistant-copy" id="assistantCopy">The explanation for the current developer step will appear here.</div>
+        </aside>
       </section>
 
-      <footer class="player">
-        <button id="previousBtn">← Previous</button>
-        <button id="replayBtn">↻ Replay lesson</button>
-        <div class="lesson-counter"><span id="lessonNumber">1</span> / 5</div>
-        <button id="nextBtn">Next →</button>
+      <footer class="playback-bar">
+        <button id="prevBtn">← Prev</button>
+        <button id="replayBtn">↻ Replay step</button>
+        <div class="step-meter"><span id="stepCounter">0 / 0</span><div><i id="stepProgress"></i></div></div>
+        <button id="nextBtn" class="primary">Next →</button>
       </footer>
     </main>
   </div>
