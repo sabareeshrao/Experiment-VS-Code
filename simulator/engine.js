@@ -1,0 +1,252 @@
+(() => {
+"use strict";
+const APP_ID="intellij_idea";
+const SUPPORTED_ACTIONS=["enableFeature","disableFeature","setView","openMenu","pressButton","highlightTarget","moveCursor","showNotification","openProject","newProject","openFile","closeFile","createFile","createPackage","renameResource","deleteResource","saveFile","saveAll","setCode","typeCode","replaceCode","formatCode","optimizeImports","splitEditor","unsplitEditor","pinTab","toggleDistractionFree","toggleZenMode","gotoClass","gotoFile","gotoSymbol","gotoDeclaration","gotoImplementation","findUsages","showCallHierarchy","showTypeHierarchy","showFileStructure","searchEverywhere","findInFiles","recentFiles","showCompletion","showParameterInfo","showQuickDocumentation","showIntentionActions","applyQuickFix","runInspection","showProblems","addProblem","suppressInspection","renameSymbol","extractMethod","extractVariable","inlineRefactor","moveClass","changeSignature","safeDelete","generateGetterSetter","generateConstructor","generateToString","generateEqualsHashCode","overrideMethods","openRunConfigurations","createApplicationConfig","createSpringBootConfig","setProgramArguments","setVmOptions","setEnvironmentVariables","setWorkingDirectory","runConfiguration","stopProcess","showRunConsole","debugConfiguration","setBreakpoint","removeBreakpoint","setConditionalBreakpoint","setExceptionBreakpoint","resumeDebug","pauseDebug","stepOver","stepInto","stepOut","runToCursor","evaluateExpression","addWatch","showVariables","runJUnit","runJUnitMethod","runJUnitClass","showTestResults","showFailureTrace","rerunFailedTests","runWithCoverage","showCoverage","mockitoVerifyInteraction","openMavenToolWindow","reloadMavenProject","runMavenGoal","showMavenLifecycle","showMavenDependencies","showMavenDependencyTree","addMavenDependency","removeMavenDependency","setMavenProfile","showEffectivePom","openSpringToolWindow","showSpringBootDashboard","runSpringBootApp","stopSpringBootApp","restartSpringBootApp","setSpringProfile","showSpringBeans","showSpringMappings","navigateToController","showMvcFlow","showValidationFlow","showExceptionHandlers","openApplicationProperties","setSpringProperty","openPersistenceToolWindow","showJpaEntities","showJpaRepositories","showEntityMapping","showRepositoryMethods","generateJpaRepository","runJpql","showHibernateSql","showHibernateStatistics","showHibernateSpatial","openGitToolWindow","showLocalChanges","stageFile","unstageFile","commitChanges","pushGit","pullGit","fetchGit","createBranch","checkoutBranch","mergeBranch","showGitHistory","showGitDiff","showMergeConflict","resolveMergeConflict","openDatabaseToolWindow","addDataSource","testDataSource","openDatabaseConsole","executeSql","showQueryResult","showTableData","openTerminal","typeTerminal","appendTerminal","clearTerminal","openSettings","showProjectStructure","addSdk","setProjectSdk","setLanguageLevel","setModuleSdk","configureCompiler","installPlugin"];
+const $=id=>document.getElementById(id),clone=v=>JSON.parse(JSON.stringify(v??null)),esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const refs={app:$("app"),bottomPanel:$("bottomPanel"),project:$("projectTitle"),branch:$("branchPill"),sdk:$("sdkTitle"),tree:$("tree"),tabs:$("tabs"),gutter:$("gutter"),code:$("code"),completion:$("completion"),intentions:$("intentions"),right:$("rightBody"),bottom:$("bottomBody"),bottomTabs:$("bottomTabs"),menu:$("menu"),menuPopup:$("menuPopup"),runConfig:$("runConfig"),status:$("statusText"),lang:$("languageLevel"),line:$("lineStatus"),notification:$("notification"),boundary:$("targetBoundary"),modalLayer:$("modalLayer"),modalTitle:$("modalTitle"),modalBody:$("modalBody"),modalFoot:$("modalFoot"),modalClose:$("modalClose"),work:$("work"),splitL:$("splitL"),splitR:$("splitR"),splitH:$("splitH"),newBtn:$("newBtn"),saveBtn:$("saveBtn"),runBtn:$("runBtn"),debugBtn:$("debugBtn"),stopBtn:$("stopBtn"),searchBtn:$("searchBtn"),gitBtn:$("gitBtn"),terminalBtn:$("terminalBtn")};
+let baseline=null,state=null,files={},activeFile=null,openTabs=[],activeBottom="run",activeRight="structure",autoType=true,seekToken=0,allowBoundary=true,treeMap=new Map(),focusRange=null,popupKind="",modalKind="",notificationTimer=0,trackedBoundary=null;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function theme(v){document.body.classList.toggle("theme-dark",v!=="light")}
+function normalize(){
+ state=state||{};state.project=state.project||{name:"Project",sdk:"Java 17",languageLevel:"17"};state.tree=state.tree||[];files=clone(state.files||{});
+ state.problems=state.problems||[];state.breakpoints=state.breakpoints||[];state.visibleFeatures=state.visibleFeatures||[];state.runConfigurations=state.runConfigurations||[];state.maven=state.maven||{};state.spring=state.spring||{};state.jpa=state.jpa||{};state.git=state.git||{};state.database=state.database||{};state.tests=state.tests||{};state.terminal=state.terminal||"";
+ activeFile=state.initialFile&&files[state.initialFile]?state.initialFile:Object.keys(files)[0]||null;openTabs=activeFile?[activeFile]:[];activeBottom=state.activeBottom||"run";activeRight="structure";focusRange=null
+}
+function syntax(line,lang="java"){
+ const e=esc(line);if(lang==="xml")return e.replace(/(&lt;\/?[\w:.-]+)/g,'<span class="kw">$1</span>').replace(/([\w:.-]+)=(&quot;.*?&quot;)/g,'<span class="ann">$1</span>=$2');
+ if(lang==="properties")return e.replace(/^([^=:#]+)(=|:)/,'<span class="kw">$1</span>$2');
+ if(lang==="sql")return e.replace(/\b(SELECT|FROM|WHERE|JOIN|INSERT|UPDATE|DELETE|CREATE|TABLE|AND|OR|ORDER|BY)\b/gi,'<span class="kw">$1</span>');
+ if(lang==="python")return e.replace(/\b(def|class|return|if|else|for|in|import|from|as|True|False|None)\b/g,'<span class="kw">$1</span>');
+ let out="",i=0,kws=new Set(["package","import","public","private","protected","class","interface","extends","implements","return","if","else","for","while","new","throw","throws","try","catch","finally","static","final","void","int","long","double","boolean","null","true","false","this","super","enum"]);
+ while(i<line.length){if(line.startsWith("//",i)){out+='<span class="com">'+esc(line.slice(i))+'</span>';break}if(line[i]==='"'){let j=i+1;while(j<line.length){if(line[j]==="\\"){j+=2;continue}if(line[j]==='"'){j++;break}j++}out+='<span class="str">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(line[i]==="@"){let j=i+1;while(j<line.length&&/[\w.]/.test(line[j]))j++;out+='<span class="ann">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(/[A-Za-z_$]/.test(line[i])){let j=i+1;while(j<line.length&&/[\w$]/.test(line[j]))j++;const w=line.slice(i,j);out+=kws.has(w)?'<span class="kw">'+w+'</span>':(/^[A-Z]/.test(w)?'<span class="type">'+esc(w)+'</span>':esc(w));i=j;continue}if(/\d/.test(line[i])){let j=i+1;while(j<line.length&&/[\d._]/.test(line[j]))j++;out+='<span class="num">'+esc(line.slice(i,j))+'</span>';i=j;continue}out+=esc(line[i]);i++}return out
+}
+function icon(n){if(n.type==="folder"||n.type==="package")return "▸";if(n.language==="java")return "J";if(n.language==="xml")return "◇";if(n.language==="properties")return "⚙";return "·"}
+function renderTreeNodes(nodes,depth=0){for(const n of nodes||[]){const p=n.path||n.name,d=document.createElement("div");d.className="treeRow"+(p===activeFile?" active":"");d.dataset.path=p;d.style.paddingLeft=(depth*12)+"px";d.innerHTML='<span class="twist">'+(n.children?.length?(n.open?"▾":"▸"):"")+'</span><span class="ico">'+icon(n)+'</span><span class="nodeText">'+esc(n.name||p)+'</span>';const gm=state.git?.changes?.find?.(x=>x.file===p);if(gm){const s=document.createElement("span");s.className="gitMark "+(gm.status==="A"?"a":"m");s.textContent=gm.status;d.appendChild(s)}d.onclick=()=>{if(n.type==="file"&&files[p])openFile(p);else if(n.children){n.open=!n.open;renderTree()}};refs.tree.appendChild(d);treeMap.set(p,d);if(n.children&&n.open!==false)renderTreeNodes(n.children,depth+1)}}
+function renderTree(){refs.tree.innerHTML="";treeMap.clear();renderTreeNodes(state.tree)}
+function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))openTabs.push(p);renderAll()}
+function renderTabs(){refs.tabs.innerHTML="";for(const p of openTabs){if(!files[p])continue;const t=document.createElement("div");t.className="tab"+(p===activeFile?" active":"");t.dataset.file=p;t.innerHTML='<span>'+esc(p.split("/").pop())+'</span>'+(files[p].pinned?'<span class="tabPin">PIN</span>':'')+'<span class="tabClose">×</span>';t.onclick=e=>{if(!e.target.classList.contains("tabClose")){activeFile=p;renderAll()}};t.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeFile(p)};refs.tabs.appendChild(t)}}
+function closeFile(p){openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;renderAll()}
+function renderEditor(){
+ refs.gutter.innerHTML="";refs.code.innerHTML="";if(!activeFile||!files[activeFile])return;const f=files[activeFile],lines=String(f.content??"").split("\n");
+ lines.forEach((line,i)=>{const no=i+1,g=document.createElement("div");g.className="gline";const has=state.breakpoints.some(b=>b.file===activeFile&&Number(b.line)===no);g.innerHTML='<span class="bp '+(has?"on":"")+'"></span><span></span><span class="gnum">'+no+'</span>';g.onclick=()=>toggleManualBreakpoint(no);refs.gutter.appendChild(g);const s=document.createElement("span");s.className="codeLine"+(focusRange&&focusRange.file===activeFile&&no>=focusRange.start&&no<=focusRange.end?" focus":"");s.dataset.line=no;s.innerHTML=syntax(line,f.language||"java");refs.code.appendChild(s)})
+}
+function toggleManualBreakpoint(line){const i=state.breakpoints.findIndex(b=>b.file===activeFile&&Number(b.line)===line);if(i>=0)state.breakpoints.splice(i,1);else state.breakpoints.push({file:activeFile,line});renderEditor()}
+function renderRight(){
+ if(activeRight==="maven"){const m=state.maven;refs.right.innerHTML='<div class="cards">'+card("Project",m.project||state.project.name)+card("Profile",m.profile||"default")+card("Last Goal",m.lastGoal||"—")+card("Status",m.status||"Ready")+'</div>';return}
+ if(activeRight==="database"){const ds=state.database.dataSources||[];refs.right.innerHTML=ds.map(x=>'<div class="structureRow">🗄 '+esc(x.name)+'<br><span style="color:var(--muted)">'+esc(x.url||"")+'</span></div>').join("")||'<div class="structureRow">No data sources</div>';return}
+ if(!activeFile){refs.right.innerHTML='<div class="structureRow">No file</div>';return}
+ const content=String(files[activeFile]?.content||""),matches=[...content.matchAll(/\b(class|interface|enum)\s+(\w+)|\b(public|private|protected)\s+[\w<>, ?\[\]]+\s+(\w+)\s*\(/g)];
+ refs.right.innerHTML=matches.map(m=>'<div class="structureRow">'+esc(m[2]||m[4]||"symbol")+'</div>').join("")||'<div class="structureRow">No symbols</div>'
+}
+function card(t,v){return '<div class="card"><h3>'+esc(t)+'</h3><div class="metric">'+esc(v??"")+'</div></div>'}
+function setBottom(name,content,html=false){activeBottom=name;document.querySelectorAll(".bottomTab").forEach(t=>t.classList.toggle("active",t.dataset.bottom===name));refs.bottom.className="bottomBody "+(name==="terminal"?"terminal":"");if(html)refs.bottom.innerHTML=content||"";else refs.bottom.textContent=content||""}
+function renderBottom(){
+ const b=state.bottomCache?.[activeBottom];if(b){setBottom(activeBottom,b.content,b.html);return}
+ if(activeBottom==="terminal")setBottom("terminal",state.terminal||"$ ");
+ else if(activeBottom==="problems")setBottom("problems",state.problems.map(p=>`${p.severity||"warning"}  ${p.message||""}  ${p.file||""}:${p.line||""}`).join("\n"));
+ else if(activeBottom==="git")setBottom("git",(state.git.changes||[]).map(x=>`${x.status||"M"}  ${x.file}`).join("\n")||"Working tree clean");
+ else setBottom(activeBottom,state.console||"")
+}
+
+function markGit(file,status="M"){
+ state.git=state.git||{};state.git.changes=state.git.changes||[];
+ let c=state.git.changes.find(x=>x.file===file);
+ if(!c)state.git.changes.push({file,status});
+ else if(c.status!=="A")c.status=status
+}
+function renderFeatureVisibility(){
+ const visible=new Set(state.visibleFeatures||[]);
+ document.querySelectorAll("[data-feature]").forEach(el=>el.classList.toggle("hidden",!visible.has(el.dataset.feature)));
+ const bottomFeatures=["run","debug","tests","terminal","problems","git","spring"];
+ const anyBottom=bottomFeatures.some(x=>visible.has(x));
+ refs.bottomPanel?.classList.toggle("hidden",!anyBottom);
+ refs.splitH?.classList.toggle("hidden",!anyBottom);
+ refs.work?.classList.toggle("noBottom",!anyBottom)
+}
+function renderAll(){refs.project.textContent=state.project.name||"Project";refs.branch.textContent=state.git.branch||"main";refs.sdk.textContent=state.project.sdk||"Project SDK";refs.lang.textContent="Java "+(state.project.languageLevel||"");refs.runConfig.textContent=state.activeRunConfiguration||state.runConfigurations[0]?.name||"Current File";renderTree();renderTabs();renderEditor();renderRight();renderBottom();renderFeatureVisibility()}
+function notify(text,type=""){clearTimeout(notificationTimer);refs.notification.textContent=String(text||"");refs.notification.className="notification show"+(type==="error"?" error":"");notificationTimer=setTimeout(()=>refs.notification.classList.remove("show"),2200)}
+function showModal(kind,title,html){modalKind=kind;refs.modalTitle.textContent=title;refs.modalBody.innerHTML=html;refs.modalFoot.innerHTML='<button id="modalOk">OK</button>';refs.modalLayer.classList.add("show");$("modalOk").onclick=closeModal}
+function closeModal(){modalKind="";refs.modalLayer.classList.remove("show");refs.modalBody.innerHTML="";refs.modalFoot.innerHTML=""}
+function showPopup(kind,items){popupKind=kind;const el=kind==="completion"?refs.completion:refs.intentions;el.innerHTML=(items||[]).map((x,i)=>'<div class="popupRow '+(i===0?"active":"")+'">'+esc(typeof x==="string"?x:(x.label||x.text||JSON.stringify(x)))+'</div>').join("");el.classList.add("show")}
+function clearTransient(action){clearTimeout(notificationTimer);refs.notification.classList.remove("show");refs.menuPopup.classList.remove("show");refs.completion.classList.remove("show");refs.intentions.classList.remove("show");popupKind="";const continueModal=["setProgramArguments","setVmOptions","setEnvironmentVariables","setWorkingDirectory","addSdk","setProjectSdk","setLanguageLevel","setModuleSdk","configureCompiler","installPlugin"];if(modalKind&&!continueModal.includes(action))closeModal()}
+function markerReplace(src,marker,code,position="replace"){const s=String(src),m=String(marker||"");const idx=s.indexOf(m);if(idx<0)return null;const ins=String(code||"");if(position==="before")return s.slice(0,idx)+ins+s.slice(idx);if(position==="after")return s.slice(0,idx+m.length)+ins+s.slice(idx+m.length);return s.slice(0,idx)+ins+s.slice(idx+m.length)}
+async function typeText(final,apply,animate,token){if(!animate||!autoType){apply(final);return}const n=Math.min(55,Math.max(1,final.length));for(let i=1;i<=n;i++){if(token!==seekToken)return;apply(final.slice(0,Math.floor(final.length*i/n)));await sleep(Math.min(1000,Math.max(250,final.length*5))/n)}}
+function addTreePath(path,language="java"){const parts=path.split("/");let nodes=state.tree,acc="";parts.forEach((part,i)=>{acc=acc?acc+"/"+part:part;let n=nodes.find(x=>(x.path||x.name)===acc);if(!n){n={name:part,path:acc,type:i===parts.length-1?"file":"folder",language:i===parts.length-1?language:undefined,open:true,children:i===parts.length-1?undefined:[]};nodes.push(n)}if(i<parts.length-1){n.children=n.children||[];nodes=n.children}})}
+function renameTreePath(nodes,oldp,newp){for(const n of nodes||[]){if(n.path===oldp){n.path=newp;n.name=newp.split("/").pop()}if(n.children)renameTreePath(n.children,oldp,newp)}}
+function deleteTreePath(nodes,p){for(let i=nodes.length-1;i>=0;i--){if(nodes[i].path===p)nodes.splice(i,1);else if(nodes[i].children)deleteTreePath(nodes[i].children,p)}}
+function addProblem(d){state.problems.push({severity:d.severity||"warning",message:d.message||"Inspection problem",file:d.file||activeFile,line:d.line||1})}
+function resultTable(cols,rows){return '<table class="dataTable"><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join("")+'</tr>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(Array.isArray(r)?r[cols.indexOf(c)]:r[c])+'</td>').join("")+'</tr>').join("")+'</table>'}
+function genericSurface(title,d){showModal("surface",title,'<div class="cards">'+Object.entries(d||{}).slice(0,12).map(([k,v])=>card(k,typeof v==="object"?JSON.stringify(v):v)).join("")+'</div>')}
+function findRun(name){return state.runConfigurations.find(x=>x.name===name)||state.runConfigurations[0]}
+function actionStatus(msg){refs.status.textContent=msg}
+function reset(){state=clone(baseline||{});normalize();clearTransient("");trackedBoundary=null;refs.boundary.classList.remove("show");refs.app.classList.remove("distraction");document.body.classList.remove("zen");renderAll()}
+function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);renderAll()}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
+function clearBoundary(){trackedBoundary=null;refs.boundary.classList.remove("show")}
+function syncBoundary(){const el=trackedBoundary;if(!el||!el.isConnected||!allowBoundary){clearBoundary();return}const r=el.getBoundingClientRect(),a=refs.app.getBoundingClientRect();if(r.width<=0||r.height<=0){clearBoundary();return}const p=4;refs.boundary.classList.add("show");refs.boundary.style.left=(r.left-a.left-p)+"px";refs.boundary.style.top=(r.top-a.top-p)+"px";refs.boundary.style.width=(r.width+p*2)+"px";refs.boundary.style.height=(r.height+p*2)+"px"}
+async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;trackedBoundary=el;syncBoundary();await sleep(90);if(token!==seekToken)return}
+function openMenu(name){const maps={File:["New","Open","Project Structure","Settings"],Edit:["Undo","Redo","Find","Replace"],View:["Tool Windows","Appearance","Distraction Free Mode"],Navigate:["Class","File","Symbol","Declaration","Implementation"],Code:["Completion","Reformat Code","Optimize Imports","Generate"],Refactor:["Rename","Extract","Inline","Move","Safe Delete"],Build:["Build Project","Rebuild Project"],Run:["Run","Debug","Edit Configurations"],Tools:["Terminal","Database","Maven"],VCS:["Commit","Push","Pull","Git"]};refs.menuPopup.innerHTML=(maps[name]||["Action"]).map(x=>"<div>"+x+"</div>").join("");refs.menuPopup.classList.add("show")}
+async function applyStep(st,animate,token){
+ if(token!==seekToken)return;clearBoundary();clearTransient(st.action);const d=st.data||{},f=()=>files[d.file||activeFile];
+ switch(st.action){
+  case"enableFeature":{const name=d.feature||d.name;if(name&&!state.visibleFeatures.includes(name))state.visibleFeatures.push(name);renderAll();break}
+  case"disableFeature":{const name=d.feature||d.name;state.visibleFeatures=(state.visibleFeatures||[]).filter(x=>x!==name);renderAll();break}
+  case"setView":activeBottom=d.bottom||activeBottom;activeRight=d.right||activeRight;renderAll();break;
+  case"openMenu":openMenu(d.menu||"File");break;
+  case"pressButton":if(d.target)await highlight(d.target,token);actionStatus("Pressed "+(d.target||"button"));break;
+  case"highlightTarget":await highlight(d.target,token);break;
+  case"moveCursor":await highlight(d.target,token);break;
+  case"showNotification":notify(d.text||d.message||"IntelliJ IDEA");break;
+  case"openProject":state.project={...state.project,...clone(d.project||d)};renderAll();break;
+  case"newProject":state.project={name:d.name||"New Project",sdk:d.sdk||state.project.sdk,languageLevel:d.languageLevel||state.project.languageLevel};if(!d.preserveFiles){state.tree=[];files={};state.files={};activeFile=null;openTabs=[]}renderAll();break;
+  case"openFile":openFile(d.file);break;
+  case"closeFile":closeFile(d.file||activeFile);break;
+  case"createFile":files[d.path]={language:d.language||"java",content:String(d.content||"")};state.files=clone(files);addTreePath(d.path,d.language||"java");markGit(d.path,"A");openFile(d.path);break;
+  case"createPackage":{const p=(d.path||d.name||"package").replace(/\./g,"/");addTreePath(p+"/.package","java");delete files[p+"/.package"];deleteTreePath(state.tree,p+"/.package");actionStatus("Package created: "+(d.name||p));renderAll();break}
+  case"renameResource":{const old=d.path||d.oldPath,nw=d.newPath||d.name;if(files[old]){files[nw]=files[old];delete files[old];state.files=clone(files);openTabs=openTabs.map(x=>x===old?nw:x);if(activeFile===old)activeFile=nw}renameTreePath(state.tree,old,nw);renderAll();break}
+  case"deleteResource":{const p=d.path;delete files[p];state.files=clone(files);openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;deleteTreePath(state.tree,p);renderAll();break}
+  case"saveFile":if(f())f().dirty=false;actionStatus("Saved "+(d.file||activeFile||"file"));renderTabs();break;
+  case"saveAll":Object.values(files).forEach(x=>x.dirty=false);actionStatus("All files saved");renderTabs();break;
+  case"setCode":if(f()){f().content=String(d.code??d.content??"");f().dirty=true;markGit(d.file||activeFile,"M");renderEditor()}break;
+  case"typeCode":{const file=d.file||activeFile;if(!files[file])break;const old=String(files[file].content||""),pos=d.position||"replace",snippet=String(d.code||"");const make=part=>pos==="end"?old+part:(pos==="start"?part+old:markerReplace(old,d.marker||"",part,pos));const final=make(snippet);if(final===null){notify("Code marker not found","error");break}activeFile=file;if(!openTabs.includes(file))openTabs.push(file);const markerIndex=pos==="end"?old.length:(pos==="start"?0:old.indexOf(d.marker||""));const before=old.slice(0,Math.max(0,markerIndex)).split("\n").length;const count=Math.max(1,snippet.split("\n").length);await typeText(snippet,part=>{files[file].content=make(part)??old;renderEditor()},animate,token);files[file].content=final;files[file].dirty=true;markGit(file,"M");focusRange={file,start:before,end:before+count-1};renderAll();if(d.boundary!==false)await highlight({type:"line",file,line:before},token);break}
+  case"replaceCode":if(f()){f().content=String(f().content).replace(String(d.find||""),String(d.replace||""));f().dirty=true;markGit(d.file||activeFile,"M");renderEditor()}break;
+  case"formatCode":case"reformatFile":if(f()){f().content=String(f().content).split("\n").map(x=>x.replace(/\s+$/,"")).join("\n");renderEditor();actionStatus("Code reformatted")}break;
+  case"optimizeImports":actionStatus("Imports optimized");break;
+  case"splitEditor":state.editorSplit=true;actionStatus("Editor split");break;
+  case"unsplitEditor":state.editorSplit=false;actionStatus("Editor unsplit");break;
+  case"pinTab":if(f()){f().pinned=d.pinned!==false;renderTabs()}break;
+  case"toggleDistractionFree":refs.app.classList.toggle("distraction",d.enabled!==false);break;
+  case"toggleZenMode":document.body.classList.toggle("zen",d.enabled!==false);break;
+
+  case"gotoClass":case"gotoFile":case"gotoSymbol":case"searchEverywhere":case"findInFiles":case"recentFiles":genericSurface(st.action,d);break;
+  case"gotoDeclaration":case"gotoImplementation":case"findUsages":case"showCallHierarchy":case"showTypeHierarchy":case"showFileStructure":genericSurface(st.action,d);if(d.file)openFile(d.file);break;
+
+  case"showCompletion":showPopup("completion",d.items||["getLatitude()","getLongitude()","saveSurvey(...)"]);break;
+  case"showParameterInfo":showPopup("completion",d.items||["saveSurvey(SurveyRecord survey)"]);break;
+  case"showQuickDocumentation":genericSurface("Quick Documentation",d);break;
+  case"showIntentionActions":showPopup("intentions",d.items||["Import class","Create method","Add null check"]);break;
+  case"applyQuickFix":if(d.file&&d.find!==undefined&&files[d.file])files[d.file].content=String(files[d.file].content).replace(String(d.find),String(d.replace||""));actionStatus("Quick fix applied");renderAll();break;
+  case"runInspection":if(d.problems)state.problems=clone(d.problems);setBottom("problems",state.problems.map(p=>`${p.severity}: ${p.message}`).join("\n"));break;
+  case"showProblems":activeBottom="problems";renderBottom();break;
+  case"addProblem":addProblem(d);activeBottom="problems";renderBottom();break;
+  case"suppressInspection":state.problems=state.problems.filter(p=>p.message!==d.message);renderBottom();break;
+
+  case"renameSymbol":case"extractMethod":case"extractVariable":case"inlineRefactor":case"moveClass":case"changeSignature":case"safeDelete":case"generateGetterSetter":case"generateConstructor":case"generateToString":case"generateEqualsHashCode":case"overrideMethods":
+    if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;
+
+  case"openRunConfigurations":showModal("runConfig","Run/Debug Configurations",'<div class="kv"><span>Name</span><input value="'+esc(state.activeRunConfiguration||"Application")+'"><span>Main class</span><input value="'+esc(findRun()?.mainClass||"")+'"><span>Program arguments</span><input value="'+esc(findRun()?.programArguments||"")+'"><span>VM options</span><input value="'+esc(findRun()?.vmOptions||"")+'"></div>');break;
+  case"createApplicationConfig":state.runConfigurations.push({name:d.name||"Application",type:"Application",mainClass:d.mainClass||"",programArguments:"",vmOptions:"",env:{}});state.activeRunConfiguration=d.name||"Application";renderAll();break;
+  case"createSpringBootConfig":state.runConfigurations.push({name:d.name||"Spring Boot",type:"Spring Boot",mainClass:d.mainClass||"",profile:d.profile||"dev",env:{}});state.activeRunConfiguration=d.name||"Spring Boot";renderAll();break;
+  case"setProgramArguments":{const r=findRun(d.name);if(r)r.programArguments=d.value||d.arguments||"";break}
+  case"setVmOptions":{const r=findRun(d.name);if(r)r.vmOptions=d.value||d.options||"";break}
+  case"setEnvironmentVariables":{const r=findRun(d.name);if(r)r.env=clone(d.variables||d.env||{});break}
+  case"setWorkingDirectory":{const r=findRun(d.name);if(r)r.workingDirectory=d.path||"";break}
+  case"runConfiguration":state.activeRunConfiguration=d.name||state.activeRunConfiguration;state.console=d.console||("Running "+state.activeRunConfiguration+"\nProcess finished with exit code 0");activeBottom="run";renderAll();break;
+  case"stopProcess":state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom();break;
+  case"showRunConsole":activeBottom="run";if(d.text!==undefined)state.console=String(d.text);renderBottom();break;
+
+  case"debugConfiguration":state.debug={...state.debug,running:true,config:d.name||state.activeRunConfiguration,frames:clone(d.frames||[]),variables:clone(d.variables||[])};activeBottom="debug";setBottom("debug",d.console||"Debugger attached");break;
+  case"setBreakpoint":if(!state.breakpoints.some(b=>b.file===d.file&&Number(b.line)===Number(d.line)))state.breakpoints.push({file:d.file,line:Number(d.line),condition:d.condition||""});renderEditor();break;
+  case"removeBreakpoint":state.breakpoints=state.breakpoints.filter(b=>!(b.file===d.file&&Number(b.line)===Number(d.line)));renderEditor();break;
+  case"setConditionalBreakpoint":{let b=state.breakpoints.find(x=>x.file===d.file&&Number(x.line)===Number(d.line));if(!b){b={file:d.file,line:Number(d.line)};state.breakpoints.push(b)}b.condition=d.condition||"true";renderEditor();break}
+  case"setExceptionBreakpoint":state.exceptionBreakpoint=d.exception||"Exception";actionStatus("Exception breakpoint: "+state.exceptionBreakpoint);break;
+  case"resumeDebug":case"pauseDebug":case"stepOver":case"stepInto":case"stepOut":case"runToCursor":actionStatus(st.action);activeBottom="debug";renderBottom();break;
+  case"evaluateExpression":activeBottom="debug";setBottom("debug",(state.bottomCache?.debug?.content||"")+"\nEvaluate: "+(d.expression||"")+" = "+(d.result??""));break;
+  case"addWatch":state.debug=state.debug||{};state.debug.watches=state.debug.watches||[];state.debug.watches.push({expression:d.expression,result:d.result});activeBottom="debug";setBottom("debug",state.debug.watches.map(x=>`${x.expression} = ${x.result}`).join("\n"));break;
+  case"showVariables":activeBottom="debug";setBottom("debug",(d.variables||state.debug?.variables||[]).map(x=>`${x.name} = ${x.value}`).join("\n"));break;
+
+  case"runJUnit":case"runJUnitMethod":case"runJUnitClass":state.tests={...state.tests,total:d.total??d.tests?.length??1,passed:d.passed??1,failed:d.failed??0,results:clone(d.tests||[])};activeBottom="tests";setBottom("tests",`Tests: ${state.tests.total}, Passed: ${state.tests.passed}, Failed: ${state.tests.failed}\n`+(state.tests.results||[]).map(x=>`${x.status||"PASS"} ${x.name}`).join("\n"));break;
+  case"showTestResults":activeBottom="tests";renderBottom();break;
+  case"showFailureTrace":activeBottom="tests";setBottom("tests",d.trace||"AssertionError");break;
+  case"rerunFailedTests":activeBottom="tests";setBottom("tests",d.console||"Rerun failed tests: PASS");break;
+  case"runWithCoverage":state.tests.coverage=d.coverage||{};activeBottom="tests";setBottom("tests","Run with Coverage\n"+JSON.stringify(state.tests.coverage,null,2));break;
+  case"showCoverage":genericSurface("Code Coverage",d.coverage||state.tests.coverage||{});break;
+  case"mockitoVerifyInteraction":activeBottom="tests";setBottom("tests",d.text||"Mockito verify(repository).save(entity)  PASS");break;
+
+  case"openMavenToolWindow":activeRight="maven";renderRight();break;
+  case"reloadMavenProject":state.maven.status="Reloaded";activeRight="maven";renderRight();break;
+  case"runMavenGoal":state.maven.lastGoal=d.goal||"test";state.maven.status=d.status||"BUILD SUCCESS";activeBottom="run";setBottom("run",d.console||`[INFO] --- ${state.maven.lastGoal}\n[INFO] BUILD SUCCESS`);renderRight();break;
+  case"showMavenLifecycle":case"showMavenDependencies":case"showMavenDependencyTree":case"showEffectivePom":genericSurface(st.action,d);break;
+  case"addMavenDependency":state.maven.dependencies=state.maven.dependencies||[];state.maven.dependencies.push(clone(d.dependency||d));renderRight();break;
+  case"removeMavenDependency":state.maven.dependencies=(state.maven.dependencies||[]).filter(x=>(x.artifactId||x.name)!==(d.artifactId||d.name));renderRight();break;
+  case"setMavenProfile":state.maven.profile=d.profile||"default";renderRight();break;
+
+  case"openSpringToolWindow":case"showSpringBootDashboard":genericSurface("Spring",state.spring);break;
+  case"runSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app){app.status="Running";app.profile=d.profile||app.profile;app.port=d.port||app.port}state.console=d.console||"Started Spring Boot application";activeBottom="services";setBottom("services",state.console);break}
+  case"stopSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app)app.status="Stopped";activeBottom="services";setBottom("services","Spring Boot application stopped");break}
+  case"restartSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app)app.status="Running";activeBottom="services";setBottom("services","Spring Boot application restarted");break}
+  case"setSpringProfile":state.spring.activeProfile=d.profile||"dev";break;
+  case"showSpringBeans":genericSurface("Spring Beans",{beans:state.spring.beans||d.beans||[]});break;
+  case"showSpringMappings":genericSurface("Spring MVC Mappings",{mappings:state.spring.mappings||d.mappings||[]});break;
+  case"navigateToController":if(d.file)openFile(d.file);break;
+  case"showMvcFlow":case"showValidationFlow":case"showExceptionHandlers":genericSurface(st.action,d);break;
+  case"openApplicationProperties":if(d.file)openFile(d.file);else genericSurface("application.properties",state.spring.properties||{});break;
+  case"setSpringProperty":state.spring.properties=state.spring.properties||{};state.spring.properties[d.key]=d.value;actionStatus(d.key+"="+d.value);break;
+
+  case"openPersistenceToolWindow":genericSurface("Persistence",state.jpa);break;
+  case"showJpaEntities":genericSurface("JPA Entities",{entities:state.jpa.entities||[]});break;
+  case"showJpaRepositories":genericSurface("Spring Data Repositories",{repositories:state.jpa.repositories||[]});break;
+  case"showEntityMapping":case"showRepositoryMethods":genericSurface(st.action,d);break;
+  case"generateJpaRepository":if(d.path){files[d.path]={language:"java",content:d.content||`public interface ${d.name||"Repository"} extends JpaRepository<Entity, Long> {}`};state.files=clone(files);addTreePath(d.path,"java");openFile(d.path)}break;
+  case"runJpql":activeBottom="run";setBottom("run",d.console||("JPQL: "+(d.query||"")+"\n"+JSON.stringify(d.rows||[],null,2)));break;
+  case"showHibernateSql":activeBottom="run";setBottom("run",d.sql||"Hibernate: select ...");break;
+  case"showHibernateStatistics":genericSurface("Hibernate Statistics",d.statistics||d);break;
+  case"showHibernateSpatial":genericSurface("Hibernate Spatial",d);break;
+
+  case"openGitToolWindow":activeBottom="git";renderBottom();break;
+  case"showLocalChanges":activeBottom="git";renderBottom();break;
+  case"stageFile":{const c=(state.git.changes||[]).find(x=>x.file===d.file);if(c)c.staged=true;renderTree();renderBottom();break}
+  case"unstageFile":{const c=(state.git.changes||[]).find(x=>x.file===d.file);if(c)c.staged=false;renderBottom();break}
+  case"commitChanges":state.git.history=state.git.history||[];state.git.history.unshift({hash:d.hash||"abc1234",message:d.message||"Commit",author:d.author||"Developer"});state.git.changes=(state.git.changes||[]).filter(x=>!x.staged);activeBottom="git";setBottom("git","Committed: "+(d.message||"Commit"));renderTree();break;
+  case"pushGit":case"pullGit":case"fetchGit":activeBottom="git";setBottom("git",d.console||st.action+" completed");break;
+  case"createBranch":state.git.branches=state.git.branches||[];if(!state.git.branches.includes(d.name))state.git.branches.push(d.name);break;
+  case"checkoutBranch":state.git.branch=d.name||state.git.branch;renderAll();break;
+  case"mergeBranch":activeBottom="git";setBottom("git",d.console||("Merged "+(d.name||"branch")));break;
+  case"showGitHistory":genericSurface("Git Log",{history:state.git.history||[]});break;
+  case"showGitDiff":genericSurface("Git Diff",d);break;
+  case"showMergeConflict":state.git.conflicts=clone(d.conflicts||[]);activeBottom="git";setBottom("git","Merge conflicts:\n"+state.git.conflicts.map(x=>x.file).join("\n"));break;
+  case"resolveMergeConflict":state.git.conflicts=(state.git.conflicts||[]).filter(x=>x.file!==d.file);activeBottom="git";setBottom("git","Resolved "+(d.file||"conflict"));break;
+
+  case"openDatabaseToolWindow":activeRight="database";renderRight();break;
+  case"addDataSource":state.database.dataSources=state.database.dataSources||[];state.database.dataSources.push(clone(d));activeRight="database";renderRight();break;
+  case"testDataSource":notify(d.success===false?"Connection failed":"Connection successful",d.success===false?"error":"");break;
+  case"openDatabaseConsole":activeBottom="run";setBottom("run",d.text||"Database Console");break;
+  case"executeSql":activeBottom="run";setBottom("run",d.sql||"SELECT 1;");if(d.rows)state.database.lastResult={columns:d.columns||Object.keys(d.rows[0]||{}),rows:clone(d.rows)};break;
+  case"showQueryResult":{const r=d.result||state.database.lastResult||{columns:[],rows:[]};activeBottom="run";setBottom("run",resultTable(r.columns||[],r.rows||[]),true);break}
+  case"showTableData":{const r={columns:d.columns||Object.keys(d.rows?.[0]||{}),rows:d.rows||[]};activeBottom="run";setBottom("run",resultTable(r.columns,r.rows),true);break}
+
+  case"openTerminal":activeBottom="terminal";renderBottom();break;
+  case"typeTerminal":{const cmd=String(d.command||d.text||"");await typeText(cmd,part=>setBottom("terminal",(state.terminal||"")+"\n$ "+part),animate,token);state.terminal+=(state.terminal?"\n":"")+"$ "+cmd+(d.output!==undefined?"\n"+d.output:"");renderBottom();break}
+  case"appendTerminal":state.terminal+=(state.terminal?"\n":"")+String(d.text||"");activeBottom="terminal";renderBottom();break;
+  case"clearTerminal":state.terminal="";activeBottom="terminal";renderBottom();break;
+
+  case"openSettings":showModal("settings","Settings",'<div class="kv"><span>Editor</span><span>Code Style, Inspections, File Types</span><span>Build Tools</span><span>Maven, Compiler</span><span>Plugins</span><span>Installed Plugins</span></div>');break;
+  case"showProjectStructure":showModal("settings","Project Structure",'<div class="kv"><span>Project SDK</span><input value="'+esc(state.project.sdk||"")+'"><span>Language level</span><input value="'+esc(state.project.languageLevel||"")+'"><span>Modules</span><span>'+esc((state.modules||["main"]).join(", "))+'</span></div>');break;
+  case"addSdk":state.sdks=state.sdks||[];state.sdks.push({name:d.name||d.sdk,path:d.path||"",version:d.version||""});showProjectStructureModal();break;
+  case"setProjectSdk":state.project.sdk=d.name||d.sdk;renderAll();break;
+  case"setLanguageLevel":state.project.languageLevel=String(d.level||d.value||"17");renderAll();break;
+  case"setModuleSdk":state.moduleSdk=state.moduleSdk||{};state.moduleSdk[d.module||"main"]=d.sdk||d.name;break;
+  case"configureCompiler":state.compiler={...state.compiler,...clone(d)};genericSurface("Java Compiler",state.compiler);break;
+  case"installPlugin":state.plugins=state.plugins||[];if(!state.plugins.includes(d.name))state.plugins.push(d.name);genericSurface("Plugins",{installed:state.plugins});break;
+  default:notify("Unsupported IntelliJ action: "+st.action,"error")
+ }
+}
+function showProjectStructureModal(){showModal("settings","Project Structure",'<div class="cards">'+(state.sdks||[]).map(x=>card(x.name,x.path||x.version)).join("")+'</div>')}
+async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}allowBoundary=true}
+function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});reset()}
+refs.modalClose.onclick=closeModal;refs.modalLayer.onclick=e=>{if(e.target===refs.modalLayer)closeModal()};
+document.querySelectorAll(".menuItem").forEach(m=>m.onclick=()=>openMenu(m.dataset.menu));
+document.querySelectorAll(".bottomTab").forEach(t=>t.onclick=()=>{activeBottom=t.dataset.bottom;renderBottom()});
+document.querySelectorAll(".twTab").forEach(t=>t.onclick=()=>{activeRight=t.dataset.right;document.querySelectorAll(".twTab").forEach(x=>x.classList.toggle("active",x===t));renderRight()});
+refs.newBtn.onclick=()=>{const p="src/main/java/NewClass.java";files[p]={language:"java",content:"public class NewClass {\\n}\\n"};state.files=clone(files);addTreePath(p,"java");openFile(p)};
+refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStatus("Saved")};
+refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
+refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+="\nProcess terminated";activeBottom="run";renderBottom()};
+refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
+let dl=false,dr=false,dh=false;refs.splitL.onpointerdown=e=>{dl=true;refs.splitL.setPointerCapture(e.pointerId)};refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=Math.max(130,Math.min(420,e.clientX-r.left));document.documentElement.style.setProperty("--leftW",w+"px")};refs.splitL.onpointerup=()=>dl=false;
+refs.splitR.onpointerdown=e=>{dr=true;refs.splitR.setPointerCapture(e.pointerId)};refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=Math.max(150,Math.min(420,r.right-e.clientX));document.documentElement.style.setProperty("--rightW",w+"px")};refs.splitR.onpointerup=()=>dr=false;
+refs.splitH.onpointerdown=e=>{dh=true;refs.splitH.setPointerCapture(e.pointerId)};refs.splitH.onpointermove=e=>{if(!dh)return;const r=refs.work.getBoundingClientRect(),h=Math.max(90,Math.min(400,r.bottom-e.clientY));document.documentElement.style.setProperty("--bottomH",h+"px")};refs.splitH.onpointerup=()=>dh=false;
+document.addEventListener("pointerdown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("keydown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("scroll",syncBoundary,true);window.addEventListener("resize",syncBoundary);
+window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;theme(m.theme||"dark");loadPackage(m.package)}if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)}if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")theme(m.value)}}); 
+refs.tree.innerHTML='<div style="padding:10px;color:var(--muted);font-size:10px">Waiting for IntelliJ IDEA package...</div>';
+parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
+})();
