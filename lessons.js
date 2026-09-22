@@ -621,42 +621,595 @@ window.COURSE = {
       ]
     },
     {
-      "title": "4: VS Code Integration Test",
-      "subtitle": "Prove the lesson player can move into VS Code and then return to IntelliJ while keeping one continuous timeline.",
+      "title": "4: VS Code Workspace Setup",
+      "subtitle": "VS Code lo project workspace ni open chesi basic notes file create chestam.",
       "steps": [
         {
-          "title": "Open the project in VS Code",
-          "why": "Ippudu lesson VS Code ki switch avuthundi. Left side lesson journey same ga untundi, kani center workspace matram VS Code ga maruthundi.",
+          "title": "Open Java Practice in VS Code",
+          "why": "Ippudu project ni VS Code lo open chestunnam. Left lesson journey same ga untundi, center workspace matram VS Code ga maruthundi.",
           "software": "vscode",
           "action": {
             "action": "newProject",
             "data": {
-              "name": "Java Practice",
-              "sdk": "Java 21"
+              "name": "Java Practice"
             }
           }
         },
         {
-          "title": "Create a developer note in VS Code",
-          "why": "VS Code simulator nijanga lesson actions receive chesthundha ani test cheyyadaniki oka small markdown file create chestunnam. File Explorer mariyu editor rendu update avvali.",
+          "title": "Create journey-notes.md",
+          "why": "VS Code Explorer mariyu editor correct ga work chestunnaya ani test cheyyadaniki notes file create chestunnam.",
           "software": "vscode",
           "action": {
             "action": "createFile",
             "data": {
               "path": "journey-notes.md",
-              "language": "markdown",
-              "content": "# Java Practice\\n\\nVS Code integration is working.\\n"
+              "content": "# Java Practice Journey\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "5: VS Code README Work",
+      "subtitle": "Project documentation ni VS Code lo maintain cheyyadam practice chestam.",
+      "steps": [
+        {
+          "title": "Create README.md",
+          "why": "Project gurinchi quick documentation kosam README.md create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "README.md",
+              "content": "# Java Practice\n\nDeveloper journey project.\n"
             }
           }
         },
         {
-          "title": "Return to Student.java in IntelliJ",
-          "why": "Ee step malli IntelliJ ki switch chestundi. VS Code separate software state ga undi, IntelliJ project state kuda preserve avuthundi.",
-          "software": "intellij",
+          "title": "Add setup section",
+          "why": "Existing README file ki setup section add cheyyadam editor typing flow ni test chestundi.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "README.md",
+              "code": "\n## Setup\nUse Java 21 for the exercises.\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "6: VS Code Notes Folder",
+      "subtitle": "Folder-style project organization ni simulate chestam.",
+      "steps": [
+        {
+          "title": "Create notes/day-01.md",
+          "why": "Daily office work ni separate notes files lo maintain cheyyachu. Ikkada first day note create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "notes/day-01.md",
+              "content": "# Day 01\n\nReviewed Student model.\n"
+            }
+          }
+        },
+        {
+          "title": "Add Day 01 task",
+          "why": "Same file lo additional task add chesi incremental editing ni test chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "notes/day-01.md",
+              "code": "- Verified project structure.\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "7: VS Code JSON Configuration",
+      "subtitle": "JSON config files edit cheyyadam VS Code lo common workflow.",
+      "steps": [
+        {
+          "title": "Create settings.json",
+          "why": "Project-level configuration ni JSON file lo store chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": ".vscode/settings.json",
+              "content": "{\n  \"editor.fontSize\": 14\n}\n"
+            }
+          }
+        },
+        {
+          "title": "Add format setting",
+          "why": "Existing JSON config ki additional setting add cheyyadam practice chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": ".vscode/settings.json",
+              "code": "\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "8: VS Code Launch Configuration",
+      "subtitle": "Run/debug configuration files ni project lo maintain cheyyadam test chestam.",
+      "steps": [
+        {
+          "title": "Create launch.json",
+          "why": "Debug configuration ki launch.json file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": ".vscode/launch.json",
+              "content": "{\n  \"version\": \"0.2.0\",\n  \"configurations\": []\n}\n"
+            }
+          }
+        },
+        {
+          "title": "Review launch.json",
+          "why": "Created debug config ni editor lo open chesi verify chestunnam.",
+          "software": "vscode",
           "action": {
             "action": "openFile",
             "data": {
-              "path": "src/Student.java"
+              "path": ".vscode/launch.json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "9: VS Code Task Configuration",
+      "subtitle": "Build commands kosam tasks.json maintain cheyyadam simulate chestam.",
+      "steps": [
+        {
+          "title": "Create tasks.json",
+          "why": "VS Code task runner kosam tasks.json create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": ".vscode/tasks.json",
+              "content": "{\n  \"version\": \"2.0.0\",\n  \"tasks\": []\n}\n"
+            }
+          }
+        },
+        {
+          "title": "Open tasks.json",
+          "why": "Task configuration ni editor lo open chesi inspect chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": ".vscode/tasks.json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "10: VS Code Terminal Basics",
+      "subtitle": "Integrated terminal ni lesson flow lo use chestam.",
+      "steps": [
+        {
+          "title": "Check Java version",
+          "why": "Developer environment correct Java version use chesthundha ani terminal lo verify chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "java -version",
+              "output": "openjdk version \"21\""
+            }
+          }
+        },
+        {
+          "title": "List project files",
+          "why": "Project root lo files enti ani terminal dwara quick ga check chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "dir",
+              "output": "README.md  journey-notes.md  notes  .vscode"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "11: VS Code Git Check",
+      "subtitle": "VS Code terminal nundi Git state ni check cheyyadam simulate chestam.",
+      "steps": [
+        {
+          "title": "Check Git status",
+          "why": "Current working tree lo changes unnaya ani git status tho verify chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "git status",
+              "output": "On branch main\nChanges not staged for commit"
+            }
+          }
+        },
+        {
+          "title": "Check current branch",
+          "why": "Developer e branch meeda work chestunnado confirm cheyyadaniki branch command run chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "git branch --show-current",
+              "output": "main"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "12: VS Code Markdown Editing",
+      "subtitle": "Documentation editing flow ni konchem extend chestam.",
+      "steps": [
+        {
+          "title": "Create architecture.md",
+          "why": "Project architecture notes kosam separate markdown file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/architecture.md",
+              "content": "# Architecture\n\nJava Practice project notes.\n"
+            }
+          }
+        },
+        {
+          "title": "Add simulator section",
+          "why": "Architecture note lo simulator integration gurinchi section add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "docs/architecture.md",
+              "code": "\n## Simulators\nIntelliJ, VS Code, pgAdmin and Postman are part of the journey.\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "13: VS Code API Notes",
+      "subtitle": "API-related notes ni VS Code lo maintain cheyyadam simulate chestam.",
+      "steps": [
+        {
+          "title": "Create api-notes.md",
+          "why": "Postman testing mundu developer API endpoints notes ready chesukovachu.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/api-notes.md",
+              "content": "# API Notes\n\nGET /students\n"
+            }
+          }
+        },
+        {
+          "title": "Add response note",
+          "why": "Expected response gurinchi quick note add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "docs/api-notes.md",
+              "code": "Expected response: 200 OK\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "14: VS Code Database Notes",
+      "subtitle": "Database handoff ki related documentation ni edit chestam.",
+      "steps": [
+        {
+          "title": "Create database.md",
+          "why": "PostgreSQL schema gurinchi project note create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/database.md",
+              "content": "# Database\n\nDatabase: java_practice\n"
+            }
+          }
+        },
+        {
+          "title": "Add student table note",
+          "why": "student table fields ni note lo record chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "docs/database.md",
+              "code": "Table: student\nColumns: roll_no, is_present, marks, name\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "15: VS Code Environment File",
+      "subtitle": "Environment configuration pattern ni simulate chestam.",
+      "steps": [
+        {
+          "title": "Create example env file",
+          "why": "Secrets lekunda required environment variable names ni example file lo document chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": ".env.example",
+              "content": "DB_HOST=localhost\nDB_PORT=5432\n"
+            }
+          }
+        },
+        {
+          "title": "Add database name",
+          "why": "Example environment file ki database name add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": ".env.example",
+              "code": "DB_NAME=java_practice\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "16: VS Code Ignore Rules",
+      "subtitle": "Repository cleanliness kosam ignore file maintain chestam.",
+      "steps": [
+        {
+          "title": "Create .gitignore",
+          "why": "Build output mariyu editor-specific files ni Git nundi exclude cheyyadaniki .gitignore create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": ".gitignore",
+              "content": "out/\n.idea/\n"
+            }
+          }
+        },
+        {
+          "title": "Add VS Code local rule",
+          "why": "Local-only VS Code files ni ignore rule lo add cheyyadam simulate chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": ".gitignore",
+              "code": ".vscode/local.code-workspace\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "17: VS Code Workspace File",
+      "subtitle": "Reusable VS Code workspace config ni create chestam.",
+      "steps": [
+        {
+          "title": "Create workspace file",
+          "why": "VS Code workspace ni reusable ga open cheyyadaniki code-workspace file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "Java-Practice.code-workspace",
+              "content": "{\n  \"folders\": [{ \"path\": \".\" }]\n}\n"
+            }
+          }
+        },
+        {
+          "title": "Open workspace file",
+          "why": "Created workspace config ni editor lo verify chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "Java-Practice.code-workspace"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "18: VS Code Scratch File",
+      "subtitle": "Quick developer scratch work ni simulate chestam.",
+      "steps": [
+        {
+          "title": "Create scratch.txt",
+          "why": "Temporary notes/testing kosam scratch file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "scratch.txt",
+              "content": "Student class review\n"
+            }
+          }
+        },
+        {
+          "title": "Add next task",
+          "why": "Next development task ni scratch file lo jot down chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "scratch.txt",
+              "code": "Next: verify database mapping\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "19: VS Code Build Notes",
+      "subtitle": "Build workflow documentation ni add chestam.",
+      "steps": [
+        {
+          "title": "Create build.md",
+          "why": "Build commands ni project docs lo record chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/build.md",
+              "content": "# Build\n\nCompile the Java sources.\n"
+            }
+          }
+        },
+        {
+          "title": "Run javac version",
+          "why": "Local compiler availability ni terminal lo verify chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "javac -version",
+              "output": "javac 21"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "20: VS Code Testing Notes",
+      "subtitle": "Testing workflow documentation ni simulate chestam.",
+      "steps": [
+        {
+          "title": "Create testing.md",
+          "why": "Manual mariyu automated test notes kosam file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/testing.md",
+              "content": "# Testing\n\nVerify Student getters and setters.\n"
+            }
+          }
+        },
+        {
+          "title": "Add database test note",
+          "why": "Database integration test kosam extra checklist item add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "docs/testing.md",
+              "code": "Verify student table creation in PostgreSQL.\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "21: VS Code Deployment Notes",
+      "subtitle": "Deployment preparation documentation ni build chestam.",
+      "steps": [
+        {
+          "title": "Create deployment.md",
+          "why": "Deployment checklist kosam documentation file create chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "docs/deployment.md",
+              "content": "# Deployment\n\n1. Build project\n2. Verify configuration\n"
+            }
+          }
+        },
+        {
+          "title": "Add smoke test",
+          "why": "Deployment tarvata smoke test cheyyali ani checklist lo add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "docs/deployment.md",
+              "code": "3. Run smoke test\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "22: VS Code Daily Log",
+      "subtitle": "Office-day style developer log ni maintain chestam.",
+      "steps": [
+        {
+          "title": "Create day-02.md",
+          "why": "Second office day work ni separate log file lo record chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "notes/day-02.md",
+              "content": "# Day 02\n\nWorked across IntelliJ, pgAdmin and VS Code.\n"
+            }
+          }
+        },
+        {
+          "title": "Add handoff note",
+          "why": "Multiple software handoff successful ani daily log lo add chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "typeCode",
+            "data": {
+              "path": "notes/day-02.md",
+              "code": "Software switching verified.\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "23: VS Code Final Integration Review",
+      "subtitle": "20-stage VS Code integration ni final ga verify chestam.",
+      "steps": [
+        {
+          "title": "Open journey-notes.md",
+          "why": "First VS Code file ni malli open chesi cumulative state preserve ayyindha ani check chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "journey-notes.md"
+            }
+          }
+        },
+        {
+          "title": "Run final terminal check",
+          "why": "VS Code simulator terminal kuda final stage varaku work chesthundha ani verify chestunnam.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "echo VS Code integration complete",
+              "output": "VS Code integration complete"
             }
           }
         }
