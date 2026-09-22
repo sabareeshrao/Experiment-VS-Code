@@ -345,6 +345,21 @@
         "showKeytips",
         "searchRibbon",
         "openContextMenu"
+      ],
+      "sampleProject": "Campus Performance Analytics",
+      "lessonFeatureTourSteps": 88,
+      "sampleProjectSurfaces": [
+        "6 data/model tables",
+        "5 relationships",
+        "6 DAX measures",
+        "6 Power Query queries",
+        "5 report pages",
+        "30+ report visuals",
+        "DAX Query View",
+        "TMDL View",
+        "Performance Analyzer",
+        "Mobile layout",
+        "Publish workflow"
       ]
     }
   }

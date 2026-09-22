@@ -18,8 +18,8 @@ window.COURSE = {
     },
     {
       "id": "book-3",
-      "title": "Analytics & Business Intelligence",
-      "subtitle": "Power BI Desktop data shaping, modeling, DAX, TMDL, and report authoring.",
+      "title": "Power BI Desktop: Full Analytics Feature Tour",
+      "subtitle": "A populated campus analytics project covering Report, Table, Model, Power Query, DAX Query, TMDL, visual analytics, performance, mobile, and publishing.",
       "chapterStart": 10,
       "chapterEnd": 10
     }
@@ -1381,33 +1381,2080 @@ window.COURSE = {
         }
       },
       "power_bi": {
-        "title": "Untitled - Power BI Desktop",
-        "reportName": "Untitled",
+        "title": "Campus Performance Analytics - Power BI Desktop",
+        "reportName": "Campus Performance Analytics",
         "activeView": "report",
         "theme": "light",
         "ribbonTab": "Home",
-        "paneTab": "filters",
-        "statusText": "Ready",
+        "paneTab": "data",
+        "statusText": "Campus Performance Analytics • 6 tables • 5 relationships",
         "canvasZoom": 100,
         "canvasFit": "Fit to page",
+        "gridlines": false,
+        "snapToGrid": true,
+        "lockObjects": false,
         "storageMode": "Import",
-        "sources": [],
+        "sources": [
+          {
+            "name": "JavaPracticeDb",
+            "connector": "SQL Server",
+            "server": "localhost",
+            "database": "JavaPracticeDb"
+          }
+        ],
         "navigator": {
-          "items": [],
-          "selected": []
+          "items": [
+            {
+              "name": "Department"
+            },
+            {
+              "name": "Course"
+            },
+            {
+              "name": "Student"
+            },
+            {
+              "name": "Enrollment"
+            },
+            {
+              "name": "Attendance"
+            },
+            {
+              "name": "Calendar"
+            }
+          ],
+          "selected": [
+            "Department",
+            "Course",
+            "Student",
+            "Enrollment",
+            "Attendance",
+            "Calendar"
+          ],
+          "preview": "Student"
         },
-        "tables": [],
-        "queries": [],
-        "relationships": [],
-        "measures": [],
-        "calculatedColumns": [],
+        "tables": [
+          {
+            "name": "Department",
+            "x": 60,
+            "y": 80,
+            "columns": [
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "department",
+                "type": "Text"
+              },
+              {
+                "name": "dean",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                10,
+                "Computer Science",
+                "Dr. Patel"
+              ],
+              [
+                20,
+                "Business",
+                "Dr. Harris"
+              ],
+              [
+                30,
+                "GIS",
+                "Dr. Rao"
+              ],
+              [
+                40,
+                "Data Science",
+                "Dr. Chen"
+              ]
+            ]
+          },
+          {
+            "name": "Course",
+            "x": 350,
+            "y": 70,
+            "columns": [
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_name",
+                "type": "Text"
+              },
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "credits",
+                "type": "Whole Number"
+              },
+              {
+                "name": "instructor",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                101,
+                "Java Programming",
+                10,
+                4,
+                "Prof. Kim"
+              ],
+              [
+                102,
+                "Database Systems",
+                10,
+                4,
+                "Prof. Lee"
+              ],
+              [
+                201,
+                "Business Analytics",
+                20,
+                3,
+                "Prof. Smith"
+              ],
+              [
+                301,
+                "GIS Applications",
+                30,
+                4,
+                "Prof. Rao"
+              ],
+              [
+                401,
+                "Data Visualization",
+                40,
+                3,
+                "Prof. Chen"
+              ]
+            ]
+          },
+          {
+            "name": "Student",
+            "x": 60,
+            "y": 390,
+            "columns": [
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Student Name",
+                "type": "Text"
+              },
+              {
+                "name": "gender",
+                "type": "Text"
+              },
+              {
+                "name": "city",
+                "type": "Text",
+                "dataCategory": "City"
+              },
+              {
+                "name": "admission_year",
+                "type": "Whole Number"
+              },
+              {
+                "name": "risk_status",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                "Asha Patel",
+                "F",
+                "Austin",
+                2024,
+                "On Track"
+              ],
+              [
+                2,
+                "Ravi Kumar",
+                "M",
+                "Round Rock",
+                2024,
+                "At Risk"
+              ],
+              [
+                3,
+                "Maya Chen",
+                "F",
+                "Cedar Park",
+                2025,
+                "High Performer"
+              ],
+              [
+                4,
+                "Noah Williams",
+                "M",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                5,
+                "Sofia Garcia",
+                "F",
+                "Austin",
+                2024,
+                "High Performer"
+              ],
+              [
+                6,
+                "Ethan Brown",
+                "M",
+                "Georgetown",
+                2023,
+                "At Risk"
+              ],
+              [
+                7,
+                "Isha Rao",
+                "F",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                8,
+                "Liam Johnson",
+                "M",
+                "Austin",
+                2023,
+                "On Track"
+              ]
+            ]
+          },
+          {
+            "name": "Enrollment",
+            "x": 350,
+            "y": 380,
+            "columns": [
+              {
+                "name": "enrollment_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "semester",
+                "type": "Text"
+              },
+              {
+                "name": "score",
+                "type": "Whole Number"
+              },
+              {
+                "name": "grade",
+                "type": "Text"
+              },
+              {
+                "name": "performance_band",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                101,
+                "Spring 2026",
+                94,
+                "A",
+                "Excellent"
+              ],
+              [
+                2,
+                2,
+                102,
+                "Spring 2026",
+                78,
+                "C",
+                "Needs Support"
+              ],
+              [
+                3,
+                3,
+                101,
+                "Spring 2026",
+                97,
+                "A",
+                "Excellent"
+              ],
+              [
+                4,
+                4,
+                301,
+                "Spring 2026",
+                88,
+                "B",
+                "Good"
+              ],
+              [
+                5,
+                5,
+                401,
+                "Spring 2026",
+                95,
+                "A",
+                "Excellent"
+              ],
+              [
+                6,
+                6,
+                201,
+                "Spring 2026",
+                74,
+                "C",
+                "Needs Support"
+              ],
+              [
+                7,
+                7,
+                301,
+                "Spring 2026",
+                90,
+                "A",
+                "Excellent"
+              ],
+              [
+                8,
+                8,
+                102,
+                "Spring 2026",
+                84,
+                "B",
+                "Good"
+              ],
+              [
+                9,
+                1,
+                401,
+                "Fall 2025",
+                91,
+                "A",
+                "Excellent"
+              ],
+              [
+                10,
+                4,
+                102,
+                "Fall 2025",
+                86,
+                "B",
+                "Good"
+              ]
+            ]
+          },
+          {
+            "name": "Attendance",
+            "x": 660,
+            "y": 370,
+            "columns": [
+              {
+                "name": "attendance_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "present",
+                "type": "Text"
+              },
+              {
+                "name": "attendance_pct",
+                "type": "Decimal Number"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                "2026-01-15",
+                "Y",
+                96
+              ],
+              [
+                2,
+                2,
+                "2026-01-15",
+                "Y",
+                82
+              ],
+              [
+                3,
+                3,
+                "2026-01-15",
+                "Y",
+                99
+              ],
+              [
+                4,
+                4,
+                "2026-01-15",
+                "Y",
+                93
+              ],
+              [
+                5,
+                5,
+                "2026-01-15",
+                "Y",
+                98
+              ],
+              [
+                6,
+                6,
+                "2026-01-15",
+                "N",
+                76
+              ],
+              [
+                7,
+                7,
+                "2026-01-15",
+                "Y",
+                94
+              ],
+              [
+                8,
+                8,
+                "2026-01-15",
+                "Y",
+                91
+              ]
+            ]
+          },
+          {
+            "name": "Calendar",
+            "x": 670,
+            "y": 80,
+            "columns": [
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "Month",
+                "type": "Text"
+              },
+              {
+                "name": "MonthNo",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Quarter",
+                "type": "Text"
+              },
+              {
+                "name": "Year",
+                "type": "Whole Number"
+              }
+            ],
+            "rows": [
+              [
+                "2026-01-01",
+                "Jan",
+                1,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-02-01",
+                "Feb",
+                2,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-03-01",
+                "Mar",
+                3,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-04-01",
+                "Apr",
+                4,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-05-01",
+                "May",
+                5,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-06-01",
+                "Jun",
+                6,
+                "Q2",
+                2026
+              ]
+            ],
+            "dateTable": true
+          }
+        ],
+        "queries": [
+          {
+            "id": "Department",
+            "name": "Department",
+            "columns": [
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "department",
+                "type": "Text"
+              },
+              {
+                "name": "dean",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                10,
+                "Computer Science",
+                "Dr. Patel"
+              ],
+              [
+                20,
+                "Business",
+                "Dr. Harris"
+              ],
+              [
+                30,
+                "GIS",
+                "Dr. Rao"
+              ],
+              [
+                40,
+                "Data Science",
+                "Dr. Chen"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Sql.Database(\"localhost\", \"JavaPracticeDb\")"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Course",
+            "name": "Course",
+            "columns": [
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_name",
+                "type": "Text"
+              },
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "credits",
+                "type": "Whole Number"
+              },
+              {
+                "name": "instructor",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                101,
+                "Java Programming",
+                10,
+                4,
+                "Prof. Kim"
+              ],
+              [
+                102,
+                "Database Systems",
+                10,
+                4,
+                "Prof. Lee"
+              ],
+              [
+                201,
+                "Business Analytics",
+                20,
+                3,
+                "Prof. Smith"
+              ],
+              [
+                301,
+                "GIS Applications",
+                30,
+                4,
+                "Prof. Rao"
+              ],
+              [
+                401,
+                "Data Visualization",
+                40,
+                3,
+                "Prof. Chen"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Course\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Student",
+            "name": "Student",
+            "columns": [
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Student Name",
+                "type": "Text"
+              },
+              {
+                "name": "gender",
+                "type": "Text"
+              },
+              {
+                "name": "city",
+                "type": "Text",
+                "dataCategory": "City"
+              },
+              {
+                "name": "admission_year",
+                "type": "Whole Number"
+              },
+              {
+                "name": "risk_status",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                "Asha Patel",
+                "F",
+                "Austin",
+                2024,
+                "On Track"
+              ],
+              [
+                2,
+                "Ravi Kumar",
+                "M",
+                "Round Rock",
+                2024,
+                "At Risk"
+              ],
+              [
+                3,
+                "Maya Chen",
+                "F",
+                "Cedar Park",
+                2025,
+                "High Performer"
+              ],
+              [
+                4,
+                "Noah Williams",
+                "M",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                5,
+                "Sofia Garcia",
+                "F",
+                "Austin",
+                2024,
+                "High Performer"
+              ],
+              [
+                6,
+                "Ethan Brown",
+                "M",
+                "Georgetown",
+                2023,
+                "At Risk"
+              ],
+              [
+                7,
+                "Isha Rao",
+                "F",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                8,
+                "Liam Johnson",
+                "M",
+                "Austin",
+                2023,
+                "On Track"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Student\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              },
+              {
+                "name": "Trimmed Text",
+                "action": "trimColumn"
+              },
+              {
+                "name": "Added Risk Label",
+                "action": "addConditionalColumn"
+              }
+            ]
+          },
+          {
+            "id": "Enrollment",
+            "name": "Enrollment",
+            "columns": [
+              {
+                "name": "enrollment_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "semester",
+                "type": "Text"
+              },
+              {
+                "name": "score",
+                "type": "Whole Number"
+              },
+              {
+                "name": "grade",
+                "type": "Text"
+              },
+              {
+                "name": "performance_band",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                101,
+                "Spring 2026",
+                94,
+                "A",
+                "Excellent"
+              ],
+              [
+                2,
+                2,
+                102,
+                "Spring 2026",
+                78,
+                "C",
+                "Needs Support"
+              ],
+              [
+                3,
+                3,
+                101,
+                "Spring 2026",
+                97,
+                "A",
+                "Excellent"
+              ],
+              [
+                4,
+                4,
+                301,
+                "Spring 2026",
+                88,
+                "B",
+                "Good"
+              ],
+              [
+                5,
+                5,
+                401,
+                "Spring 2026",
+                95,
+                "A",
+                "Excellent"
+              ],
+              [
+                6,
+                6,
+                201,
+                "Spring 2026",
+                74,
+                "C",
+                "Needs Support"
+              ],
+              [
+                7,
+                7,
+                301,
+                "Spring 2026",
+                90,
+                "A",
+                "Excellent"
+              ],
+              [
+                8,
+                8,
+                102,
+                "Spring 2026",
+                84,
+                "B",
+                "Good"
+              ],
+              [
+                9,
+                1,
+                401,
+                "Fall 2025",
+                91,
+                "A",
+                "Excellent"
+              ],
+              [
+                10,
+                4,
+                102,
+                "Fall 2025",
+                86,
+                "B",
+                "Good"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Enrollment\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              },
+              {
+                "name": "Added Performance Band",
+                "action": "addConditionalColumn"
+              }
+            ]
+          },
+          {
+            "id": "Attendance",
+            "name": "Attendance",
+            "columns": [
+              {
+                "name": "attendance_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "present",
+                "type": "Text"
+              },
+              {
+                "name": "attendance_pct",
+                "type": "Decimal Number"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                "2026-01-15",
+                "Y",
+                96
+              ],
+              [
+                2,
+                2,
+                "2026-01-15",
+                "Y",
+                82
+              ],
+              [
+                3,
+                3,
+                "2026-01-15",
+                "Y",
+                99
+              ],
+              [
+                4,
+                4,
+                "2026-01-15",
+                "Y",
+                93
+              ],
+              [
+                5,
+                5,
+                "2026-01-15",
+                "Y",
+                98
+              ],
+              [
+                6,
+                6,
+                "2026-01-15",
+                "N",
+                76
+              ],
+              [
+                7,
+                7,
+                "2026-01-15",
+                "Y",
+                94
+              ],
+              [
+                8,
+                8,
+                "2026-01-15",
+                "Y",
+                91
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Attendance\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Calendar",
+            "name": "Calendar",
+            "columns": [
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "Month",
+                "type": "Text"
+              },
+              {
+                "name": "MonthNo",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Quarter",
+                "type": "Text"
+              },
+              {
+                "name": "Year",
+                "type": "Whole Number"
+              }
+            ],
+            "rows": [
+              [
+                "2026-01-01",
+                "Jan",
+                1,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-02-01",
+                "Feb",
+                2,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-03-01",
+                "Mar",
+                3,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-04-01",
+                "Apr",
+                4,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-05-01",
+                "May",
+                5,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-06-01",
+                "Jun",
+                6,
+                "Q2",
+                2026
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Calendar\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "department_course",
+            "fromTable": "Department",
+            "fromColumn": "department_id",
+            "toTable": "Course",
+            "toColumn": "department_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "course_enrollment",
+            "fromTable": "Course",
+            "fromColumn": "course_id",
+            "toTable": "Enrollment",
+            "toColumn": "course_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "student_enrollment",
+            "fromTable": "Student",
+            "fromColumn": "student_id",
+            "toTable": "Enrollment",
+            "toColumn": "student_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "student_attendance",
+            "fromTable": "Student",
+            "fromColumn": "student_id",
+            "toTable": "Attendance",
+            "toColumn": "student_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "calendar_attendance",
+            "fromTable": "Calendar",
+            "fromColumn": "Date",
+            "toTable": "Attendance",
+            "toColumn": "Date",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          }
+        ],
+        "measures": [
+          {
+            "id": "m_total_students",
+            "name": "Total Students",
+            "table": "Measures",
+            "dax": "DISTINCTCOUNT(Student[student_id])",
+            "format": "0",
+            "folder": "Enrollment KPIs"
+          },
+          {
+            "id": "m_avg_score",
+            "name": "Average Score",
+            "table": "Measures",
+            "dax": "AVERAGE(Enrollment[score])",
+            "format": "0.0",
+            "folder": "Academic KPIs"
+          },
+          {
+            "id": "m_attendance",
+            "name": "Attendance %",
+            "table": "Measures",
+            "dax": "AVERAGE(Attendance[attendance_pct]) / 100",
+            "format": "0.0%",
+            "folder": "Attendance KPIs"
+          },
+          {
+            "id": "m_at_risk",
+            "name": "At Risk Students",
+            "table": "Measures",
+            "dax": "CALCULATE([Total Students], Student[risk_status] = \"At Risk\")",
+            "format": "0",
+            "folder": "Student Risk"
+          },
+          {
+            "id": "m_enrollments",
+            "name": "Total Enrollments",
+            "table": "Measures",
+            "dax": "COUNTROWS(Enrollment)",
+            "format": "0",
+            "folder": "Enrollment KPIs"
+          },
+          {
+            "id": "m_high",
+            "name": "High Performers",
+            "table": "Measures",
+            "dax": "CALCULATE(DISTINCTCOUNT(Enrollment[student_id]), Enrollment[score] >= 90)",
+            "format": "0",
+            "folder": "Academic KPIs"
+          }
+        ],
+        "calculatedColumns": [
+          {
+            "table": "Enrollment",
+            "name": "Performance Band",
+            "dax": "IF(Enrollment[score]>=90,\"Excellent\",IF(Enrollment[score]>=80,\"Good\",\"Needs Support\"))"
+          }
+        ],
         "calculatedTables": [],
         "pages": [
           {
             "id": "page1",
-            "name": "Page 1",
+            "name": "Executive Overview",
             "hidden": false,
-            "visuals": [],
+            "visuals": [
+              {
+                "id": "kpiStudents",
+                "type": "card",
+                "title": "Total Students",
+                "x": 18,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "8"
+                }
+              },
+              {
+                "id": "kpiScore",
+                "type": "card",
+                "title": "Average Score",
+                "x": 246,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "88.7"
+                }
+              },
+              {
+                "id": "kpiAttendance",
+                "type": "card",
+                "title": "Attendance %",
+                "x": 474,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "91.1%"
+                }
+              },
+              {
+                "id": "kpiRisk",
+                "type": "card",
+                "title": "At Risk Students",
+                "x": 702,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "2"
+                }
+              },
+              {
+                "id": "scoreByDept",
+                "type": "clusteredColumn",
+                "title": "Average Score by Department",
+                "x": 18,
+                "y": 120,
+                "w": 445,
+                "h": 205,
+                "data": {
+                  "categories": [
+                    "CS",
+                    "Business",
+                    "GIS",
+                    "Data Science"
+                  ],
+                  "values": [
+                    88,
+                    74,
+                    89,
+                    95
+                  ]
+                }
+              },
+              {
+                "id": "attendanceTrend",
+                "type": "line",
+                "title": "Attendance Trend",
+                "x": 480,
+                "y": 120,
+                "w": 432,
+                "h": 205,
+                "data": {
+                  "categories": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun"
+                  ],
+                  "values": [
+                    89,
+                    90,
+                    92,
+                    91,
+                    93,
+                    94
+                  ]
+                }
+              },
+              {
+                "id": "semesterSlicer",
+                "type": "slicer",
+                "title": "Semester",
+                "x": 18,
+                "y": 345,
+                "w": 205,
+                "h": 165,
+                "data": {
+                  "items": [
+                    {
+                      "label": "Spring 2026",
+                      "selected": true
+                    },
+                    {
+                      "label": "Fall 2025",
+                      "selected": false
+                    },
+                    {
+                      "label": "Spring 2025",
+                      "selected": false
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "gradeMix",
+                "type": "donut",
+                "title": "Grade Distribution",
+                "x": 240,
+                "y": 345,
+                "w": 205,
+                "h": 165,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C"
+                  ],
+                  "values": [
+                    5,
+                    3,
+                    2
+                  ]
+                }
+              },
+              {
+                "id": "topStudents",
+                "type": "matrix",
+                "title": "Top Student Performance",
+                "x": 462,
+                "y": 345,
+                "w": 450,
+                "h": 165,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "Course",
+                    "Score"
+                  ],
+                  "rows": [
+                    [
+                      "Maya Chen",
+                      "Java Programming",
+                      97
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "Data Visualization",
+                      95
+                    ],
+                    [
+                      "Asha Patel",
+                      "Java Programming",
+                      94
+                    ],
+                    [
+                      "Isha Rao",
+                      "GIS Applications",
+                      90
+                    ]
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page2",
+            "name": "Student Performance",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "scoreScatter",
+                "type": "scatter",
+                "title": "Score vs Attendance",
+                "x": 18,
+                "y": 20,
+                "w": 440,
+                "h": 225,
+                "data": {
+                  "points": [
+                    [
+                      94,
+                      96
+                    ],
+                    [
+                      78,
+                      82
+                    ],
+                    [
+                      97,
+                      99
+                    ],
+                    [
+                      88,
+                      93
+                    ],
+                    [
+                      95,
+                      98
+                    ],
+                    [
+                      74,
+                      76
+                    ],
+                    [
+                      90,
+                      94
+                    ],
+                    [
+                      84,
+                      91
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "courseScores",
+                "type": "clusteredColumn",
+                "title": "Average Score by Course",
+                "x": 480,
+                "y": 20,
+                "w": 432,
+                "h": 225,
+                "data": {
+                  "categories": [
+                    "Java",
+                    "Database",
+                    "Business",
+                    "GIS",
+                    "Data Viz"
+                  ],
+                  "values": [
+                    95.5,
+                    82.7,
+                    74,
+                    89,
+                    93
+                  ]
+                }
+              },
+              {
+                "id": "studentTable",
+                "type": "table",
+                "title": "Student Detail",
+                "x": 18,
+                "y": 270,
+                "w": 610,
+                "h": 235,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "City",
+                    "Risk",
+                    "Score"
+                  ],
+                  "rows": [
+                    [
+                      "Asha Patel",
+                      "Austin",
+                      "On Track",
+                      94
+                    ],
+                    [
+                      "Ravi Kumar",
+                      "Round Rock",
+                      "At Risk",
+                      78
+                    ],
+                    [
+                      "Maya Chen",
+                      "Cedar Park",
+                      "High Performer",
+                      97
+                    ],
+                    [
+                      "Noah Williams",
+                      "Leander",
+                      "On Track",
+                      88
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "Austin",
+                      "High Performer",
+                      95
+                    ],
+                    [
+                      "Ethan Brown",
+                      "Georgetown",
+                      "At Risk",
+                      74
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "riskSlicer",
+                "type": "slicer",
+                "title": "Risk Status",
+                "x": 650,
+                "y": 270,
+                "w": 262,
+                "h": 235,
+                "data": {
+                  "items": [
+                    {
+                      "label": "High Performer"
+                    },
+                    {
+                      "label": "On Track"
+                    },
+                    {
+                      "label": "At Risk"
+                    }
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page3",
+            "name": "Attendance",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "attCard",
+                "type": "card",
+                "title": "Current Attendance",
+                "x": 18,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "91.1%"
+                }
+              },
+              {
+                "id": "presentCard",
+                "type": "card",
+                "title": "Students Present",
+                "x": 298,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "7 / 8"
+                }
+              },
+              {
+                "id": "absenceCard",
+                "type": "card",
+                "title": "Students Below 85%",
+                "x": 578,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "2"
+                }
+              },
+              {
+                "id": "monthlyAttendance",
+                "type": "line",
+                "title": "Monthly Attendance %",
+                "x": 18,
+                "y": 130,
+                "w": 550,
+                "h": 230,
+                "data": {
+                  "categories": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun"
+                  ],
+                  "values": [
+                    89,
+                    90,
+                    92,
+                    91,
+                    93,
+                    94
+                  ]
+                }
+              },
+              {
+                "id": "attendanceByStudent",
+                "type": "clusteredBar",
+                "title": "Attendance by Student",
+                "x": 590,
+                "y": 130,
+                "w": 322,
+                "h": 230,
+                "data": {
+                  "categories": [
+                    "Asha",
+                    "Ravi",
+                    "Maya",
+                    "Noah",
+                    "Sofia",
+                    "Ethan",
+                    "Isha",
+                    "Liam"
+                  ],
+                  "values": [
+                    96,
+                    82,
+                    99,
+                    93,
+                    98,
+                    76,
+                    94,
+                    91
+                  ]
+                }
+              },
+              {
+                "id": "attendanceTable",
+                "type": "matrix",
+                "title": "Attendance Detail",
+                "x": 18,
+                "y": 380,
+                "w": 894,
+                "h": 130,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "Attendance %",
+                    "Status"
+                  ],
+                  "rows": [
+                    [
+                      "Maya Chen",
+                      "99%",
+                      "Excellent"
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "98%",
+                      "Excellent"
+                    ],
+                    [
+                      "Asha Patel",
+                      "96%",
+                      "Good"
+                    ],
+                    [
+                      "Ethan Brown",
+                      "76%",
+                      "Needs Attention"
+                    ]
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page4",
+            "name": "Visual Gallery",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "g1",
+                "type": "clusteredColumn",
+                "title": "Column",
+                "x": 18,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g2",
+                "type": "line",
+                "title": "Line",
+                "x": 250,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g3",
+                "type": "donut",
+                "title": "Donut",
+                "x": 482,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g4",
+                "type": "scatter",
+                "title": "Scatter",
+                "x": 714,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g5",
+                "type": "funnel",
+                "title": "Funnel",
+                "x": 18,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g6",
+                "type": "gauge",
+                "title": "Gauge",
+                "x": 250,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g7",
+                "type": "card",
+                "title": "Card",
+                "x": 482,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "value": "88.7"
+                }
+              },
+              {
+                "id": "g8",
+                "type": "slicer",
+                "title": "Slicer",
+                "x": 714,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "items": [
+                    {
+                      "label": "Java"
+                    },
+                    {
+                      "label": "Database"
+                    },
+                    {
+                      "label": "GIS"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "g9",
+                "type": "table",
+                "title": "Table",
+                "x": 18,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "columns": [
+                    "Category",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "A",
+                      42
+                    ],
+                    [
+                      "B",
+                      35
+                    ],
+                    [
+                      "C",
+                      23
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "g10",
+                "type": "matrix",
+                "title": "Matrix",
+                "x": 250,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "columns": [
+                    "Category",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "A",
+                      42
+                    ],
+                    [
+                      "B",
+                      35
+                    ],
+                    [
+                      "C",
+                      23
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "g11",
+                "type": "decomposition",
+                "title": "Decomposition",
+                "x": 482,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g12",
+                "type": "keyInfluencers",
+                "title": "Key influencers",
+                "x": 714,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page5",
+            "name": "Student Drillthrough",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "detailCard",
+                "type": "card",
+                "title": "Selected Student",
+                "x": 25,
+                "y": 20,
+                "w": 300,
+                "h": 90,
+                "data": {
+                  "value": "Asha Patel"
+                }
+              },
+              {
+                "id": "detailTable",
+                "type": "table",
+                "title": "Enrollment History",
+                "x": 25,
+                "y": 130,
+                "w": 880,
+                "h": 350,
+                "data": {
+                  "columns": [
+                    "Semester",
+                    "Course",
+                    "Score",
+                    "Grade"
+                  ],
+                  "rows": [
+                    [
+                      "Spring 2026",
+                      "Java Programming",
+                      94,
+                      "A"
+                    ],
+                    [
+                      "Fall 2025",
+                      "Data Visualization",
+                      91,
+                      "A"
+                    ]
+                  ]
+                }
+              }
+            ],
             "background": "#ffffff",
             "wallpaper": "#d4d4d4",
             "size": {
@@ -1417,14 +3464,62 @@ window.COURSE = {
           }
         ],
         "activePageId": "page1",
+        "selectedVisualId": "scoreByDept",
+        "selectedTable": "Student",
+        "selectedQuery": "Student",
         "filters": {
-          "report": [],
-          "page": {},
+          "report": [
+            {
+              "field": "Calendar[Year]",
+              "value": "2026"
+            }
+          ],
+          "page": {
+            "page1": []
+          },
           "visual": {}
         },
-        "bookmarks": [],
-        "interactions": [],
-        "hierarchies": [],
+        "bookmarks": [
+          {
+            "id": "bmExecutive",
+            "name": "Executive Snapshot",
+            "snapshot": {
+              "activePageId": "page1",
+              "selectedVisualId": "scoreByDept"
+            }
+          },
+          {
+            "id": "bmRisk",
+            "name": "At Risk Students",
+            "snapshot": {
+              "activePageId": "page2",
+              "selectedVisualId": "studentTable"
+            }
+          }
+        ],
+        "interactions": [
+          {
+            "source": "semesterSlicer",
+            "target": "scoreByDept",
+            "mode": "filter"
+          },
+          {
+            "source": "riskSlicer",
+            "target": "studentTable",
+            "mode": "filter"
+          }
+        ],
+        "hierarchies": [
+          {
+            "id": "academicHierarchy",
+            "name": "Academic Hierarchy",
+            "table": "Course",
+            "levels": [
+              "department_id",
+              "course_name"
+            ]
+          }
+        ],
         "performance": {
           "recording": false,
           "events": []
@@ -1437,29 +3532,63 @@ window.COURSE = {
           "enabled": false,
           "visuals": []
         },
+        "powerQueryOpen": false,
+        "formulaBar": true,
+        "columnQuality": true,
+        "columnDistribution": false,
+        "columnProfile": false,
+        "serviceOpen": false,
         "daxQueries": [
           {
             "id": "dax1",
-            "name": "Query 1",
-            "text": "",
-            "results": []
+            "name": "Course Performance",
+            "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Course[course_name],\n    \"Average Score\", [Average Score]\n)",
+            "results": [
+              [
+                "Course",
+                "Average Score"
+              ],
+              [
+                "Java Programming",
+                "95.5"
+              ],
+              [
+                "Database Systems",
+                "82.7"
+              ],
+              [
+                "Business Analytics",
+                "74.0"
+              ],
+              [
+                "GIS Applications",
+                "89.0"
+              ],
+              [
+                "Data Visualization",
+                "93.0"
+              ]
+            ]
           }
         ],
         "activeDaxQueryId": "dax1",
         "tmdlScripts": [
           {
             "id": "tmdl1",
-            "name": "TMDL Script 1",
-            "text": "",
-            "preview": "No pending changes."
+            "name": "Student Model",
+            "text": "createOrReplace\n\ttable Student\n\t\tcolumn student_id\n\t\t\tdataType: int64\n\t\tcolumn 'Student Name'\n\t\t\tdataType: string\n\n\tmeasure 'Total Students' = DISTINCTCOUNT(Student[student_id])",
+            "preview": "Model is synchronized. No pending changes."
           }
         ],
         "activeTmdlScriptId": "tmdl1",
+        "modelExplorerOpen": true,
         "openPanes": [
           "filters",
           "visualizations",
           "data"
-        ]
+        ],
+        "ribbonCollapsed": false,
+        "keytips": false
       }
     }
   },
@@ -4068,22 +6197,33 @@ window.COURSE = {
       ]
     },
     {
-      "title": "10: Power BI Desktop Analytics Workflow",
+      "title": "10: Power BI Desktop Feature-Rich Analytics Workflow",
       "steps": [
         {
-          "title": "Create a blank Student Analytics report",
-          "why": "Power BI Desktop lo fresh PBIX report create chesi analytics workflow start chestam.",
+          "title": "Open the Campus Performance Analytics PBIX",
+          "why": "Blank report badulu already-developed campus dashboard ni open chesi realistic Power BI project madhyalo start chestam.",
           "software": "powerbi",
           "action": {
-            "action": "newBlankReport",
+            "action": "openReport",
             "data": {
-              "name": "Student Analytics"
+              "report": "Campus Performance Analytics"
             }
           }
         },
         {
-          "title": "Open Get Data from the Home ribbon",
-          "why": "Student application data ni report loki teesukuraavadaniki Get Data experience open chestam.",
+          "title": "Inspect the populated Executive Overview page",
+          "why": "Executive Overview lo KPI cards, department chart, attendance trend, slicer, donut mariyu matrix already populated unnayi.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectPage",
+            "data": {
+              "pageId": "page1"
+            }
+          }
+        },
+        {
+          "title": "Open Get Data without destroying the report",
+          "why": "Existing project lo new source add cheyyadam ela untundo Get Data surface ni inspect chestam.",
           "software": "powerbi",
           "action": {
             "action": "openGetData",
@@ -4091,8 +6231,8 @@ window.COURSE = {
           }
         },
         {
-          "title": "Choose the SQL Server connector",
-          "why": "Application database SQL Server lo undi kabatti matching connector ni select chestam.",
+          "title": "Select the SQL Server connector",
+          "why": "Campus model source SQL Server kabatti connector selection state ni demonstrate chestam.",
           "software": "powerbi",
           "action": {
             "action": "selectConnector",
@@ -4102,8 +6242,8 @@ window.COURSE = {
           }
         },
         {
-          "title": "Connect to the JavaPracticeDb source",
-          "why": "Power BI source connection details set chesi database metadata fetch cheyyadaniki ready chestam.",
+          "title": "Inspect the existing JavaPracticeDb connection",
+          "why": "Existing report source connection fields and Import mode ni realistic dialog lo inspect chestam.",
           "software": "powerbi",
           "action": {
             "action": "connectDataSource",
@@ -4114,18 +6254,30 @@ window.COURSE = {
               },
               "items": [
                 {
-                  "name": "Student"
+                  "name": "Department"
                 },
                 {
                   "name": "Course"
+                },
+                {
+                  "name": "Student"
+                },
+                {
+                  "name": "Enrollment"
+                },
+                {
+                  "name": "Attendance"
+                },
+                {
+                  "name": "Calendar"
                 }
               ]
             }
           }
         },
         {
-          "title": "Open Navigator and inspect source tables",
-          "why": "Navigator lo available tables preview chesi report ki kavalsina entities select chestam.",
+          "title": "Open Navigator for the campus model",
+          "why": "Navigator tree lo six source tables mariyu preview surface ni inspect chestam.",
           "software": "powerbi",
           "action": {
             "action": "openNavigator",
@@ -4133,292 +6285,46 @@ window.COURSE = {
           }
         },
         {
-          "title": "Send Student and Course to Power Query",
-          "why": "Direct load badulu Transform Data route use chesi data cleaning steps demonstrate chestam.",
+          "title": "Preview the Student source table",
+          "why": "Student table rows/columns Navigator preview lo ela kanipistayo chustam.",
           "software": "powerbi",
           "action": {
-            "action": "transformNavigatorSelection",
+            "action": "previewNavigatorItem",
             "data": {
-              "queries": [
-                {
-                  "id": "Student",
-                  "name": "Student",
-                  "columns": [
-                    {
-                      "name": "id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "name",
-                      "type": "Text"
-                    },
-                    {
-                      "name": "course_id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "score",
-                      "type": "Whole Number"
-                    }
-                  ],
-                  "rows": [
-                    [
-                      1,
-                      "Asha",
-                      101,
-                      92
-                    ],
-                    [
-                      2,
-                      "Ravi",
-                      102,
-                      84
-                    ],
-                    [
-                      3,
-                      "Maya",
-                      101,
-                      96
-                    ]
-                  ],
-                  "steps": [
-                    {
-                      "name": "Source",
-                      "action": "source"
-                    }
-                  ]
-                },
-                {
-                  "id": "Course",
-                  "name": "Course",
-                  "columns": [
-                    {
-                      "name": "id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "course_name",
-                      "type": "Text"
-                    }
-                  ],
-                  "rows": [
-                    [
-                      101,
-                      "Java"
-                    ],
-                    [
-                      102,
-                      "Database"
-                    ]
-                  ],
-                  "steps": [
-                    {
-                      "name": "Source",
-                      "action": "source"
-                    }
-                  ]
-                }
-              ]
+              "name": "Student"
             }
           }
         },
         {
-          "title": "Focus the Student query in Power Query",
-          "why": "Queries pane nundi Student dataset select chesi transformations exact table meeda apply chestam.",
+          "title": "Close Navigator and keep the current model",
+          "why": "Existing model ni disturb cheyyakunda Navigator close chestam.",
           "software": "powerbi",
           "action": {
-            "action": "openPowerQuery",
-            "data": {
-              "query": "Student"
-            }
-          }
-        },
-        {
-          "title": "Rename the student name column",
-          "why": "Report-friendly naming kosam raw name field ni Student Name ga rename chestam; Applied Steps lo transformation persist avuthundi.",
-          "software": "powerbi",
-          "action": {
-            "action": "renameColumn",
-            "data": {
-              "query": "Student",
-              "column": "name",
-              "newName": "Student Name",
-              "stepName": "Renamed Columns"
-            }
-          }
-        },
-        {
-          "title": "Close and Apply transformed data",
-          "why": "Power Query changes ni semantic model ki commit chesi report/model views lo tables available cheyyadam.",
-          "software": "powerbi",
-          "action": {
-            "action": "closeAndApply",
-            "data": {
-              "tables": [
-                {
-                  "name": "Student",
-                  "columns": [
-                    {
-                      "name": "id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "Student Name",
-                      "type": "Text"
-                    },
-                    {
-                      "name": "course_id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "score",
-                      "type": "Whole Number"
-                    }
-                  ],
-                  "rows": [
-                    [
-                      1,
-                      "Asha",
-                      101,
-                      92
-                    ],
-                    [
-                      2,
-                      "Ravi",
-                      102,
-                      84
-                    ],
-                    [
-                      3,
-                      "Maya",
-                      101,
-                      96
-                    ]
-                  ]
-                },
-                {
-                  "name": "Course",
-                  "columns": [
-                    {
-                      "name": "id",
-                      "type": "Whole Number"
-                    },
-                    {
-                      "name": "course_name",
-                      "type": "Text"
-                    }
-                  ],
-                  "rows": [
-                    [
-                      101,
-                      "Java"
-                    ],
-                    [
-                      102,
-                      "Database"
-                    ]
-                  ]
-                }
-              ]
-            }
-          }
-        },
-        {
-          "title": "Open Model view",
-          "why": "Student mariyu Course tables relationship visually inspect cheyyadaniki Model view use chestam.",
-          "software": "powerbi",
-          "action": {
-            "action": "openModelView",
+            "action": "cancelNavigator",
             "data": {}
           }
         },
         {
-          "title": "Create the Student-to-Course relationship",
-          "why": "course_id foreign key ni Course id tho one-to-many semantic relationship ga connect chestam.",
+          "title": "Inspect recent data sources",
+          "why": "Power BI recent sources experience lo JavaPracticeDb source ni verify chestam.",
           "software": "powerbi",
           "action": {
-            "action": "addRelationship",
-            "data": {
-              "relationship": {
-                "id": "student_course",
-                "fromTable": "Course",
-                "fromColumn": "id",
-                "toTable": "Student",
-                "toColumn": "course_id",
-                "cardinality": "1:*",
-                "crossFilter": "Single",
-                "active": true
-              }
-            }
-          }
-        },
-        {
-          "title": "Open DAX Query View",
-          "why": "Current Power BI DAX Query View lo semantic model ni query code tho inspect cheyyachu; simulator lo dedicated modern code surface ni demonstrate chestam.",
-          "software": "powerbi",
-          "action": {
-            "action": "openDaxQueryView",
+            "action": "openRecentSources",
             "data": {}
           }
         },
         {
-          "title": "Type a DAX query for student scores",
-          "why": "DAX query editor lo EVALUATE statement type chesi model data ni code-based ga verify chestam.",
+          "title": "Inspect data source settings",
+          "why": "Credentials/source configuration entry point ni inspect chestam.",
           "software": "powerbi",
           "action": {
-            "action": "typeDaxQuery",
-            "data": {
-              "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Course[course_name],\n    \"Average Score\", AVERAGE(Student[score])\n)"
-            }
-          }
-        },
-        {
-          "title": "Run the DAX query and inspect results",
-          "why": "DAX query execute chesi Java and Database course score summary result grid lo verify chestam.",
-          "software": "powerbi",
-          "action": {
-            "action": "runDaxQuery",
-            "data": {
-              "results": [
-                [
-                  "Course",
-                  "Average Score"
-                ],
-                [
-                  "Java",
-                  "94"
-                ],
-                [
-                  "Database",
-                  "84"
-                ]
-              ]
-            }
-          }
-        },
-        {
-          "title": "Open TMDL View",
-          "why": "Modern Power BI semantic model metadata ni code form lo inspect/edit cheyyadaniki TMDL View open chestam.",
-          "software": "powerbi",
-          "action": {
-            "action": "openTmdlView",
+            "action": "openDataSourceSettings",
             "data": {}
           }
         },
         {
-          "title": "Script the Student table to TMDL",
-          "why": "Model object ni TMDL script ga generate chesi future metadata changes reusable code form lo demonstrate chestam.",
-          "software": "powerbi",
-          "action": {
-            "action": "scriptTmdlObject",
-            "data": {
-              "table": "Student"
-            }
-          }
-        },
-        {
-          "title": "Return to Report view",
-          "why": "Data shaping, relationship, DAX and TMDL verification complete ayyaka report authoring canvas ki return avutham.",
+          "title": "Return to Executive Overview",
+          "why": "Populated dashboard canvas ki return ayi visual authoring features explore chestam.",
           "software": "powerbi",
           "action": {
             "action": "openReportView",
@@ -4426,30 +6332,901 @@ window.COURSE = {
           }
         },
         {
-          "title": "Add the course performance visual",
-          "why": "Final report canvas lo transformed/modelled data ni clustered column visual ga present chesi end-to-end Power BI workflow complete chestam.",
+          "title": "Select the Average Score by Department chart",
+          "why": "Visual select ayyaka resize handles, Visualizations pane mariyu formatting context active avuthayi.",
           "software": "powerbi",
           "action": {
-            "action": "addVisual",
+            "action": "selectVisual",
             "data": {
-              "id": "coursePerformance",
-              "type": "clusteredColumn",
-              "title": "Average Student Score by Course",
-              "x": 90,
-              "y": 75,
-              "w": 520,
-              "h": 290,
-              "data": {
-                "categories": [
-                  "Java",
-                  "Database"
+              "id": "scoreByDept"
+            }
+          }
+        },
+        {
+          "title": "Open the modern on-object Build visual menu",
+          "why": "Selected chart meeda direct build/format affordance ni display chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openOnObjectBuild",
+            "data": {
+              "id": "scoreByDept"
+            }
+          }
+        },
+        {
+          "title": "Open the Format visual surface",
+          "why": "Selected chart formatting options ni Visualizations pane lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openFormatPane",
+            "data": {
+              "id": "scoreByDept"
+            }
+          }
+        },
+        {
+          "title": "Show the selected visual as a data table",
+          "why": "Chart underlying values ni table form lo inspect cheyyadam demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "showVisualTable",
+            "data": {
+              "id": "scoreByDept"
+            }
+          }
+        },
+        {
+          "title": "Select the Semester slicer",
+          "why": "Slicer visual ni select chesi report interactions demonstrate cheyyadaniki prepare chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "semesterSlicer"
+            }
+          }
+        },
+        {
+          "title": "Filter the report to Spring 2026",
+          "why": "Slicer selection cross-filter state ni set chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addSlicerSelection",
+            "data": {
+              "id": "semesterSlicer",
+              "field": "Enrollment[semester]",
+              "value": "Spring 2026"
+            }
+          }
+        },
+        {
+          "title": "Apply a report-level 2026 filter",
+          "why": "Filters pane lo report-level filtering concept ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setReportFilter",
+            "data": {
+              "field": "Calendar[Year]",
+              "value": "2026"
+            }
+          }
+        },
+        {
+          "title": "Open the Selection pane",
+          "why": "Canvas objects listing/visibility workflow ni Selection pane lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openSelectionPane",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create an Executive Snapshot bookmark",
+          "why": "Current report state ni reusable bookmark ga store chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addBookmark",
+            "data": {
+              "id": "bmExecLive",
+              "name": "Executive Snapshot - Live"
+            }
+          }
+        },
+        {
+          "title": "Open the Bookmarks pane",
+          "why": "Saved navigation/report states ni Bookmarks pane lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openBookmarksPane",
+            "data": {}
+          }
+        },
+        {
+          "title": "Apply the Executive Snapshot bookmark",
+          "why": "Stored report page/filter state ni restore chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "applyBookmark",
+            "data": {
+              "id": "bmExecutive"
+            }
+          }
+        },
+        {
+          "title": "Open the Student Performance page",
+          "why": "Scatter chart, course comparison, student detail table mariyu risk slicer unna second report page ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectPage",
+            "data": {
+              "pageId": "page2"
+            }
+          }
+        },
+        {
+          "title": "Select Average Score by Course",
+          "why": "Course comparison visual ni select chesi visual-type and field-well operations demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "courseScores"
+            }
+          }
+        },
+        {
+          "title": "Change the course chart to clustered bar",
+          "why": "Same data ni different visual encoding lo show cheyyadam demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setVisualType",
+            "data": {
+              "id": "courseScores",
+              "type": "clusteredBar"
+            }
+          }
+        },
+        {
+          "title": "Add course name to the axis field well",
+          "why": "Visual field well binding ni explicitly add chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addFieldToWell",
+            "data": {
+              "id": "courseScores",
+              "well": "x",
+              "field": "Course[course_name]"
+            }
+          }
+        },
+        {
+          "title": "Add Average Score to the values field well",
+          "why": "Measure ni values well ki bind chesi visual construction pattern demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addFieldToWell",
+            "data": {
+              "id": "courseScores",
+              "well": "values",
+              "field": "Measures[Average Score]"
+            }
+          }
+        },
+        {
+          "title": "Apply conditional formatting to course scores",
+          "why": "Data-driven formatting state ni selected visual meeda apply chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setConditionalFormatting",
+            "data": {
+              "id": "courseScores",
+              "field": "Measures[Average Score]",
+              "rule": "color scale"
+            }
+          }
+        },
+        {
+          "title": "Add a report tooltip to the course chart",
+          "why": "Hover context kosam tooltip field ni selected visual ki attach chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setVisualTooltip",
+            "data": {
+              "id": "courseScores",
+              "fields": [
+                "Course[course_name]",
+                "Measures[Average Score]"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Configure slicer-to-table interaction",
+          "why": "Risk Status slicer Student Detail table ni filter cheyyela visual interaction set chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setInteraction",
+            "data": {
+              "source": "riskSlicer",
+              "target": "studentTable",
+              "mode": "filter"
+            }
+          }
+        },
+        {
+          "title": "Drill down on course performance",
+          "why": "Hierarchy-enabled visual navigation lo next detail level ki drill chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "drillDown",
+            "data": {
+              "id": "courseScores"
+            }
+          }
+        },
+        {
+          "title": "Drill back up",
+          "why": "Previous hierarchy level ki return avutham.",
+          "software": "powerbi",
+          "action": {
+            "action": "drillUp",
+            "data": {
+              "id": "courseScores"
+            }
+          }
+        },
+        {
+          "title": "Add a trend line to Score vs Attendance",
+          "why": "Scatter visual analytics pane concept ni trend line tho demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addTrendLine",
+            "data": {
+              "id": "scoreScatter"
+            }
+          }
+        },
+        {
+          "title": "Inspect the Analytics pane",
+          "why": "Trend/forecast/constant-line tools ekkada untayo pane surface ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openAnalyticsPane",
+            "data": {
+              "id": "scoreScatter"
+            }
+          }
+        },
+        {
+          "title": "Open the Visual Gallery page",
+          "why": "Common Power BI chart/table/slicer/AI visual types one page lo side-by-side inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectPage",
+            "data": {
+              "pageId": "page4"
+            }
+          }
+        },
+        {
+          "title": "Select the donut visual",
+          "why": "Part-to-whole chart selection and context ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g3"
+            }
+          }
+        },
+        {
+          "title": "Select the scatter visual",
+          "why": "Relationship/distribution visual type ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g4"
+            }
+          }
+        },
+        {
+          "title": "Select the funnel visual",
+          "why": "Stage-conversion style visualization ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g5"
+            }
+          }
+        },
+        {
+          "title": "Select the gauge visual",
+          "why": "Target/progress visualization ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g6"
+            }
+          }
+        },
+        {
+          "title": "Select the table visual",
+          "why": "Tabular detail visual ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g9"
+            }
+          }
+        },
+        {
+          "title": "Select the matrix visual",
+          "why": "Pivot-style matrix visual ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g10"
+            }
+          }
+        },
+        {
+          "title": "Select the decomposition tree",
+          "why": "AI-assisted decomposition visual surface ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g11"
+            }
+          }
+        },
+        {
+          "title": "Select Key Influencers",
+          "why": "AI explanatory visual surface ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectVisual",
+            "data": {
+              "id": "g12"
+            }
+          }
+        },
+        {
+          "title": "Open Table view for Student",
+          "why": "Semantic model lo raw Student rows/columns ni Table view lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openDataView",
+            "data": {
+              "table": "Student"
+            }
+          }
+        },
+        {
+          "title": "Sort Student Name ascending",
+          "why": "Table view grid lo column sorting behavior ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "sortDataColumn",
+            "data": {
+              "table": "Student",
+              "column": "Student Name",
+              "direction": "asc"
+            }
+          }
+        },
+        {
+          "title": "Filter to At Risk students",
+          "why": "Table view column filtering state ni risk_status meeda apply chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "filterDataColumn",
+            "data": {
+              "table": "Student",
+              "column": "risk_status",
+              "value": "At Risk"
+            }
+          }
+        },
+        {
+          "title": "Mark City as a geographic category",
+          "why": "Field metadata lo City data category ni set chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setDataCategory",
+            "data": {
+              "table": "Student",
+              "column": "city",
+              "value": "City"
+            }
+          }
+        },
+        {
+          "title": "Inspect Enrollment data",
+          "why": "Fact-style Enrollment table grid ni Table view lo switch chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectDataTable",
+            "data": {
+              "table": "Enrollment"
+            }
+          }
+        },
+        {
+          "title": "Set Score default summarization to Average",
+          "why": "Numeric score field reporting default ni Sum badulu Average ga set chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setSummarization",
+            "data": {
+              "table": "Enrollment",
+              "column": "score",
+              "value": "Average"
+            }
+          }
+        },
+        {
+          "title": "Open Model view with all six tables",
+          "why": "Department, Course, Student, Enrollment, Attendance, Calendar relationship diagram ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openModelView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Manage Relationships",
+          "why": "Five active one-to-many relationships list/dialog ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openManageRelationships",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create a Course hierarchy",
+          "why": "Department-to-course drill hierarchy ni semantic model lo create chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "createHierarchy",
+            "data": {
+              "id": "courseHierarchy2",
+              "name": "Department > Course",
+              "table": "Course",
+              "levels": [
+                "department_id",
+                "course_name"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Mark Calendar as the date table",
+          "why": "Time intelligence kosam Calendar semantic role ni explicitly mark chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "markDateTable",
+            "data": {
+              "table": "Calendar",
+              "value": true
+            }
+          }
+        },
+        {
+          "title": "Hide Student gender from report authors",
+          "why": "Model field visibility setting ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "hideField",
+            "data": {
+              "table": "Student",
+              "field": "gender",
+              "value": true
+            }
+          }
+        },
+        {
+          "title": "Confirm Import storage mode",
+          "why": "Table storage mode behavior ni semantic model lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setTableStorageMode",
+            "data": {
+              "table": "Enrollment",
+              "mode": "Import"
+            }
+          }
+        },
+        {
+          "title": "Create a Pass Rate DAX measure",
+          "why": "Modeling workflow lo reusable measure ni create chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "createMeasure",
+            "data": {
+              "id": "m_pass_rate",
+              "name": "Pass Rate",
+              "table": "Measures",
+              "dax": "DIVIDE(CALCULATE(COUNTROWS(Enrollment), Enrollment[score] >= 70), COUNTROWS(Enrollment))",
+              "format": "0.0%"
+            }
+          }
+        },
+        {
+          "title": "Format Pass Rate as a percentage",
+          "why": "Measure display formatting ni percentage style ki set chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "formatMeasure",
+            "data": {
+              "name": "Pass Rate",
+              "format": "0.0%"
+            }
+          }
+        },
+        {
+          "title": "Open DAX Query View",
+          "why": "Semantic model meeda DAX query authoring surface, Model explorer mariyu Results pane ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openDaxQueryView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create a new DAX query tab",
+          "why": "Multiple DAX query tabs workflow ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "newDaxQuery",
+            "data": {
+              "id": "dax2",
+              "name": "At Risk Analysis"
+            }
+          }
+        },
+        {
+          "title": "Type an At Risk DAX query",
+          "why": "EVALUATE + SUMMARIZECOLUMNS query ni editor lo type chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "typeDaxQuery",
+            "data": {
+              "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Student[risk_status],\n    \"Students\", [Total Students],\n    \"Average Score\", [Average Score]\n)"
+            }
+          }
+        },
+        {
+          "title": "Run the DAX query",
+          "why": "Query results grid lo risk status summary rows ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "runDaxQuery",
+            "data": {
+              "results": [
+                [
+                  "Risk Status",
+                  "Students",
+                  "Average Score"
                 ],
-                "values": [
-                  94,
-                  84
+                [
+                  "At Risk",
+                  2,
+                  "76.0"
+                ],
+                [
+                  "On Track",
+                  4,
+                  "88.0"
+                ],
+                [
+                  "High Performer",
+                  2,
+                  "96.0"
                 ]
+              ]
+            }
+          }
+        },
+        {
+          "title": "Open TMDL View",
+          "why": "Semantic model metadata ni code-first TMDL editor lo inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openTmdlView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Script the Enrollment table to TMDL",
+          "why": "Fact table metadata/measure definition ni TMDL script ga generate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "scriptTmdlObject",
+            "data": {
+              "table": "Enrollment"
+            }
+          }
+        },
+        {
+          "title": "Preview TMDL changes",
+          "why": "Apply cheyyaka mundu semantic model changes validation/preview workflow ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "previewTmdl",
+            "data": {
+              "text": "Preview ready: Enrollment model changes validated with 0 errors."
+            }
+          }
+        },
+        {
+          "title": "Apply the TMDL script",
+          "why": "Validated TMDL metadata changes ni semantic model ki apply chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "applyTmdl",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Power Query Editor with existing queries",
+          "why": "Six existing queries, preview grid, formula bar mariyu Applied Steps unna real transformation workspace ni open chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openPowerQuery",
+            "data": {
+              "query": "Enrollment"
+            }
+          }
+        },
+        {
+          "title": "Select the Enrollment query",
+          "why": "Fact query transformation history and preview ni focus chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectQuery",
+            "data": {
+              "query": "Enrollment"
+            }
+          }
+        },
+        {
+          "title": "Show column quality indicators",
+          "why": "Valid/error/empty data quality diagnostics ni query preview context lo enable chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "toggleColumnQuality",
+            "data": {
+              "value": true
+            }
+          }
+        },
+        {
+          "title": "Show column distribution",
+          "why": "Distinct/value distribution profiling surface ni enable chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "toggleColumnDistribution",
+            "data": {
+              "value": true
+            }
+          }
+        },
+        {
+          "title": "Profile the Score column",
+          "why": "Score field distinct/unique/error statistics ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "profileColumn",
+            "data": {
+              "query": "Enrollment",
+              "column": "score",
+              "distinct": 10,
+              "unique": 8,
+              "empty": 0,
+              "error": 0
+            }
+          }
+        },
+        {
+          "title": "Add a Performance Group conditional column",
+          "why": "Power Query Add Column workflow lo score-based classification ni add chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "addConditionalColumn",
+            "data": {
+              "query": "Enrollment",
+              "name": "Performance Group",
+              "condition": {
+                "column": "score",
+                "operator": ">=",
+                "value": 90,
+                "then": "Excellent",
+                "else": "Standard"
               }
             }
+          }
+        },
+        {
+          "title": "Group enrollment rows by semester",
+          "why": "Power Query Group By transformation ni fact dataset meeda demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "groupBy",
+            "data": {
+              "query": "Enrollment",
+              "columns": [
+                "semester"
+              ],
+              "aggregation": "Count Rows"
+            }
+          }
+        },
+        {
+          "title": "Close and Apply the query work",
+          "why": "Power Query changes ni semantic model ki commit chesi report authoring environment ki return avutham.",
+          "software": "powerbi",
+          "action": {
+            "action": "closeAndApply",
+            "data": {}
+          }
+        },
+        {
+          "title": "Return to Executive Overview after modeling",
+          "why": "Transformed/modelled data tho populated dashboard ni malli inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectPage",
+            "data": {
+              "pageId": "page1"
+            }
+          }
+        },
+        {
+          "title": "Open Performance Analyzer",
+          "why": "Report visual render timings inspect cheyyadaniki Optimize workflow ni open chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openPerformanceAnalyzer",
+            "data": {}
+          }
+        },
+        {
+          "title": "Start performance recording",
+          "why": "Visual query/render timing capture ni start chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "startPerformanceRecording",
+            "data": {}
+          }
+        },
+        {
+          "title": "Refresh all dashboard visuals",
+          "why": "Recording active unna appudu visuals ni refresh chesi timing events collect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "refreshVisuals",
+            "data": {
+              "durationBase": 31
+            }
+          }
+        },
+        {
+          "title": "Stop performance recording",
+          "why": "Captured timing results ni freeze chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "stopPerformanceRecording",
+            "data": {}
+          }
+        },
+        {
+          "title": "Copy a visual DAX query",
+          "why": "Performance Analyzer nundi underlying DAX query copy workflow ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "copyPerformanceQuery",
+            "data": {
+              "query": "EVALUATE SUMMARIZECOLUMNS(Course[course_name], \"Average Score\", [Average Score])"
+            }
+          }
+        },
+        {
+          "title": "Open Mobile layout",
+          "why": "Phone-specific report layout authoring surface ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openMobileLayout",
+            "data": {}
+          }
+        },
+        {
+          "title": "Position the Total Students KPI for mobile",
+          "why": "Desktop visual ni mobile canvas position list lo place chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "setMobileVisualPosition",
+            "data": {
+              "id": "kpiStudents",
+              "x": 0,
+              "y": 0,
+              "w": 320,
+              "h": 100
+            }
+          }
+        },
+        {
+          "title": "Publish the Campus Performance report",
+          "why": "Desktop nundi Power BI Service publish workflow ni start chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "publishReport",
+            "data": {}
+          }
+        },
+        {
+          "title": "Choose the Campus Analytics workspace",
+          "why": "Report destination workspace ni select chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "selectWorkspace",
+            "data": {
+              "workspace": "Campus Analytics"
+            }
+          }
+        },
+        {
+          "title": "Complete publishing",
+          "why": "PBIX/report semantic model publication success state ni demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "completePublish",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open the published report in Power BI Service",
+          "why": "Published artifact service-side view ni inspect chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openPowerBIService",
+            "data": {}
+          }
+        },
+        {
+          "title": "Export the report as PDF",
+          "why": "Report export workflow ni PDF format tho demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "exportReport",
+            "data": {
+              "format": "PDF"
+            }
+          }
+        },
+        {
+          "title": "Share the report to Microsoft Teams",
+          "why": "Collaboration/share workflow ni Teams destination tho demonstrate chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "shareReport",
+            "data": {
+              "channel": "Microsoft Teams"
+            }
+          }
+        },
+        {
+          "title": "Return to the full Executive Overview dashboard",
+          "why": "Feature tour end lo populated Power BI report canvas ki return ayi complete project state ni leave chestam.",
+          "software": "powerbi",
+          "action": {
+            "action": "openReportView",
+            "data": {}
           }
         }
       ]
