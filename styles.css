@@ -75,6 +75,7 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .software-badge.pgadmin{border-color:#3f607a;background:#1d2b36;color:#8fb9db}\n.software-badge.vscode{border-color:#0e639c;background:#162b3b;color:#75beff}
 .software-badge.postman{border-color:#a94d2b;background:#382218;color:#ff8a61}
 .software-badge.cmd{border-color:#5b5b5b;background:#202020;color:#f2f2f2}
+.software-badge.linux{border-color:#8b3a22;background:#351d16;color:#f39a72}
 .software-badge.intellij{border-color:#51446b;background:#292238;color:#bca6df}
 .ide-shell{isolation:isolate}
 .sim-frame{
