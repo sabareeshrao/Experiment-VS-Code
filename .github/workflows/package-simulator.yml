@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
     paths:
+      - "index.html"
+      - "styles.css"
+      - "app.js"
+      - "lessons.js"
+      - "README.md"
+      - "project/**"
       - "simulator/**"
       - ".github/workflows/package-simulator.yml"
 
@@ -17,26 +23,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare package
+      - name: Prepare packages
         run: |
           rm -rf dist
+
           mkdir -p dist/IntelliJ-Simulator-UI
           cp simulator/intellij.html dist/IntelliJ-Simulator-UI/
           cp simulator/engine.js dist/IntelliJ-Simulator-UI/
           cat > dist/IntelliJ-Simulator-UI/README_EDITING.txt <<'EOF'
           IntelliJ Simulator UI
           =====================
-          Files:
-            intellij.html  - visual shell / CSS / layout
-            engine.js      - playback and IDE behavior engine
+          intellij.html = visual shell / CSS / layout
+          engine.js     = playback and IDE behavior engine
 
-          You can redesign the UI/CSS while preserving element IDs used by engine.js.
-          When you return the edited ZIP, it can be reintegrated into the staged playback project.
+          Preserve the existing element IDs used by engine.js when redesigning.
           EOF
 
-      - name: Upload simulator ZIP artifact
+          mkdir -p dist/Experiment-VS-Code-Trial
+          cp index.html styles.css app.js lessons.js README.md dist/Experiment-VS-Code-Trial/
+          cp -R simulator dist/Experiment-VS-Code-Trial/
+          cp -R project dist/Experiment-VS-Code-Trial/
+
+      - name: Upload IntelliJ UI ZIP artifact
         uses: actions/upload-artifact@v4
         with:
           name: IntelliJ-Simulator-UI
           path: dist/IntelliJ-Simulator-UI/
+          if-no-files-found: error
+
+      - name: Upload complete trial ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Experiment-VS-Code-Trial
+          path: dist/Experiment-VS-Code-Trial/
           if-no-files-found: error
