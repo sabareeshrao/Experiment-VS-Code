@@ -16,3 +16,5 @@ body.sidebar-hidden .learning-shell{grid-template-columns:0 minmax(0,1fr)}body.s
 *{scrollbar-width:none}
 *::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
 .progress-sidebar,.stage-list,.steps-wrap{scrollbar-width:none}
+
+.progress-sidebar,.stage-list{overscroll-behavior:contain}
