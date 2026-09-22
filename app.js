@@ -52,29 +52,42 @@
     jenkins: false
   };
 
-  function ensureGlobalUiPersistence(frame) {
+  function ensureGlobalSimulatorRuntime(frame) {
     if (!frame) return;
     try {
       const doc = frame.contentDocument;
       if (!doc?.documentElement || !doc.body) return;
-      const alreadyLoaded = [...doc.scripts].some(script =>
-        String(script.src || "").includes("/simulator/shared/layout-resize.js")
-      );
-      if (alreadyLoaded) return;
 
-      const script = doc.createElement("script");
-      script.src = new URL("simulator/shared/layout-resize.js?v=4", location.href).href;
-      script.dataset.globalUiPersistence = "1";
-      doc.body.appendChild(script);
+      const ensureScript = (needle, src, flag) => {
+        const loaded = [...doc.scripts].some(script =>
+          String(script.src || "").includes(needle)
+        );
+        if (loaded) return;
+        const script = doc.createElement("script");
+        script.src = new URL(src, location.href).href;
+        script.dataset[flag] = "1";
+        doc.body.appendChild(script);
+      };
+
+      // Universal rules for every current and future simulator.
+      ensureScript(
+        "/simulator/shared/explanation-controls.js",
+        "simulator/shared/explanation-controls.js?v=6",
+        "globalExplanationRuntime"
+      );
+      ensureScript(
+        "/simulator/shared/layout-resize.js",
+        "simulator/shared/layout-resize.js?v=5",
+        "globalUiPersistence"
+      );
     } catch (_) {}
   }
 
-  // Every simulator iframe, including future ones, receives the same UI
-  // persistence runtime automatically. Individual simulators only need to
-  // expose normal resizable layout or data-sim-persist attributes.
+  // Every simulator iframe, including software added later, automatically gets
+  // universal explanation dragging, UI persistence and focus-follow scrolling.
   document.querySelectorAll("iframe.sim-frame").forEach(frame => {
-    frame.addEventListener("load", () => ensureGlobalUiPersistence(frame));
-    setTimeout(() => ensureGlobalUiPersistence(frame), 0);
+    frame.addEventListener("load", () => ensureGlobalSimulatorRuntime(frame));
+    setTimeout(() => ensureGlobalSimulatorRuntime(frame), 0);
   });
 
   const stageList = $("stageList");
