@@ -55,7 +55,7 @@ function targetEl(t){
  if(t.type==="test")return refs.main.querySelector('[data-test="'+CSS.escape(t.name)+'"]');
  return null;
 }
-async function typeInto(el,text,animate,token){if(!el)return;const chars=String(text??"");if(!animate){el.value=chars;return}el.value="";const steps=Math.min(chars.length,55),duration=Math.min(1000,Math.max(250,chars.length*4));for(let i=1;i<=steps;i++){if(token!==seekToken)return;el.value=chars.slice(0,Math.floor(chars.length*i/steps));await sleep(duration/steps)}}
+async function typeInto(el,text,animate,token){if(!el)return;const chars=String(text??"");const follow=()=>window.SIM_FOCUS?.follow(el,{block:"center"});if(!animate){el.value=chars;follow();return}el.value="";follow();const steps=Math.min(chars.length,55),duration=Math.min(1000,Math.max(250,chars.length*4));for(let i=1;i<=steps;i++){if(token!==seekToken)return;el.value=chars.slice(0,Math.floor(chars.length*i/steps));follow();await sleep(duration/steps)}}
 function nextBuildNo(j){return Math.max(0,...(j?.builds||[]).map(b=>Number(b.number)||0))+1}
 function updateJobLasts(j){const success=(j.builds||[]).find(b=>b.status==="success"),failure=(j.builds||[]).find(b=>b.status==="failed");j.lastSuccess=success?"#"+success.number:"";j.lastFailure=failure?"#"+failure.number:"";j.status=j.builds?.[0]?.status||j.status}
 async function apply(st,animate,token){
