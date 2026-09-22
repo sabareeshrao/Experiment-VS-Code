@@ -8,20 +8,48 @@ if(!document.getElementById(STYLE_ID)){
   var style=document.createElement("style");
   style.id=STYLE_ID;
   style.textContent=[
-    ".simExplainSizeControls{display:flex;align-items:center;gap:2px;margin-left:4px}",
-    ".simExplainSizeBtn{width:24px!important;min-width:24px!important;height:24px!important;padding:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#c9c9c9!important;font:600 14px/24px 'Segoe UI',Arial,sans-serif!important;text-align:center!important}",
-    ".simExplainSizeBtn:hover{background:rgba(255,255,255,.10)!important;color:#fff!important}",
-    ".simExplainActions,[data-sim-explain-actions]{display:none!important}",
-    ".assistantLang,.pgAssistantLanguage{display:none!important}",
-    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant,[data-sim-explanation]{position:fixed!important;z-index:20000!important}",
-    "[data-sim-explanation-drag],#ideAssistantDrag,#assistantHead,#pgAssistantHead,#ssmsAssistantDrag,#jiraAssistantHead,#jenkinsAssistantHead,.ideAssistantHead,.assistantHead,.pgAssistantHead{cursor:grab!important;touch-action:none!important;user-select:none!important}",
-    ".simExplainDragging [data-sim-explanation-drag],.simExplainDragging #ideAssistantDrag,.simExplainDragging #assistantHead,.simExplainDragging #pgAssistantHead,.simExplainDragging #ssmsAssistantDrag,.simExplainDragging #jiraAssistantHead,.simExplainDragging #jenkinsAssistantHead,.simExplainDragging .ideAssistantHead,.simExplainDragging .assistantHead,.simExplainDragging .pgAssistantHead{cursor:grabbing!important}",
-    "*{scrollbar-width:thin;scrollbar-color:rgba(128,134,142,.58) transparent}",
-    "*::-webkit-scrollbar{width:8px;height:8px}",
-    "*::-webkit-scrollbar-track{background:transparent}",
-    "*::-webkit-scrollbar-thumb{background:rgba(128,134,142,.52);border:2px solid transparent;background-clip:padding-box;border-radius:10px}",
-    "*::-webkit-scrollbar-thumb:hover{background:rgba(154,160,168,.72);border:2px solid transparent;background-clip:padding-box}",
-    "*::-webkit-scrollbar-corner{background:transparent}"
+    /* One explanation-card UI for every simulator.  Postman's compact card is
+       the visual reference: neutral surface, quiet header, clear controls. */
+    "[data-sim-explanation].simExplainUnified{position:fixed!important;z-index:20000!important;width:min(360px,calc(100vw - 18px));max-width:calc(100vw - 18px)!important;background:#242424!important;color:#e8e8e8!important;border:1px solid #4b4b4b!important;border-radius:6px!important;box-shadow:0 10px 34px rgba(0,0,0,.42)!important;overflow:hidden!important;user-select:none!important;touch-action:none!important}",
+    "body.theme-light [data-sim-explanation].simExplainUnified{background:#fff!important;color:#222!important;border-color:#888!important;box-shadow:0 10px 34px rgba(0,0,0,.25)!important}",
+    "[data-sim-explanation].simExplainUnified.hidden{display:none!important}",
+    "[data-sim-explanation].simExplainUnified.show{display:block!important}",
+    "[data-sim-explanation].simExplainUnified.minimized,[data-sim-explanation].simExplainUnified.min{height:auto!important;max-height:none!important}",
+    "[data-sim-explanation].simExplainUnified.minimized .simExplainGlobalBody,[data-sim-explanation].simExplainUnified.min .simExplainGlobalBody{display:none!important}",
+
+    ".simExplainGlobalHead{height:34px!important;min-height:34px!important;display:flex!important;align-items:center!important;gap:6px!important;padding:0 7px 0 9px!important;background:#2b2b2b!important;color:#f1f1f1!important;border:0!important;border-bottom:1px solid #444!important;font:700 10px/1 'Segoe UI',Arial,sans-serif!important;cursor:grab!important;touch-action:none!important;user-select:none!important}",
+    "body.theme-light .simExplainGlobalHead{background:#f5f5f5!important;color:#222!important;border-bottom-color:#ddd!important}",
+    ".simExplainDragging .simExplainGlobalHead{cursor:grabbing!important}",
+    ".simExplainGlobalHead .grow{flex:1!important;min-width:6px!important}",
+    ".simExplainGlobalHead strong,.simExplainGlobalHead #assistantTitle,.simExplainGlobalHead #pgAssistantTitle,.simExplainGlobalHead #ideAssistantTitle,.simExplainGlobalHead #ssmsAssistantTitle,.simExplainGlobalHead #jenkinsAssistantTitle{font:700 10px/1.2 'Segoe UI',Arial,sans-serif!important;color:inherit!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}",
+    /* Remove simulator-specific decoration so every card looks like Postman. */
+    ".simExplainGlobalHead .ideAssistantIcon,.simExplainGlobalHead .assistantIcon,.simExplainGlobalHead .pgAssistantIcon{display:none!important}",
+    ".simExplainGlobalHead .ideAssistantTitles span,.simExplainGlobalHead .assistantTitles span,.simExplainGlobalHead .pgAssistantTitles span,.simExplainGlobalHead #ssmsAssistantStage{display:none!important}",
+    ".simExplainGlobalHead .ideAssistantTitles,.simExplainGlobalHead .assistantTitles,.simExplainGlobalHead .pgAssistantTitles,.simExplainGlobalHead .assistantTitles{min-width:0!important;flex:1!important}",
+
+    ".simExplainGlobalHead button,.simExplainSizeBtn{box-sizing:border-box!important;width:25px!important;min-width:25px!important;height:25px!important;min-height:25px!important;padding:0!important;margin:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#ddd!important;box-shadow:none!important;outline:0!important;display:grid!important;place-items:center!important;font:600 15px/25px 'Segoe UI',Arial,sans-serif!important;text-align:center!important;opacity:1!important;visibility:visible!important;cursor:pointer!important}",
+    "body.theme-light .simExplainGlobalHead button,body.theme-light .simExplainSizeBtn{color:#555!important}",
+    ".simExplainGlobalHead button:hover,.simExplainSizeBtn:hover{background:#3a3a3a!important;color:#fff!important}",
+    "body.theme-light .simExplainGlobalHead button:hover,body.theme-light .simExplainSizeBtn:hover{background:#e7e7e7!important;color:#111!important}",
+    ".simExplainGlobalHead button:focus-visible,.simExplainSizeBtn:focus-visible{outline:2px solid #ff6c37!important;outline-offset:1px!important}",
+    ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
+    ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
+
+    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif!important;line-height:1.55!important;max-height:210px!important;overflow:auto!important;user-select:text!important}",
+    "body.theme-light .simExplainGlobalBody{background:#fff!important;color:#222!important}",
+    ".simExplainGlobalBody p{margin:0!important}",
+    ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
+
+    /* Explanation-card scrollbars follow Postman's unobtrusive treatment. */
+    ".simExplainGlobalBody{scrollbar-width:thin!important;scrollbar-color:rgba(128,134,142,.62) transparent!important}",
+    ".simExplainGlobalBody::-webkit-scrollbar{width:8px!important;height:8px!important}",
+    ".simExplainGlobalBody::-webkit-scrollbar-track{background:transparent!important}",
+    ".simExplainGlobalBody::-webkit-scrollbar-thumb{background:rgba(128,134,142,.55)!important;border:2px solid transparent!important;background-clip:padding-box!important;border-radius:999px!important}",
+    ".simExplainGlobalBody::-webkit-scrollbar-thumb:hover{background:rgba(154,160,168,.76)!important;background-clip:padding-box!important}",
+
+    /* Legacy selectors remain drag-compatible while the canonical classes are
+       applied at runtime. */
+    "[data-sim-explanation-drag],#ideAssistantDrag,#assistantHead,#pgAssistantHead,#ssmsAssistantDrag,#jiraAssistantHead,#jenkinsAssistantHead,.ideAssistantHead,.assistantHead,.pgAssistantHead{cursor:grab!important;touch-action:none!important;user-select:none!important}"
   ].join("");
   document.head.appendChild(style);
 }
@@ -53,6 +81,18 @@ function getHead(box){
 }
 function getBody(box){
   return firstWithin(box,["[data-sim-explanation-body]",".ideAssistantBody",".assistantBody",".pgAssistantBody",".jenkinsAssistantContent"]);
+}
+function applyUnifiedClasses(box){
+  if(!box)return;
+  box.classList.add("simExplainUnified");
+  box.setAttribute("data-sim-explanation","1");
+  var head=getHead(box),body=getBody(box);
+  if(head)head.classList.add("simExplainGlobalHead");
+  if(body)body.classList.add("simExplainGlobalBody");
+  /* Jenkins keeps its text body one level deeper; the content wrapper is the
+     shared body, so normalize its padding while preserving the actual text. */
+  var jenkinsButtons=head&&head.querySelector(".jenkinsAssistantButtons");
+  if(jenkinsButtons)jenkinsButtons.classList.add("simExplainHeaderButtons");
 }
 function getMeta(box){
   var meta=firstWithin(box,metaSelectors);
@@ -193,15 +233,8 @@ function bindPositionPersistence(){
   document.addEventListener("pointercancel",finishDrag,true);
 }
 function rememberBase(box,body,text){
-  if(!box.dataset.simExplainBaseWidth){
-    var width=parseFloat(getComputedStyle(box).width)||340;
-    box.dataset.simExplainBaseWidth=String(width);
-  }
-  var target=text||body;
-  if(target&&!box.dataset.simExplainBaseFont){
-    var font=parseFloat(getComputedStyle(target).fontSize)||11;
-    box.dataset.simExplainBaseFont=String(font);
-  }
+  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth="360";
+  if(!box.dataset.simExplainBaseFont)box.dataset.simExplainBaseFont="10.5";
 }
 function applyScale(){
   var box=getAssistant();
@@ -232,6 +265,7 @@ function changeScale(delta){
 function ensureControls(){
   var box=getAssistant();
   if(!box)return;
+  applyUnifiedClasses(box);
   bindPositionPersistence();
   var head=getHead(box);
   if(!head||head.querySelector(".simExplainSizeControls")){applyScale();return;}
@@ -257,8 +291,10 @@ function ensureControls(){
   wrap.appendChild(minus);wrap.appendChild(plus);
 
   var anchor=head.querySelector('[id$="Min"],[id$="Close"],button');
-  if(anchor)head.insertBefore(wrap,anchor);
-  else head.appendChild(wrap);
+  if(anchor&&anchor.parentNode){
+    anchor.parentNode.insertBefore(wrap,anchor);
+    if(anchor.parentNode!==head)anchor.parentNode.classList.add("simExplainHeaderButtons");
+  }else head.appendChild(wrap);
 
   applyScale();
 }
@@ -277,6 +313,7 @@ function hideLanguageLabels(box){
 function refresh(m){
   var box=getAssistant();
   if(!box)return;
+  applyUnifiedClasses(box);
   box.classList.remove("hidden","minimized","min");
   box.classList.add("show");
   box.style.display="";
