@@ -1,0 +1,42 @@
+name: Package IntelliJ Simulator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "simulator/**"
+      - ".github/workflows/package-simulator.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare package
+        run: |
+          rm -rf dist
+          mkdir -p dist/IntelliJ-Simulator-UI
+          cp simulator/intellij.html dist/IntelliJ-Simulator-UI/
+          cp simulator/engine.js dist/IntelliJ-Simulator-UI/
+          cat > dist/IntelliJ-Simulator-UI/README_EDITING.txt <<'EOF'
+          IntelliJ Simulator UI
+          =====================
+          Files:
+            intellij.html  - visual shell / CSS / layout
+            engine.js      - playback and IDE behavior engine
+
+          You can redesign the UI/CSS while preserving element IDs used by engine.js.
+          When you return the edited ZIP, it can be reintegrated into the staged playback project.
+          EOF
+
+      - name: Upload simulator ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntelliJ-Simulator-UI
+          path: dist/IntelliJ-Simulator-UI/
+          if-no-files-found: error
