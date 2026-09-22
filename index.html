@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Task API Developer Playback</title>
-  <link rel="stylesheet" href="styles.css?v=9">
+  <title>Java Practice Developer Playback</title>
+  <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
   <div class="learning-shell" id="learningShell">
@@ -13,17 +13,26 @@
         <div class="brand-mark"><span></span><span></span><span></span></div>
         <div><strong>Java Project Playback</strong><small>Developer build simulation</small></div>
       </div>
+
       <div class="sidebar-tools">
-        <label class="search-box"><span>⌕</span><input id="stepSearch" placeholder="Search steps..."></label>
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="stepSearch" placeholder="Search steps...">
+        </label>
+        <button id="fullCodeBtn" class="full-code-btn" type="button">
+          <span class="full-code-icon">◫</span>
+          <span>View Full Code</span>
+        </button>
       </div>
+
       <nav id="stageList" class="stage-list" aria-label="Project stages"></nav>
     </aside>
 
     <main class="workspace">
       <header class="workspace-head">
         <div>
-          <div class="eyebrow" id="stageLabel">STAGE</div>
-          <h1 id="stepTitle">Loading simulator…</h1>
+          <div class="eyebrow" id="stageLabel">PROJECT PREVIEW</div>
+          <h1 id="stepTitle">Java Practice</h1>
         </div>
         <div class="head-actions">
           <button id="toggleSidebar">Hide progress</button>
@@ -32,10 +41,10 @@
       </header>
 
       <section class="ide-shell" id="ideShell">
-        <iframe id="ideFrame" src="simulator/intellij.html?v=9" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="ideFrame" src="simulator/intellij.html?v=10" title="IntelliJ IDEA simulator"></iframe>
       </section>
 
-      <footer class="playback-bar">
+      <footer class="playback-bar hidden" id="playbackBar">
         <button id="prevBtn">← Prev</button>
         <button id="replayBtn">↻ Replay step</button>
         <div class="step-meter"><span id="stepCounter">0 / 0</span><div><i id="stepProgress"></i></div></div>
@@ -43,7 +52,17 @@
       </footer>
     </main>
   </div>
-  <script src="lessons.js?v=9"></script>
-  <script src="app.js?v=9"></script>
+
+  <script src="project-data/part-01.js?v=1"></script>
+  <script src="project-data/part-02.js?v=1"></script>
+  <script src="project-data/part-03.js?v=1"></script>
+  <script src="project-data/part-04.js?v=1"></script>
+  <script src="project-data/part-05.js?v=1"></script>
+  <script src="project-data/part-06.js?v=1"></script>
+  <script src="project-data/part-07.js?v=1"></script>
+  <script src="project-data/part-08.js?v=1"></script>
+  <script src="project-data/index.js?v=1"></script>
+  <script src="lessons.js?v=10"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
