@@ -64,6 +64,7 @@
         );
         if (loaded) return;
         const script = doc.createElement("script");
+        script.async = false;
         script.src = new URL(src, location.href).href;
         script.dataset[flag] = "1";
         doc.body.appendChild(script);
