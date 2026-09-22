@@ -38,7 +38,12 @@ style.textContent=[
 "body .fileList .fileRow{width:max-content!important;min-width:max(100%,560px)!important}",
 "body .fileList .fileName{overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important}",
 "body .sidebar .collection,body .sidebar .requestRow{min-width:max-content}",
-"body .sidebar .requestRow>*{white-space:nowrap}"
+"body .sidebar .requestRow>*{white-space:nowrap}",
+"body .sidebar{overflow-x:auto!important}",
+"body .sidebar .navItem{width:max-content;min-width:100%;white-space:nowrap}",
+"body .listShell{overflow:auto!important}",
+"body .listShell .listHead,body .listShell .listRow{min-width:max-content}",
+"body .timeline{overflow-x:auto!important}"
 ].join("");
 document.head.appendChild(style);
 
