@@ -67,6 +67,12 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 .pgHistoryRow{padding:6px 4px;border-bottom:1px solid var(--line)}.pgHistoryRow small{display:block;color:var(--muted);margin-top:2px}
 .pgExplain{padding:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--text)}
 .pgPlanNode{padding:9px 12px;border:1px solid var(--line);background:var(--panel);border-radius:4px;min-width:145px}.pgPlanArrow{color:var(--muted)}
+.pgDashboard{grid-row:2/5;min-width:0;min-height:0;overflow:auto;background:var(--panel);padding:14px 16px;color:var(--text)}
+.pgDashboardHead{display:flex;align-items:center;gap:10px;margin-bottom:12px}.pgDashboardHead h2{font-size:15px;margin:0;font-weight:600}.pgServerBadge{padding:3px 7px;border-radius:10px;background:var(--blue2);color:#fff;font-size:9px}
+.pgMetricGrid{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin-bottom:12px}.pgMetric{border:1px solid var(--line);background:var(--result-bg);border-radius:3px;padding:10px}.pgMetricLabel{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.35px}.pgMetricValue{font-size:19px;font-weight:600;margin-top:5px}.pgMetricSub{font-size:9px;color:var(--muted);margin-top:3px}
+.pgDashGrid{display:grid;grid-template-columns:1.35fr 1fr;gap:10px}.pgDashPanel{border:1px solid var(--line);background:var(--result-bg);border-radius:3px;min-height:180px}.pgDashPanelTitle{height:32px;display:flex;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);font-size:10px;font-weight:650}.pgChart{height:125px;display:flex;align-items:flex-end;gap:6px;padding:15px 12px 10px}.pgBar{flex:1;min-width:8px;background:linear-gradient(180deg,#70a8cd,#3d78a2);border-radius:2px 2px 0 0;opacity:.9}.pgDashTable{width:100%;border-collapse:collapse;font-size:9px}.pgDashTable th,.pgDashTable td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}.pgDashTable th{color:var(--muted);font-weight:600;background:var(--tab-bg)}
+.main.dashboardMode .query-tabs,.main.dashboardMode .query-area,.main.dashboardMode .results{display:none!important}.main:not(.dashboardMode) .pgDashboard{display:none!important}
+@media(max-width:900px){.pgMetricGrid{grid-template-columns:repeat(2,minmax(120px,1fr))}.pgDashGrid{grid-template-columns:1fr}.work{grid-template-columns:230px minmax(0,1fr)}}
 .pgPopup input,.pgPopup select{background:var(--input-bg)!important;color:var(--text)!important;border:1px solid var(--line)!important}
 .pgPopup{background:var(--popup-bg)!important;color:var(--text)!important;border-color:var(--line)!important}
 .sqlwrap.simActionHighlight,.sql.simActionHighlight,.query-area.simActionHighlight,.main.simActionHighlight{outline:none!important;box-shadow:none!important}
@@ -85,7 +91,20 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
       <div class="tree" id="tree"></div>
     </aside>
     <main class="main">
-      <div class="workspace-tabs"><div class="workspace-tab">Dashboard</div><div class="workspace-tab">Properties</div><div class="workspace-tab">SQL</div><div class="workspace-tab">Statistics</div><div class="workspace-tab">Dependencies</div><div class="workspace-tab">Dependents</div><div class="workspace-tab activeTab">Query Tool</div></div>
+      <div class="workspace-tabs"><div class="workspace-tab" data-workspace-tab="dashboard">Dashboard</div><div class="workspace-tab">Properties</div><div class="workspace-tab">SQL</div><div class="workspace-tab">Statistics</div><div class="workspace-tab">Dependencies</div><div class="workspace-tab">Dependents</div><div class="workspace-tab" data-workspace-tab="query">Query Tool</div></div>
+      <section class="pgDashboard" id="pgDashboard">
+        <div class="pgDashboardHead"><h2>Dashboard</h2><span class="pgServerBadge">Local PostgreSQL</span><span style="color:var(--muted);font-size:9px">java_practice</span></div>
+        <div class="pgMetricGrid">
+          <div class="pgMetric"><div class="pgMetricLabel">Server sessions</div><div class="pgMetricValue">6</div><div class="pgMetricSub">1 active · 5 idle</div></div>
+          <div class="pgMetric"><div class="pgMetricLabel">Transactions / sec</div><div class="pgMetricValue">14</div><div class="pgMetricSub">normal developer workload</div></div>
+          <div class="pgMetric"><div class="pgMetricLabel">Tuples returned</div><div class="pgMetricValue">128</div><div class="pgMetricSub">last minute</div></div>
+          <div class="pgMetric"><div class="pgMetricLabel">Database size</div><div class="pgMetricValue">9.6 MB</div><div class="pgMetricSub">java_practice</div></div>
+        </div>
+        <div class="pgDashGrid">
+          <div class="pgDashPanel"><div class="pgDashPanelTitle">Database activity</div><div class="pgChart"><span class="pgBar" style="height:28%"></span><span class="pgBar" style="height:42%"></span><span class="pgBar" style="height:34%"></span><span class="pgBar" style="height:61%"></span><span class="pgBar" style="height:48%"></span><span class="pgBar" style="height:72%"></span><span class="pgBar" style="height:56%"></span><span class="pgBar" style="height:66%"></span><span class="pgBar" style="height:44%"></span><span class="pgBar" style="height:58%"></span></div></div>
+          <div class="pgDashPanel"><div class="pgDashPanelTitle">Sessions</div><table class="pgDashTable"><thead><tr><th>PID</th><th>User</th><th>Database</th><th>State</th></tr></thead><tbody><tr><td>8421</td><td>postgres</td><td>java_practice</td><td>active</td></tr><tr><td>8398</td><td>postgres</td><td>java_practice</td><td>idle</td></tr><tr><td>8332</td><td>postgres</td><td>postgres</td><td>idle</td></tr></tbody></table></div>
+        </div>
+      </section>
       <div class="query-tabs"><div class="query-tab activeTab" id="queryTab">java_practice/postgres@Local PostgreSQL</div></div>
       <section class="query-area">
         <div class="query-tools"><span title="Open file">▱</span><span title="Save">▣</span><span title="Download">↓</span><span class="querySep"></span><span title="Find">⌕</span><span class="run" id="run" title="Execute">▶</span><span class="stop" title="Cancel">■</span><span title="Explain">EX</span><span title="Explain Analyze">EA</span><span class="querySep"></span><span title="Commit">✓</span><span title="Rollback">↶</span><span style="min-width:auto;padding:0 8px">☑ Auto Commit</span></div>
@@ -115,7 +134,7 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 (() => {
 "use strict";
 const $=id=>document.getElementById(id);
-const refs={tree:$("tree"),sql:$("sql"),gutter:$("gutter"),resultBody:$("resultBody"),resultTabs:$("resultTabs"),status:$("status"),connection:$("connection"),queryTab:$("queryTab"),run:$("run"),newQuery:$("newQuery"),sqlwrap:$("sqlwrap"),themeToggle:$("themeToggle"),assistant:$("pgAssistant"),assistantHead:$("pgAssistantHead"),assistantTitle:$("pgAssistantTitle"),assistantStage:$("pgAssistantStage"),assistantStep:$("pgAssistantStep"),assistantText:$("pgAssistantText"),assistantMin:$("pgAssistantMin"),assistantClose:$("pgAssistantClose")};
+const refs={tree:$("tree"),sql:$("sql"),gutter:$("gutter"),resultBody:$("resultBody"),resultTabs:$("resultTabs"),status:$("status"),connection:$("connection"),queryTab:$("queryTab"),run:$("run"),newQuery:$("newQuery"),sqlwrap:$("sqlwrap"),themeToggle:$("themeToggle"),dashboard:$("pgDashboard"),assistant:$("pgAssistant"),assistantHead:$("pgAssistantHead"),assistantTitle:$("pgAssistantTitle"),assistantStage:$("pgAssistantStage"),assistantStep:$("pgAssistantStep"),assistantText:$("pgAssistantText"),assistantMin:$("pgAssistantMin"),assistantClose:$("pgAssistantClose")};
 let baseline=null,state=null,sqlText="",selected="",openQuery=false,changedLines=[],activeResultTab="messages";
 const clone=v=>JSON.parse(JSON.stringify(v??null));
 const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -176,6 +195,14 @@ function makeTree(){
   r.onclick=()=>{selected=x.p;makeTree();refs.status.textContent="Selected "+x.n};refs.tree.appendChild(r);
  }
 }
+function renderWorkspace(){
+ const main=document.querySelector(".main");
+ if(main)main.classList.toggle("dashboardMode",!openQuery);
+ document.querySelectorAll("[data-workspace-tab]").forEach(el=>{
+   const active=(el.dataset.workspaceTab==="query"&&openQuery)||(el.dataset.workspaceTab==="dashboard"&&!openQuery);
+   el.classList.toggle("activeTab",active);
+ });
+}
 function renderSql(){
  const lines=String(sqlText||"").split("\n");refs.gutter.innerHTML="";refs.sql.innerHTML="";
  lines.forEach((line,i)=>{
@@ -231,7 +258,7 @@ function executeCurrent(d={}){
  makeTree();renderResults();
 }
 function reset(){
- state=clone(baseline||{database:"java_practice"});state.studentRows=Array.isArray(state.studentRows)?state.studentRows:[];state.queryHistory=Array.isArray(state.queryHistory)?state.queryHistory:[];state.lastResult=state.lastResult||null;state.explainPlan=Array.isArray(state.explainPlan)?state.explainPlan:[];state.lastMessage="Ready.";state.lastMessageHtml=esc(state.lastMessage);sqlText=state.initialSql||"";selected=state.initialSelection||"";openQuery=!!state.queryOpen;changedLines=[];activeResultTab="messages";applyTheme(readSavedTheme()||currentTheme()||"dark",false);refs.status.textContent="Ready";refs.connection.textContent=(state.database||"java_practice")+"/postgres@Local PostgreSQL";refs.queryTab.textContent=refs.connection.textContent;makeTree();renderSql();renderResults();
+ state=clone(baseline||{database:"java_practice"});state.studentRows=Array.isArray(state.studentRows)?state.studentRows:[];state.queryHistory=Array.isArray(state.queryHistory)?state.queryHistory:[];state.lastResult=state.lastResult||null;state.explainPlan=Array.isArray(state.explainPlan)?state.explainPlan:[];state.lastMessage="Ready.";state.lastMessageHtml=esc(state.lastMessage);sqlText=state.initialSql||"";selected=state.initialSelection||"";openQuery=!!state.queryOpen;changedLines=[];activeResultTab="messages";applyTheme(readSavedTheme()||currentTheme()||"dark",false);refs.status.textContent="Ready";refs.connection.textContent=(state.database||"java_practice")+"/postgres@Local PostgreSQL";refs.queryTab.textContent=refs.connection.textContent;makeTree();renderWorkspace();renderSql();renderResults();
 }
 async function typeSql(code,animate,token){
  const start=sqlText.split("\n").length;const add=String(code||"");
@@ -273,7 +300,7 @@ async function apply(st,animate,token){
  switch(st.action){
   case"setStatus":refs.status.textContent=d.text||"Ready";break;
   case"selectTree":selected=d.path||"";makeTree();refs.status.textContent="Selected "+selected.split("/").pop();break;
-  case"openQueryTool":openQuery=true;refs.status.textContent="Query Tool opened";break;
+  case"openQueryTool":openQuery=true;renderWorkspace();refs.status.textContent="Query Tool opened";break;
   case"setSql":sqlText=String(d.sql||"");changedLines=[];renderSql();break;
   case"typeSql":{
     if(d.replace)sqlText="";
@@ -291,7 +318,9 @@ async function apply(st,animate,token){
 }
 async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){await apply(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}}
 window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.pgadmin||{});applyTheme(readSavedTheme()||m.theme||"dark",false);reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);if(m.type==="SIM_EXPLAIN")showAssistant(m);if(m.type==="SIM_SETTING"&&m.key==="theme")applyTheme(m.value,true)});
-refs.newQuery.onclick=()=>{openQuery=true;refs.status.textContent="Query Tool opened"};refs.run.onclick=()=>executeCurrent({message:"Query returned successfully.",statusText:"Query complete"});refs.resultTabs?.querySelectorAll("[data-result-tab]").forEach(tab=>tab.addEventListener("click",()=>{activeResultTab=tab.dataset.resultTab;renderResults()}));if(refs.themeToggle){refs.themeToggle.addEventListener("pointerdown",e=>e.stopPropagation(),true);refs.themeToggle.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();applyTheme(currentTheme()==="dark"?"light":"dark",true)},true)};
+refs.newQuery.onclick=()=>{openQuery=true;renderWorkspace();refs.status.textContent="Query Tool opened"};refs.run.onclick=()=>executeCurrent({message:"Query returned successfully.",statusText:"Query complete"});refs.resultTabs?.querySelectorAll("[data-result-tab]").forEach(tab=>tab.addEventListener("click",()=>{activeResultTab=tab.dataset.resultTab;renderResults()}));
+document.querySelectorAll("[data-workspace-tab]").forEach(tab=>tab.addEventListener("click",()=>{openQuery=tab.dataset.workspaceTab==="query";renderWorkspace();refs.status.textContent=openQuery?"Query Tool opened":"Dashboard opened"}));
+if(refs.themeToggle){refs.themeToggle.addEventListener("pointerdown",e=>e.stopPropagation(),true);refs.themeToggle.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();applyTheme(currentTheme()==="dark"?"light":"dark",true)},true)};
 const pgPopup=document.createElement("div");
 pgPopup.className="pgPopup";pgPopup.style.cssText="position:fixed;z-index:21000;display:none;min-width:210px;max-width:360px;padding:5px;background:var(--popup-bg);border:1px solid var(--line);border-radius:5px;box-shadow:0 10px 28px rgba(0,0,0,.32);font:11px/1.45 Segoe UI,Arial,sans-serif;color:var(--text)";
 document.body.appendChild(pgPopup);
@@ -310,7 +339,7 @@ document.querySelectorAll(".menu span").forEach(el=>el.addEventListener("click",
  showPgPopup(el,items.map(x=>'<div class="pgMenuItem" data-pg-item="'+esc(x)+'" style="padding:6px 8px;border-radius:3px;cursor:default">'+esc(x)+'</div>').join(""));
  pgPopup.querySelectorAll("[data-pg-item]").forEach(item=>item.onclick=()=>{
    const v=item.dataset.pgItem;
-   if(v==="Query Tool"){openQuery=true;refs.status.textContent="Query Tool opened"}
+   if(v==="Query Tool"){openQuery=true;renderWorkspace();refs.status.textContent="Query Tool opened"}
    else if(v==="Refresh"){makeTree();refs.status.textContent="Object Explorer refreshed"}
    else refs.status.textContent=v+" opened";
    closePgPopup();
@@ -330,7 +359,7 @@ document.addEventListener("click",e=>{if(!e.target.closest(".menu")&&!e.target.c
 document.addEventListener("mouseover",e=>{const i=e.target.closest?.(".pgMenuItem");if(i)i.style.background="#34434e"});
 document.addEventListener("mouseout",e=>{const i=e.target.closest?.(".pgMenuItem");if(i)i.style.background=""});
 
-applyTheme(readSavedTheme()||"dark",false);refs.tree.innerHTML='<div style="padding:12px;color:var(--muted)">Waiting for pgAdmin lesson package…</div>';renderResults();
+applyTheme(readSavedTheme()||"dark",false);renderWorkspace();refs.tree.innerHTML='<div style="padding:12px;color:var(--muted)">Waiting for pgAdmin lesson package…</div>';renderResults();
 parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","clearSql","executeQuery","refreshTree","showResultTab","showExplain","setStatus"]},"*");
 })();
 </script>
