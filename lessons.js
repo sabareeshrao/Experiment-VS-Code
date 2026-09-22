@@ -619,6 +619,48 @@ window.COURSE = {
           }
         }
       ]
+    },
+    {
+      "title": "3: VS Code Integration Test",
+      "subtitle": "Prove the lesson player can move into VS Code and then return to IntelliJ while keeping one continuous timeline.",
+      "steps": [
+        {
+          "title": "Open the project in VS Code",
+          "why": "Ippudu lesson VS Code ki switch avuthundi. Left side lesson journey same ga untundi, kani center workspace matram VS Code ga maruthundi.",
+          "software": "vscode",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "name": "Java Practice",
+              "sdk": "Java 21"
+            }
+          }
+        },
+        {
+          "title": "Create a developer note in VS Code",
+          "why": "VS Code simulator nijanga lesson actions receive chesthundha ani test cheyyadaniki oka small markdown file create chestunnam. File Explorer mariyu editor rendu update avvali.",
+          "software": "vscode",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "journey-notes.md",
+              "language": "markdown",
+              "content": "# Java Practice\\n\\nVS Code integration is working.\\n"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java in IntelliJ",
+          "why": "Ee step malli IntelliJ ki switch chestundi. VS Code separate software state ga undi, IntelliJ project state kuda preserve avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        }
+      ]
     }
   ]
 };
