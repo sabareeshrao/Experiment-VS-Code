@@ -3,7 +3,7 @@
 const APP_ID="intellij_idea";
 const SUPPORTED_ACTIONS=["enableFeature","disableFeature","setView","openMenu","pressButton","highlightTarget","moveCursor","showNotification","openProject","newProject","openFile","closeFile","createFile","createPackage","renameResource","deleteResource","saveFile","saveAll","setCode","typeCode","replaceCode","formatCode","optimizeImports","splitEditor","unsplitEditor","pinTab","toggleDistractionFree","toggleZenMode","gotoClass","gotoFile","gotoSymbol","gotoDeclaration","gotoImplementation","findUsages","showCallHierarchy","showTypeHierarchy","showFileStructure","searchEverywhere","findInFiles","recentFiles","showCompletion","showParameterInfo","showQuickDocumentation","showIntentionActions","applyQuickFix","runInspection","showProblems","addProblem","suppressInspection","renameSymbol","extractMethod","extractVariable","inlineRefactor","moveClass","changeSignature","safeDelete","generateGetterSetter","generateConstructor","generateToString","generateEqualsHashCode","overrideMethods","openRunConfigurations","createApplicationConfig","createSpringBootConfig","setProgramArguments","setVmOptions","setEnvironmentVariables","setWorkingDirectory","runConfiguration","stopProcess","showRunConsole","debugConfiguration","setBreakpoint","removeBreakpoint","setConditionalBreakpoint","setExceptionBreakpoint","resumeDebug","pauseDebug","stepOver","stepInto","stepOut","runToCursor","evaluateExpression","addWatch","showVariables","runJUnit","runJUnitMethod","runJUnitClass","showTestResults","showFailureTrace","rerunFailedTests","runWithCoverage","showCoverage","mockitoVerifyInteraction","openMavenToolWindow","reloadMavenProject","runMavenGoal","showMavenLifecycle","showMavenDependencies","showMavenDependencyTree","addMavenDependency","removeMavenDependency","setMavenProfile","showEffectivePom","openSpringToolWindow","showSpringBootDashboard","runSpringBootApp","stopSpringBootApp","restartSpringBootApp","setSpringProfile","showSpringBeans","showSpringMappings","navigateToController","showMvcFlow","showValidationFlow","showExceptionHandlers","openApplicationProperties","setSpringProperty","openPersistenceToolWindow","showJpaEntities","showJpaRepositories","showEntityMapping","showRepositoryMethods","generateJpaRepository","runJpql","showHibernateSql","showHibernateStatistics","showHibernateSpatial","openGitToolWindow","showLocalChanges","stageFile","unstageFile","commitChanges","pushGit","pullGit","fetchGit","createBranch","checkoutBranch","mergeBranch","showGitHistory","showGitDiff","showMergeConflict","resolveMergeConflict","openDatabaseToolWindow","addDataSource","testDataSource","openDatabaseConsole","executeSql","showQueryResult","showTableData","openTerminal","typeTerminal","appendTerminal","clearTerminal","openSettings","showProjectStructure","addSdk","setProjectSdk","setLanguageLevel","setModuleSdk","configureCompiler","installPlugin"];
 const $=id=>document.getElementById(id),clone=v=>JSON.parse(JSON.stringify(v??null)),esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const refs={app:$("app"),bottomPanel:$("bottomPanel"),project:$("projectTitle"),branch:$("branchPill"),sdk:$("sdkTitle"),tree:$("tree"),tabs:$("tabs"),gutter:$("gutter"),code:$("code"),completion:$("completion"),intentions:$("intentions"),right:$("rightBody"),bottom:$("bottomBody"),bottomTabs:$("bottomTabs"),menu:$("menu"),menuPopup:$("menuPopup"),runConfig:$("runConfig"),status:$("statusText"),lang:$("languageLevel"),line:$("lineStatus"),notification:$("notification"),boundary:$("targetBoundary"),assistant:$("ideAssistant"),assistantDrag:$("ideAssistantDrag"),assistantTitle:$("ideAssistantTitle"),assistantStage:$("ideAssistantStage"),assistantStep:$("ideAssistantStep"),assistantText:$("ideAssistantText"),assistantClose:$("ideAssistantClose"),modalLayer:$("modalLayer"),modalTitle:$("modalTitle"),modalBody:$("modalBody"),modalFoot:$("modalFoot"),modalClose:$("modalClose"),work:$("work"),splitL:$("splitL"),splitR:$("splitR"),splitH:$("splitH"),newBtn:$("newBtn"),saveBtn:$("saveBtn"),runBtn:$("runBtn"),debugBtn:$("debugBtn"),stopBtn:$("stopBtn"),searchBtn:$("searchBtn"),gitBtn:$("gitBtn"),terminalBtn:$("terminalBtn")};
+const refs={app:$("app"),bottomPanel:$("bottomPanel"),project:$("projectTitle"),branch:$("branchPill"),sdk:$("sdkTitle"),tree:$("tree"),tabs:$("tabs"),gutter:$("gutter"),code:$("code"),completion:$("completion"),intentions:$("intentions"),right:$("rightBody"),bottom:$("bottomBody"),bottomTabs:$("bottomTabs"),menu:$("menu"),menuPopup:$("menuPopup"),runConfig:$("runConfig"),status:$("statusText"),lang:$("languageLevel"),line:$("lineStatus"),notification:$("notification"),boundary:$("targetBoundary"),assistant:$("ideAssistant"),assistantDrag:$("ideAssistantDrag"),assistantTitle:$("ideAssistantTitle"),assistantStage:$("ideAssistantStage"),assistantStep:$("ideAssistantStep"),assistantText:$("ideAssistantText"),assistantMin:$("ideAssistantMin"),assistantClose:$("ideAssistantClose"),modalLayer:$("modalLayer"),modalTitle:$("modalTitle"),modalBody:$("modalBody"),modalFoot:$("modalFoot"),modalClose:$("modalClose"),work:$("work"),splitL:$("splitL"),splitR:$("splitR"),splitH:$("splitH"),newBtn:$("newBtn"),saveBtn:$("saveBtn"),runBtn:$("runBtn"),debugBtn:$("debugBtn"),stopBtn:$("stopBtn"),searchBtn:$("searchBtn"),gitBtn:$("gitBtn"),terminalBtn:$("terminalBtn")};
 let baseline=null,state=null,files={},activeFile=null,openTabs=[],activeBottom="run",activeRight="structure",autoType=true,seekToken=0,allowBoundary=true,treeMap=new Map(),focusRange=null,popupKind="",modalKind="",notificationTimer=0,trackedBoundary=null;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function theme(v){document.body.classList.toggle("theme-dark",v!=="light")}
@@ -83,7 +83,26 @@ function reset(){state=clone(baseline||{});normalize();clearTransient("");tracke
 function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);renderAll()}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
 function clearBoundary(){if(trackedBoundary?.classList)trackedBoundary.classList.remove("sim-emphasis");trackedBoundary=null;refs.boundary.classList.remove("show")}
 function syncBoundary(){}
-async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;clearBoundary();trackedBoundary=el;el.classList.add("sim-emphasis");await sleep(260);if(token!==seekToken)return}
+function avoidAssistantOverlap(el){
+ if(assistantUserPlaced||refs.assistant.classList.contains("hidden")||!el)return;
+ const ar=refs.assistant.getBoundingClientRect(),er=el.getBoundingClientRect(),app=refs.app.getBoundingClientRect();
+ const overlap=!(ar.right<er.left-12||ar.left>er.right+12||ar.bottom<er.top-12||ar.top>er.bottom+12);
+ if(!overlap)return;
+ const rightX=app.width-ar.width-12,leftX=12;
+ const bottomY=app.height-ar.height-34,topY=104;
+ const candidates=[
+  {left:rightX,top:bottomY},{left:rightX,top:topY},
+  {left:leftX,top:bottomY},{left:leftX,top:topY}
+ ];
+ const score=p=>{
+  const pr={left:app.left+p.left,top:app.top+p.top,right:app.left+p.left+ar.width,bottom:app.top+p.top+ar.height};
+  const ov=!(pr.right<er.left-12||pr.left>er.right+12||pr.bottom<er.top-12||pr.top>er.bottom+12);
+  return ov?1:0;
+ };
+ candidates.sort((a,b)=>score(a)-score(b));
+ placeAssistant(candidates[0].left,candidates[0].top,false);
+}
+async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;clearBoundary();trackedBoundary=el;el.classList.add("sim-emphasis");avoidAssistantOverlap(el);await sleep(260);if(token!==seekToken)return}
 function openMenu(name){const maps={File:["New","Open","Project Structure","Settings"],Edit:["Undo","Redo","Find","Replace"],View:["Tool Windows","Appearance","Distraction Free Mode"],Navigate:["Class","File","Symbol","Declaration","Implementation"],Code:["Completion","Reformat Code","Optimize Imports","Generate"],Refactor:["Rename","Extract","Inline","Move","Safe Delete"],Build:["Build Project","Rebuild Project"],Run:["Run","Debug","Edit Configurations"],Tools:["Terminal","Database","Maven"],VCS:["Commit","Push","Pull","Git"]};refs.menuPopup.innerHTML=(maps[name]||["Action"]).map(x=>"<div>"+x+"</div>").join("");refs.menuPopup.classList.add("show")}
 async function applyStep(st,animate,token){
  if(token!==seekToken)return;clearBoundary();clearTransient(st.action);const d=st.data||{},f=()=>files[d.file||activeFile];
@@ -232,7 +251,7 @@ async function applyStep(st,animate,token){
 }
 function showProjectStructureModal(){showModal("settings","Project Structure",'<div class="cards">'+(state.sdks||[]).map(x=>card(x.name,x.path||x.version)).join("")+'</div>')}
 async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}allowBoundary=true}
-function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});reset()}
+function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});assistantUserPlaced=false;reset()}
 refs.modalClose.onclick=closeModal;refs.modalLayer.onclick=e=>{if(e.target===refs.modalLayer)closeModal()};
 document.querySelectorAll(".menuItem").forEach(m=>m.onclick=()=>openMenu(m.dataset.menu));
 document.querySelectorAll(".bottomTab").forEach(t=>t.onclick=()=>{activeBottom=t.dataset.bottom;renderBottom()});
@@ -252,23 +271,47 @@ function showAssistant(m){
  refs.assistantStep.textContent="Step "+(m.step||"");
  refs.assistantText.textContent=m.text||"";
  refs.assistant.classList.remove("hidden");
+ if(!assistantUserPlaced){
+  refs.assistant.style.left="auto";refs.assistant.style.top="auto";
+  refs.assistant.style.right="16px";refs.assistant.style.bottom="34px";
+ }
 }
-let assistantDrag=null;
-refs.assistantDrag.onpointerdown=e=>{
- if(e.target===refs.assistantClose)return;
- const r=refs.assistant.getBoundingClientRect();
- assistantDrag={dx:e.clientX-r.left,dy:e.clientY-r.top};
- refs.assistantDrag.setPointerCapture(e.pointerId);
-};
-refs.assistantDrag.onpointermove=e=>{
- if(!assistantDrag)return;
+let assistantDrag=null,assistantUserPlaced=false;
+function clampAssistant(left,top){
+ const a=refs.app.getBoundingClientRect(),r=refs.assistant.getBoundingClientRect(),pad=6;
+ return {
+  left:Math.max(pad,Math.min(a.width-r.width-pad,left)),
+  top:Math.max(pad,Math.min(a.height-r.height-pad,top))
+ };
+}
+function placeAssistant(left,top,userPlaced=false){
+ const p=clampAssistant(left,top);
+ refs.assistant.style.left=p.left+"px";
+ refs.assistant.style.top=p.top+"px";
+ refs.assistant.style.right="auto";
+ refs.assistant.style.bottom="auto";
+ if(userPlaced)assistantUserPlaced=true;
+}
+refs.assistant.addEventListener("pointerdown",e=>{
+ if(e.target.closest("button"))return;
+ const r=refs.assistant.getBoundingClientRect(),a=refs.app.getBoundingClientRect();
+ assistantDrag={pointerId:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
+ refs.assistant.classList.add("dragging");
+ refs.assistant.setPointerCapture?.(e.pointerId);
+ e.preventDefault();
+});
+document.addEventListener("pointermove",e=>{
+ if(!assistantDrag||e.pointerId!==assistantDrag.pointerId)return;
  const a=refs.app.getBoundingClientRect();
- const r=refs.assistant.getBoundingClientRect();
- const left=Math.max(6,Math.min(a.width-r.width-6,e.clientX-a.left-assistantDrag.dx));
- const top=Math.max(6,Math.min(a.height-r.height-6,e.clientY-a.top-assistantDrag.dy));
- refs.assistant.style.left=left+"px";refs.assistant.style.top=top+"px";refs.assistant.style.right="auto";
-};
-refs.assistantDrag.onpointerup=()=>assistantDrag=null;
+ placeAssistant(e.clientX-a.left-assistantDrag.dx,e.clientY-a.top-assistantDrag.dy,true);
+ e.preventDefault();
+},{passive:false});
+document.addEventListener("pointerup",e=>{
+ if(!assistantDrag||e.pointerId!==assistantDrag.pointerId)return;
+ assistantDrag=null;
+ refs.assistant.classList.remove("dragging");
+});
+refs.assistantMin.onclick=()=>refs.assistant.classList.toggle("minimized");
 refs.assistantClose.onclick=()=>refs.assistant.classList.add("hidden");
 window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;theme(m.theme||"dark");loadPackage(m.package)}if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)}if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")theme(m.value)}if(m.type==="SIM_EXPLAIN")showAssistant(m)}); 
 refs.tree.innerHTML='<div style="padding:10px;color:var(--muted);font-size:10px">Waiting for IntelliJ IDEA package...</div>';
