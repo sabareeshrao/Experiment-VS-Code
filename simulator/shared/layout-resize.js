@@ -143,6 +143,8 @@
     if(!work || !side || !editor) return;
     work.style.position="relative";
     const applySide=()=>{
+      if(innerWidth<620){work.style.gridTemplateColumns="";v.style.display="none";return;}
+      v.style.display="block";
       const act=document.querySelector(".activityBar")?.getBoundingClientRect().width || 48;
       const w=clamp(get("sideW",side.getBoundingClientRect().width||300),140,Math.max(160,work.clientWidth-240));
       work.style.gridTemplateColumns=px(act)+" "+px(w)+" minmax(0,1fr)";
@@ -310,20 +312,18 @@
     const el=document.querySelector(selectors[app]?.[0]||"__none__");
     if(!el)return;
     const key="assistant";
+    const parentRect=()=>el.offsetParent?.getBoundingClientRect?.()||{left:0,top:0};
     const s=saved[key];
     if(s && Number.isFinite(s.left)&&Number.isFinite(s.top)){
       Object.assign(el.style,{left:px(s.left),top:px(s.top),right:"auto",bottom:"auto"});
     }
-    const obs=new ResizeObserver(()=>{
-      if(!el.offsetParent)return;
-      const r=el.getBoundingClientRect();
-      if(r.width>0&&r.height>0&&el.style.left&&el.style.top) commit({assistant:{left:r.left,top:r.top,width:r.width,height:r.height}});
-    });
-    obs.observe(el);
-    document.addEventListener("pointerup",()=>{
+    const persist=()=>{
       if(!el.offsetParent||!el.style.left||!el.style.top)return;
-      const r=el.getBoundingClientRect();commit({assistant:{left:r.left,top:r.top,width:r.width,height:r.height}});
-    },true);
+      const r=el.getBoundingClientRect(),p=parentRect();
+      commit({assistant:{left:r.left-p.left,top:r.top-p.top,width:r.width,height:r.height}});
+    };
+    if(typeof ResizeObserver==="function"){const obs=new ResizeObserver(persist);obs.observe(el);}
+    document.addEventListener("pointerup",persist,true);
   }
 
   const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,cmd:()=>{}};
