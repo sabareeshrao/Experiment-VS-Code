@@ -25,7 +25,9 @@ if(!document.getElementById(STYLE_ID)){
     /* Remove simulator-specific decoration so every card looks like Postman. */
     ".simExplainGlobalHead .ideAssistantIcon,.simExplainGlobalHead .assistantIcon,.simExplainGlobalHead .pgAssistantIcon{display:none!important}",
     ".simExplainGlobalHead .ideAssistantTitles span,.simExplainGlobalHead .assistantTitles span,.simExplainGlobalHead .pgAssistantTitles span,.simExplainGlobalHead #ssmsAssistantStage{display:none!important}",
-    ".simExplainGlobalHead .ideAssistantTitles,.simExplainGlobalHead .assistantTitles,.simExplainGlobalHead .pgAssistantTitles,.simExplainGlobalHead .assistantTitles{min-width:0!important;flex:1!important}",
+    ".simExplainGlobalHead .ideAssistantTitles,.simExplainGlobalHead .assistantTitles,.simExplainGlobalHead .pgAssistantTitles{min-width:0!important;flex:1!important}",
+    ".simExplainGlobalHead>strong{min-width:0!important;flex:1!important}",
+    "#linuxAssistant .simExplainGlobalHead>span:first-child{display:none!important}",
 
     ".simExplainGlobalHead button,.simExplainSizeBtn{box-sizing:border-box!important;width:25px!important;min-width:25px!important;height:25px!important;min-height:25px!important;padding:0!important;margin:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#ddd!important;box-shadow:none!important;outline:0!important;display:grid!important;place-items:center!important;font:600 15px/25px 'Segoe UI',Arial,sans-serif!important;text-align:center!important;opacity:1!important;visibility:visible!important;cursor:pointer!important}",
     "body.theme-light .simExplainGlobalHead button,body.theme-light .simExplainSizeBtn,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead button,body[data-sim-app='postman']:not(.theme-dark) .simExplainSizeBtn{color:#555!important}",
@@ -35,8 +37,9 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
     ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
 
-    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif!important;line-height:1.55!important;max-height:210px!important;overflow:auto!important;user-select:text!important}",
+    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;max-height:210px!important;overflow:auto!important;user-select:text!important}",
     "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
+    ".simExplainGlobalBody .jenkinsAssistantBody{padding:0!important;font:inherit!important;line-height:inherit!important;color:inherit!important}",
     ".simExplainGlobalBody p{margin:0!important}",
     ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
 
