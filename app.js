@@ -77,7 +77,7 @@
       // Universal rules for every current and future simulator.
       ensureScript(
         "/simulator/shared/explanation-controls.js",
-        "simulator/shared/explanation-controls.js?v=6",
+        "simulator/shared/explanation-controls.js?v=10",
         "globalExplanationRuntime"
       );
       ensureScript(

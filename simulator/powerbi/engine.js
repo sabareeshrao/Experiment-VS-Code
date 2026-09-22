@@ -538,7 +538,7 @@ async function applyStep(step,animate,token){
 }
 async function seek(steps,animateFinal){
  const token=++seekToken;clearTransient();state=normalize(baseline||{});applyTheme(state.theme||"light");
- for(let i=0;i<steps.length;i++){if(steps[i].app!==APP_ID)continue;allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return;}
+ for(let i=0;i<steps.length;i++){if(steps[i].app&&steps[i].app!==APP_ID)continue;allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return;}
  allowBoundary=true;renderAll();
 }
 refs.reportViewBtn.onclick=()=>{state.activeView="report";state.serviceOpen=false;renderAll();};

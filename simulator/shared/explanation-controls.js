@@ -59,7 +59,7 @@ if(!document.getElementById(STYLE_ID)){
 
 var assistantSelectors=["[data-sim-explanation]","#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
 var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
-var textSelectors=["#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
+var textSelectors=["[data-sim-explanation-text]","#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
 var scaleKey="sim.explanationScale.v1";
 var positionKey="sim.explanationPosition.v1";
 var dragPending=false;
@@ -78,6 +78,23 @@ function getAssistant(){
     if(el)return el;
   }
   return null;
+}
+function ensureFallbackAssistant(){
+  var existing=getAssistant();
+  if(existing)return existing;
+  if(!document.body)return null;
+  var box=document.createElement("aside");
+  box.id="globalSimAssistant";
+  box.className="hidden";
+  box.setAttribute("data-sim-explanation","1");
+  box.innerHTML='<div data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><span class="grow"></span><button type="button" data-sim-explanation-min title="Minimize">−</button><button type="button" data-sim-explanation-close title="Close">×</button></div><div data-sim-explanation-body><p data-sim-explanation-text></p></div>';
+  document.body.appendChild(box);
+  var min=box.querySelector("[data-sim-explanation-min]");
+  var close=box.querySelector("[data-sim-explanation-close]");
+  if(min)min.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();box.classList.toggle("minimized");});
+  if(close)close.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();box.classList.add("hidden");box.classList.remove("show");});
+  applyUnifiedClasses(box);
+  return box;
 }
 function getHead(box){
   return firstWithin(box,["[data-sim-explanation-drag]","#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead","#jenkinsAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
@@ -314,9 +331,13 @@ function hideLanguageLabels(box){
   Array.prototype.forEach.call(box.querySelectorAll(".assistantLang,.pgAssistantLanguage"),function(el){el.style.display="none";});
 }
 function refresh(m){
-  var box=getAssistant();
+  var box=getAssistant()||ensureFallbackAssistant();
   if(!box)return;
   applyUnifiedClasses(box);
+  var title=firstWithin(box,["[data-sim-explanation-title]","#ideAssistantTitle","#assistantTitle","#pgAssistantTitle","#ssmsAssistantTitle","#jenkinsAssistantTitle"]);
+  var text=getText(box);
+  if(title&&m&&m.title)title.textContent=m.title;
+  if(text&&m&&m.text!==undefined)text.textContent=m.text||"";
   box.classList.remove("hidden","minimized","min");
   box.classList.add("show");
   box.style.display="";
@@ -330,9 +351,9 @@ function refresh(m){
 window.addEventListener("message",function(e){
   var m=e.data||{};
   if(m.type==="SIM_EXPLAIN"){
-    // Engine listeners run first; update the metadata afterward so old
-    // "Step / Telugu (Romanized)" labels never remain visible.
-    setTimeout(function(){refresh(m);},0);
+    // Create a shared fallback explanation panel for simulators that do not
+    // ship their own assistant, then apply the same global controls/styles.
+    setTimeout(function(){ensureFallbackAssistant();refresh(m);},0);
   }
 });
 
