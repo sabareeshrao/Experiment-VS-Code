@@ -13,7 +13,13 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeBtn:hover{background:rgba(255,255,255,.10)!important;color:#fff!important}",
     ".simExplainActions{display:block!important;margin:0 0 7px!important;padding:3px 7px!important;border-radius:4px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.10)!important;color:#c6c9cf!important;font-size:.88em!important;line-height:1.4!important;white-space:normal!important;overflow-wrap:anywhere!important}",
     ".assistantLang,.pgAssistantLanguage{display:none!important}",
-    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant{position:fixed!important;z-index:20000!important}"
+    "#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant{position:fixed!important;z-index:20000!important}",
+    "*{scrollbar-width:thin;scrollbar-color:rgba(128,134,142,.58) transparent}",
+    "*::-webkit-scrollbar{width:8px;height:8px}",
+    "*::-webkit-scrollbar-track{background:transparent}",
+    "*::-webkit-scrollbar-thumb{background:rgba(128,134,142,.52);border:2px solid transparent;background-clip:padding-box;border-radius:10px}",
+    "*::-webkit-scrollbar-thumb:hover{background:rgba(154,160,168,.72);border:2px solid transparent;background-clip:padding-box}",
+    "*::-webkit-scrollbar-corner{background:transparent}"
   ].join("");
   document.head.appendChild(style);
 }
