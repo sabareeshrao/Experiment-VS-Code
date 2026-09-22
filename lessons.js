@@ -95,8 +95,15 @@ window.COURSE = {
         "workspaceName": "Java Practice",
         "year": 2026,
         "aiEnabled": false,
-        "initialFile": null,
-        "files": {},
+        "initialFile": "src/studentService.js",
+        "files": {
+          "src/studentService.js": {
+            "content": "import { apiClient } from \"./apiClient.js\";\n\nconst API_URL = \"/api/students\";\nconst DEFAULT_LIMIT = 10;\n\nexport class StudentService {\n    constructor(client = apiClient) {\n        this.client = client;\n        this.cache = new Map();\n    }\n\n    async getStudents(limit = DEFAULT_LIMIT) {\n        const response = await this.client.get(`${API_URL}?limit=${limit}`);\n\n        if (!response.ok) {\n            throw new Error(`Unable to load students: ${response.status}`);\n        }\n\n        const students = await response.json();\n        this.cacheStudents(students);\n        return students;\n    }\n\n    async getStudentById(id) {\n        if (this.cache.has(id)) {\n            return this.cache.get(id);\n        }\n\n        const response = await this.client.get(`${API_URL}/${id}`);\n\n        if (!response.ok) {\n            return null;\n        }\n\n        const student = await response.json();\n        this.cache.set(student.rollNo, student);\n        return student;\n    }\n\n    cacheStudents(students) {\n        students.forEach((student) => {\n            this.cache.set(student.rollNo, student);\n        });\n    }\n\n    getPresentStudents(students) {\n        return students.filter((student) => student.isPresent === true);\n    }\n\n    getAverageMark(student) {\n        if (!student.marks || student.marks.length === 0) {\n            return 0;\n        }\n\n        const total = student.marks.reduce((sum, mark) => sum + mark, 0);\n        return Math.round((total / student.marks.length) * 100) / 100;\n    }\n\n    formatStudent(student) {\n        const average = this.getAverageMark(student);\n        return `${student.rollNo} - ${student.name} - Average: ${average}`;\n    }\n}\n\nexport const studentService = new StudentService();\n"
+          },
+          "src/apiClient.js": {
+            "content": "export const apiClient = {\n    get(url) {\n        return fetch(url, {\n            method: \"GET\",\n            headers: {\n                Accept: \"application/json\"\n            }\n        });\n    }\n};\n"
+          }
+        },
         "tree": [],
         "settings": {
           "theme": "dark",
@@ -121,7 +128,17 @@ window.COURSE = {
         "problems": [],
         "debug": {},
         "tests": [],
-        "extensions": []
+        "extensions": [],
+        "openTabs": [
+          {
+            "path": "src/studentService.js",
+            "pinned": true
+          },
+          {
+            "path": "src/apiClient.js",
+            "pinned": true
+          }
+        ]
       },
       "postman": {
         "workspaceName": "Java Practice API Workspace",
@@ -622,16 +639,16 @@ window.COURSE = {
     },
     {
       "title": "4: VS Code Integration Test",
-      "subtitle": "20-step test of VS Code inside the same multi-software developer journey.",
+      "subtitle": "20-step VS Code test using a real multi-file workspace with full-length source code.",
       "steps": [
         {
-          "title": "Open Java Practice in VS Code",
-          "why": "Ippudu lesson VS Code ki switch avuthundi. Left lesson journey same ga untundi, center workspace matram VS Code ga maruthundi.",
+          "title": "Open full StudentService.js in VS Code",
+          "why": "Ippudu VS Code lo small sample kakunda full-length source file open chestunnam. Syntax colors, line numbers, tabs, scrolling, strings, keywords, methods anni clear ga test cheyyachu.",
           "software": "vscode",
           "action": {
-            "action": "newProject",
+            "action": "openFile",
             "data": {
-              "name": "Java Practice"
+              "path": "src/studentService.js"
             }
           }
         },
