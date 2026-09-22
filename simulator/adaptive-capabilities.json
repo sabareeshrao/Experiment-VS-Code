@@ -301,6 +301,51 @@
         "Server Properties",
         "Adaptive Dialog"
       ]
+    },
+    "powerbi": {
+      "registry": "PBI_CAPABILITIES",
+      "targetFidelity": 92,
+      "features": [
+        "modern-ribbon",
+        "ribbon-search",
+        "keytips",
+        "report-view",
+        "table-view",
+        "model-view",
+        "dax-query-view",
+        "tmdl-view",
+        "power-query-editor",
+        "pane-switcher",
+        "on-object-interaction",
+        "model-explorer",
+        "visual-formatting",
+        "performance-analyzer",
+        "publish"
+      ],
+      "actions": [
+        "openDaxQueryView",
+        "newDaxQuery",
+        "typeDaxQuery",
+        "runDaxQuery",
+        "openTmdlView",
+        "scriptTmdlObject",
+        "typeTmdl",
+        "previewTmdl",
+        "applyTmdl",
+        "openModelExplorer",
+        "selectModelObject",
+        "togglePane",
+        "openPaneSwitcher",
+        "openOnObjectBuild",
+        "openFormatPane",
+        "showVisualTable",
+        "openSelectionPane",
+        "openBookmarksPane",
+        "toggleRibbonCollapsed",
+        "showKeytips",
+        "searchRibbon",
+        "openContextMenu"
+      ]
     }
   }
 }

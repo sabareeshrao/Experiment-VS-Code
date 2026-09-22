@@ -13,7 +13,8 @@
     linux: $("linuxFrame"),
     ssms: $("ssmsFrame"),
     jira: $("jiraFrame"),
-    jenkins: $("jenkinsFrame")
+    jenkins: $("jenkinsFrame"),
+    powerbi: $("powerbiFrame")
   };
 
   const appIds = {
@@ -25,7 +26,8 @@
     linux: "linux",
     ssms: "sql_server_management_studio",
     jira: "jira",
-    jenkins: "jenkins"
+    jenkins: "jenkins",
+    powerbi: "power_bi"
   };
 
   const appLabels = {
@@ -37,7 +39,8 @@
     linux: "Linux",
     ssms: "SQL Server Management Studio",
     jira: "Jira",
-    jenkins: "Jenkins"
+    jenkins: "Jenkins",
+    powerbi: "Power BI Desktop"
   };
 
   const engineReady = {
@@ -49,7 +52,8 @@
     linux: false,
     ssms: false,
     jira: false,
-    jenkins: false
+    jenkins: false,
+    powerbi: false
   };
 
   function ensureGlobalSimulatorRuntime(frame) {
@@ -143,6 +147,7 @@
     if (value === "ssms") return "ssms";
     if (value === "jira") return "jira";
     if (value === "jenkins") return "jenkins";
+    if (value === "powerbi") return "powerbi";
     return "intellij";
   }
 
@@ -164,6 +169,7 @@
     softwareBadge.classList.toggle("ssms", activeSoftware === "ssms");
     softwareBadge.classList.toggle("jira", activeSoftware === "jira");
     softwareBadge.classList.toggle("jenkins", activeSoftware === "jenkins");
+    softwareBadge.classList.toggle("powerbi", activeSoftware === "powerbi");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -258,6 +264,16 @@
       if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]']);
       if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]']);
       if (action === "saveQuery") return plan(['[data-target="save"]']);
+    }
+    if (software === "powerbi") {
+      if (action === "openGetData") return plan(['[data-target="getData"]']);
+      if (action === "openPowerQuery") return plan(["#powerQuery"]);
+      if (action === "openModelView") return plan(["#modelViewBtn"]);
+      if (action === "openDaxQueryView") return plan(["#daxViewBtn"]);
+      if (action === "runDaxQuery") return plan(["#runDaxBtn"]);
+      if (action === "openTmdlView") return plan(["#tmdlViewBtn"]);
+      if (action === "scriptTmdlObject") return plan(["#scriptTmdlBtn"]);
+      if (action === "openReportView") return plan(["#reportViewBtn"]);
     }
     if (software === "jenkins") {
       if (action === "typeSearch") return plan(["#search"]);

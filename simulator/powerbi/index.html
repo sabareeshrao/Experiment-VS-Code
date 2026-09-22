@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power BI Desktop Simulator</title>
+<style>
+:root{
+  --bg:#f3f3f3;--panel:#fff;--panel2:#f8f8f8;--text:#262626;--muted:#6b6b6b;--line:#d8d8d8;
+  --accent:#f2c811;--accent2:#d8ac00;--blue:#2b579a;--sel:#e9f3ff;--dark:#1f1f1f;--canvas:#fff;
+  --thumb:rgba(90,90,90,.45);--thumbHover:rgba(70,70,70,.7)
+}
+body.theme-dark{
+  --bg:#1f1f1f;--panel:#292929;--panel2:#242424;--text:#f1f1f1;--muted:#b7b7b7;--line:#444;
+  --sel:#373f4a;--canvas:#363636;--thumb:rgba(190,190,190,.33);--thumbHover:rgba(220,220,220,.55)
+}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--thumb);border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--thumbHover);border:2px solid transparent;background-clip:padding-box}
+*{scrollbar-width:thin;scrollbar-color:var(--thumb) transparent}
+#app{height:100dvh;display:grid;grid-template-rows:32px 34px 84px minmax(0,1fr) 28px;overflow:hidden;min-width:0;min-height:0}
+.titlebar{display:flex;align-items:center;gap:10px;padding:0 10px;background:#f2c811;color:#1f1f1f;border-bottom:1px solid #d4ae00;min-width:0}
+.pbiMark{display:flex;align-items:end;gap:2px;width:18px;height:18px}
+.pbiMark i{display:block;width:4px;background:#1f1f1f;border-radius:1px 1px 0 0}.pbiMark i:nth-child(1){height:8px}.pbiMark i:nth-child(2){height:12px}.pbiMark i:nth-child(3){height:16px}.pbiMark i:nth-child(4){height:11px}
+.titleText{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titleSpacer{flex:1}
+.windowBtns{display:flex;height:100%}.windowBtns span{width:36px;display:grid;place-items:center;font-size:12px}
+.tabbar{display:flex;align-items:end;padding:0 8px;background:var(--panel);border-bottom:1px solid var(--line);gap:2px;overflow-x:auto;min-width:0}
+.ribbonTab{border:0;background:transparent;padding:9px 14px 8px;font-size:12px;white-space:nowrap;border-bottom:2px solid transparent}
+.ribbonTab.active{border-bottom-color:var(--accent);font-weight:600}
+.ribbon{display:flex;align-items:stretch;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;padding:5px 8px;gap:4px;min-width:0}
+.ribGroup{display:flex;align-items:center;gap:3px;padding:0 8px;border-right:1px solid var(--line);position:relative;min-width:max-content}
+.ribGroup::after{content:attr(data-label);position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:9px;color:var(--muted)}
+.ribBtn{min-width:46px;height:58px;border:0;background:transparent;border-radius:3px;padding:3px 5px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px}
+.ribBtn:hover{background:var(--panel2)}
+.ribIcon{width:23px;height:23px;border:1px solid var(--line);border-radius:3px;display:grid;place-items:center;font-weight:700;background:var(--panel2)}
+.workspace{display:grid;grid-template-columns:48px minmax(0,1fr) minmax(260px,330px);min-width:0;min-height:0;overflow:hidden}
+.leftRail{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding-top:7px;gap:4px;min-height:0}
+.viewBtn{width:38px;height:38px;border:0;background:transparent;border-radius:3px;display:grid;place-items:center;font-size:18px;position:relative}
+.viewBtn.active{background:var(--sel)}
+.viewBtn.active::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:3px;background:var(--accent)}
+.viewBtn:hover{background:var(--panel2)}
+.mainArea{position:relative;min-width:0;min-height:0;overflow:hidden;background:#d7d7d7}
+body.theme-dark .mainArea{background:#202020}
+.view{position:absolute;inset:0;display:none;min-width:0;min-height:0;overflow:hidden}
+.view.active{display:flex}
+.reportView{flex-direction:column}
+.reportToolbar{height:32px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 10px;gap:10px;font-size:11px}
+.reportStage{flex:1;overflow:auto;padding:26px;background:#d4d4d4;min-height:0}
+body.theme-dark .reportStage{background:#1e1e1e}
+.canvas{width:960px;height:540px;background:var(--canvas);margin:0 auto;position:relative;box-shadow:0 1px 4px rgba(0,0,0,.25);transform-origin:top center}
+.canvas.gridOn{background-image:linear-gradient(to right,rgba(120,120,120,.12) 1px,transparent 1px),linear-gradient(to bottom,rgba(120,120,120,.12) 1px,transparent 1px);background-size:16px 16px}
+.visual{position:absolute;border:1px solid transparent;background:var(--panel);overflow:visible;min-width:70px;min-height:52px;box-sizing:border-box;touch-action:none}
+.visual.selected{border:2px solid #4c8bf5;box-shadow:0 0 0 1px rgba(76,139,245,.25)}
+.visualTitle{height:26px;padding:5px 8px;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:move;user-select:none;touch-action:none}
+.visualBody{position:absolute;left:5px;right:5px;top:28px;bottom:5px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.visual.selected .visualTitle{background:rgba(76,139,245,.08)}
+.resizeHandle{position:absolute;width:9px;height:9px;background:#fff;border:1px solid #4c8bf5;z-index:8;display:none;box-sizing:border-box;touch-action:none}
+.visual.selected .resizeHandle{display:block}
+.resizeHandle.nw{left:-6px;top:-6px;cursor:nwse-resize}.resizeHandle.n{left:50%;top:-6px;transform:translateX(-50%);cursor:ns-resize}.resizeHandle.ne{right:-6px;top:-6px;cursor:nesw-resize}
+.resizeHandle.e{right:-6px;top:50%;transform:translateY(-50%);cursor:ew-resize}.resizeHandle.se{right:-6px;bottom:-6px;cursor:nwse-resize}.resizeHandle.s{left:50%;bottom:-6px;transform:translateX(-50%);cursor:ns-resize}
+.resizeHandle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}.resizeHandle.w{left:-6px;top:50%;transform:translateY(-50%);cursor:ew-resize}
+.visual.isDragging,.visual.isResizing{opacity:.96;box-shadow:0 4px 16px rgba(0,0,0,.22)}
+body.theme-dark .resizeHandle{background:#1f1f1f}
+.chartSvg{width:100%;height:100%}
+.cardValue{font-size:30px;font-weight:600}
+.tableVisual{width:100%;height:100%;overflow:auto}
+.tableVisual table{border-collapse:collapse;width:100%;font-size:10px}.tableVisual th,.tableVisual td{border-bottom:1px solid var(--line);padding:4px 5px;text-align:left;white-space:nowrap}
+.slicerItems{display:flex;flex-direction:column;gap:4px;width:100%;height:100%;overflow:auto;font-size:11px}
+.slicerItem{padding:4px 6px;border:1px solid var(--line);border-radius:2px}.slicerItem.on{background:var(--sel)}
+.emptyCanvas{position:absolute;inset:0;display:grid;place-items:center;color:#777;font-size:13px;pointer-events:none}
+.dataView{flex-direction:column;background:var(--panel)}
+.dataToolbar{height:38px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 10px;gap:8px;font-size:11px}
+.dataGridWrap{flex:1;overflow:auto;min-height:0}
+.dataGrid{border-collapse:collapse;min-width:100%;font-size:11px}.dataGrid th{position:sticky;top:0;background:var(--panel2);z-index:1}.dataGrid th,.dataGrid td{padding:6px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);white-space:nowrap}
+.modelView{background:var(--panel2);overflow:auto}
+.modelCanvas{position:relative;min-width:1200px;min-height:760px;padding:30px}
+.modelTable{position:absolute;width:210px;background:var(--panel);border:1px solid var(--line);border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.12);overflow:hidden}
+.modelTable h4{margin:0;padding:8px 10px;background:#f2c811;color:#1f1f1f;font-size:12px}
+.modelFields{max-height:260px;overflow:auto}.modelField{padding:5px 8px;border-bottom:1px solid var(--line);font-size:10px;display:flex;gap:6px}
+.relLine{position:absolute;height:2px;background:#777;transform-origin:left center;z-index:0}.relBadge{position:absolute;font-size:10px;background:var(--panel);border:1px solid var(--line);padding:1px 4px;border-radius:8px}
+.sidePanes{background:var(--panel);border-left:1px solid var(--line);display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
+.paneTabs{height:33px;border-bottom:1px solid var(--line);display:flex;overflow-x:auto}
+.paneTab{border:0;background:transparent;padding:0 11px;font-size:11px;border-bottom:2px solid transparent;white-space:nowrap}
+.paneTab.active{border-bottom-color:var(--accent);font-weight:600}
+.paneContent{min-height:0;overflow:auto}
+.pane{display:none;padding:8px}.pane.active{display:block}
+.paneTitle{font-size:12px;font-weight:600;margin:4px 0 8px}
+.fieldTable{border:1px solid var(--line);border-radius:3px;margin-bottom:6px;overflow:hidden}
+.fieldTableHead{padding:6px 7px;background:var(--panel2);font-size:11px;font-weight:600;display:flex;justify-content:space-between}
+.field{padding:4px 8px 4px 18px;font-size:10px;display:flex;align-items:center;gap:5px}
+.field:hover{background:var(--panel2)}
+.visualGallery{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:10px}
+.visualTypeBtn{aspect-ratio:1;border:1px solid transparent;background:var(--panel2);border-radius:2px;font-size:11px;display:grid;place-items:center}
+.visualTypeBtn:hover,.visualTypeBtn.active{border-color:#888;background:var(--sel)}
+.well{border:1px dashed var(--line);min-height:34px;border-radius:2px;margin:5px 0;padding:5px}
+.wellLabel{font-size:9px;color:var(--muted);margin-bottom:3px}.chip{font-size:9px;padding:3px 5px;background:var(--panel2);border:1px solid var(--line);border-radius:2px;margin:2px 0;overflow:hidden;text-overflow:ellipsis}
+.filterCard{border:1px solid var(--line);padding:6px;border-radius:3px;margin:5px 0;font-size:10px}
+.status{display:flex;align-items:center;gap:12px;padding:0 10px;background:var(--panel);border-top:1px solid var(--line);font-size:10px;min-width:0;overflow:hidden}
+.status .grow{flex:1}.statusText{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pageTabs{position:absolute;left:48px;right:330px;bottom:28px;height:31px;background:var(--panel);border-top:1px solid var(--line);display:flex;align-items:center;padding:0 6px;gap:2px;z-index:5;overflow-x:auto}
+.pageTab{border:0;background:transparent;padding:7px 12px 6px;font-size:10px;white-space:nowrap;border-bottom:2px solid transparent}.pageTab.active{border-bottom-color:var(--accent);font-weight:600}
+.modalShade{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:30;display:none;align-items:center;justify-content:center}
+.modalShade.show{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 26px rgba(0,0,0,.35);width:min(760px,92%);max-height:82%;display:flex;flex-direction:column;overflow:hidden}
+.modalHead{height:38px;padding:0 12px;display:flex;align-items:center;border-bottom:1px solid var(--line);font-size:13px;font-weight:600}
+.modalBody{padding:12px;overflow:auto;min-height:0}
+.modalFoot{height:46px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 12px}
+.btn{border:1px solid var(--line);background:var(--panel2);border-radius:2px;padding:6px 14px;font-size:11px}.btn.primary{background:#f2c811;border-color:#d8ac00;color:#1f1f1f}
+.connectorGrid{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:8px}.connector{border:1px solid var(--line);padding:12px;border-radius:3px;background:var(--panel2);font-size:11px}.connector.selected{outline:2px solid #4c8bf5}
+.navigator{display:grid;grid-template-columns:210px 1fr;min-height:360px}.navList{border-right:1px solid var(--line);overflow:auto}.navItem{padding:7px 8px;font-size:11px}.navItem.selected{background:var(--sel)}
+.preview{padding:8px;overflow:auto}
+.powerQuery{position:absolute;inset:0;background:var(--panel);z-index:20;display:none;grid-template-rows:34px 76px minmax(0,1fr) 24px}
+.powerQuery.show{display:grid}
+.pqTitle{display:flex;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600}
+.pqRibbon{display:flex;gap:5px;border-bottom:1px solid var(--line);padding:6px;overflow-x:auto}.pqRibbon .btn{white-space:nowrap;padding:5px 8px}
+.pqBody{display:grid;grid-template-columns:190px minmax(0,1fr) 230px;min-width:0;min-height:0;overflow:hidden}
+.pqQueries{border-right:1px solid var(--line);overflow:auto}.pqQuery{padding:7px 9px;font-size:11px}.pqQuery.active{background:var(--sel);font-weight:600}
+.pqCenter{display:grid;grid-template-rows:28px minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
+.formulaBar{border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 7px;font-family:Consolas,monospace;font-size:10px;overflow:hidden}
+.pqGridWrap{overflow:auto}.pqGrid{border-collapse:collapse;min-width:100%;font-size:10px}.pqGrid th{position:sticky;top:0;background:var(--panel2)}.pqGrid th,.pqGrid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:5px 6px;white-space:nowrap}
+.pqSteps{border-left:1px solid var(--line);padding:8px;overflow:auto}.step{padding:6px;border-radius:2px;font-size:10px}.step.active{background:var(--sel)}
+.codeArea{width:100%;height:260px;background:#1e1e1e;color:#ddd;border:1px solid #444;border-radius:3px;font:11px/1.45 Consolas,monospace;padding:10px;resize:none}
+.learningMap{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:8px}.learnCat{border:1px solid var(--line);border-radius:3px;background:var(--panel2);overflow:hidden}.learnHead{padding:7px 9px;font-size:11px;font-weight:600;background:#f2c811;color:#1f1f1f}.learnItem{padding:4px 8px;font-size:9px;border-top:1px solid var(--line)}
+.toast{position:absolute;right:16px;bottom:48px;z-index:60;background:#2b2b2b;color:#fff;padding:9px 12px;border-radius:3px;box-shadow:0 3px 12px rgba(0,0,0,.35);font-size:11px;display:none;max-width:360px}.toast.show{display:block}
+.boundary{position:absolute;border:3px solid #ffd400;box-shadow:0 0 0 2px rgba(0,0,0,.32),0 0 12px rgba(255,212,0,.6);pointer-events:none;z-index:90;border-radius:4px;display:none}.boundary.show{display:block}
+.serviceView{flex-direction:column;background:var(--panel);overflow:auto;padding:20px}.serviceHero{border:1px solid var(--line);padding:20px;border-radius:5px;background:var(--panel2)}.serviceActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:1000px){
+  .workspace{grid-template-columns:42px minmax(0,1fr) minmax(220px,280px)}
+  .pageTabs{left:42px;right:280px}.leftRail{width:42px}.viewBtn{width:34px}
+  .visualGallery{grid-template-columns:repeat(5,1fr)}.pqBody{grid-template-columns:150px minmax(0,1fr) 190px}
+}
+@media(max-width:760px){
+  #app{grid-template-rows:30px 32px 64px minmax(0,1fr) 24px}
+  .ribbon{padding:3px}.ribBtn{height:48px;min-width:40px;font-size:9px}.ribIcon{width:18px;height:18px}
+  .workspace{grid-template-columns:38px minmax(0,1fr) minmax(170px,34%)}
+  .pageTabs{left:38px;right:34%;bottom:24px}.paneTab{padding:0 7px}.pane{padding:5px}
+  .reportStage{padding:12px}.pqBody{grid-template-columns:120px minmax(0,1fr) 150px}
+}
+@media(max-width:520px){
+  .workspace{grid-template-columns:36px minmax(0,1fr)}
+  .sidePanes{display:none}.pageTabs{left:36px;right:0}.ribbonTab{padding:8px}
+  .pqBody{grid-template-columns:95px minmax(0,1fr)}.pqSteps{display:none}
+  .connectorGrid{grid-template-columns:repeat(2,1fr)}.learningMap{grid-template-columns:1fr}
+}
+@media(max-height:420px){
+  #app{grid-template-rows:26px 28px 50px minmax(0,1fr) 20px}.ribbon{padding:2px}.ribBtn{height:38px}.ribBtn span:last-child{display:none}
+  .pageTabs{bottom:20px;height:25px}.reportToolbar{height:26px}.pqRibbon{height:50px;padding:3px}
+}
+
+/* 2026 Power BI fidelity upgrade */
+.titlebar{background:var(--panel);color:var(--text);height:34px;border-bottom:1px solid var(--line);padding:0 8px}.pbiMark{background:#f2c811;border-radius:3px;padding:2px;width:22px;height:22px;align-items:flex-end;justify-content:center}.pbiMark i{background:#222;width:3px}
+.pbiSearch{height:26px;width:min(440px,42vw);display:flex;align-items:center;gap:6px;margin-left:18px;padding:0 9px;border:1px solid var(--line);border-radius:4px;background:var(--panel2);color:var(--muted);font-size:11px}.pbiSearch input{width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:11px}
+#app{grid-template-rows:34px 34px 88px minmax(0,1fr) 28px}.ribbon{padding:4px 7px 6px}.ribBtn{min-width:54px;height:62px;border-radius:4px}.ribIcon{border:0;background:transparent;width:25px;height:25px}.ribIcon svg{display:block}.ribbon.collapsed{height:34px;overflow:hidden}.ribbon.collapsed .ribBtn{height:30px;padding:2px 6px 10px}.ribbon.collapsed .ribIcon{display:none}
+.leftRail{padding-top:5px}.viewBtn{display:flex;align-items:center;justify-content:center}.viewBtn svg{width:21px;height:21px}.viewTip{position:absolute;left:44px;background:#202020;color:#fff;font-size:10px;padding:5px 7px;border-radius:2px;opacity:0;pointer-events:none;white-space:nowrap;z-index:100}.viewBtn:hover .viewTip{opacity:1}
+.sidePanes{position:relative;grid-template-columns:32px minmax(0,1fr)}.paneSwitcher{grid-row:1/3;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 3px;border-right:1px solid var(--line);background:var(--panel2)}.paneSwitchBtn{width:25px;height:27px;border:0;background:transparent;border-radius:3px;display:grid;place-items:center}.paneSwitchBtn.active,.paneSwitchBtn:hover{background:var(--sel)}.paneTabs,.paneContent{grid-column:2}
+.modernCodeView{flex-direction:column;background:var(--panel)}.codeViewToolbar{height:36px;display:flex;align-items:center;gap:7px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--panel2);font-size:10px}.codeTabs{height:30px;display:flex;align-items:flex-end;padding:0 7px;border-bottom:1px solid var(--line)}.codeTab{padding:7px 12px 6px;border:1px solid var(--line);border-bottom:0;background:var(--panel2);font-size:10px}.codeTab.active{background:var(--panel)}
+.codeWorkspace{flex:1;display:grid;grid-template-columns:220px minmax(0,1fr) 280px;min-height:0}.modelExplorer{border-right:1px solid var(--line);background:var(--panel2);overflow:auto;padding:7px}.explorerTitle{font-size:11px;font-weight:700;padding:5px}.explorerNode{padding:5px 6px 5px 16px;font-size:10px;border-radius:2px}.explorerNode:hover{background:var(--sel)}
+.codeEditorWrap{min-width:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) minmax(120px,34%);background:#1e1e1e}.modernCodeEditor{width:100%;height:100%;border:0;outline:0;resize:none;background:#1e1e1e;color:#d4d4d4;padding:14px;font:12px/1.55 "Cascadia Code",Consolas,monospace}.codeResults{border-top:1px solid #444;background:var(--panel);overflow:auto;color:var(--text);font-size:10px;padding:7px}.codeRightPane{border-left:1px solid var(--line);overflow:auto;background:var(--panel);padding:8px;font-size:10px}.tmdlPreview{border:1px solid var(--line);background:var(--panel2);padding:8px;margin-top:8px;white-space:pre-wrap}
+.onObjectMenu{position:absolute;z-index:25;display:none;min-width:185px;background:var(--panel);border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.25);border-radius:5px;padding:6px}.onObjectMenu.show{display:block}.onObjectTitle{font-size:10px;font-weight:700;margin-bottom:5px}.onObjectItem{padding:6px;border-radius:3px;font-size:10px}.onObjectItem:hover{background:var(--sel)}
+.visual.selected::after{content:"";position:absolute;right:7px;top:31px;width:23px;height:23px;border:1px solid #b8b8b8;border-radius:3px;background:var(--panel);box-shadow:0 1px 3px rgba(0,0,0,.15)}.visual.selected::before{content:"＋";position:absolute;right:12px;top:32px;z-index:2;color:#555;font-size:17px;line-height:21px}
+.keytip{position:fixed;background:#fff5b5;color:#222;border:1px solid #b49e28;border-radius:2px;padding:1px 3px;font-size:8px;font-weight:700;z-index:150}
+@media(max-width:850px){.codeWorkspace{grid-template-columns:150px minmax(0,1fr) 190px}.pbiSearch{width:240px}}
+
+</style>
+</head>
+<body class="theme-light">
+<div id="app">
+  <div class="titlebar">
+    <div class="pbiMark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="titleText" id="titleText">Power BI Desktop</div><label class="pbiSearch"><span>⌕</span><input id="pbiSearch" placeholder="Search Power BI"></label><div class="titleSpacer"></div>
+    <div class="windowBtns"><span>─</span><span>□</span><span>×</span></div>
+  </div>
+  <div class="tabbar" id="ribbonTabs"></div>
+  <div class="ribbon" id="ribbon"></div>
+  <div class="workspace">
+    <aside class="leftRail">
+      <button class="viewBtn active" id="reportViewBtn" title="Report"><span data-pbi-icon="report"></span><span class="viewTip">Report view</span></button>
+      <button class="viewBtn" id="dataViewBtn" title="Table"><span data-pbi-icon="data"></span><span class="viewTip">Table view</span></button>
+      <button class="viewBtn" id="modelViewBtn" title="Model"><span data-pbi-icon="model"></span><span class="viewTip">Model view</span></button>
+      <button class="viewBtn" id="daxViewBtn" title="DAX query"><span data-pbi-icon="dax"></span><span class="viewTip">DAX query view</span></button>
+      <button class="viewBtn" id="tmdlViewBtn" title="TMDL"><span data-pbi-icon="tmdl"></span><span class="viewTip">TMDL view</span></button>
+    </aside>
+    <main class="mainArea" id="mainArea">
+      <section class="view reportView active" id="reportView">
+        <div class="reportToolbar"><span id="reportName">Untitled</span><span>•</span><span id="canvasState">Fit to page</span></div>
+        <div class="reportStage" id="reportStage"><div class="canvas" id="reportCanvas"><div class="emptyCanvas" id="emptyCanvas">Add data and visuals to build your report</div></div></div>
+      </section>
+      <section class="view dataView" id="dataView"><div class="dataToolbar" id="dataToolbar"></div><div class="dataGridWrap"><table class="dataGrid" id="dataGrid"></table></div></section>
+      <section class="view modelView" id="modelView"><div class="modelCanvas" id="modelCanvas"></div></section>
+      <section class="view modernCodeView" id="daxView"><div class="codeViewToolbar"><b>DAX query view</b><button class="btn" id="newDaxBtn">New query</button><button class="btn primary" id="runDaxBtn">Run</button><span>▷ CodeLens • IntelliSense</span></div><div class="codeTabs"><button class="codeTab active">Query 1</button></div><div class="codeWorkspace"><aside class="modelExplorer" id="daxModelExplorer"></aside><div class="codeEditorWrap"><textarea class="modernCodeEditor" id="daxEditor" spellcheck="false"></textarea><div class="codeResults" id="daxResults"></div></div><aside class="codeRightPane"><b>Query tools</b><p>Quick queries</p><p>Define and evaluate</p><p>Performance</p><p>Update model</p></aside></div></section>
+      <section class="view modernCodeView" id="tmdlView"><div class="codeViewToolbar"><b>TMDL view</b><button class="btn" id="scriptTmdlBtn">Script selected object</button><button class="btn" id="previewTmdlBtn">Preview changes</button><button class="btn primary" id="applyTmdlBtn">Apply</button></div><div class="codeTabs"><button class="codeTab active">TMDL Script 1</button></div><div class="codeWorkspace"><aside class="modelExplorer" id="tmdlModelExplorer"></aside><div class="codeEditorWrap" style="grid-template-rows:minmax(0,1fr)"><textarea class="modernCodeEditor" id="tmdlEditor" spellcheck="false"></textarea></div><aside class="codeRightPane"><b>Preview changes</b><div class="tmdlPreview" id="tmdlPreview">No pending changes.</div></aside></div></section>
+      <section class="view serviceView" id="serviceView"><div class="serviceHero" id="serviceHero"></div></section>
+
+      <div class="powerQuery" id="powerQuery">
+        <div class="pqTitle"><span>Power Query Editor</span><span style="margin-left:auto;font-weight:400" id="pqStatus">Ready</span></div>
+        <div class="pqRibbon" id="pqRibbon"></div>
+        <div class="pqBody">
+          <div class="pqQueries" id="pqQueries"></div>
+          <div class="pqCenter"><div class="formulaBar" id="formulaBar">fx = Source</div><div class="pqGridWrap"><table class="pqGrid" id="pqGrid"></table></div></div>
+          <div class="pqSteps"><div class="paneTitle">Query Settings</div><div style="font-size:10px;margin-bottom:6px">APPLIED STEPS</div><div id="appliedSteps"></div></div>
+        </div>
+        <div class="status"><span id="pqFooter">Power Query</span></div>
+      </div>
+
+      <div class="onObjectMenu" id="onObjectMenu"><div class="onObjectTitle">Build a visual</div><div class="onObjectItem">Add data</div><div class="onObjectItem">Change visual type</div><div class="onObjectItem">Format your visual</div><div class="onObjectItem">More options</div></div>
+      <div class="modalShade" id="modalShade"><div class="modal"><div class="modalHead" id="modalTitle"></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
+      <div class="toast" id="toast"></div>
+      <div class="boundary" id="boundary"></div>
+    </main>
+
+    <aside class="sidePanes">
+      <div class="paneSwitcher" id="paneSwitcher"><button class="paneSwitchBtn active" data-pane-switch="filters" title="Filters">⌁</button><button class="paneSwitchBtn" data-pane-switch="visualizations" title="Build visual">▥</button><button class="paneSwitchBtn" data-pane-switch="data" title="Data">▦</button><button class="paneSwitchBtn" data-pane-switch="format" title="Format">✎</button><button class="paneSwitchBtn" data-pane-switch="selection" title="Selection">☷</button><button class="paneSwitchBtn" data-pane-switch="bookmarks" title="Bookmarks">★</button><button class="paneSwitchBtn" data-pane-switch="add" title="Add pane">＋</button></div>
+      <div class="paneTabs" id="paneTabs"></div>
+      <div class="paneContent">
+        <div class="pane active" id="filtersPane"></div>
+        <div class="pane" id="visualizationsPane"></div>
+        <div class="pane" id="dataPane"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="pageTabs" id="pageTabs"></div>
+  <div class="status"><span id="statusMessage" class="statusText">Ready</span><span class="grow"></span><span id="zoomText">100%</span><span id="storageText">Import mode</span></div>
+</div>
+<script src="icons.js?v=1"></script>
+<script src="capabilities.js?v=1"></script>
+<script src="engine.js?v=2"></script>
+<script src="../shared/highlighter.js?v=7"></script>
+<script src="../shared/explanation-controls.js?v=9"></script>
+<script src="../shared/layout-resize.js?v=6"></script>
+</body>
+</html>
