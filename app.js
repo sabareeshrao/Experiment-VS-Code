@@ -6,21 +6,25 @@
 
   const frames = {
     intellij: $("ideFrame"),
+    vscode: $("vscodeFrame"),
     pgadmin: $("pgadminFrame")
   };
 
   const appIds = {
     intellij: "intellij_idea",
+    vscode: "vscode",
     pgadmin: "pgadmin"
   };
 
   const appLabels = {
     intellij: "IntelliJ IDEA",
+    vscode: "VS Code",
     pgadmin: "pgAdmin 4"
   };
 
   const engineReady = {
     intellij: false,
+    vscode: false,
     pgadmin: false
   };
 
@@ -68,7 +72,9 @@
       : null;
 
   function normalizeSoftware(value) {
-    return value === "pgadmin" ? "pgadmin" : "intellij";
+    if (value === "pgadmin") return "pgadmin";
+    if (value === "vscode") return "vscode";
+    return "intellij";
   }
 
   function switchWorkspace(software) {
@@ -82,6 +88,7 @@
 
     softwareBadge.textContent = appLabels[activeSoftware];
     softwareBadge.classList.toggle("pgadmin", activeSoftware === "pgadmin");
+    softwareBadge.classList.toggle("vscode", activeSoftware === "vscode");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
