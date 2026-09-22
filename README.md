@@ -42,3 +42,17 @@ The simulator uses a dark IntelliJ IDEA New UI-style shell and is being improved
 ## GitHub Pages
 
 Publish `main / (root)` from **Settings → Pages**.
+
+
+## Multi-software experiment
+
+Lesson 2 is a seven-step proof that one development timeline can move across applications:
+
+```text
+IntelliJ IDEA
+  → pgAdmin 4
+  → PostgreSQL Query Tool
+  → IntelliJ IDEA
+```
+
+Each step declares its active software. The outer player keeps the lesson/stage navigation constant while it switches the center simulator. Direct step URLs reconstruct only the actions belonging to the active application through that point, so returning to IntelliJ restores the Java project state instead of starting a new lesson.
