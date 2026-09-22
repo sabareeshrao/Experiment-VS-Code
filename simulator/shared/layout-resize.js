@@ -211,17 +211,38 @@
   function setupSSMS(){
     const shell=document.querySelector(".shell"), left=document.getElementById("leftPane"), workspace=document.getElementById("workspace");
     if(shell&&left&&workspace){
+      // Keep the native two-column SSMS grid intact.  The resize handle is an
+      // overlay, not a third grid item; inserting it as a grid child caused
+      // Workspace to auto-flow below Object Explorer after replay/render.
       const sideW=clamp(get("sideW",left.getBoundingClientRect().width||260),160,Math.max(190,shell.clientWidth-360));
-      shell.style.gridTemplateColumns=px(sideW)+" 5px minmax(0,1fr)";
-      const v=document.createElement("div");v.className="sim-layout-handle sim-layout-handle-v";v.id="ssmsSideResize";v.style.position="relative";v.style.transform="none";shell.insertBefore(v,workspace);
-      dragHandle(v,"x",e=>{const r=shell.getBoundingClientRect(),w=clamp(e.clientX-r.left,160,Math.max(190,r.width-360));shell.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)"},()=>commit({sideW:left.getBoundingClientRect().width}));
+      shell.style.gridTemplateColumns=px(sideW)+" minmax(0,1fr)";
+      const v=makeHandle(shell,"sim-layout-handle-v","ssmsSideResize");
+      if(v){
+        v.style.left=px(sideW);
+        dragHandle(v,"x",e=>{
+          const r=shell.getBoundingClientRect();
+          const w=clamp(e.clientX-r.left,160,Math.max(190,r.width-360));
+          shell.style.gridTemplateColumns=px(w)+" minmax(0,1fr)";
+          v.style.left=px(w);
+        },()=>commit({sideW:left.getBoundingClientRect().width}));
+      }
     }
     const editor=document.getElementById("editorArea"), results=document.getElementById("resultsPane");
     if(editor&&results){
+      // Same rule vertically: preserve the native two-row editor/results grid
+      // and float the splitter over the boundary instead of creating a row.
       const rh=clamp(get("resultsH",results.getBoundingClientRect().height||180),90,Math.max(110,editor.clientHeight-130));
-      editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(rh);
-      const h=document.createElement("div");h.className="sim-layout-handle sim-layout-handle-h";h.id="ssmsResultsResize";h.style.position="relative";h.style.transform="none";editor.insertBefore(h,results);
-      dragHandle(h,"y",e=>{const r=editor.getBoundingClientRect(),x=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-130));editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(x)},()=>commit({resultsH:results.getBoundingClientRect().height}));
+      editor.style.gridTemplateRows="minmax(0,1fr) "+px(rh);
+      const h=makeHandle(editor,"sim-layout-handle-h","ssmsResultsResize");
+      if(h){
+        h.style.top="calc(100% - "+px(rh)+")";
+        dragHandle(h,"y",e=>{
+          const r=editor.getBoundingClientRect();
+          const x=clamp(r.bottom-e.clientY,90,Math.max(110,r.height-130));
+          editor.style.gridTemplateRows="minmax(0,1fr) "+px(x);
+          h.style.top="calc(100% - "+px(x)+")";
+        },()=>commit({resultsH:results.getBoundingClientRect().height}));
+      }
     }
   }
 
@@ -565,13 +586,21 @@
 
     if(app==="ssms"){
       const shell=document.querySelector(".shell"),editor=document.getElementById("editorArea");
-      if(shell&&saved.sideW){
-        const w=clamp(get("sideW",260),160,Math.max(190,shell.clientWidth-360));
-        shell.style.gridTemplateColumns=px(w)+" 5px minmax(0,1fr)";
+      if(shell){
+        const left=document.getElementById("leftPane");
+        const fallback=left?.getBoundingClientRect().width||260;
+        const w=clamp(get("sideW",fallback),160,Math.max(190,shell.clientWidth-360));
+        shell.style.gridTemplateColumns=px(w)+" minmax(0,1fr)";
+        const v=document.getElementById("ssmsSideResize");
+        if(v)v.style.left=px(w);
       }
-      if(editor&&saved.resultsH){
-        const rh=clamp(get("resultsH",180),90,Math.max(110,editor.clientHeight-130));
-        editor.style.gridTemplateRows="minmax(0,1fr) 5px "+px(rh);
+      if(editor){
+        const results=document.getElementById("resultsPane");
+        const fallback=results?.getBoundingClientRect().height||180;
+        const rh=clamp(get("resultsH",fallback),90,Math.max(110,editor.clientHeight-130));
+        editor.style.gridTemplateRows="minmax(0,1fr) "+px(rh);
+        const h=document.getElementById("ssmsResultsResize");
+        if(h)h.style.top="calc(100% - "+px(rh)+")";
       }
     }
 
