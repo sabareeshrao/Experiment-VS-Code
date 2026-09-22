@@ -188,6 +188,27 @@ window.COURSE = {
         "grpc": {},
         "documentation": {},
         "liveNetwork": false
+      },
+      "cmd": {
+        "title": "Command Prompt - Java Practice",
+        "cwd": "C:\\Users\\developer\\JavaPractice",
+        "env": {
+          "JAVA_HOME": "C:\\Program Files\\Java\\jdk-21",
+          "MAVEN_HOME": "C:\\apache-maven-3.9.9",
+          "PATH": "C:\\Windows\\System32;C:\\Program Files\\Java\\jdk-21\\bin;C:\\apache-maven-3.9.9\\bin;C:\\Program Files\\Git\\cmd"
+        },
+        "directories": [
+          "C:\\Users\\developer\\JavaPractice",
+          "C:\\Users\\developer\\JavaPractice\\src",
+          "C:\\Users\\developer\\JavaPractice\\docs"
+        ],
+        "files": {
+          "C:\\Users\\developer\\JavaPractice\\README.md": "# Java Practice\\nDeveloper journey project.\\n",
+          "C:\\Users\\developer\\JavaPractice\\src\\Student.java": "public class Student {\\n    int rollNo;\\n    boolean isPresent;\\n    float[] marks;\\n    String name;\\n}\\n",
+          "C:\\Users\\developer\\JavaPractice\\.gitignore": "out/\\n.idea/\\n"
+        },
+        "promptSuffix": ">",
+        "initialOutput": "Microsoft Windows [Version 11.0.26100.6584]\\n(c) Microsoft Corporation. All rights reserved.\\n"
       }
     }
   },
@@ -876,6 +897,166 @@ window.COURSE = {
             "data": {
               "command": "echo VS Code integration complete",
               "output": "VS Code integration complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "5: Command Prompt Developer Workflow",
+      "subtitle": "Test a realistic IntelliJ → Windows Command Prompt → IntelliJ workflow with a stateful virtual shell.",
+      "steps": [
+        {
+          "title": "Review Student.java before command-line work",
+          "why": "Command Prompt ki velladaniki mundu developer project context ni IntelliJ lo quick ga review chestadu. E folder/project meeda commands run cheyyalo clarity vastundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
+            }
+          }
+        },
+        {
+          "title": "Open Command Prompt at the Java Practice folder",
+          "why": "Developer project root nundi commands run cheyyadaniki Command Prompt open chestadu. Current working directory correct ga unte relative paths and build commands expected project meeda work chestayi.",
+          "software": "cmd",
+          "action": {
+            "action": "setCwd",
+            "data": {
+              "cwd": "C:\\Users\\developer\\JavaPractice"
+            }
+          }
+        },
+        {
+          "title": "Verify the installed Java runtime",
+          "why": "Project run cheyyadaniki mundu java command available undha mariyu expected JDK version use avuthundha ani verify chestam.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "java -version"
+            }
+          }
+        },
+        {
+          "title": "Check JAVA_HOME",
+          "why": "JAVA_HOME correct JDK folder ni point chesthundha ani environment variable ni check chestam. Maven laanti tools ee value ni use cheyyachu.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo %JAVA_HOME%"
+            }
+          }
+        },
+        {
+          "title": "List the project root files",
+          "why": "dir /b simple file list ni chupistundi. Developer correct working directory lo unnado quick ga confirm cheyyadaniki idi useful.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "dir /b"
+            }
+          }
+        },
+        {
+          "title": "Create a build directory",
+          "why": "mkdir command virtual Windows filesystem ni actually update chestundi. Ee step CMD simulator display matrame kakunda stateful filesystem behavior kuda test chestundi.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "mkdir build"
+            }
+          }
+        },
+        {
+          "title": "Set a local environment variable",
+          "why": "set command current CMD session lo environment variable create chestundi. Real office workflows lo profiles, ports, credentials placeholders laanti values temporary ga set cheyyadam common.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "set APP_ENV=local"
+            }
+          }
+        },
+        {
+          "title": "Read the APP_ENV variable",
+          "why": "%APP_ENV% expansion correct ga work chesthundha ani echo command tho verify chestam.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo %APP_ENV%"
+            }
+          }
+        },
+        {
+          "title": "Redirect command output into a file",
+          "why": "> redirection command output ni console badulu file lo write chestundi. Ee step shell redirection mariyu virtual file creation rendu test chestundi.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo build=verified > build\\status.txt"
+            }
+          }
+        },
+        {
+          "title": "Read the redirected file",
+          "why": "type command file content ni console lo print chestundi. Previous step create chesina status.txt state preserve ayyindha ani verify chestam.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "type build\\status.txt"
+            }
+          }
+        },
+        {
+          "title": "Test a command pipeline",
+          "why": "Pipe symbol first command output ni next command input ga pampistundi. CMD workflows lo filtering kosam idi important behavior.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "echo Java Practice | findstr Java"
+            }
+          }
+        },
+        {
+          "title": "Check Git repository status",
+          "why": "Code changes mundu leka taruvatha git status run cheyyadam normal developer workflow. CMD simulator common Git commands ki realistic deterministic output generate chestundi.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "git status"
+            }
+          }
+        },
+        {
+          "title": "Verify the Java compiler",
+          "why": "javac -version tho compiler kuda expected JDK version nundi available undha ani confirm chestam.",
+          "software": "cmd",
+          "action": {
+            "action": "executeCommand",
+            "data": {
+              "command": "javac -version"
+            }
+          }
+        },
+        {
+          "title": "Return to Student.java after command-line checks",
+          "why": "Command-line verification complete ayyaka developer malli IntelliJ ki vastadu. CMD state separate ga reconstruct avuthundi, Java project timeline continuity kuda preserve avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/Student.java"
             }
           }
         }
