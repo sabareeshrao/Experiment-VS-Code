@@ -7,7 +7,13 @@ var style=document.createElement("style");
 style.textContent=[
 ".simActionHighlight{outline:2px solid #4da3ff!important;outline-offset:2px!important;box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)!important;border-radius:4px!important;transition:box-shadow .12s ease,outline-color .12s ease!important}",
 ".simActionHighlight.simActionPulse{animation:simActionPulse .75s ease-out 1}",
-"@keyframes simActionPulse{0%{box-shadow:0 0 0 0 rgba(77,163,255,.55),0 0 10px rgba(77,163,255,.35)}65%{box-shadow:0 0 0 7px rgba(77,163,255,.10),0 0 20px rgba(77,163,255,.42)}100%{box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)}}"
+"@keyframes simActionPulse{0%{box-shadow:0 0 0 0 rgba(77,163,255,.55),0 0 10px rgba(77,163,255,.35)}65%{box-shadow:0 0 0 7px rgba(77,163,255,.10),0 0 20px rgba(77,163,255,.42)}100%{box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)}}",
+/* Global editor-line safety: the lesson marker must live in the editor's
+   left padding lane, never on top of column 1 text. */
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important}",
+"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
+".sim-line-text{position:relative;z-index:3}"
 ].join("");
 document.head.appendChild(style);
 
