@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jenkins Educational Simulator</title>
+
+<style>
+:root{--bg:#f5f5f5;--surface:#fff;--surface2:#f1f1f1;--surface3:#e8edf2;--text:#333;--muted:#6f7780;--line:#c8cdd2;--link:#337ab7;--blue:#4a90d9;--green:#3c9b48;--red:#c9302c;--yellow:#d6a000;--purple:#7d5bbe;--shadow:rgba(0,0,0,.18)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+body.theme-dark{--bg:#0f1419;--surface:#171c22;--surface2:#11161b;--surface3:#20262d;--text:#e6edf3;--muted:#9ba5b0;--line:#36404a;--link:#70b7ff;--blue:#58a6ff;--green:#3fb950;--red:#f85149;--yellow:#e3b341;--purple:#a78bfa;--shadow:rgba(0,0,0,.45)}
+button,input,select,textarea{font:inherit}
+.app{height:100%;display:grid;grid-template-rows:minmax(42px,48px) minmax(0,1fr);position:relative;overflow:hidden}
+.top{min-width:0;display:flex;align-items:center;gap:10px;padding:0 10px;background:var(--surface);border-bottom:1px solid var(--line);overflow:hidden}.logo{display:flex;align-items:center;gap:7px;font-size:17px;font-weight:bold;white-space:nowrap}.mark{width:27px;height:27px;border-radius:50%;border:2px solid #c44;background:linear-gradient(#fff,#ddd);position:relative;flex:0 0 auto}.theme-dark .mark{background:linear-gradient(#333,#171c22)}.crumb{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.grow{flex:1;min-width:8px}.search{width:clamp(105px,20vw,230px);min-width:70px;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:6px;border-radius:3px;font-size:10px}.user{font-size:10px;white-space:nowrap}.fidelityTopNav{display:flex;gap:8px;font-size:9px;color:var(--link);white-space:nowrap}.fidelityTopNav span{cursor:default}
+.layout{min-height:0;min-width:0;display:grid;grid-template-columns:minmax(120px,clamp(135px,16vw,220px)) 5px minmax(0,1fr) 5px minmax(120px,clamp(135px,16vw,220px));overflow:hidden}
+.left,.history{min-width:0;background:var(--surface);overflow:auto}.left{border-right:1px solid var(--line)}.history{border-left:1px solid var(--line)}.splitV{background:var(--line);cursor:col-resize;min-width:4px}
+.sideTitle{padding:9px 10px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:11px;font-weight:bold;position:sticky;top:0;z-index:2}.sideLink{padding:7px 10px;font-size:10px;color:var(--link);border-bottom:1px solid rgba(128,128,128,.12);cursor:pointer}.sideLink:hover{background:var(--surface2)}
+.main{min-width:0;min-height:0;overflow:auto;padding:12px}.pageTitle{font-size:21px;margin:0 0 10px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}.description{font-size:10px;color:var(--muted);line-height:1.45;margin-bottom:12px}.sectionTitle{font-size:13px;margin:14px 0 7px}.muted{color:var(--muted)}
+.jobTable,.dataTable{background:var(--surface);border:1px solid var(--line);border-collapse:collapse;width:100%;font-size:10px}.jobTable th,.jobTable td,.dataTable th,.dataTable td{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.jobTable th,.dataTable th{background:var(--surface2);position:sticky;top:0}.jobRow:hover,.dataTable tr:hover{background:var(--surface2)}
+.ball{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;flex:0 0 auto}.success{background:#4b92d1}.failed{background:#d9534f}.running{background:#f0ad4e}.unstable{background:#e3b341}.aborted{background:#777}.disabled{background:#aaa}
+.smallBtn{border:1px solid var(--line);background:var(--surface);color:var(--text);padding:6px 9px;border-radius:3px;font-size:10px;cursor:pointer}.smallBtn:hover{background:var(--surface2)}.primary{background:#337ab7;color:#fff;border-color:#2e6da4}.danger{background:#9b2c2c;color:#fff;border-color:#7b2020}.btnRow{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.jobHeader{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}.jobMeta{font-size:10px;color:var(--muted)}.buildStrip{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.buildChip{border:1px solid var(--line);background:var(--surface);padding:6px 8px;border-radius:3px;font-size:10px;cursor:pointer}.buildChip:hover{background:var(--surface2)}
+.pipelineBox,.consoleBox,.changesBox,.workspaceBox,.card,.codeCard{background:var(--surface);border:1px solid var(--line);border-radius:3px;margin-top:10px;min-width:0}.boxHead{padding:8px 10px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:11px;font-weight:bold}.boxBody{padding:10px;font-size:10px;line-height:1.45}.stages{display:flex;align-items:stretch;gap:8px;padding:12px;overflow:auto}.stage{min-width:110px;border:1px solid var(--line);background:var(--surface2);border-radius:3px;padding:9px;font-size:10px}.stageName{font-weight:bold}.stageStatus{margin-top:6px;color:var(--muted)}.stage.active{outline:3px solid var(--blue)}.stage.successStage{border-top:4px solid var(--green)}.stage.failedStage{border-top:4px solid var(--red)}.stage.runningStage{border-top:4px solid var(--yellow)}.stage.parallelStage{border-left:4px solid var(--purple)}
+.console,.codeArea{margin:0;padding:10px;white-space:pre-wrap;font:10px/16px Consolas,monospace;overflow:auto;color:var(--text);background:var(--surface)}.console{max-height:min(42vh,420px)}.codeArea{min-height:140px;max-height:360px}.changeRow,.fileRow,.listRow{padding:7px 10px;border-bottom:1px solid var(--line);font-size:10px}.changeHash{font-family:Consolas,monospace;color:var(--link)}
+.historyItem{padding:8px;border-bottom:1px solid var(--line);font-size:10px;cursor:pointer}.historyItem:hover{background:var(--surface2)}.histNo{font-weight:bold;color:var(--link)}.histMeta{color:var(--muted);font-size:9px;margin-top:3px}.progressWrap{height:12px;border:1px solid var(--line);background:var(--surface2);margin:8px 0}.progress{height:100%;background:var(--blue);width:0%}.queue{padding:8px;font-size:10px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.manageCard{background:var(--surface);border:1px solid var(--line);padding:11px;border-radius:4px;font-size:10px;cursor:pointer}.manageCard:hover{background:var(--surface2)}.manageCard b{display:block;color:var(--link);margin-bottom:5px}.pill{display:inline-block;border:1px solid var(--line);background:var(--surface2);padding:2px 6px;border-radius:10px;font-size:9px;margin:1px}.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--yellow)}
+.configSection{background:var(--surface);border:1px solid var(--line);border-radius:3px;margin:10px 0}.configHead{background:var(--surface2);padding:8px 10px;font-weight:bold;font-size:11px;border-bottom:1px solid var(--line)}.configBody{padding:10px;font-size:10px;line-height:1.55}.fieldRow{display:grid;grid-template-columns:minmax(120px,28%) minmax(0,1fr);gap:9px;padding:5px 0;border-bottom:1px dashed rgba(128,128,128,.22)}.fieldRow:last-child{border-bottom:0}.fieldLabel{color:var(--muted)}.fieldValue{min-width:0;overflow-wrap:anywhere}.paramCard,.pluginCard,.nodeCard,.credCard,.viewCard,.folderCard{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:9px;font-size:10px}.statusDot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.statusDot.offline{background:var(--red)}
+.notification{position:absolute;right:16px;top:58px;max-width:min(360px,calc(100% - 32px));background:var(--surface);border:1px solid var(--line);box-shadow:0 4px 14px var(--shadow);padding:9px 12px;border-radius:3px;font-size:10px;display:none;z-index:50}.notification.show{display:block}.targetBoundary{position:absolute;border:3px solid #ffd400;box-shadow:0 0 0 2px rgba(0,0,0,.35),0 0 12px rgba(255,212,0,.55);pointer-events:none;z-index:80;border-radius:4px;display:none}.targetBoundary.show{display:block}
+@media(max-width:1000px){.fidelityTopNav{display:none}.layout{grid-template-columns:minmax(120px,170px) 4px minmax(0,1fr) 4px minmax(115px,155px)}}
+@media(max-width:800px){.layout{grid-template-columns:minmax(105px,145px) 4px minmax(0,1fr)}.history,.splitR{display:none}.search{width:110px}.main{padding:8px}.pageTitle{font-size:17px}.stages{padding:8px}.stage{min-width:95px}.grid3{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:560px){.user{display:none}.logo span:last-child{display:none}.search{width:90px}.layout{grid-template-columns:minmax(90px,115px) 3px minmax(0,1fr)}.fieldRow{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.main{padding:6px}.console{max-height:34vh}}
+@media(max-height:560px){.top{min-height:40px}.console{max-height:28vh}.main{padding-top:8px}.stages{padding:7px}.stage{padding:7px}}
+</style>
+<link rel="stylesheet" href="jenkins.css">
+</head>
+<body class="theme-dark" data-sim-app="jenkins">
+<div class="app" id="app">
+ <div class="top"><div class="logo"><span class="mark"></span><span>Jenkins</span></div><button class="headerLink" data-nav="dashboard">Dashboard</button><button class="headerLink" data-nav="manage">Manage Jenkins</button><div class="crumb" id="crumb">Dashboard</div><div class="grow"></div><input class="search" id="search" placeholder="Search jobs…" aria-label="Search jobs"><button class="headerLink" id="openPalette" title="Search commands (Ctrl+K)">⌘ K</button><button class="headerLink" id="themeToggle" aria-label="Toggle color theme">◐</button><div class="user" id="user">User</div></div>
+ <div class="layout" id="layout">
+   <div class="left"><div class="sideTitle" id="sideTitle">Jenkins</div><div id="sideLinks"></div><div id="operations"></div></div>
+   <div class="splitV" id="splitL"></div>
+   <div class="main" id="main"></div>
+   <div class="splitV splitR" id="splitR"></div>
+   <div class="history"><div class="sideTitle">Build History</div><input id="historyFilter" class="historyFilter" placeholder="Filter builds…" aria-label="Filter build history"><div id="history"></div></div>
+ </div>
+ <div class="notification" id="notification" role="status"></div><div class="modalShade" id="modalShade" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><header><h2 id="modalTitle"></h2><button id="closeModal" aria-label="Close dialog">×</button></header><div id="modalBody"></div></section></div>
+ <aside class="jenkinsAssistant" id="jenkinsAssistant" hidden>
+   <div class="jenkinsAssistantHead" id="jenkinsAssistantHead">
+     <strong id="jenkinsAssistantTitle">Developer Guide</strong>
+     <div class="jenkinsAssistantButtons"><button type="button" id="jenkinsAssistantMin" title="Minimize">−</button><button type="button" id="jenkinsAssistantClose" title="Close">×</button></div>
+   </div>
+   <div class="jenkinsAssistantContent">
+     <div class="jenkinsAssistantMeta" id="jenkinsAssistantMeta">Actions performed</div>
+     <div class="jenkinsAssistantBody" id="jenkinsAssistantBody"></div>
+   </div>
+ </aside>
+ <div class="targetBoundary" id="targetBoundary"></div>
+</div>
+<script src="../shared/highlighter.js?v=1"></script>
+<script src="engine.js?v=2"></script>
+<script src="../shared/explanation-controls.js?v=4"></script>
+<script src="../shared/layout-resize.js?v=4"></script>
+</body>
+</html>
