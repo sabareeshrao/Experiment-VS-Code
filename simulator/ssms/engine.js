@@ -345,6 +345,7 @@
   function renderStatus(){
     document.getElementById("statusbar").classList.toggle("connected",!!state.connected);
     refs.statusLeft.textContent=state.statusText|| (state.connected?"Ready":"Disconnected"); refs.statusServer.textContent=state.connected?(state.connection?.serverName||"Connected"):"No server"; refs.statusDb.textContent=state.connected?(activeTab()?.database||state.currentDatabase||"master"):"No database"; refs.statusUser.textContent=state.connected?(state.currentUser||state.connection?.userName||state.connection?.authentication||""):"—";
+    document.getElementById("statusbar").style.background=ui.connectionColor||"";
   }
 
   function renderTransients(){
@@ -480,6 +481,12 @@
     else if(ui.connectOpen){
       const d=Object.assign({},state.connection||{},ui.connectionDraft||{});
       content=`<div class="modalTitle">Connect to Server</div><div class="modalBody"><div class="connectLogo"><div class="connectMark">SQL</div><div><b>Connect to Server</b><div class="smallNote">Specify the SQL Server connection details.</div></div></div><div class="formGrid"><label>Server type:</label><select id="connServerType"><option>${esc(d.serverType||"Database Engine")}</option></select><label>Server name:</label><input id="connServerName" value="${esc(d.serverName||"")}"><label>Authentication:</label><select id="connAuthentication"><option>${esc(d.authentication||"Windows Authentication")}</option><option>SQL Server Authentication</option></select><label>User name:</label><input id="connUserName" value="${esc(d.userName||"")}"><label>Database:</label><input id="connDatabase" value="${esc(d.database||"master")}"></div></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" data-target="connectDialogButton">Connect</button></div>`;
+    } else if(ui.dependenciesDialog){
+      content=dependencyHtml(ui.dependenciesDialog);
+    } else if(ui.serverPropertiesDialog){
+      content=serverPropertiesHtml(ui.serverPropertiesDialog);
+    } else if(ui.adaptiveDialog){
+      content=adaptiveDialogHtml(ui.adaptiveDialog);
     } else if(ui.featurePanel){
       const f=ui.featurePanel;content=`<div class="modalTitle">${esc(f.title||"SQL Server Management Studio")}</div><div class="modalBody featurePanel">${f.html||`<pre class="messages">${esc(f.text||"")}</pre>`}</div><div class="modalActions"><button class="dialogBtn primary">Close</button></div>`;
     } else if(ui.windowsDialogOpen){
@@ -501,7 +508,7 @@
     const vp=document.querySelector(`[data-code-viewport="${CSS.escape(state.activeQueryId||"")}"]`); if(vp){const r=vp.getBoundingClientRect();refs.intelli.style.left=`${Math.min(r.right-230,r.left+110)}px`;refs.intelli.style.top=`${Math.min(window.innerHeight-210,r.top+55)}px`;}
   }
 
-  function clearTransients(){ui.menu=null;ui.notification="";ui.intelli=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;}
+  function clearTransients(){ui.menu=null;ui.contextMenu=null;ui.notification="";ui.intelli=null;ui.windowsDialogOpen=false;ui.propertiesDialog=null;ui.exportDialog=null;ui.adaptiveDialog=null;ui.dependenciesDialog=null;ui.serverPropertiesDialog=null;}
   const CONNECTION_CHAIN = new Set(["openConnectDialog","setConnectionField","connectServer"]);
   function connectionContinuation(step){
     const a=step?.action||"",target=step?.data?.target;
@@ -742,6 +749,42 @@
       case "openOptions": ui.optionsOpen=true;break;
       case "setEditorOption": if(d.name)state.options[d.name]=d.value;if(d.name==="theme")applyTheme(d.value);state.statusText="Options updated";break;
 
+      case "openContextMenu": {
+        const ctx=d.context||currentObjectContext();
+        let menu=d.menu||d.kind||ctx.kind||"queryEditor";
+        if(menu==="procedures")menu="procedure";if(menu==="functions")menu="function";
+        openContextMenu(menu,d.x||80,d.y||80,ctx);
+        break;
+      }
+      case "chooseContextMenuPath": {
+        const entry=d.command?{command:d.command,label:d.label||d.command}:contextEntryAt(d.path);
+        if(entry?.command)invokeContextCommand(entry.command,entry,ui.contextMenu?.context||d.context||currentObjectContext());
+        ui.contextMenu=null;
+        break;
+      }
+      case "closeContextMenu": ui.contextMenu=null;break;
+      case "openAdaptiveDialog": ui.adaptiveDialog=clone(d.dialog||d);break;
+      case "closeAdaptiveDialog": ui.adaptiveDialog=null;break;
+      case "setAdaptiveField": {
+        if(ui.adaptiveDialog){const fields=ui.adaptiveDialog.fields||[];const f=fields.find(x=>x.name===d.name);if(f)f.value=d.value;}
+        break;
+      }
+      case "selectAdaptiveOption": {
+        if(ui.adaptiveDialog){const fields=ui.adaptiveDialog.fields||[];const f=fields.find(x=>x.name===d.name);if(f)f.value=d.value;}
+        break;
+      }
+      case "showObjectDependencies": ui.dependenciesDialog=clone(d);break;
+      case "showServerProperties": ui.serverPropertiesDialog=clone(d);break;
+      case "openToolWindow": openNamedToolWindow(d.name||d.title,d.definition||null);break;
+      case "closeToolWindow": ui.toolWindow=null;break;
+      case "setToolWindowPinned": ui.toolWindowPinned=d.value!==false;break;
+      case "openTemplateExplorer": openNamedToolWindow("Template Explorer");break;
+      case "openSolutionExplorer": openNamedToolWindow("Solution Explorer");break;
+      case "openPropertiesWindow": openNamedToolWindow("Properties",d.definition||null);break;
+      case "showLiveQueryStatistics": ui.liveStats=d.enabled!==false;ui.featurePanel={title:"Live Query Statistics",text:d.text||"Live execution flow enabled. Operators update while the query is running."};break;
+      case "showStandardReport": showStandardReport(d.report||d.name||"Disk Usage by Top Tables");break;
+      case "setConnectionColor": ui.connectionColor=String(d.color||"");break;
+
       case "saveQuery": if(t){const path=d.path||t.savedPath||t.title;t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop()||t.title;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
       case "saveQueryAs": if(t){const path=d.path||d.file||"query.sql";t.savedPath=path;t.title=d.fileName||path.split(/[\\/]/).pop();t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";}break;
       case "openSqlFile": {const path=d.path||d.file||"query.sql";const sql=d.sql!==undefined?d.sql:(state.files[path]||"");addTab({id:d.id,title:d.fileName||path.split(/[\\/]/).pop(),path,sql,database:d.database||state.currentDatabase,dirty:false});break;}
@@ -792,6 +835,89 @@
   document.addEventListener("input",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(!ed)return;const t=tabById(ed.dataset.sqlEditor);if(!t)return;t.sql=ed.value;t.dirty=true;const gutter=ed.parentElement?.querySelector(".sqlGutter");syncSqlLayer(ed,true);renderTabs();updatePosition(ed);if(gutter)gutter.textContent=Array.from({length:Math.max(1,ed.value.split("\n").length)},(_,i)=>i+1).join("\n");});
   document.addEventListener("scroll",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const g=ed.parentElement?.querySelector(".sqlGutter");if(g)g.scrollTop=ed.scrollTop;syncSqlLayer(ed);}},true);
   document.addEventListener("keydown",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const t=tabById(ed.dataset.sqlEditor);if(!t)return;if(e.key==="Tab"){e.preventDefault();const s=ed.selectionStart,en=ed.selectionEnd;ed.setRangeText("    ",s,en,"end");ed.dispatchEvent(new Event("input",{bubbles:true}));return;}if(e.key==="F5"||(e.ctrlKey&&e.key.toLowerCase()==="e")){e.preventDefault();t.result=Object.assign(t.result||{},executeVirtualSql(t,ed.value));state.statusText="Query executed successfully";ui.resultTab=(t.result?.columns||[]).length?"results":"messages";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="l"){e.preventDefault();const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";renderAll();return;}if(e.ctrlKey&&e.key.toLowerCase()==="m"){e.preventDefault();t.includeActualPlan=!t.includeActualPlan;state.statusText=t.includeActualPlan?"Include Actual Execution Plan enabled":"Include Actual Execution Plan disabled";renderStatus();return;}if(e.ctrlKey&&e.key.toLowerCase()==="s"){e.preventDefault();const path=t.savedPath||t.title;t.savedPath=path;t.dirty=false;state.files[path]=t.sql;state.statusText="Query saved";renderTabs();renderStatus();return;}if(e.ctrlKey&&e.code==="Space"){e.preventDefault();ui.intelli={items:clone(state.intellisenseCache||[]),index:0};renderIntelli();return;}return;}if(!e.target.closest("input,textarea,select,[contenteditable=true]")&&(e.key==="ArrowRight"||e.key==="ArrowLeft")&&!e.ctrlKey&&!e.altKey&&!e.metaKey){parent.postMessage({type:"SIM_NAVIGATE",app:APP_ID,direction:e.key==="ArrowRight"?"next":"prev"},"*");}});
+
+  function selectedObjectSql(ctx,operation){
+    ctx=ctx||currentObjectContext();const db=dbByName(ctx.database||state.currentDatabase),op=String(operation||"select").toLowerCase();
+    if(ctx.kind==="table") return scriptForObject({database:ctx.database||state.currentDatabase,table:ctx.name,operation:op});
+    const list=ctx.kind==="view"?db?.views:ctx.kind==="procedure"?db?.procedures:ctx.kind==="function"?db?.functions:null;
+    const obj=(list||[]).find(x=>norm(x.name||x)===norm(String(ctx.name||"").split(".").at(-1)));
+    const base=String(obj?.sql||"");
+    if(base){
+      if(op==="alter") return base.replace(/^CREATE\s+/i,"ALTER ");
+      if(op==="create or alter") return base.replace(/^CREATE\s+/i,"CREATE OR ALTER ");
+      if(op==="drop") return "DROP "+(ctx.kind==="view"?"VIEW":ctx.kind==="procedure"?"PROCEDURE":"FUNCTION")+" ["+(obj?.schema||"dbo")+"].["+(obj?.name||ctx.name)+"]";
+      if(op==="execute"&&ctx.kind==="procedure") return "EXEC ["+(obj?.schema||"dbo")+"].["+(obj?.name||ctx.name)+"]";
+      return base;
+    }
+    return "-- "+ctx.kind+" script for "+(ctx.name||"object");
+  }
+
+  function showStandardReport(name){
+    const db=dbByName(state.currentDatabase);
+    const tables=db?.tables||[];
+    const rows=tables.map(t=>({
+      name:(t.schema||"dbo")+"."+t.name,
+      rows:(t.rows||[]).length,
+      data:Math.max(8,(t.rows||[]).length*2)+" KB",
+      index:Math.max(8,(t.indexes||[]).length*8)+" KB"
+    }));
+    ui.featurePanel={title:"Standard Report - "+name,html:'<table class="featureTable"><thead><tr><th>Table</th><th>Row Count</th><th>Data Space</th><th>Index Space</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+x.rows+'</td><td>'+esc(x.data)+'</td><td>'+esc(x.index)+'</td></tr>').join('')+'</tbody></table>'};
+  }
+
+  function surroundSelection(kind){
+    const t=activeTab(),ed=document.querySelector('[data-sql-editor="'+CSS.escape(state.activeQueryId||"")+'"]');if(!t||!ed)return;
+    const start=ed.selectionStart,end=ed.selectionEnd,selected=ed.value.slice(start,end)||ed.value;
+    let wrapped=selected;
+    if(kind==="beginEnd")wrapped="BEGIN\n"+selected+"\nEND";
+    else if(kind==="while")wrapped="WHILE <condition>\nBEGIN\n"+selected+"\nEND";
+    else if(kind==="if")wrapped="IF <condition>\nBEGIN\n"+selected+"\nEND";
+    if(start!==end){ed.setRangeText(wrapped,start,end,"select");t.sql=ed.value;}else{t.sql=wrapped;}t.dirty=true;renderAll();
+  }
+
+  function invokeContextCommand(command,entry,ctx){
+    const t=activeTab();ctx=ctx||currentObjectContext();
+    if(command==="cut"||command==="copy"||command==="paste"){state.statusText=entry?.label||command;return;}
+    if(command==="insertSnippet"){ui.adaptiveDialog={title:"Insert Snippet",fields:[{name:"snippet",label:"Snippet",type:"select",options:["Create Table","Create Stored Procedure","Create View","BEGIN TRY...CATCH"],value:"Create Table"}],buttons:["Cancel","OK"]};return;}
+    if(command.startsWith("surround:")){surroundSelection(command.split(":")[1]);return;}
+    if(command==="changeConnection"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});return;}
+    if(command==="disconnectQuery"){state.statusText="Query disconnected";return;}
+    if(command==="openServerInExplorer"){state.objectExplorerVisible=true;setExpanded("server",true);return;}
+    if(command==="execute"&&t){t.result=Object.assign(t.result||{},executeVirtualSql(t,t.sql));ui.resultTab=(t.result?.columns||[]).length?"results":"messages";state.statusText="Query executed successfully";return;}
+    if(command==="estimatedPlan"&&t){const tb=tableByName(t.database||state.currentDatabase,((t.sql.match(/FROM\s+([\[\]\w.]+)/i)||[])[1]||""));t.executionPlan=estimatePlan(t.sql,tb);ui.resultTab="plan";return;}
+    if(command==="toggleIntelliSense"){state.options.intelliSense=state.options.intelliSense===false;state.statusText="IntelliSense "+(state.options.intelliSense===false?"disabled":"enabled");return;}
+    if(command==="traceQuery"){ui.featurePanel={title:"SQL Server Profiler",text:"New trace prepared for the active query.\nEvents: SQL:BatchStarting, SQL:BatchCompleted"};return;}
+    if(command==="tuningAdvisor"){ui.featurePanel={title:"Database Engine Tuning Advisor",text:"Workload: active query\nDatabase: "+(t?.database||state.currentDatabase)+"\nReady to analyze indexes and partitions."};return;}
+    if(command==="designQuery"){ui.featurePanel={title:"Query Designer",text:"Diagram Pane\nCriteria Pane\nSQL Pane\nResults Pane\n\nThe active query can be edited visually."};return;}
+    if(command==="toggleActualPlan"&&t){t.includeActualPlan=!t.includeActualPlan;state.options.includeActualPlan=t.includeActualPlan;return;}
+    if(command==="toggleLiveStats"){ui.liveStats=!ui.liveStats;return;}
+    if(command==="toggleClientStats"){ui.clientStatsEnabled=!ui.clientStatsEnabled;if(ui.clientStatsEnabled)ui.resultTab="stats";return;}
+    if(command.startsWith("results:")&&t){t.resultMode=command.split(":")[1];ui.resultTab="results";return;}
+    if(command==="propertiesWindow"){openNamedToolWindow("Properties");return;}
+    if(command==="queryOptions"){ui.adaptiveDialog={title:"Query Options",fields:[{name:"isolation",label:"Transaction isolation level",type:"select",options:["READ COMMITTED","READ UNCOMMITTED","REPEATABLE READ","SERIALIZABLE","SNAPSHOT"],value:"READ COMMITTED"},{name:"ansiNulls",label:"SET ANSI_NULLS",type:"checkbox",value:true,caption:"ON"},{name:"quotedIdentifier",label:"SET QUOTED_IDENTIFIER",type:"checkbox",value:true,caption:"ON"}],buttons:["Cancel","OK"]};return;}
+    if(command==="newQuery"){addTab({database:ctx.database||state.currentDatabase});return;}
+    if(command==="newTable"){ui.featurePanel={title:"Table Designer - New Table",text:"Column Name | Data Type | Allow Nulls\n\nUse the designer to define a new table."};return;}
+    if(command==="tableDesigner"){ui.featurePanel={title:"Table Designer - "+(ctx.name||"Table"),text:"Column Name | Data Type | Allow Nulls\n\nProperties: Name, Schema, Description"};return;}
+    if(command==="viewDesigner"){ui.featurePanel={title:"View Designer - "+(ctx.name||"View"),text:"Diagram Pane\nCriteria Pane\nSQL Pane\nResults Pane\n\nRelationships and joins are shown graphically."};return;}
+    if(command==="selectTop1000"||command==="editTop200"){const tb=tableByName(ctx.database||state.currentDatabase,ctx.name);if(tb){const top=command==="editTop200"?200:1000;const nt=addTab({title:(command==="editTop200"?"Edit ":"SQLQuery")+top+" - "+tb.name,database:ctx.database||state.currentDatabase,sql:"SELECT TOP ("+top+") * FROM ["+(tb.schema||"dbo")+"].["+tb.name+"]"});nt.result={columns:(tb.columns||[]).map(c=>c.name),rows:clone((tb.rows||[]).slice(0,top)),messages:"("+(tb.rows||[]).length+" row(s) affected)"};}return;}
+    if(command.startsWith("script:")){const [,op,dest]=command.split(":");const sql=selectedObjectSql(ctx,op);if(dest==="clipboard"){ui.copiedText=sql;navigator.clipboard?.writeText?.(sql).catch?.(()=>{});state.statusText="Script copied to clipboard";}else if(dest==="file"){const name=(ctx.name||"object").replace(/[^a-z0-9_]+/gi,"_")+".sql";state.files[name]=sql;state.statusText="Script saved to "+name;}else addTab({database:ctx.database||state.currentDatabase,sql,title:"Script_"+(ctx.name||"object")+".sql"});return;}
+    if(command==="objectDependencies"){ui.dependenciesDialog={object:ctx.name||state.selectedObject,type:ctx.kind||"Object"};return;}
+    if(command==="objectProperties"||command==="databaseProperties"){ui.propertiesDialog={title:ctx.name||ctx.database||state.selectedObject||"Object",properties:{Name:ctx.name||ctx.database||"",Database:ctx.database||state.currentDatabase,Server:state.connection?.serverName||""}};return;}
+    if(command==="serverProperties"){ui.serverPropertiesDialog={page:"General"};return;}
+    if(command==="refreshObject"){syncObjectExplorerCache();state.statusText="Refresh complete";return;}
+    if(command==="deleteObject"&&ctx.kind==="table"){dropTableState(ctx.database||state.currentDatabase,ctx.name);return;}
+    if(command==="modifyObject"){const sql=selectedObjectSql(ctx,"alter");addTab({database:ctx.database||state.currentDatabase,sql,title:"Modify_"+(ctx.name||"object")+".sql"});return;}
+    if(command==="executeProcedure"){ui.adaptiveDialog={title:"Execute Procedure - "+(ctx.name||""),fields:[{name:"parameters",label:"Parameters",type:"textarea",value:""}],buttons:["Cancel","OK"]};return;}
+    if(command==="connectServer"){ui.connectOpen=true;ui.connectionDraft=clone(state.connection||{});return;}
+    if(command==="disconnectServer"){state.connected=false;state.statusText="Disconnected";return;}
+    if(command==="registerServer"){openNamedToolWindow("Registered Servers");return;}
+    if(command==="activityMonitor"){ui.featurePanel={title:"Activity Monitor",text:"Processes\nResource Waits\nData File I/O\nRecent Expensive Queries\nActive Expensive Queries"};return;}
+    if(command.startsWith("report:")){showStandardReport(command.split(":")[1]);return;}
+    if(command==="copyResults"&&t){ui.copiedText=makeTextResult(t.result?.columns||[],t.result?.rows||[]).split("\n").slice(2).join("\n");return;}
+    if(command==="copyResultsWithHeaders"&&t){ui.copiedText=makeTextResult(t.result?.columns||[],t.result?.rows||[]);return;}
+    if(command==="selectAllResults"&&t){t.selectedAll=true;return;}
+    if(command==="saveResults"&&t){ui.exportDialog={path:t.result?.file||"results.rpt",format:"RPT"};return;}
+    state.statusText=(entry?.label||command)+" invoked";
+  }
 
   function invokeMenuCommand(label){
     const t=activeTab();
