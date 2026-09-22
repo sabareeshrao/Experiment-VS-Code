@@ -12,7 +12,12 @@ button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-ro
 .menu{display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--menu-bg,#242c33);border-bottom:1px solid var(--line);font-size:10px}.menu span{height:30px;display:flex;align-items:center;padding:0 10px;border-radius:2px}.menu span:hover{background:var(--hover-bg,#303b45)}
 .toolbar{display:flex;align-items:center;gap:3px;padding:0 8px;background:var(--toolbar-bg,#2c343b);border-bottom:1px solid var(--line);font-size:10px}.tool{height:27px;border:1px solid transparent;background:transparent;border-radius:3px;padding:0 9px}.tool:hover{background:var(--hover-bg,#36424c);border-color:var(--line)}.conn{margin-left:auto;border:1px solid var(--line);border-radius:3px;padding:5px 9px;background:var(--input-bg,#1d2329);color:var(--text);white-space:nowrap}
 .work{min-height:0;display:grid;grid-template-columns:300px minmax(0,1fr);background:var(--bg)}.left{min-width:0;border-right:1px solid var(--line);display:grid;grid-template-rows:36px 29px minmax(0,1fr);background:var(--left-bg,#252b31)}.head{display:flex;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);font-size:10px;font-weight:650;letter-spacing:.15px}.head .grow{flex:1}.browserTools{display:flex;gap:8px;color:var(--muted);font-size:12px}.filter{padding:4px 6px;border-bottom:1px solid #34414c}.filter input{width:100%;height:21px;background:#192127;border:1px solid #4b5964;color:#d7e1e9;border-radius:2px;padding:2px 7px;font-size:9px}
-.tree{overflow:auto;padding:5px 4px;font-size:10px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:4px;white-space:nowrap;border-radius:2px;cursor:default}.row:hover{background:#283640}.row.active{background:#38566e}.tw{width:13px;text-align:center;color:#aab5bf}.ico{width:17px;text-align:center}.node{overflow:hidden;text-overflow:ellipsis}
+.tree{overflow:auto;padding:5px 4px;font-size:10px}.row{height:23px;display:flex;align-items:center;gap:4px;padding-right:4px;white-space:nowrap;border-radius:2px;cursor:default}.row:hover{background:#283640}.row.active{background:#38566e}.tw{width:13px;text-align:center;color:#aab5bf;font-size:9px}.ico{width:18px;height:18px;display:grid;place-items:center;flex:0 0 18px}.node{overflow:hidden;text-overflow:ellipsis}
+.pgIconSprite{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.pgIcon{width:14px;height:14px;display:inline-block;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.pgIcon.fill{fill:currentColor;stroke:none}.treeIcon{width:15px;height:15px}.toolIcon{width:13px;height:13px;margin-right:5px}.queryIcon{width:14px;height:14px}
+.ico-server{color:#78a6c9}.ico-servergroup{color:#9aa8b3}.ico-database{color:#d7bd54}.ico-folder{color:#d4a24b}.ico-schema{color:#d76d6d}.ico-table{color:#66a5d9}.ico-columns{color:#9ec3dc}.ico-column{color:#bcc6ce}.ico-index{color:#7eb787}.ico-query{color:#6fa6d0}
+.tool{display:inline-flex;align-items:center;justify-content:center;gap:0}.browserTools{align-items:center}.browserTools .pgIcon{width:13px;height:13px}.query-tools .pgIcon{width:14px;height:14px}.query-tools .run .pgIcon{fill:currentColor;stroke:none}.query-tools .stop .pgIcon{fill:currentColor;stroke:none}
 .main{min-width:0;min-height:0;display:grid;grid-template-rows:35px 32px minmax(0,1fr) 220px;background:var(--editor)}.workspace-tabs,.query-tabs,.result-tabs{display:flex;align-items:center;border-bottom:1px solid var(--line);background:var(--tab-bg,#29323a);font-size:10px;overflow-x:auto;white-space:nowrap}.workspace-tab,.query-tab,.result-tab{height:100%;display:flex;align-items:center;padding:0 12px;border-right:1px solid var(--line);color:var(--muted)}.workspace-tab{font-weight:600}.activeTab{background:var(--panel);color:var(--text);box-shadow:inset 0 -2px var(--blue)}
 .query-tabs{background:var(--panel)}.query-tab{padding-top:0}.query-tab::before{content:"SQL";display:inline-grid;place-items:center;width:22px;height:19px;margin-right:7px;border-radius:2px;background:var(--blue2);color:#fff;font-size:8px;font-weight:700}.query-area{min-height:0;display:grid;grid-template-rows:35px minmax(0,1fr)}.query-tools{display:flex;align-items:center;gap:3px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--query-tools-bg,#293138);font-size:10px}.query-tools span{height:27px;min-width:27px;display:grid;place-items:center;padding:0 5px;border-radius:3px}.query-tools span:hover{background:var(--hover-bg)}.query-tools .run{color:var(--green);font-weight:700}.query-tools .stop{color:#d36e75}.querySep{width:1px!important;min-width:1px!important;height:18px!important;padding:0!important;margin:0 3px;background:var(--line)}.sqlwrap{display:grid;grid-template-columns:50px minmax(0,1fr);overflow:auto;background:var(--sql-bg,#1f2328);position:relative}.gutter{padding:10px 8px 40px 0;text-align:right;color:var(--muted);font:12px/23px Consolas,"Courier New",monospace;user-select:none;border-right:1px solid var(--line)}.sql{margin:0;padding:10px 18px 40px 12px;white-space:pre;min-width:max-content;font:12px/23px Consolas,"Courier New",monospace;tab-size:4}.line{display:block;min-height:23px;position:relative}.line.focus{background:rgba(72,114,150,.20)}.kw{color:#db73c8}.type{color:#87c7a1}.num{color:#d2b96b}.str{color:#a9c97f}.com{color:#6e9f65}
 .results{min-height:0;border-top:1px solid var(--line);display:grid;grid-template-rows:32px minmax(0,1fr);background:var(--result-bg,#252b31)}.result-tabs{background:#202930}.result-body{overflow:auto}.messages{padding:12px 15px;font:11px/18px Consolas,monospace;color:#b9c6d0;white-space:pre-wrap}.success{color:#83c98d}.status{display:flex;align-items:center;padding:0 9px;background:#202a32;border-top:1px solid #394650;font-size:9px;color:#bac4cd}.status .grow{flex:1}
@@ -80,13 +85,43 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 </style>
 </head>
 <body class="theme-dark" data-sim-app="pgadmin">
+<svg class="pgIconSprite" aria-hidden="true" focusable="false">
+  <symbol id="pg-i-elephant" viewBox="0 0 24 24"><path d="M5.5 11.5V8.8c0-3 2.5-5.3 5.7-5.3h2.1c3.6 0 6.2 2.4 6.2 5.8v4.4c0 2.9-2.1 5.2-5 5.2h-2.2"/><path d="M5.6 10.5H3.8c-1.2 0-2.1 1-2.1 2.2v1.5c0 1.3 1 2.3 2.3 2.3h2.6"/><path d="M13.8 9.4v6.2c0 2.8-1.2 4.9-3.5 4.9-1.2 0-2.2-.7-2.2-1.8 0-.9.7-1.6 1.6-1.6h1.2"/><circle cx="16.6" cy="8.2" r=".8" fill="currentColor" stroke="none"/><path d="M18.8 11.2h2.5"/></symbol>
+  <symbol id="pg-i-server" viewBox="0 0 16 16"><rect x="2.2" y="2" width="11.6" height="3.3" rx=".8"/><rect x="2.2" y="6.4" width="11.6" height="3.3" rx=".8"/><rect x="2.2" y="10.8" width="11.6" height="3.2" rx=".8"/><circle cx="4.2" cy="3.65" r=".55" fill="currentColor" stroke="none"/><circle cx="4.2" cy="8.05" r=".55" fill="currentColor" stroke="none"/><circle cx="4.2" cy="12.4" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="pg-i-servergroup" viewBox="0 0 16 16"><path d="M3 5.5h10v7.5H3z"/><path d="M5 3h6v2.5M5 8h6M5 10.5h6"/></symbol>
+  <symbol id="pg-i-database" viewBox="0 0 16 16"><ellipse cx="8" cy="3.5" rx="5.2" ry="2.1"/><path d="M2.8 3.5v4c0 1.2 2.3 2.2 5.2 2.2s5.2-1 5.2-2.2v-4"/><path d="M2.8 7.4v4c0 1.2 2.3 2.2 5.2 2.2s5.2-1 5.2-2.2v-4"/></symbol>
+  <symbol id="pg-i-folder" viewBox="0 0 16 16"><path d="M1.8 4.2h4l1.2 1.5h7.2v7.1H1.8z"/><path d="M1.8 4.2V2.9h4.6l1 1.3"/></symbol>
+  <symbol id="pg-i-schema" viewBox="0 0 16 16"><path d="M3 4.2h10v8.5H3z"/><path d="M5 2h6v2.2M5 7h6M8 7v5.7"/></symbol>
+  <symbol id="pg-i-table" viewBox="0 0 16 16"><rect x="2" y="2.2" width="12" height="11.6" rx=".7"/><path d="M2 5.5h12M6 2.2v11.6M10 2.2v11.6"/></symbol>
+  <symbol id="pg-i-columns" viewBox="0 0 16 16"><rect x="2.2" y="2.2" width="4.6" height="11.6" rx=".6"/><rect x="9.2" y="2.2" width="4.6" height="11.6" rx=".6"/><path d="M4.5 5v6M11.5 5v6"/></symbol>
+  <symbol id="pg-i-column" viewBox="0 0 16 16"><rect x="4.5" y="2.2" width="7" height="11.6" rx=".8"/><path d="M6.4 5h3.2M6.4 8h3.2M6.4 11h3.2"/></symbol>
+  <symbol id="pg-i-index" viewBox="0 0 16 16"><path d="M6.4 5.1 4.9 3.6a2.1 2.1 0 0 0-3 3l2.2 2.2a2.1 2.1 0 0 0 3 0l1.1-1.1"/><path d="m9.6 10.9 1.5 1.5a2.1 2.1 0 0 0 3-3l-2.2-2.2a2.1 2.1 0 0 0-3 0L7.8 8.3"/></symbol>
+  <symbol id="pg-i-addserver" viewBox="0 0 16 16"><path d="M2 3.2h8.5v3.2H2zM2 7.4h8.5v3.2H2z"/><path d="M12.7 8.2v5.2M10.1 10.8h5.2"/></symbol>
+  <symbol id="pg-i-search" viewBox="0 0 16 16"><circle cx="6.8" cy="6.8" r="4.3"/><path d="m10 10 4 4"/></symbol>
+  <symbol id="pg-i-query" viewBox="0 0 16 16"><path d="M3 1.8h7l3 3v9.4H3z"/><path d="M10 1.8v3h3M5.2 8h5.7M5.2 10.5h4.2"/></symbol>
+  <symbol id="pg-i-refresh" viewBox="0 0 16 16"><path d="M13.6 5.2A6 6 0 1 0 14 9"/><path d="m13.6 2.3.1 3.1-3.1-.2"/></symbol>
+  <symbol id="pg-i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.3"/><path d="M8 1.8v1.3M8 12.9v1.3M1.8 8h1.3M12.9 8h1.3M3.6 3.6l.9.9M11.5 11.5l.9.9M12.4 3.6l-.9.9M4.5 11.5l-.9.9"/><circle cx="8" cy="8" r="5.1"/></symbol>
+  <symbol id="pg-i-open" viewBox="0 0 16 16"><path d="M1.8 5h4l1.1 1.4h7.3l-1.5 6.5H2.2z"/><path d="M2.2 5V3.2h4.2l1.1 1.4H13"/></symbol>
+  <symbol id="pg-i-save" viewBox="0 0 16 16"><path d="M2.3 2h9.6l1.8 1.8V14H2.3z"/><path d="M5 2v4h5V2M4.8 10h6.4v4"/></symbol>
+  <symbol id="pg-i-download" viewBox="0 0 16 16"><path d="M8 2v8M5 7.5 8 10.5l3-3"/><path d="M3 13.5h10"/></symbol>
+  <symbol id="pg-i-run" viewBox="0 0 16 16"><path d="M5 3.2 12.5 8 5 12.8z"/></symbol>
+  <symbol id="pg-i-stop" viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx=".6"/></symbol>
+  <symbol id="pg-i-explain" viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.4"/><circle cx="8" cy="4" r="1.4"/><circle cx="12.8" cy="10.5" r="1.4"/><path d="M4.5 7 6.8 5M9.1 5.1l2.6 4.2"/></symbol>
+  <symbol id="pg-i-commit" viewBox="0 0 16 16"><path d="m2.7 8 3.1 3.2 7-7"/></symbol>
+  <symbol id="pg-i-rollback" viewBox="0 0 16 16"><path d="M5.4 4.2H2.2v-3"/><path d="M2.5 4.1A6 6 0 1 1 2 10"/></symbol>
+  <symbol id="pg-i-check" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="m4.3 8 2.2 2.2 5-5"/></symbol>
+  <symbol id="pg-i-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.7"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3.1 3.1l1.1 1.1M11.8 11.8l1.1 1.1M12.9 3.1l-1.1 1.1M4.2 11.8l-1.1 1.1"/></symbol>
+  <symbol id="pg-i-moon" viewBox="0 0 16 16"><path d="M12.9 10.6A5.5 5.5 0 0 1 5.4 3.1 5.8 5.8 0 1 0 12.9 10.6z"/></symbol>
+  <symbol id="pg-i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="pg-i-more" viewBox="0 0 16 16"><circle cx="3.2" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="12.8" cy="8" r=".9" fill="currentColor" stroke="none"/></symbol>
+</svg>
 <div class="app">
-  <div class="title"><span class="pgMark">pg</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><button type="button" class="themeButton" id="themeToggle" title="Switch to light theme" aria-label="Switch to light theme" aria-pressed="true">☀</button><span class="win">— □ ×</span></div>
+  <div class="title"><span class="pgMark"><svg class="pgIcon" style="width:21px;height:21px"><use href="#pg-i-elephant"></use></svg></span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><button type="button" class="themeButton" id="themeToggle" title="Switch to light theme" aria-label="Switch to light theme" aria-pressed="true">☀</button><span class="win">— □ ×</span></div>
   <div class="menu"><span>File</span><span>Object</span><span>Tools</span><span>Help</span></div>
-  <div class="toolbar"><button class="tool">＋ Register Server</button><button class="tool">⌕ Search Objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool" id="pgRefresh">↻ Refresh</button><button class="tool" id="pgPreferences">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
+  <div class="toolbar"><button class="tool"><svg class="pgIcon toolIcon"><use href="#pg-i-addserver"></use></svg>Register Server</button><button class="tool"><svg class="pgIcon toolIcon"><use href="#pg-i-search"></use></svg>Search Objects</button><button class="tool" id="newQuery"><svg class="pgIcon toolIcon ico-query"><use href="#pg-i-query"></use></svg>Query Tool</button><button class="tool" id="pgRefresh"><svg class="pgIcon toolIcon"><use href="#pg-i-refresh"></use></svg>Refresh</button><button class="tool" id="pgPreferences"><svg class="pgIcon toolIcon"><use href="#pg-i-gear"></use></svg>Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
   <div class="work">
     <aside class="left">
-      <div class="head">Browser<span class="grow"></span><span class="browserTools">＋ ⟳ ⋮</span></div>
+      <div class="head">Browser<span class="grow"></span><span class="browserTools"><svg class="pgIcon"><use href="#pg-i-plus"></use></svg><svg class="pgIcon"><use href="#pg-i-refresh"></use></svg><svg class="pgIcon fill"><use href="#pg-i-more"></use></svg></span></div>
       <div class="filter"><input placeholder="Filter objects"></div>
       <div class="tree" id="tree"></div>
     </aside>
@@ -107,7 +142,7 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
       </section>
       <div class="query-tabs"><div class="query-tab activeTab" id="queryTab">java_practice/postgres@Local PostgreSQL</div></div>
       <section class="query-area">
-        <div class="query-tools"><span title="Open file">▱</span><span title="Save">▣</span><span title="Download">↓</span><span class="querySep"></span><span title="Find">⌕</span><span class="run" id="run" title="Execute">▶</span><span class="stop" title="Cancel">■</span><span title="Explain">EX</span><span title="Explain Analyze">EA</span><span class="querySep"></span><span title="Commit">✓</span><span title="Rollback">↶</span><span style="min-width:auto;padding:0 8px">☑ Auto Commit</span></div>
+        <div class="query-tools"><span title="Open file"><svg class="pgIcon queryIcon"><use href="#pg-i-open"></use></svg></span><span title="Save"><svg class="pgIcon queryIcon"><use href="#pg-i-save"></use></svg></span><span title="Download"><svg class="pgIcon queryIcon"><use href="#pg-i-download"></use></svg></span><span class="querySep"></span><span title="Find"><svg class="pgIcon queryIcon"><use href="#pg-i-search"></use></svg></span><span class="run" id="run" title="Execute"><svg class="pgIcon queryIcon fill"><use href="#pg-i-run"></use></svg></span><span class="stop" title="Cancel"><svg class="pgIcon queryIcon fill"><use href="#pg-i-stop"></use></svg></span><span title="Explain"><svg class="pgIcon queryIcon"><use href="#pg-i-explain"></use></svg></span><span title="Explain Analyze"><svg class="pgIcon queryIcon"><use href="#pg-i-explain"></use></svg><small style="font-size:7px;margin-left:1px">A</small></span><span class="querySep"></span><span title="Commit"><svg class="pgIcon queryIcon"><use href="#pg-i-commit"></use></svg></span><span title="Rollback"><svg class="pgIcon queryIcon"><use href="#pg-i-rollback"></use></svg></span><span style="min-width:auto;padding:0 8px"><svg class="pgIcon queryIcon" style="margin-right:4px"><use href="#pg-i-check"></use></svg>Auto Commit</span></div>
         <div class="sqlwrap" id="sqlwrap"><div class="gutter" id="gutter"></div><pre class="sql" id="sql"></pre></div>
       </section>
       <section class="results">
@@ -150,7 +185,7 @@ function applyTheme(value,persist=false){
  document.body.dataset.theme=theme;
  document.documentElement.style.colorScheme=theme;
  if(refs.themeToggle){
-   refs.themeToggle.textContent=theme==="dark"?"☀":"◐";
+   refs.themeToggle.innerHTML=iconSvg(theme==="dark"?"sun":"moon","");
    refs.themeToggle.title=theme==="dark"?"Switch to light theme":"Switch to dark theme";
    refs.themeToggle.setAttribute("aria-label",refs.themeToggle.title);
    refs.themeToggle.setAttribute("aria-pressed",theme==="dark"?"true":"false");
@@ -158,6 +193,13 @@ function applyTheme(value,persist=false){
  if(persist)saveTheme(theme);
 }
 
+function iconSvg(kind,extra=""){
+ const cls={
+  server:"ico-server",servergroup:"ico-servergroup",database:"ico-database",folder:"ico-folder",
+  schema:"ico-schema",table:"ico-table",columns:"ico-columns",column:"ico-column",index:"ico-index"
+ }[kind]||"";
+ return '<svg class="pgIcon treeIcon '+cls+' '+extra+'" aria-hidden="true"><use href="#pg-i-'+kind+'"></use></svg>';
+}
 function syntax(line){
  let e=esc(line);
  if(/^\s*--/.test(line))return '<span class="com">'+e+'</span>';
@@ -169,29 +211,29 @@ function syntax(line){
 function makeTree(){
  const db=state?.database||"java_practice", hasStudent=!!state?.studentCreated;
  const nodes=[
-  {d:0,t:"⌄",i:"▤",n:"Servers",p:"Servers"},
-  {d:1,t:"⌄",i:"▣",n:"Local PostgreSQL",p:"Servers/Local PostgreSQL"},
-  {d:2,t:"⌄",i:"▤",n:"Databases (2)",p:"Servers/Local PostgreSQL/Databases"},
-  {d:3,t:"⌄",i:"◉",n:db,p:"Servers/Local PostgreSQL/Databases/"+db},
-  {d:4,t:"⌄",i:"▤",n:"Schemas",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas"},
-  {d:5,t:"⌄",i:"▤",n:"public",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public"},
-  {d:6,t:"⌄",i:"▤",n:"Tables"+(hasStudent?" (1)":""),p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables"}
+  {d:0,t:"▾",k:"servergroup",n:"Servers",p:"Servers"},
+  {d:1,t:"▾",k:"server",n:"Local PostgreSQL",p:"Servers/Local PostgreSQL"},
+  {d:2,t:"▾",k:"folder",n:"Databases (2)",p:"Servers/Local PostgreSQL/Databases"},
+  {d:3,t:"▾",k:"database",n:db,p:"Servers/Local PostgreSQL/Databases/"+db},
+  {d:4,t:"▾",k:"folder",n:"Schemas",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas"},
+  {d:5,t:"▾",k:"schema",n:"public",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public"},
+  {d:6,t:"▾",k:"folder",n:"Tables"+(hasStudent?" (1)":""),p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables"}
  ];
  if(hasStudent){
   const base="Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables/student";
-  nodes.push({d:7,t:"⌄",i:"▦",n:"student",p:base});
-  nodes.push({d:8,t:"⌄",i:"▤",n:"Columns (4)",p:base+"/Columns"});
-  nodes.push({d:9,t:"",i:"•",n:"roll_no integer",p:base+"/Columns/roll_no"});
-  nodes.push({d:9,t:"",i:"•",n:"is_present boolean",p:base+"/Columns/is_present"});
-  nodes.push({d:9,t:"",i:"•",n:"marks real[]",p:base+"/Columns/marks"});
-  nodes.push({d:9,t:"",i:"•",n:"name character varying(100)",p:base+"/Columns/name"});
-  nodes.push({d:8,t:"⌄",i:"▤",n:"Indexes"+(state?.indexCreated?" (1)":""),p:base+"/Indexes"});
-  if(state?.indexCreated)nodes.push({d:9,t:"",i:"⌁",n:"idx_student_roll_no",p:base+"/Indexes/idx_student_roll_no"});
+  nodes.push({d:7,t:"▾",k:"table",n:"student",p:base});
+  nodes.push({d:8,t:"▾",k:"columns",n:"Columns (4)",p:base+"/Columns"});
+  nodes.push({d:9,t:"",k:"column",n:"roll_no integer",p:base+"/Columns/roll_no"});
+  nodes.push({d:9,t:"",k:"column",n:"is_present boolean",p:base+"/Columns/is_present"});
+  nodes.push({d:9,t:"",k:"column",n:"marks real[]",p:base+"/Columns/marks"});
+  nodes.push({d:9,t:"",k:"column",n:"name character varying(100)",p:base+"/Columns/name"});
+  nodes.push({d:8,t:"▾",k:"folder",n:"Indexes"+(state?.indexCreated?" (1)":""),p:base+"/Indexes"});
+  if(state?.indexCreated)nodes.push({d:9,t:"",k:"index",n:"idx_student_roll_no",p:base+"/Indexes/idx_student_roll_no"});
  }
  refs.tree.innerHTML="";
  for(const x of nodes){
   const r=document.createElement("div");r.className="row"+(x.p===selected?" active":"");r.dataset.path=x.p;r.style.paddingLeft=(x.d*13)+"px";
-  r.innerHTML='<span class="tw">'+x.t+'</span><span class="ico">'+x.i+'</span><span class="node">'+x.n+'</span>';
+  r.innerHTML='<span class="tw">'+x.t+'</span><span class="ico">'+iconSvg(x.k)+'</span><span class="node">'+x.n+'</span>';
   r.onclick=()=>{selected=x.p;makeTree();refs.status.textContent="Selected "+x.n};refs.tree.appendChild(r);
  }
 }
