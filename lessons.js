@@ -3089,6 +3089,58 @@ window.COURSE = {
           }
         },
         {
+          "title": "Open the SSMS query editor context menu",
+          "why": "SSMS lo query editor meeda right-click chesthe execution, IntelliSense, execution plans, live statistics, results mode, Properties mariyu Query Options laanti commands oka contextual menu lo available untayi. Ee lesson transcript-driven UI capability ni simulator lo directly demonstrate chestundi.",
+          "software": "ssms",
+          "action": {
+            "action": "openContextMenu",
+            "data": {
+              "menu": "queryEditor",
+              "x": 650,
+              "y": 255,
+              "context": {
+                "kind": "queryEditor"
+              }
+            }
+          }
+        },
+        {
+          "title": "Inspect dbo.student Object Dependencies",
+          "why": "Database object relationships understand cheyyadaniki SSMS Object Dependencies dialog use chestam. Dependency direction radio options, expandable dependency list, connection details mariyu object metadata oka dedicated SSMS dialog lo display avuthayi.",
+          "software": "ssms",
+          "action": {
+            "action": "showObjectDependencies",
+            "data": {
+              "object": "dbo.student",
+              "type": "Table",
+              "direction": "dependsOn",
+              "selected": "dbo.student",
+              "dependencies": [
+                {
+                  "name": "JavaPracticeDb",
+                  "type": "Database",
+                  "level": 0
+                },
+                {
+                  "name": "dbo.student",
+                  "type": "Table",
+                  "level": 1
+                },
+                {
+                  "name": "PK_student",
+                  "type": "Primary Key",
+                  "level": 2
+                },
+                {
+                  "name": "IX_student_roll_no",
+                  "type": "Index",
+                  "level": 2
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Return to Student.java after database verification",
           "why": "Database schema, data mariyu query checks complete ayyaka developer malli IntelliJ ki return avuthadu. Project timeline continuity preserve avuthundi.",
           "software": "intellij",
