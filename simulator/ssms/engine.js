@@ -480,7 +480,7 @@
     if(ui.optionsOpen){content=optionsHtml();}
     else if(ui.connectOpen){
       const d=Object.assign({},state.connection||{},ui.connectionDraft||{});
-      content=`<div class="modalTitle">Connect to Server</div><div class="modalBody"><div class="connectLogo"><div class="connectMark">SQL</div><div><b>Connect to Server</b><div class="smallNote">Specify the SQL Server connection details.</div></div></div><div class="formGrid"><label>Server type:</label><select id="connServerType"><option>${esc(d.serverType||"Database Engine")}</option></select><label>Server name:</label><input id="connServerName" value="${esc(d.serverName||"")}"><label>Authentication:</label><select id="connAuthentication"><option>${esc(d.authentication||"Windows Authentication")}</option><option>SQL Server Authentication</option></select><label>User name:</label><input id="connUserName" value="${esc(d.userName||"")}"><label>Database:</label><input id="connDatabase" value="${esc(d.database||"master")}"></div></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" data-target="connectDialogButton">Connect</button></div>`;
+      content=`<div class="modalTitle">Connect to Server</div><div class="modalBody"><div class="connectLogo"><div class="connectMark">SQL</div><div><b>Connect to Server</b><div class="smallNote">Specify the SQL Server connection details.</div></div></div><div class="formGrid"><label>Server type:</label><select id="connServerType">${["Database Engine","Analysis Services","Reporting Services","Integration Services"].map(x=>`<option ${x===(d.serverType||"Database Engine")?"selected":""}>${esc(x)}</option>`).join("")}</select><label>Server name:</label><input id="connServerName" value="${esc(d.serverName||"")}"><label>Authentication:</label><select id="connAuthentication"><option>${esc(d.authentication||"Windows Authentication")}</option><option>SQL Server Authentication</option></select><label>User name:</label><input id="connUserName" value="${esc(d.userName||"")}"><label>Database:</label><input id="connDatabase" value="${esc(d.database||"master")}"></div></div><div class="modalActions"><button class="dialogBtn">Cancel</button><button class="dialogBtn primary" data-target="connectDialogButton">Connect</button></div>`;
     } else if(ui.dependenciesDialog){
       content=dependencyHtml(ui.dependenciesDialog);
     } else if(ui.serverPropertiesDialog){
@@ -830,7 +830,7 @@
     }
   }
 
-  function manualClear(){clearBoundary();ui.menu=null;ui.notification="";ui.intelli=null;renderTransients();}
+  function manualClear(){clearBoundary();ui.menu=null;ui.contextMenu=null;ui.notification="";ui.intelli=null;renderTransients();}
 
   document.addEventListener("input",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(!ed)return;const t=tabById(ed.dataset.sqlEditor);if(!t)return;t.sql=ed.value;t.dirty=true;const gutter=ed.parentElement?.querySelector(".sqlGutter");syncSqlLayer(ed,true);renderTabs();updatePosition(ed);if(gutter)gutter.textContent=Array.from({length:Math.max(1,ed.value.split("\n").length)},(_,i)=>i+1).join("\n");});
   document.addEventListener("scroll",e=>{const ed=e.target.closest?.("[data-sql-editor]");if(ed){const g=ed.parentElement?.querySelector(".sqlGutter");if(g)g.scrollTop=ed.scrollTop;syncSqlLayer(ed);}},true);
