@@ -163,90 +163,86 @@
     Object.keys(frames).forEach(sendCoursePackage);
   }
 
-  let pointerSequence = 0;
-  const pendingPointer = new Map();
-
-  function pointerTextFromPath(value) {
+  function actionTextFromPath(value) {
     if (!value) return "";
     const clean = String(value).replace(/\\/g, "/");
     return clean.split("/").pop().split(":").pop();
   }
 
-  function pointerPlanForStep(step) {
+  function highlightPlanForStep(step) {
     if (!step?.action) return null;
     const software = normalizeSoftware(step.software);
     const action = step.action.action;
     const d = step.action.data || {};
-    const click = (selectors, extra = {}) => ({ selectors, gesture: "click", duration: 500, ...extra });
-    const typing = (selectors, extra = {}) => ({ selectors, gesture: "typing", duration: 480, hideAfter: 0, ...extra });
+    const plan = (selectors, extra = {}) => ({ selectors, duration: 1150, ...extra });
 
     if (software === "intellij") {
-      if (action === "newProject") return click(["#newBtn", "#projectTitle"]);
-      if (action === "createPackage" || action === "createFile") return click(["#newBtn", "#tree"]);
-      if (action === "openFile") return click(["#tree"], { text: pointerTextFromPath(d.file || d.path), scope: "#tree" });
-      if (action === "typeCode") return typing(["#editorWrap", "#code"]);
-      if (action === "showFileStructure") return click(["#rightPanel", "#editorPane"]);
+      if (action === "newProject") return plan(["#newBtn", "#projectTitle"]);
+      if (action === "createPackage" || action === "createFile") return plan(["#newBtn", "#tree"]);
+      if (action === "openFile") return plan(["#tree"], { text: actionTextFromPath(d.file || d.path), scope: "#tree" });
+      if (action === "typeCode") return plan(["#editorWrap", "#code"]);
+      if (action === "showFileStructure") return plan(["#rightPanel", "#editorPane"]);
     }
 
     if (software === "vscode") {
-      if (action === "openFile") return click(["#tree"], { text: pointerTextFromPath(d.file || d.path), scope: "#tree" });
-      if (action === "createFile") return click(["#newFileBtn", "#tree"]);
-      if (action === "typeCode") return typing(["#codeViewport", "#codeTable"]);
-      if (action === "terminalCommand" || action === "runTerminal") return typing(["#terminal"]);
+      if (action === "openFile") return plan(["#tree"], { text: actionTextFromPath(d.file || d.path), scope: "#tree" });
+      if (action === "createFile") return plan(["#newFileBtn", "#tree"]);
+      if (action === "typeCode") return plan(["#codeViewport", "#codeTable"]);
+      if (action === "terminalCommand" || action === "runTerminal") return plan(["#terminal"]);
     }
 
     if (software === "pgadmin") {
-      if (action === "setStatus") return click(["#status"]);
-      if (action === "selectTree") return click(["#tree"], { text: pointerTextFromPath(d.path), scope: "#tree" });
-      if (action === "openQueryTool") return click(["#newQuery"]);
-      if (action === "typeSql") return typing(["#sqlwrap", "#sql"]);
-      if (action === "executeQuery") return click(["#run"]);
+      if (action === "setStatus") return plan(["#status"]);
+      if (action === "selectTree") return plan(["#tree"], { text: actionTextFromPath(d.path), scope: "#tree" });
+      if (action === "openQueryTool") return plan(["#newQuery"]);
+      if (action === "typeSql") return plan(["#sqlwrap", "#sql"]);
+      if (action === "executeQuery") return plan(["#run"]);
     }
 
     if (software === "postman") {
-      if (action === "openRequest") return click(["#collections"]);
-      if (action === "setEnvironment") return click(["#envName"]);
-      if (action === "setMethod") return click(["#methodBox"]);
-      if (action === "typeUrl") return typing(["#urlBox"]);
-      if (action === "setHeaders") return click(["#reqTabs"], { text: "Headers", scope: "#reqTabs" });
-      if (action === "sendRequest") return click(["#sendBtn"]);
-      if (action === "selectResponseTab") return click(["#respTabs"]);
+      if (action === "openRequest") return plan(["#collections"]);
+      if (action === "setEnvironment") return plan(["#envName"]);
+      if (action === "setMethod") return plan(["#methodBox"]);
+      if (action === "typeUrl") return plan(["#urlBox"]);
+      if (action === "setHeaders") return plan(["#reqTabs"], { text: "Headers", scope: "#reqTabs" });
+      if (action === "sendRequest") return plan(["#sendBtn"]);
+      if (action === "selectResponseTab") return plan(["#respTabs"]);
     }
 
     if (software === "cmd") {
-      if (action === "setCwd") return click(["#cwdStatus", "#terminal"]);
-      if (action === "executeCommand" || action === "typeCommand") return typing(["#terminal", "#terminalWrap"]);
+      if (action === "setCwd") return plan(["#cwdStatus", "#terminal"]);
+      if (action === "executeCommand" || action === "typeCommand") return plan(["#terminal", "#terminalWrap"]);
     }
 
     if (software === "linux") {
-      if (action === "setCwd") return click(["#cwdStatus", "#terminalWin"]);
-      if (action === "executeCommand") return typing(["#terminal", "#terminalWin"]);
-      if (action === "stopProcess") return click(["#terminalWin"]);
+      if (action === "setCwd") return plan(["#cwdStatus", "#terminalWin"]);
+      if (action === "executeCommand") return plan(["#terminal", "#terminalWin"]);
+      if (action === "stopProcess") return plan(["#terminalWin"]);
     }
 
     if (software === "ssms") {
-      if (action === "openConnectDialog") return click(['[data-target="connect"]', "#toolbar"]);
+      if (action === "openConnectDialog") return plan(['[data-target="connect"]', "#toolbar"]);
       if (action === "setConnectionField") {
-        if (d.field === "authentication") return click(["#modal select", "#modal"]);
-        return typing(["#modal input", "#modal"]);
+        if (d.field === "authentication") return plan(["#modal select", "#modal"]);
+        return plan(["#modal input", "#modal"]);
       }
-      if (action === "connectServer") return click(["#modal button", "#modal"], { text: "Connect", scope: "#modal" });
-      if (action === "expandNode") return click(["#objectTree"], { text: pointerTextFromPath(d.id), scope: "#objectTree" });
-      if (action === "changeDatabase") return click(["#dbSelect"]);
-      if (action === "newQuery") return click(['[data-target="newQuery"]', "#toolbar"]);
-      if (action === "typeSql") return typing(["#editorArea", "#queryGroups"]);
-      if (action === "executeQuery") return click(['[data-target="execute"]', "#toolbar"]);
-      if (action === "refreshObjectExplorer") return click(['[data-target="refreshObjectExplorer"]', "#objectTree"]);
-      if (action === "showActualExecutionPlan") return click(['[data-resulttab="plan"]', "#resultsPane"]);
-      if (action === "showClientStatistics") return click(['[data-resulttab="stats"]', "#resultsPane"]);
-      if (action === "saveQuery") return click(['[data-target="save"]', "#toolbar"]);
-      if (action === "openActivityMonitor") return click(["#objectTree"], { text: "Activity Monitor", scope: "#objectTree" });
+      if (action === "connectServer") return plan(["#statusServer", "#statusbar"]);
+      if (action === "expandNode") return plan(["#objectTree"], { text: actionTextFromPath(d.id), scope: "#objectTree" });
+      if (action === "changeDatabase") return plan(["#dbSelect"]);
+      if (action === "newQuery") return plan(['[data-target="newQuery"]', "#toolbar"]);
+      if (action === "typeSql") return plan(["#queryGroups", "#editorArea"]);
+      if (action === "executeQuery") return plan(['[data-target="execute"]', "#toolbar"]);
+      if (action === "refreshObjectExplorer") return plan(['[data-target="refreshObjectExplorer"]', "#objectTree"]);
+      if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]', "#resultsPane"]);
+      if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]', "#resultsPane"]);
+      if (action === "saveQuery") return plan(['[data-target="save"]', "#toolbar"]);
+      if (action === "openActivityMonitor") return plan(["#objectTree", "#workspace"]);
       if (["createIndex","showObjectExplorerDetails","backupDatabase","createAgentJob","createAgentSchedule","runAgentJob","showAgentJobHistory"].includes(action)) {
-        return click(["#objectTree", "#resultsPane"]);
+        return plan(["#objectTree", "#resultsPane"]);
       }
     }
 
-    return click(["button:not([disabled])", "input", "select", "main", "body"], { anchor: "center" });
+    return null;
   }
 
   function sendSeekNow(index, target, animateFinal) {
@@ -258,49 +254,26 @@
     }, "*");
   }
 
-  function seekSoftware(index, software, animateFinal, pointerPlayback = false) {
+  function highlightCurrentAction(index, target) {
+    const plan = highlightPlanForStep(flat[index]);
+    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR" }, "*");
+    if (!plan) return;
+    setTimeout(() => {
+      frames[target].contentWindow.postMessage({
+        type: "SIM_HIGHLIGHT",
+        plan
+      }, "*");
+    }, 90);
+  }
+
+  function seekSoftware(index, software, animateFinal) {
     const target = normalizeSoftware(software);
     if (!engineReady[target] || !flat.length) return;
 
-    if (!pointerPlayback) {
-      sendSeekNow(index, target, animateFinal);
-      return;
-    }
-
-    const step = flat[index];
-    const plan = pointerPlanForStep(step);
-    if (!plan) {
-      sendSeekNow(index, target, animateFinal);
-      return;
-    }
-
-    // Rebuild only through the previous step first. This guarantees the
-    // pointer target exists before the visible final action is performed.
-    frames[target].contentWindow.postMessage({ type: "SIM_POINTER_HIDE" }, "*");
-    frames[target].contentWindow.postMessage({
-      type: "SIM_SEEK",
-      steps: stepsThrough(index - 1, target),
-      animateFinal: false,
-      autoType: false
-    }, "*");
-
-    const requestId = "pointer-" + (++pointerSequence);
-    const fallback = setTimeout(() => {
-      const pending = pendingPointer.get(target);
-      if (!pending || pending.id !== requestId) return;
-      pendingPointer.delete(target);
-      sendSeekNow(index, target, animateFinal);
-    }, 1600);
-
-    pendingPointer.set(target, { id: requestId, index, animateFinal, fallback });
-
-    setTimeout(() => {
-      frames[target].contentWindow.postMessage({
-        type: "SIM_POINTER",
-        id: requestId,
-        plan
-      }, "*");
-    }, 70);
+    // Never block navigation on visual guidance. The step state is rebuilt
+    // immediately, then the relevant control is highlighted independently.
+    sendSeekNow(index, target, animateFinal);
+    highlightCurrentAction(index, target);
   }
 
   function explainCurrentStep() {
@@ -504,7 +477,7 @@
     if (wasFullCode) sendCoursePackageToAll();
 
     renderCurrentStep();
-    seekSoftware(current, software, animateFinal, true);
+    seekSoftware(current, software, animateFinal);
   }
 
   window.addEventListener("message", event => {
@@ -518,15 +491,6 @@
     }
 
     if (!software) return;
-
-    if (event.data?.type === "SIM_POINTER_DONE") {
-      const pending = pendingPointer.get(software);
-      if (!pending || pending.id !== event.data.id) return;
-      clearTimeout(pending.fallback);
-      pendingPointer.delete(software);
-      sendSeekNow(pending.index, software, pending.animateFinal);
-      return;
-    }
 
     if (event.data?.type === "SIM_NAVIGATE") {
       if (fullCodeMode || !flat.length) return;
@@ -560,7 +524,7 @@
   nextBtn.onclick = () => goToStep(current + 1, true);
   replayBtn.onclick = () => {
     if (!flat.length || fullCodeMode) return;
-    seekSoftware(current, flat[current].software, true, true);
+    seekSoftware(current, flat[current].software, true);
   };
 
   stepSearch.oninput = renderSidebar;
