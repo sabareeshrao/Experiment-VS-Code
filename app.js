@@ -14,8 +14,6 @@
   const stepSearch = $("stepSearch");
   const toggleSidebar = $("toggleSidebar");
   const ideFullscreen = $("ideFullscreen");
-  const pinBtn = $("pinBtn");
-  const pinCount = $("pinCount");
 
   const flat = [];
   course.stages.forEach((stage, stageIndex) => stage.steps.forEach((step, localIndex) => {
@@ -25,7 +23,6 @@
   let current = Math.max(0, Math.min(flat.length - 1, (Number(new URL(location.href).searchParams.get("step")) || 1) - 1));
   let engineReady = false;
   let openStages = new Set([flat[current].stageIndex]);
-  let pins = new Set(JSON.parse(localStorage.getItem("devPlaybackPins") || "[]"));
 
   function engineStepsThrough(index) {
     return flat.slice(0, index + 1).map(s => s.action);
@@ -38,11 +35,6 @@
   function seek(index, animateFinal) {
     if (!engineReady) return;
     frame.contentWindow.postMessage({type:"SIM_SEEK", steps:engineStepsThrough(index), animateFinal:!!animateFinal, autoType:true}, "*");
-  }
-
-  function savePins() {
-    localStorage.setItem("devPlaybackPins", JSON.stringify([...pins]));
-    pinCount.textContent = pins.size;
   }
 
   function renderSidebar() {
@@ -101,8 +93,6 @@
     stepProgress.style.width = (((current + 1) / flat.length) * 100) + "%";
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === flat.length - 1;
-    pinBtn.classList.toggle("active", pins.has(current));
-    pinCount.textContent = pins.size;
     renderSidebar();
     const url = new URL(location.href); url.searchParams.set("step", current + 1); history.replaceState({}, "", url);
   }
@@ -143,13 +133,11 @@
   ideFullscreen.onclick = async () => {
     try { if (!document.fullscreenElement) await frame.requestFullscreen(); else await document.exitFullscreen(); } catch (_) {}
   };
-  pinBtn.onclick = () => { if (pins.has(current)) pins.delete(current); else pins.add(current); savePins(); renderCurrent(); };
   document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight" && current < flat.length - 1) go(current + 1, true);
     if (e.key === "ArrowLeft" && current > 0) go(current - 1, false);
     if (e.key.toLowerCase() === "r" && !/input|textarea/i.test(document.activeElement?.tagName || "")) seek(current, true);
   });
 
-  savePins();
   renderCurrent();
 })();
