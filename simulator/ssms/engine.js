@@ -446,9 +446,9 @@
   }
 
   async function animateSql(tab,newSql,token){
-    const full=String(newSql??""); if(!autoType){tab.sql=full;tab.dirty=true;renderAll();return;}
+    const full=String(newSql??""); if(!autoType){tab.sql=full;tab.dirty=true;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));return;}
     ui.typingTab=tab.id;tab.sql=""; const steps=Math.min(full.length,60),chunk=Math.max(1,Math.ceil(full.length/steps)); const delay=Math.min(16,Math.max(4,800/Math.max(1,Math.ceil(full.length/chunk))));
-    for(let i=0;i<full.length;i+=chunk){if(token!==seekToken)return;tab.sql=full.slice(0,Math.min(full.length,i+chunk));tab.dirty=true;renderAll();await sleep(delay);}tab.sql=full;ui.typingTab=null;renderAll();
+    for(let i=0;i<full.length;i+=chunk){if(token!==seekToken)return;tab.sql=full.slice(0,Math.min(full.length,i+chunk));tab.dirty=true;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));await sleep(delay);}tab.sql=full;ui.typingTab=null;renderAll();requestAnimationFrame(()=>window.SIM_FOCUS?.follow(document.querySelector('[data-sql-editor="'+CSS.escape(String(tab.id))+'"]'),{block:"center"}));
   }
 
   async function applyStep(step, animate, token) {
