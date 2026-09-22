@@ -16,6 +16,8 @@ button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-ro
 .main{min-width:0;min-height:0;display:grid;grid-template-rows:30px 31px minmax(0,1fr) 210px;background:var(--editor)}.workspace-tabs,.query-tabs,.result-tabs{display:flex;align-items:center;border-bottom:1px solid #394650;background:#222c34;font-size:10px}.workspace-tab,.query-tab,.result-tab{height:100%;padding:8px 12px 0;border-right:1px solid #35414a}.activeTab{background:#192126;border-bottom:2px solid #72a9d2}
 .query-tabs{background:#1f282f}.query-tab{padding-top:7px}.query-area{min-height:0;display:grid;grid-template-rows:35px minmax(0,1fr)}.query-tools{display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid #394650;background:#202930;font-size:10px}.query-tools .run{color:var(--green);font-weight:700}.query-tools .stop{color:#d36e75}.sqlwrap{display:grid;grid-template-columns:46px minmax(0,1fr);overflow:auto;background:#171d22}.gutter{padding:10px 7px 40px 0;text-align:right;color:#758590;font:11px/23px Consolas,monospace;user-select:none}.sql{margin:0;padding:10px 16px 40px 9px;white-space:pre;min-width:max-content;font:12px/23px Consolas,monospace}.line{display:block;min-height:23px}.line.focus{background:rgba(72,114,150,.20)}.kw{color:#db73c8}.type{color:#87c7a1}.num{color:#d2b96b}.str{color:#a9c97f}.com{color:#6e9f65}
 .results{min-height:0;border-top:2px solid #38444e;display:grid;grid-template-rows:31px minmax(0,1fr);background:#1e272e}.result-tabs{background:#202930}.result-body{overflow:auto}.messages{padding:12px 15px;font:11px/18px Consolas,monospace;color:#b9c6d0;white-space:pre-wrap}.success{color:#83c98d}.status{display:flex;align-items:center;padding:0 9px;background:#202a32;border-top:1px solid #394650;font-size:9px;color:#bac4cd}.status .grow{flex:1}
+.pgAssistant{position:absolute;z-index:300;right:16px;bottom:38px;width:310px;max-width:calc(100vw - 28px);background:#253039;border:1px solid #4a5965;border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,.42);overflow:hidden;color:#dce4ea;user-select:none;touch-action:none}
+.pgAssistant.hidden{display:none!important}.pgAssistantHead{height:33px;display:flex;align-items:center;gap:8px;padding:0 7px;background:#202a32;border-bottom:1px solid #3b4852;cursor:grab}.pgAssistantIcon{width:20px;height:20px;border-radius:4px;display:grid;place-items:center;background:#355c79;color:#dceeff;font-size:9px;font-weight:800}.pgAssistantTitles{min-width:0;flex:1}.pgAssistantTitles strong,.pgAssistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pgAssistantTitles strong{font-size:10px}.pgAssistantTitles span{font-size:9px;color:#91a0ac;margin-top:1px}.pgAssistantAction{width:24px;height:24px;border:0;background:transparent;color:#9aa8b3;border-radius:4px;padding:0}.pgAssistantAction:hover{background:#34434e;color:#fff}.pgAssistantBody{padding:9px 10px 11px;background:#253039;font:10.5px/1.55 "Segoe UI",Arial,sans-serif;cursor:grab}.pgAssistantBody p{margin:0}.pgAssistantTag{display:inline-block;margin-bottom:7px;padding:2px 6px;border-radius:4px;background:#1d2830;color:#9ec2de;font-size:9px}.pgAssistant.minimized{width:225px}.pgAssistant.minimized .pgAssistantBody{display:none}.pgAssistant.dragging{opacity:.96}.pgAssistantLanguage{font-size:8px;color:#72a9d2;margin-left:4px}
 .hidden{display:none!important}
 </style>
 </head>
@@ -43,13 +45,25 @@ button{font:inherit;color:inherit}.app{height:100%;display:grid;grid-template-ro
       </section>
     </main>
   </div>
+  <div class="pgAssistant hidden" id="pgAssistant">
+    <div class="pgAssistantHead" id="pgAssistantHead">
+      <div class="pgAssistantIcon">AI</div>
+      <div class="pgAssistantTitles"><strong id="pgAssistantTitle">Step explanation</strong><span id="pgAssistantStage">Developer guidance</span></div>
+      <button class="pgAssistantAction" id="pgAssistantMin" title="Minimize">—</button>
+      <button class="pgAssistantAction" id="pgAssistantClose" title="Hide">×</button>
+    </div>
+    <div class="pgAssistantBody">
+      <div class="pgAssistantTag" id="pgAssistantStep">Step</div><span class="pgAssistantLanguage">Telugu • English letters</span>
+      <p id="pgAssistantText"></p>
+    </div>
+  </div>
   <div class="status"><span id="status">Ready</span><span class="grow"></span><span id="rows"></span><span>Ln 1, Col 1 &nbsp; UTF-8</span></div>
 </div>
 <script>
 (() => {
 "use strict";
 const $=id=>document.getElementById(id);
-const refs={tree:$("tree"),sql:$("sql"),gutter:$("gutter"),messages:$("messages"),status:$("status"),connection:$("connection"),queryTab:$("queryTab"),run:$("run"),newQuery:$("newQuery"),sqlwrap:$("sqlwrap")};
+const refs={tree:$("tree"),sql:$("sql"),gutter:$("gutter"),messages:$("messages"),status:$("status"),connection:$("connection"),queryTab:$("queryTab"),run:$("run"),newQuery:$("newQuery"),sqlwrap:$("sqlwrap"),assistant:$("pgAssistant"),assistantHead:$("pgAssistantHead"),assistantTitle:$("pgAssistantTitle"),assistantStage:$("pgAssistantStage"),assistantStep:$("pgAssistantStep"),assistantText:$("pgAssistantText"),assistantMin:$("pgAssistantMin"),assistantClose:$("pgAssistantClose")};
 let baseline=null,state=null,sqlText="",selected="",openQuery=false,changedLines=[];
 const clone=v=>JSON.parse(JSON.stringify(v??null));
 const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -97,6 +111,34 @@ async function typeSql(code,animate,token){
  if(!animate){sqlText+=add;changedLines=add.split("\n").map((l,i)=>l.trim()?start+i:null).filter(Boolean);renderSql();return}
  let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;sqlText=(state._baseSql||"")+built;renderSql();await sleep(/[\n;{}]/.test(ch)?55:14)}
 }
+function showAssistant(m){
+ refs.assistantTitle.textContent=m.title||"Step explanation";
+ refs.assistantStage.textContent=m.stage||"Developer guidance";
+ refs.assistantStep.textContent="Step "+(m.step||"");
+ refs.assistantText.textContent=m.text||"";
+ refs.assistant.classList.remove("hidden");
+}
+let assistantDrag=null,assistantUserPlaced=false;
+function clampAssistant(left,top){
+ const app=document.querySelector(".app").getBoundingClientRect(),box=refs.assistant.getBoundingClientRect(),pad=6;
+ return {left:Math.max(pad,Math.min(app.width-box.width-pad,left)),top:Math.max(pad,Math.min(app.height-box.height-pad,top))};
+}
+function placeAssistant(left,top){
+ const p=clampAssistant(left,top);refs.assistant.style.left=p.left+"px";refs.assistant.style.top=p.top+"px";refs.assistant.style.right="auto";refs.assistant.style.bottom="auto";assistantUserPlaced=true;
+}
+refs.assistant.addEventListener("pointerdown",e=>{
+ if(e.target.closest("button"))return;
+ const r=refs.assistant.getBoundingClientRect(),a=document.querySelector(".app").getBoundingClientRect();
+ assistantDrag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};refs.assistant.classList.add("dragging");refs.assistant.setPointerCapture?.(e.pointerId);e.preventDefault();
+});
+document.addEventListener("pointermove",e=>{
+ if(!assistantDrag||e.pointerId!==assistantDrag.id)return;
+ const a=document.querySelector(".app").getBoundingClientRect();placeAssistant(e.clientX-a.left-assistantDrag.dx,e.clientY-a.top-assistantDrag.dy);e.preventDefault();
+},{passive:false});
+document.addEventListener("pointerup",e=>{if(!assistantDrag||e.pointerId!==assistantDrag.id)return;assistantDrag=null;refs.assistant.classList.remove("dragging")});
+refs.assistantMin.onclick=()=>refs.assistant.classList.toggle("minimized");
+refs.assistantClose.onclick=()=>refs.assistant.classList.add("hidden");
+
 let seekToken=0;
 async function apply(st,animate,token){
  const d=st.data||{};
@@ -117,7 +159,7 @@ async function apply(st,animate,token){
  }
 }
 async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){await apply(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}}
-window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.pgadmin||{});reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)});
+window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){baseline=clone(m.package?.apps?.pgadmin||{});reset()}if(m.type==="SIM_SEEK")seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal);if(m.type==="SIM_EXPLAIN")showAssistant(m)});
 refs.newQuery.onclick=()=>{openQuery=true;refs.status.textContent="Query Tool opened"};refs.run.onclick=()=>{if(/CREATE\s+TABLE\s+student/i.test(sqlText)){state.studentCreated=true;makeTree()}refs.messages.innerHTML='<span class="success">Query returned successfully.</span>';refs.status.textContent="Query complete"};
 refs.tree.innerHTML='<div style="padding:12px;color:#8fa0ae">Waiting for pgAdmin lesson package…</div>';
 parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","executeQuery","setStatus"]},"*");
