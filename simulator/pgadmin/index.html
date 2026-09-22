@@ -108,8 +108,9 @@ function reset(){
 }
 async function typeSql(code,animate,token){
  const start=sqlText.split("\n").length;const add=String(code||"");
- if(!animate){sqlText+=add;changedLines=add.split("\n").map((l,i)=>l.trim()?start+i:null).filter(Boolean);renderSql();return}
- let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;sqlText=(state._baseSql||"")+built;renderSql();await sleep(/[\n;{}]/.test(ch)?55:14)}
+ const follow=()=>{const lines=[...refs.sql.querySelectorAll(".line.focus")];const target=lines[lines.length-1]||refs.sql.lastElementChild;window.SIM_FOCUS?.follow(target,{block:"center"});};
+ if(!animate){sqlText+=add;changedLines=add.split("\n").map((l,i)=>l.trim()?start+i:null).filter(Boolean);renderSql();requestAnimationFrame(follow);return}
+ let built="";for(const ch of add){if(token!==seekToken)return;built+=ch;sqlText=(state._baseSql||"")+built;changedLines=built.split("\n").map((l,i)=>l.trim()?start+i:null).filter(Boolean);renderSql();requestAnimationFrame(follow);await sleep(/[\n;{}]/.test(ch)?55:14)}
 }
 function showAssistant(m){
  refs.assistantTitle.textContent=m.title||"Step explanation";
