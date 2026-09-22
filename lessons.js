@@ -571,7 +571,21 @@ window.COURSE = {
         ],
         "agentJobs": [],
         "backups": [],
-        "files": {}
+        "files": {},
+        "registeredServers": [
+          {
+            "name": "Local Java SQL",
+            "server": "localhost",
+            "group": "Local Server Groups"
+          }
+        ],
+        "linkedServers": [],
+        "agentJobHistory": [],
+        "options": {
+          "lineNumbers": true,
+          "wordWrap": false,
+          "includeActualPlan": false
+        }
       }
     }
   },
@@ -1966,6 +1980,99 @@ window.COURSE = {
           "software": "ssms",
           "action": {
             "action": "openActivityMonitor",
+            "data": {}
+          }
+        },
+        {
+          "title": "Create an index for student lookups",
+          "why": "Frequently filtered roll_no column meeda index maintain chesthe query access path realistic ga model cheyyachu. Object Explorer lo Indexes node kuda update avuthundi.",
+          "software": "ssms",
+          "action": {
+            "action": "createIndex",
+            "data": {
+              "database": "JavaPracticeDb",
+              "table": "dbo.student",
+              "name": "IX_student_roll_no",
+              "columns": [
+                "roll_no"
+              ],
+              "unique": true
+            }
+          }
+        },
+        {
+          "title": "Inspect Object Explorer details",
+          "why": "Current database objects ni quick summary ga choodadaniki Object Explorer Details useful. Table count mariyu selected object context verify chestam.",
+          "software": "ssms",
+          "action": {
+            "action": "showObjectExplorerDetails",
+            "data": {}
+          }
+        },
+        {
+          "title": "Back up JavaPracticeDb",
+          "why": "Schema/data changes taruvatha database backup create cheyyadam production-safe workflow lo important. Simulator backup history ni statefully maintain chestundi.",
+          "software": "ssms",
+          "action": {
+            "action": "backupDatabase",
+            "data": {
+              "database": "JavaPracticeDb",
+              "type": "Full",
+              "path": "C:\\SQLBackups\\JavaPracticeDb_full.bak",
+              "time": "13:30"
+            }
+          }
+        },
+        {
+          "title": "Create a SQL Server Agent maintenance job",
+          "why": "Recurring database maintenance automate cheyyadaniki SQL Server Agent job create chestam. Ee job ki steps and status simulator state lo persist avuthayi.",
+          "software": "ssms",
+          "action": {
+            "action": "createAgentJob",
+            "data": {
+              "name": "JavaPractice Nightly Maintenance",
+              "steps": [
+                {
+                  "name": "Update Statistics",
+                  "command": "UPDATE STATISTICS dbo.student"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Schedule the maintenance job",
+          "why": "Job manual ga matrame కాకుండా schedule meeda run avvali. Daily 2 AM schedule add chesi automated operations workflow ni simulate chestam.",
+          "software": "ssms",
+          "action": {
+            "action": "createAgentSchedule",
+            "data": {
+              "job": "JavaPractice Nightly Maintenance",
+              "schedule": "Nightly 2 AM",
+              "frequency": "Daily",
+              "time": "02:00"
+            }
+          }
+        },
+        {
+          "title": "Run the SQL Server Agent job",
+          "why": "Job configuration validate cheyyadaniki manual test run chestam. Successful run job history lo record avuthundi.",
+          "software": "ssms",
+          "action": {
+            "action": "runAgentJob",
+            "data": {
+              "name": "JavaPractice Nightly Maintenance",
+              "time": "13:31",
+              "duration": "00:00:02"
+            }
+          }
+        },
+        {
+          "title": "Review SQL Server Agent job history",
+          "why": "Scheduled task successful ga execute ayyindha ani Job History lo status, run time mariyu duration inspect chestam.",
+          "software": "ssms",
+          "action": {
+            "action": "showAgentJobHistory",
             "data": {}
           }
         },
