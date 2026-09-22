@@ -116,9 +116,32 @@
     const target = normalizeSoftware(software);
     if (!engineReady[target] || !course.package) return;
 
+    let packageForApp = course.package;
+
+    // VS Code uses the same Java Practice source snapshot as IntelliJ so the
+    // Explorer/editor look like a real project instead of a tiny demo folder.
+    if (target === "vscode" && fullProjectPackage?.apps?.intellij_idea?.files) {
+      packageForApp = JSON.parse(JSON.stringify(course.package));
+      const vscode = packageForApp.apps.vscode || (packageForApp.apps.vscode = {});
+      vscode.workspaceName = fullProjectPackage.apps.intellij_idea.project?.name || "Java Practice";
+      vscode.files = {
+        ...fullProjectPackage.apps.intellij_idea.files,
+        ...(vscode.files || {})
+      };
+
+      const preferred = "src/polymorphism/Calculator.java";
+      if (vscode.files[preferred]) {
+        vscode.initialFile = preferred;
+        vscode.openTabs = [
+          { path: preferred, pinned: true },
+          { path: "src/Threads/TwoThreads/MyThread.java", pinned: true }
+        ].filter(tab => vscode.files[tab.path]);
+      }
+    }
+
     frames[target].contentWindow.postMessage({
       type: "SIM_PACKAGE",
-      package: course.package,
+      package: packageForApp,
       theme: "dark",
       autoType: true
     }, "*");
