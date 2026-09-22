@@ -1,0 +1,39 @@
+name: Install Updated SSMS Simulator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".integration/ssms-update/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct SSMS update
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .integration/ssms-update/part-* > /tmp/ssms-update.b64
+          base64 -d /tmp/ssms-update.b64 > /tmp/ssms-update.zip
+          rm -rf /tmp/ssms-update
+          mkdir -p /tmp/ssms-update
+          unzip -q /tmp/ssms-update.zip -d /tmp/ssms-update
+          cp /tmp/ssms-update/index.html simulator/ssms/index.html
+          cp /tmp/ssms-update/engine.js simulator/ssms/engine.js
+          cp /tmp/ssms-update/ssms-light.css simulator/ssms/ssms-light.css
+          rm -rf .integration/ssms-update
+      - name: Commit SSMS update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Integrate updated SSMS simulator"
+          git push
