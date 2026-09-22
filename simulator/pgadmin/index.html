@@ -77,7 +77,7 @@ body.theme-dark,body.theme-light{color-scheme:light dark}
 <div class="app">
   <div class="title"><span class="pg">🐘</span><span class="brand">pgAdmin 4</span><span class="project" id="titleDb">Java Practice — Local PostgreSQL</span><span class="grow"></span><button type="button" class="themeButton" id="themeToggle" title="Switch to light theme" aria-label="Switch to light theme" aria-pressed="true">☀</button><span class="win">— □ ×</span></div>
   <div class="menu"><span>File</span><span>Object</span><span>Tools</span><span>Help</span></div>
-  <div class="toolbar"><button class="tool">▣ Register Server</button><button class="tool">⌕ Search objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool">↻ Refresh</button><button class="tool">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
+  <div class="toolbar"><button class="tool">▣ Register Server</button><button class="tool">⌕ Search objects</button><button class="tool" id="newQuery">▤ Query Tool</button><button class="tool" id="pgRefresh">↻ Refresh</button><button class="tool" id="pgPreferences">⚙ Preferences</button><span class="conn" id="connection">java_practice/postgres@Local PostgreSQL</span></div>
   <div class="work">
     <aside class="left">
       <div class="head">Object Explorer<span class="grow"></span><span>＋ &nbsp;↻</span></div>
@@ -335,6 +335,6 @@ parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","ope
 })();
 </script>
   <script src="../shared/highlighter.js?v=3"></script>
-  <script src="../shared/explanation-controls.js?v=6"></script>  <script src="../shared/layout-resize.js?v=6"></script>
+  <script src="../shared/explanation-controls.js?v=6"></script>  <script src="../shared/layout-resize.js?v=7"></script>
 </body>
 </html>
