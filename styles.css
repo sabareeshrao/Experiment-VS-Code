@@ -107,3 +107,12 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
   min-width:0;
   flex:1;
 }
+
+
+/* Bookshelf navigation */
+.library-link{
+  display:inline-flex;align-items:center;text-decoration:none;border:1px solid #34363b;
+  background:#1d1e21;color:#e7e7eb;border-radius:7px;padding:7px 10px;
+  font-size:10px;font-weight:650;cursor:pointer
+}
+.library-link:hover{background:#27292d;color:#fff}
