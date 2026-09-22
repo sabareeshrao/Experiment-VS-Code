@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Java Practice Developer Playback</title>
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
 <body>
   <div class="learning-shell" id="learningShell">
@@ -31,7 +31,7 @@
     <main class="workspace">
       <header class="workspace-head">
         <div>
-          <div class="eyebrow" id="stageLabel">PROJECT PREVIEW</div>
+          <div class="head-meta"><div class="eyebrow" id="stageLabel">PROJECT PREVIEW</div><span class="software-badge" id="softwareBadge">IntelliJ IDEA</span></div>
           <h1 id="stepTitle">Java Practice</h1>
         </div>
         <div class="head-actions">
@@ -41,7 +41,8 @@
       </header>
 
       <section class="ide-shell" id="ideShell">
-        <iframe id="ideFrame" src="simulator/intellij.html?v=10" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" src="simulator/intellij.html?v=10" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" src="simulator/pgadmin.html?v=1" title="pgAdmin simulator"></iframe>
       </section>
 
       <footer class="playback-bar hidden" id="playbackBar">
@@ -62,7 +63,7 @@
   <script src="project-data/part-07.js?v=1"></script>
   <script src="project-data/part-08.js?v=1"></script>
   <script src="project-data/index.js?v=1"></script>
-  <script src="lessons.js?v=11"></script>
-  <script src="app.js?v=10"></script>
+  <script src="lessons.js?v=12"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
