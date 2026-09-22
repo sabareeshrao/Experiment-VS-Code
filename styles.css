@@ -78,6 +78,7 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .software-badge.linux{border-color:#8b3a22;background:#351d16;color:#f39a72}
 .software-badge.ssms{border-color:#3b6385;background:#172a3a;color:#8fc7ef}
 .software-badge.jira{border-color:#1f6feb;background:#14243d;color:#79b8ff}
+.software-badge.jenkins{border-color:#9b3d48;background:#321c20;color:#f1a7b1}
 .software-badge.intellij{border-color:#51446b;background:#292238;color:#bca6df}
 .ide-shell{isolation:isolate}
 .sim-frame{
