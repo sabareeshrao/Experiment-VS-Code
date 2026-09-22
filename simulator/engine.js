@@ -20,9 +20,20 @@ function syntax(line,lang="java"){
  let out="",i=0,kws=new Set(["package","import","public","private","protected","class","interface","extends","implements","return","if","else","for","while","new","throw","throws","try","catch","finally","static","final","void","int","long","double","boolean","null","true","false","this","super","enum"]);
  while(i<line.length){if(line.startsWith("//",i)){out+='<span class="com">'+esc(line.slice(i))+'</span>';break}if(line[i]==='"'){let j=i+1;while(j<line.length){if(line[j]==="\\"){j+=2;continue}if(line[j]==='"'){j++;break}j++}out+='<span class="str">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(line[i]==="@"){let j=i+1;while(j<line.length&&/[\w.]/.test(line[j]))j++;out+='<span class="ann">'+esc(line.slice(i,j))+'</span>';i=j;continue}if(/[A-Za-z_$]/.test(line[i])){let j=i+1;while(j<line.length&&/[\w$]/.test(line[j]))j++;const w=line.slice(i,j);out+=kws.has(w)?'<span class="kw">'+w+'</span>':(/^[A-Z]/.test(w)?'<span class="type">'+esc(w)+'</span>':esc(w));i=j;continue}if(/\d/.test(line[i])){let j=i+1;while(j<line.length&&/[\d._]/.test(line[j]))j++;out+='<span class="num">'+esc(line.slice(i,j))+'</span>';i=j;continue}out+=esc(line[i]);i++}return out
 }
-function icon(n){if(n.type==="folder"||n.type==="package")return "▸";if(n.language==="java")return "J";if(n.language==="xml")return "◇";if(n.language==="properties")return "⚙";return "·"}
-function renderTreeNodes(nodes,depth=0){for(const n of nodes||[]){const p=n.path||n.name,d=document.createElement("div");d.className="treeRow"+(p===activeFile?" active":"");d.dataset.path=p;d.style.paddingLeft=(depth*12)+"px";d.innerHTML='<span class="twist">'+(n.children?.length?(n.open?"▾":"▸"):"")+'</span><span class="ico">'+icon(n)+'</span><span class="nodeText">'+esc(n.name||p)+'</span>';const gm=state.git?.changes?.find?.(x=>x.file===p);if(gm){const s=document.createElement("span");s.className="gitMark "+(gm.status==="A"?"a":"m");s.textContent=gm.status;d.appendChild(s)}d.onclick=()=>{if(n.type==="file"&&files[p])openFile(p);else if(n.children){n.open=!n.open;renderTree()}};refs.tree.appendChild(d);treeMap.set(p,d);if(n.children&&n.open!==false)renderTreeNodes(n.children,depth+1)}}
-function renderTree(){refs.tree.innerHTML="";treeMap.clear();renderTreeNodes(state.tree)}
+function icon(n){if(n.type==="folder"||n.type==="package")return "◆";if(n.language==="java")return "J";if(n.language==="xml")return "x";if(n.language==="properties")return "p";return "·"}
+function iconClass(n){if(n.type==="folder"||n.type==="package")return "ico-folder";if(n.language==="java")return "ico-java";if(n.language==="xml")return "ico-xml";if(n.language==="properties")return "ico-props";return "ico-file"}
+function renderTreeNodes(nodes,depth=0){for(const n of nodes||[]){const p=n.path||n.name,d=document.createElement("div");d.className="treeRow"+(p===activeFile?" active":"");d.dataset.path=p;d.style.paddingLeft=(depth*12)+"px";d.innerHTML='<span class="twist">'+(n.children?.length?(n.open?"▾":"▸"):"")+'</span><span class="ico '+iconClass(n)+'">'+icon(n)+'</span><span class="nodeText">'+esc(n.name||p)+'</span>';const gm=state.git?.changes?.find?.(x=>x.file===p);if(gm){const s=document.createElement("span");s.className="gitMark "+(gm.status==="A"?"a":"m");s.textContent=gm.status;d.appendChild(s)}d.onclick=()=>{if(n.type==="file"&&files[p])openFile(p);else if(n.children){n.open=!n.open;renderTree()}};refs.tree.appendChild(d);treeMap.set(p,d);if(n.children&&n.open!==false)renderTreeNodes(n.children,depth+1)}}
+function renderTree(){
+ refs.tree.innerHTML="";
+ treeMap.clear();
+ const root=document.createElement("div");
+ root.className="treeRoot";
+ root.innerHTML='<span class="twist">▾</span><span class="ico ico-folder">◆</span><span class="nodeText">'+esc(state.project?.name||"Project")+'</span>';
+ refs.tree.appendChild(root);
+ renderTreeNodes(state.tree,1);
+ const ext=document.createElement("div");ext.className="treeAux";ext.innerHTML='<span class="twist">▸</span><span class="ico">◫</span><span>External Libraries</span>';refs.tree.appendChild(ext);
+ const scratch=document.createElement("div");scratch.className="treeAux";scratch.innerHTML='<span class="twist">▸</span><span class="ico">⌘</span><span>Scratches and Consoles</span>';refs.tree.appendChild(scratch)
+}
 function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))openTabs.push(p);renderAll()}
 function renderTabs(){refs.tabs.innerHTML="";for(const p of openTabs){if(!files[p])continue;const t=document.createElement("div");t.className="tab"+(p===activeFile?" active":"");t.dataset.file=p;t.innerHTML='<span>'+esc(p.split("/").pop())+'</span>'+(files[p].pinned?'<span class="tabPin">PIN</span>':'')+'<span class="tabClose">×</span>';t.onclick=e=>{if(!e.target.classList.contains("tabClose")){activeFile=p;renderAll()}};t.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeFile(p)};refs.tabs.appendChild(t)}}
 function closeFile(p){openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;renderAll()}
@@ -61,7 +72,9 @@ function renderFeatureVisibility(){
  const anyBottom=bottomFeatures.some(x=>visible.has(x));
  refs.bottomPanel?.classList.toggle("hidden",!anyBottom);
  refs.splitH?.classList.toggle("hidden",!anyBottom);
- refs.work?.classList.toggle("noBottom",!anyBottom)
+ refs.work?.classList.toggle("noBottom",!anyBottom);
+ const hasRight=visible.has("maven")||visible.has("database");
+ refs.work?.classList.toggle("hasRightTools",hasRight)
 }
 function renderAll(){refs.project.textContent=state.project.name||"Project";refs.branch.textContent=state.git.branch||"main";refs.sdk.textContent=state.project.sdk||"Project SDK";refs.lang.textContent="Java "+(state.project.languageLevel||"");refs.runConfig.textContent=state.activeRunConfiguration||state.runConfigurations[0]?.name||"Current File";renderTree();renderTabs();renderEditor();renderRight();renderBottom();renderFeatureVisibility()}
 function notify(text,type=""){clearTimeout(notificationTimer);refs.notification.textContent=String(text||"");refs.notification.className="notification show"+(type==="error"?" error":"");notificationTimer=setTimeout(()=>refs.notification.classList.remove("show"),2200)}
@@ -261,8 +274,8 @@ refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStat
 refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
 refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+="\nProcess terminated";activeBottom="run";renderBottom()};
 refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
-let dl=false,dr=false,dh=false;refs.splitL.onpointerdown=e=>{dl=true;refs.splitL.setPointerCapture(e.pointerId)};refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=Math.max(130,Math.min(420,e.clientX-r.left));document.documentElement.style.setProperty("--leftW",w+"px")};refs.splitL.onpointerup=()=>dl=false;
-refs.splitR.onpointerdown=e=>{dr=true;refs.splitR.setPointerCapture(e.pointerId)};refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=Math.max(150,Math.min(420,r.right-e.clientX));document.documentElement.style.setProperty("--rightW",w+"px")};refs.splitR.onpointerup=()=>dr=false;
+let dl=false,dr=false,dh=false;refs.splitL.onpointerdown=e=>{dl=true;refs.splitL.setPointerCapture(e.pointerId)};refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=Math.max(150,Math.min(420,e.clientX-r.left-30));document.documentElement.style.setProperty("--leftW",w+"px")};refs.splitL.onpointerup=()=>dl=false;
+refs.splitR.onpointerdown=e=>{dr=true;refs.splitR.setPointerCapture(e.pointerId)};refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=Math.max(170,Math.min(420,r.right-e.clientX-30));document.documentElement.style.setProperty("--rightW",w+"px")};refs.splitR.onpointerup=()=>dr=false;
 refs.splitH.onpointerdown=e=>{dh=true;refs.splitH.setPointerCapture(e.pointerId)};refs.splitH.onpointermove=e=>{if(!dh)return;const r=refs.work.getBoundingClientRect(),h=Math.max(90,Math.min(400,r.bottom-e.clientY));document.documentElement.style.setProperty("--bottomH",h+"px")};refs.splitH.onpointerup=()=>dh=false;
 document.addEventListener("pointerdown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("keydown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("scroll",syncBoundary,true);window.addEventListener("resize",syncBoundary);
 function showAssistant(m){
