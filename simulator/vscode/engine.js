@@ -287,7 +287,10 @@ function renderCode(){
  renderMinimap(lines);
  if(changedLines.length){
    var target=R.codeTable.children[Math.max(0,current-1)];
-   if(target)target.scrollIntoView({block:"center"});
+   if(target){
+     if(window.SIM_FOCUS)window.SIM_FOCUS.follow(target,{block:"center"});
+     else target.scrollIntoView({block:"center"});
+   }
  }
 }
 function renderMinimap(lines){
@@ -391,6 +394,8 @@ function renderTerminalText(text){
  R.terminal.innerHTML=lines.map(function(line,i){
    return '<span class="terminalLine'+(i===match?' terminalCommandFocus':'')+'">'+(line?esc(line):'&nbsp;')+'</span>';
  }).join("");
+ var focused=R.terminal.querySelector(".terminalCommandFocus");
+ if(focused)requestAnimationFrame(function(){window.SIM_FOCUS?.follow(focused,{block:"center"});});
 }
 function renderPanel(){
  R.editorGroup.classList.toggle("panelOpen",panelVisible);
