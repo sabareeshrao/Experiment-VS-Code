@@ -374,7 +374,7 @@
           '<span class="step-number">' + (gi + 1) + ".</span>" +
           '<span class="step-main">' + step.title + "</span>";
 
-        button.onclick = () => goToStep(gi, false);
+        button.onclick = () => goToStep(gi, true);
         wrap.appendChild(button);
       });
 
