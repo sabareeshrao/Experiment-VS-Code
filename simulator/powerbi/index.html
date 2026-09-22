@@ -167,6 +167,23 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
 .keytip{position:fixed;background:#fff5b5;color:#222;border:1px solid #b49e28;border-radius:2px;padding:1px 3px;font-size:8px;font-weight:700;z-index:150}
 @media(max-width:850px){.codeWorkspace{grid-template-columns:150px minmax(0,1fr) 190px}.pbiSearch{width:240px}}
 
+
+/* Fidelity correction: dense Power BI surfaces */
+.tabbar{padding-left:10px;gap:4px}.ribbonTab{font-size:11px;padding:8px 12px 7px}.ribbon{gap:0;padding:4px 4px 5px;box-shadow:0 1px 0 var(--line)}
+.ribGroup{gap:1px;padding:0 7px 12px}.ribBtn{min-width:50px;max-width:76px;padding:3px 5px 13px}.ribBtn span:last-child{line-height:1.1;text-align:center}.ribGroup::after{bottom:0}
+.reportToolbar{background:var(--panel);height:30px}.reportStage{padding:20px 24px;background:#d1d1d1}.canvas{box-shadow:0 1px 5px rgba(0,0,0,.28)}
+.sidePanes{grid-template-columns:33px minmax(0,1fr)}.paneTabs{height:31px}.paneTab{font-size:10px}.pane{padding:8px 9px}
+.paneTitleRow{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:7px}.fieldSearch,.getDataSearch{border:1px solid var(--line);background:var(--panel);border-radius:3px;padding:6px 8px;font-size:10px;color:var(--muted);margin-bottom:8px}
+.fieldTable{border:0;margin:0 0 5px}.fieldTableHead{border-radius:2px;background:transparent;padding:6px 3px;font-weight:600}.fieldTableHead:hover,.field:hover{background:var(--panel2)}
+.field{padding:4px 5px 4px 18px;gap:5px}.fieldCheck{color:#777}.fieldIcon{min-width:22px;font-size:8px;color:#777;font-weight:600}.chev{font-size:9px}.emptyPaneState{display:grid;gap:5px;color:var(--muted);font-size:10px;padding:12px 4px}
+.getDataShell{display:grid;grid-template-columns:180px minmax(0,1fr);min-height:430px}.getDataCats{border-right:1px solid var(--line);padding:4px 10px 8px 0}.getDataCat{padding:7px 9px;border-radius:3px;font-size:10px}.getDataCat.active{background:var(--sel);font-weight:600}.getDataMain{padding-left:14px}.getDataHead{display:flex;flex-direction:column;gap:3px;margin:2px 0 10px}.getDataHead span{font-size:10px;color:var(--muted)}
+.connectorGrid{grid-template-columns:repeat(2,minmax(180px,1fr));gap:7px}.connector{display:flex;align-items:center;gap:10px;min-height:58px;padding:8px 10px;background:var(--panel);border-radius:3px}.connector.selected{outline:2px solid #4c8bf5;background:var(--sel)}.connectorIcon{width:28px;display:grid;place-items:center}.connector span:last-child{display:grid;gap:2px}.connector small{font-size:9px;color:var(--muted)}
+.connectionForm{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:start;padding:6px}.inputLike{height:30px;border:1px solid var(--line);border-radius:2px;padding:7px;background:var(--panel2)}.modeCards{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modeCard{border:1px solid var(--line);padding:9px;border-radius:3px;display:grid;gap:4px}.modeCard span{font-size:9px;color:var(--muted)}.modeCard.active{border-color:#4c8bf5;background:var(--sel)}
+.navigatorShell{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:420px}.navigatorLeft{border-right:1px solid var(--line);padding-right:8px}.navSource{padding:7px;font-weight:600}.navSelectAll{display:block;padding:5px 7px;font-size:9px;color:var(--muted)}.navItem{display:grid;grid-template-columns:18px 18px 1fr;align-items:center;gap:3px;border-radius:2px}.navigatorPreview{padding-left:12px}.previewTitle{display:flex;justify-content:space-between;margin-bottom:8px}.previewTitle span{font-size:9px;color:var(--muted)}.previewGrid{border-collapse:collapse;width:100%;font-size:10px}.previewGrid th,.previewGrid td{padding:6px;border:1px solid var(--line);text-align:left}.previewGrid th{background:var(--panel2)}
+.powerQuery{background:#f7f7f7}.pqTitle{height:36px;background:#fff;border-bottom:1px solid #ddd}.pqTitle::before{content:"";width:18px;height:18px;background:#f2c811;margin-right:8px;border-radius:2px}.pqRibbon{height:72px;background:#fff;padding:6px 8px;align-items:start}.pqRibbon .btn{height:50px;min-width:70px;background:#fff;border-color:transparent;white-space:normal}.pqRibbon .btn:hover{background:#f2f2f2}.pqBody{background:#fff}.pqQueries{background:#f5f5f5}.pqQuery{padding:7px 10px}.pqQuery::before{content:"▦";margin-right:6px}.pqSteps{background:#fafafa}.pqSteps .paneTitle{font-size:12px}.step{border-left:2px solid transparent}.step.active{border-left-color:#f2c811}
+.modelView{background:#f3f3f3}.modelCanvas{padding-top:74px}.modelViewToolbar{position:absolute;left:0;right:0;top:0;height:42px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;padding:0 10px;z-index:3}.modelViewToolbar .grow{flex:1}.modelHint{position:absolute;left:12px;top:48px;font-size:9px;color:var(--muted)}.modelTable{border-radius:4px}.modelTable h4{background:#fff3b0;border-bottom:1px solid #e2c548}.relLine{height:2px;background:#6d6d6d}.relBadge{box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.modernCodeView{background:#fff}.codeViewToolbar{background:#f7f7f7}.modelExplorer{background:#f7f7f7}.codeRightPane{background:#fafafa}.modernCodeEditor{font-size:12px;line-height:1.55}
+
 </style>
 </head>
 <body class="theme-light">
@@ -227,9 +244,9 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
   <div class="pageTabs" id="pageTabs"></div>
   <div class="status"><span id="statusMessage" class="statusText">Ready</span><span class="grow"></span><span id="zoomText">100%</span><span id="storageText">Import mode</span></div>
 </div>
-<script src="icons.js?v=1"></script>
+<script src="icons.js?v=2"></script>
 <script src="capabilities.js?v=1"></script>
-<script src="engine.js?v=2"></script>
+<script src="engine.js?v=3"></script>
 <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=9"></script>
 <script src="../shared/layout-resize.js?v=6"></script>

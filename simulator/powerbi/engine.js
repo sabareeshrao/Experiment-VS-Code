@@ -158,20 +158,51 @@ function renderAll(){
  renderRibbon();renderViews();renderPages();renderSidePanes();renderPowerQuery();renderModernEditors();renderModernIcons();
 }
 const ribbonMeta={
- Home:[["Get data","getData"],["Transform data","transformData"],["Refresh","refresh"],["New visual","newVisual"],["Publish","publish"]],
- Insert:[["New visual","newVisual"],["Text box","text"],["Shape","shape"],["Buttons","button"],["Slicer","slicer"]],
- Modeling:[["New measure","measure"],["New column","column"],["New table","table"],["Manage relationships","relationships"],["Mark as date table","date"]],
- View:[["Themes","theme"],["Page view","pageView"],["Gridlines","grid"],["Snap to grid","snap"],["Selection","selection"]],
- Optimize:[["Performance analyzer","performance"],["Pause visuals","pause"],["Optimize ribbon","optimize"]],
- Help:[["Learning","learning"],["About","about"]]
+ File:[
+  {name:"File",items:[["New","fileNew","file"],["Open report","fileOpen","file"],["Save","fileSave","file"],["Options","fileOptions","settings"]]}
+ ],
+ Home:[
+  {name:"Clipboard",items:[["Paste","paste","paste"],["Format painter","formatPainter","format"]]},
+  {name:"Data",items:[["Get data","getData","getData"],["Excel workbook","excel","excel"],["SQL Server","sqlServer","database"],["Enter data","enterData","table"],["Transform data","transformData","transform"],["Refresh","refresh","refresh"]]},
+  {name:"Insert",items:[["New visual","newVisual","visual"],["Text box","text","text"],["More visuals","moreVisuals","visual"]]},
+  {name:"Calculations",items:[["New measure","measure","measure"],["Quick measure","quickMeasure","measure"]]},
+  {name:"Share",items:[["Publish","publish","publish"]]}
+ ],
+ Insert:[
+  {name:"Visuals",items:[["New visual","newVisual","visual"],["Slicer","slicer","filter"],["Table","tableVisual","table"],["Matrix","matrix","table"],["Card","card","card"]]},
+  {name:"Elements",items:[["Text box","text","text"],["Buttons","button","button"],["Shape","shape","shape"],["Image","image","image"]]},
+  {name:"AI visuals",items:[["Key influencers","keyInfluencers","ai"],["Decomposition tree","decomposition","ai"],["Q&A","qna","ai"]]}
+ ],
+ Modeling:[
+  {name:"Calculations",items:[["New measure","measure","measure"],["Quick measure","quickMeasure","measure"],["New column","column","column"],["New table","table","table"]]},
+  {name:"Relationships",items:[["Manage relationships","relationships","relationship"],["Mark as date table","date","calendar"]]},
+  {name:"Properties",items:[["Data category","dataCategory","tag"],["Sort by column","sortBy","sort"]]}
+ ],
+ View:[
+  {name:"Themes",items:[["Themes","theme","theme"],["Customize current theme","customTheme","theme"]]},
+  {name:"Page view",items:[["Fit to page","pageView","fit"],["Gridlines","grid","grid"],["Snap to grid","snap","grid"]]},
+  {name:"Panes",items:[["Selection","selection","pane"],["Bookmarks","bookmarks","bookmark"],["Sync slicers","sync","filter"]]}
+ ],
+ Optimize:[
+  {name:"Performance",items:[["Performance analyzer","performance","performance"],["Pause visuals","pause","pause"],["Refresh visuals","refresh","refresh"]]},
+  {name:"Queries",items:[["Optimize ribbon","optimize","spark"],["Query diagnostics","diagnostics","search"]]}
+ ],
+ Help:[
+  {name:"Learning",items:[["Learning","learning","help"],["Examples","examples","help"],["About","about","info"]]}
+ ]
 };
 function renderRibbon(){
  const tabs=Object.keys(ribbonMeta);refs.ribbonTabs.innerHTML=tabs.map(t=>`<button class="ribbonTab ${activeRibbon===t?"active":""}" data-ribbon="${esc(t)}">${esc(t)}</button>`).join("");
  refs.ribbonTabs.querySelectorAll("[data-ribbon]").forEach(b=>b.onclick=()=>{activeRibbon=b.dataset.ribbon;state.ribbonTab=activeRibbon;renderRibbon();});
- const im={getData:"getData",transformData:"transform",refresh:"refresh",newVisual:"visual",publish:"publish",measure:"measure",relationships:"relationship",theme:"theme",grid:"grid",snap:"grid",selection:"pane",performance:"visual"};refs.ribbon.innerHTML=`<div class="ribGroup" data-label="${esc(activeRibbon)}">`+ribbonMeta[activeRibbon].map(([label,target])=>`<button class="ribBtn" data-target="${esc(target)}"><span class="ribIcon">${window.PBI_ICON?window.PBI_ICON(im[target]||"visual",22):esc(label.slice(0,2))}</span><span>${esc(label)}</span></button>`).join("")+`</div>`;refs.ribbon.classList.toggle("collapsed",!!state.ribbonCollapsed);renderKeytips();
+ refs.ribbon.innerHTML=ribbonMeta[activeRibbon].map(group=>`<div class="ribGroup" data-label="${esc(group.name)}">`+group.items.map(([label,target,icon])=>`<button class="ribBtn" data-target="${esc(target)}"><span class="ribIcon">${window.PBI_ICON?window.PBI_ICON(icon||"visual",22):esc(label.slice(0,2))}</span><span>${esc(label)}</span></button>`).join("")+`</div>`).join("");
+ refs.ribbon.classList.toggle("collapsed",!!state.ribbonCollapsed);renderKeytips();
  refs.ribbon.querySelectorAll(".ribBtn").forEach(b=>b.onclick=()=>manualRibbon(b.dataset.target));
 }
 function manualRibbon(target){
+ if(target==="fileNew"){state=normalize(emptyState());renderAll();return}
+ if(target==="fileOpen"){showModal("Open report",'<div class="filterCard">Browse this device</div><div class="filterCard">Recent reports</div>');return}
+ if(target==="fileSave"){state.statusText="Saved";showToast("Report saved");return}
+ if(target==="fileOptions"){showModal("Options and settings",'<div class="filterCard">Options</div><div class="filterCard">Data source settings</div>');return}
  if(target==="getData"){showGetData();return}if(target==="transformData"){state.powerQueryOpen=true;renderPowerQuery();return}
  if(target==="refresh"){setStatus("Data refreshed");showToast("Refresh completed");return}
  if(target==="newVisual"){addVisualState({type:"clusteredColumn",title:"New visual"});renderAll();return}
@@ -226,6 +257,10 @@ function visualBody(v){
  if(t==="scatter")return `<svg class="chartSvg" viewBox="0 0 240 120">${[[30,80],[70,60],[110,72],[145,40],[190,52],[215,25]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#4c8bf5"/>`).join("")}</svg>`;
  if(t==="gauge")return `<svg class="chartSvg" viewBox="0 0 220 120"><path d="M30 100 A80 80 0 0 1 190 100" fill="none" stroke="#ddd" stroke-width="18"/><path d="M30 100 A80 80 0 0 1 150 36" fill="none" stroke="#f2c811" stroke-width="18"/></svg>`;
  if(t==="funnel")return `<svg class="chartSvg" viewBox="0 0 220 120"><polygon points="20,15 200,15 170,42 50,42" fill="#f2c811"/><polygon points="50,48 170,48 145,75 75,75" fill="#d8ac00"/><polygon points="75,81 145,81 125,108 95,108" fill="#b58f00"/></svg>`;
+ if(["clusteredColumn","stackedColumn","clusteredBar","stackedBar"].includes(t)&&arr(d.values).length){
+  const vals=arr(d.values).map(Number),cats=arr(d.categories),max=Math.max(1,...vals);
+  return `<svg class="chartSvg" viewBox="0 0 300 160"><line x1="35" y1="125" x2="285" y2="125" stroke="#999"/><line x1="35" y1="15" x2="35" y2="125" stroke="#bbb"/>${vals.map((v,i)=>{const h=Math.round(v/max*92),x=65+i*95;return `<rect x="${x}" y="${125-h}" width="48" height="${h}" rx="2" fill="${i%2?"#5b8ff9":"#f2c811"}"/><text x="${x+24}" y="${119-h}" text-anchor="middle" font-size="10" fill="currentColor">${esc(v)}</text><text x="${x+24}" y="143" text-anchor="middle" font-size="10" fill="currentColor">${esc(cats[i]??"")}</text>`}).join("")}</svg>`;
+ }
  return `<svg class="chartSvg" viewBox="0 0 240 120">${[50,85,62,100,74].map((h,i)=>`<rect x="${20+i*42}" y="${110-h}" width="26" height="${h}" rx="2" fill="${i===3?"#4c8bf5":"#f2c811"}"/>`).join("")}<line x1="8" y1="110" x2="232" y2="110" stroke="#999"/></svg>`;
 }
 function renderData(){
@@ -234,7 +269,7 @@ function renderData(){
  const cols=arr(t.columns).map(c=>typeof c==="string"?{name:c}:c);refs.dataGrid.innerHTML=`<thead><tr>${cols.map(c=>`<th data-field="${esc(c.name)}">${esc(c.name)}<br><span style="color:var(--muted);font-size:9px">${esc(c.type||"")}</span></th>`).join("")}</tr></thead><tbody>${arr(t.rows).map(r=>`<tr>${cols.map(c=>`<td>${esc(Array.isArray(r)?r[cols.indexOf(c)]:r[c.name])}</td>`).join("")}</tr>`).join("")}</tbody>`;
 }
 function renderModel(){
- refs.modelCanvas.innerHTML="";const positions={};state.tables.forEach((t,i)=>{const x=t.x??(40+(i%4)*270),y=t.y??(40+Math.floor(i/4)*280);positions[t.name]={x,y,w:210,h:40+Math.min(12,arr(t.columns).length)*26};refs.modelCanvas.insertAdjacentHTML("beforeend",`<div class="modelTable" style="left:${x}px;top:${y}px"><h4>${esc(t.name)} ${t.hidden?"◌":""}</h4><div class="modelFields">${arr(t.columns).map(c=>{const cc=typeof c==="string"?{name:c}:c;return `<div class="modelField" data-field="${esc(cc.name)}"><span>${cc.hidden?"◌":"▤"}</span><span>${esc(cc.name)}</span></div>`}).join("")}</div></div>`);});
+ refs.modelCanvas.innerHTML=`<div class="modelViewToolbar"><button class="btn">Auto layout</button><button class="btn">Manage relationships</button><span class="grow"></span><span>Model layout</span><span>100%</span></div><div class="modelHint">Drag tables to arrange the model • relationship lines show cardinality</div>`;const positions={};state.tables.forEach((t,i)=>{const x=t.x??(40+(i%4)*270),y=t.y??(40+Math.floor(i/4)*280);positions[t.name]={x,y,w:210,h:40+Math.min(12,arr(t.columns).length)*26};refs.modelCanvas.insertAdjacentHTML("beforeend",`<div class="modelTable" style="left:${x}px;top:${y}px"><h4>${esc(t.name)} ${t.hidden?"◌":""}</h4><div class="modelFields">${arr(t.columns).map(c=>{const cc=typeof c==="string"?{name:c}:c;return `<div class="modelField" data-field="${esc(cc.name)}"><span>${cc.hidden?"◌":"▤"}</span><span>${esc(cc.name)}</span></div>`}).join("")}</div></div>`);});
  state.relationships.forEach(r=>{const a=positions[r.fromTable],b=positions[r.toTable];if(!a||!b)return;const x1=a.x+a.w,y1=a.y+60,x2=b.x,y2=b.y+60,dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;refs.modelCanvas.insertAdjacentHTML("beforeend",`<div class="relLine" style="left:${x1}px;top:${y1}px;width:${len}px;transform:rotate(${ang}deg);opacity:${r.active===false?.35:1}"></div><div class="relBadge" style="left:${(x1+x2)/2}px;top:${(y1+y2)/2}px">${esc(r.cardinality||"1:*")}</div>`);});
 }
 function renderService(){
@@ -255,7 +290,7 @@ function renderVisualPane(){
  refs.visualizationsPane.querySelectorAll("[data-vtype]").forEach(b=>b.onclick=()=>{if(v){v.type=b.dataset.vtype;renderAll();}});
 }
 function renderDataPane(){
- refs.dataPane.innerHTML=`<div class="paneTitle">Data</div>${state.tables.map(t=>`<div class="fieldTable"><div class="fieldTableHead"><span>${esc(t.name)}</span><span>⌄</span></div>${arr(t.columns).map(c=>{const cc=typeof c==="string"?{name:c}:c;return `<div class="field" data-field="${esc(cc.name)}"><span>${cc.type==="number"?"∑":"□"}</span><span>${esc(cc.name)}</span></div>`}).join("")}</div>`).join("")}${state.measures.length?`<div class="fieldTable"><div class="fieldTableHead">Measures</div>${state.measures.map(m=>`<div class="field" data-field="${esc(m.name)}"><span>ƒ</span>${esc(m.name)}</div>`).join("")}</div>`:""}`;
+ refs.dataPane.innerHTML=`<div class="paneTitleRow"><b>Data</b><span>⋯</span></div><div class="fieldSearch">⌕ Search</div>${state.tables.length?state.tables.map(t=>`<div class="fieldTable"><div class="fieldTableHead"><span><span class="chev">⌄</span> ▦ ${esc(t.name)}</span><span>⋯</span></div>${arr(t.columns).map(c=>{const cc=typeof c==="string"?{name:c}:c;const numeric=/number|int|decimal/i.test(cc.type||"");return `<div class="field" data-field="${esc(cc.name)}"><span class="fieldCheck">□</span><span class="fieldIcon">${numeric?"∑":"ABC"}</span><span>${esc(cc.name)}</span></div>`}).join("")}</div>`).join(""):'<div class="emptyPaneState"><b>No data yet</b><span>Use Get data to connect to a source.</span></div>'}${state.measures.length?`<div class="fieldTable"><div class="fieldTableHead">ƒ Measures</div>${state.measures.map(m=>`<div class="field"><span>□</span><span>ƒ</span><span>${esc(m.name)}</span></div>`).join("")}</div>`:""}`;
 }
 function renderPowerQuery(){
  refs.powerQuery.classList.toggle("show",!!state.powerQueryOpen);if(!state.powerQueryOpen)return;
@@ -306,8 +341,18 @@ function transformQuery(action,d){
 function addVisualState(d){
  const p=currentPage();if(!p)return null;p.visuals=arr(p.visuals);const w=d.w??300,h=d.h??180,pos=(d.x!==undefined||d.y!==undefined)?{x:d.x??50,y:d.y??50}:smartVisualPosition(p,w,h,50,50);const v={id:d.id||uid("vis"),type:d.type||"clusteredColumn",title:d.title||prettyType(d.type||"clusteredColumn"),x:pos.x,y:pos.y,w,h,z:d.z||p.visuals.length+1,fields:clone(d.fields||{}),data:clone(d.data||{}),format:clone(d.format||{}),tooltip:d.tooltip||null,drillLevel:0};p.visuals.push(v);state.selectedVisualId=v.id;return v;
 }
-function showGetData(){showModal("Get data",`<div class="connectorGrid">${state.connectors.map(c=>`<div class="connector">${esc(c)}</div>`).join("")}</div>`,[{label:"Cancel"},{label:"Connect",primary:true}]);}
-function showNavigator(){showModal("Navigator",`<div class="navigator"><div class="navList">${state.navigator.items.map(x=>`<div class="navItem">${esc(x.name||x)}</div>`).join("")}</div><div class="preview">Select one or more tables or sheets to preview and load.</div></div>`,[{label:"Cancel"},{label:"Transform Data"},{label:"Load",primary:true}]);}
+function showGetData(){
+  const selected=state.selectedConnector||"";
+  const cats=["All","File","Database","Microsoft Fabric","Power Platform","Azure","Online Services","Other"];
+  const icons={Excel:"excel","Text/CSV":"file",JSON:"file",Folder:"folder","SQL Server":"database",PostgreSQL:"database",Web:"globe",OData:"globe","SharePoint Folder":"folder",OneLake:"cloud",Dataflows:"cloud","Enter Data":"table"};
+  showModal("Get data",`<div class="getDataShell"><aside class="getDataCats"><div class="getDataSearch">⌕ Search data sources</div>${cats.map((x,i)=>`<div class="getDataCat ${i===0?"active":""}">${esc(x)}</div>`).join("")}</aside><section class="getDataMain"><div class="getDataHead"><b>Common data sources</b><span>Connect to data used by your report</span></div><div class="connectorGrid">${state.connectors.map(c=>`<div class="connector ${c===selected?"selected":""}"><span class="connectorIcon">${window.PBI_ICON?window.PBI_ICON(icons[c]||"database",24):"▦"}</span><span><b>${esc(c)}</b><small>${c==="SQL Server"?"Microsoft SQL Server database":c==="Excel"?"Excel workbook":c==="Web"?"Web data source":"Data source"}</small></span></div>`).join("")}</div></section></div>`,[{label:"Cancel"},{label:"Connect",primary:true}]);
+ }
+function showNavigator(){
+  const selected=state.navigator.selected||[];
+  const preview=state.navigator.preview||state.navigator.items?.[0]?.name||state.navigator.items?.[0]||"";
+  const sample=preview==="Course"?[["id","course_name"],[101,"Java"],[102,"Database"]]:[["id","name","course_id","score"],[1,"Asha",101,92],[2,"Ravi",102,84],[3,"Maya",101,96]];
+  showModal("Navigator",`<div class="navigatorShell"><aside class="navigatorLeft"><div class="navSource">▦ ${esc(state.sources.at(-1)?.name||"JavaPracticeDb")}</div><label class="navSelectAll"><input type="checkbox"> Select multiple items</label>${state.navigator.items.map(x=>{const n=x.name||x;return `<div class="navItem ${n===preview?"selected":""}"><input type="checkbox" ${selected.includes(n)?"checked":""}><span>▦</span><span>${esc(n)}</span></div>`}).join("")}</aside><section class="navigatorPreview"><div class="previewTitle"><b>${esc(preview||"Preview")}</b><span>Table preview</span></div><table class="previewGrid"><thead><tr>${sample[0].map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${sample.slice(1).map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></section></div>`,[{label:"Cancel"},{label:"Transform Data"},{label:"Load",primary:true}]);
+ }
 function showRelationships(){showModal("Manage relationships",`<div>${state.relationships.map(r=>`<div class="filterCard">${esc(r.fromTable)}[${esc(r.fromColumn)}] → ${esc(r.toTable)}[${esc(r.toColumn)}] • ${esc(r.cardinality||"1:*")}</div>`).join("")||"No relationships"}</div>`);}
 function showPublish(){showModal("Publish to Power BI",`<p>Choose a destination workspace.</p><div class="filterCard">My workspace</div><div class="filterCard">Analytics Workspace</div>`);}
 function showLearningMap(){const total=Object.values(FEATURE_CATALOG).flat().length;showModal(`Power BI Learning Map — ${total} features`,`<div class="learningMap">${Object.entries(FEATURE_CATALOG).map(([cat,list])=>`<div class="learnCat"><div class="learnHead">${esc(cat)} <span style="float:right">${list.length}</span></div>${list.map(f=>`<div class="learnItem" data-feature="${esc(f)}">${esc(f)}</div>`).join("")}</div>`).join("")}</div>`,[{label:"Close",primary:true}]);}
@@ -326,7 +371,7 @@ async function maybeType(target,text,animate,token){
  target.value="";const chars=[...String(text)];const delay=Math.min(18,Math.max(1,900/Math.max(1,chars.length)));for(const c of chars){if(token!==seekToken)return;target.value+=c;target.dispatchEvent(new Event("input",{bubbles:true}));await new Promise(r=>setTimeout(r,delay));}
 }
 async function applyStep(step,animate,token){
- if(token!==seekToken||step.app!==APP_ID)return;const a=step.action,d=step.data||{};prepareReplayStep(step);
+ if(token!==seekToken||(step.app&&step.app!==APP_ID))return;const a=step.action,d=step.data||{};prepareReplayStep(step);
  if(a==="showHome"){state.activeView="report";state.serviceOpen=false;state.statusText="Home";}
  else if(a==="newBlankReport"){state=normalize(Object.assign(emptyState(),{reportName:d.name||"Untitled",title:(d.name||"Untitled")+" - Power BI Desktop",theme:state.theme}));}
  else if(a==="openReport"){state.reportName=d.report||d.name||state.reportName;state.title=state.reportName+" - Power BI Desktop";state.activeView="report";state.serviceOpen=false;}
@@ -336,13 +381,13 @@ async function applyStep(step,animate,token){
  else if(a==="openGetData")showGetData();
  else if(a==="selectConnector"){state.selectedConnector=d.connector;showGetData();}
  else if(a==="setConnection")state.connection=clone(d);
- else if(a==="connectDataSource"){state.sources.push(clone(d.source||{name:d.name||state.selectedConnector||"Source",connector:state.selectedConnector}));state.navigator.items=clone(d.items||state.navigator.items);state.statusText="Connected";}
+ else if(a==="connectDataSource"){state.sources.push(clone(d.source||{name:d.name||state.selectedConnector||"Source",connector:state.selectedConnector}));state.navigator.items=clone(d.items||state.navigator.items);state.statusText="Connected";showModal("SQL Server database",`<div class="connectionForm"><label>Server</label><div class="inputLike">localhost</div><label>Database (optional)</label><div class="inputLike">${esc(d.source?.name||"JavaPracticeDb")}</div><label>Data Connectivity mode</label><div class="modeCards"><div class="modeCard active"><b>Import</b><span>Copy data into the Power BI model</span></div><div class="modeCard"><b>DirectQuery</b><span>Query the source when visuals run</span></div></div></div>`,[{label:"Cancel"},{label:"OK",primary:true}]);}
  else if(a==="openNavigator")showNavigator();
  else if(a==="selectNavigatorItem"){const name=d.name||d.item;if(!state.navigator.selected.includes(name))state.navigator.selected.push(name);}
  else if(a==="selectAllNavigatorItems")state.navigator.selected=state.navigator.items.map(x=>x.name||x);
  else if(a==="previewNavigatorItem"){state.navigator.preview=d.name||d.item;showNavigator();}
  else if(a==="loadNavigatorSelection"){if(d.tables)state.tables.push(...clone(d.tables));if(d.queries)state.queries.push(...clone(d.queries));refs.modalShade.classList.remove("show");state.statusText="Data loaded";}
- else if(a==="transformNavigatorSelection"){if(d.queries)state.queries.push(...clone(d.queries));state.powerQueryOpen=true;refs.modalShade.classList.remove("show");}
+ else if(a==="transformNavigatorSelection"){if(d.queries)state.queries.push(...clone(d.queries));state.selectedQuery=d.queries?.[0]?.name||state.queries[0]?.name||null;state.powerQueryOpen=true;refs.modalShade.classList.remove("show");state.statusText="Power Query Editor";}
  else if(a==="cancelNavigator")refs.modalShade.classList.remove("show");
  else if(a==="openRecentSources")showModal("Recent Sources",`<div>${state.sources.map(s=>`<div class="filterCard">${esc(s.name||s.connector)}</div>`).join("")||"No recent sources"}</div>`);
  else if(a==="enterData"){const t=clone(d.table||{name:d.name||"Table1",columns:d.columns||[],rows:d.rows||[]});state.tables.push(t);state.queries.push({id:t.id||t.name,name:t.name,columns:clone(t.columns),rows:clone(t.rows),steps:[{name:"Source",action:"source"}]});state.selectedTable=t.name;}
@@ -364,7 +409,7 @@ async function applyStep(step,animate,token){
  else if(a==="toggleColumnDistribution")state.columnDistribution=d.value!==undefined?!!d.value:!state.columnDistribution;
  else if(a==="toggleColumnProfile")state.columnProfile=d.value!==undefined?!!d.value:!state.columnProfile;
  else if(a==="profileColumn"){state.profile={column:d.column,distinct:d.distinct,unique:d.unique,empty:d.empty,error:d.error};state.statusText="Column profile ready";}
- else if(a==="closeAndApply"){state.powerQueryOpen=false;if(d.tables)state.tables=clone(d.tables);else state.queries.forEach(q=>{let t=getTable(q.name);if(t){t.columns=clone(q.columns);t.rows=clone(q.rows);}else state.tables.push({name:q.name,columns:clone(q.columns),rows:clone(q.rows)});});state.statusText="Query changes applied";}
+ else if(a==="closeAndApply"){state.powerQueryOpen=false;if(d.tables)state.tables=clone(d.tables);else state.queries.forEach(q=>{let t=getTable(q.name);if(t){t.columns=clone(q.columns);t.rows=clone(q.rows);}else state.tables.push({name:q.name,columns:clone(q.columns),rows:clone(q.rows)});});state.activeView="report";state.selectedTable=state.tables[0]?.name||null;state.paneTab="data";state.statusText="Changes applied • "+state.tables.length+" tables loaded";showToast("Changes applied to the model");}
  else if(a==="discardQueryChanges"){state.powerQueryOpen=false;state.queries=clone(baseline?.queries||[]);}
  else if(a==="openDataView"){state.activeView="data";state.serviceOpen=false;state.selectedTable=d.table||state.selectedTable||state.tables[0]?.name;}
  else if(a==="selectDataTable")state.selectedTable=d.table||d.name;
@@ -459,7 +504,29 @@ async function applyStep(step,animate,token){
  else if(a==="setMobileVisualPosition"){state.mobile.visuals=state.mobile.visuals.filter(x=>x.id!==d.id);state.mobile.visuals.push(clone(d));}
  else if(a==="refreshData"||a==="refreshAll"){if(d.tables)state.tables=clone(d.tables);state.statusText="Refresh completed";showToast("Refresh completed");}
  else if(a==="configureIncrementalRefresh")state.incrementalRefresh=clone(d);
- else if(a==="setView"){if(["report","data","model"].includes(d.view)){state.activeView=d.view;state.serviceOpen=false;}else if(d.view==="service"){state.serviceOpen=true;state.activeView="service";}}
+ else if(a==="openDaxQueryView"){state.activeView="dax";state.serviceOpen=false;state.statusText="DAX query view";}
+ else if(a==="newDaxQuery"){const q={id:d.id||uid("dax"),name:d.name||"Query "+(state.daxQueries.length+1),text:d.text||"",results:[]};state.daxQueries.push(q);state.activeDaxQueryId=q.id;state.activeView="dax";}
+ else if(a==="typeDaxQuery"){const q=state.daxQueries.find(x=>x.id===state.activeDaxQueryId)||state.daxQueries[0];if(q){q.text=d.text||d.dax||"";state.activeView="dax";renderModernEditors();if(animate&&autoType&&refs.daxEditor)await maybeType(refs.daxEditor,q.text,true,token);}}
+ else if(a==="runDaxQuery"){state.activeView="dax";runDaxQueryState(d);}
+ else if(a==="openTmdlView"){state.activeView="tmdl";state.serviceOpen=false;state.statusText="TMDL view";}
+ else if(a==="scriptTmdlObject"){state.activeView="tmdl";scriptTmdlState(d);state.statusText="TMDL script generated";}
+ else if(a==="typeTmdl"){const s=state.tmdlScripts.find(x=>x.id===state.activeTmdlScriptId)||state.tmdlScripts[0];if(s){s.text=d.text||"";state.activeView="tmdl";renderModernEditors();if(animate&&autoType&&refs.tmdlEditor)await maybeType(refs.tmdlEditor,s.text,true,token);}}
+ else if(a==="previewTmdl"){const s=state.tmdlScripts.find(x=>x.id===state.activeTmdlScriptId)||state.tmdlScripts[0];if(s)s.preview=d.text||"Preview ready. No validation errors.";state.activeView="tmdl";}
+ else if(a==="applyTmdl"){state.statusText="TMDL changes applied";showToast("TMDL changes applied");}
+ else if(a==="openModelExplorer"){state.modelExplorerOpen=true;state.statusText="Model explorer opened";}
+ else if(a==="selectModelObject"){state.selectedTable=d.table||d.name||state.selectedTable;}
+ else if(a==="togglePane"){const n=d.pane||d.name;if(n){state.openPanes=arr(state.openPanes);state.openPanes.includes(n)?state.openPanes=state.openPanes.filter(x=>x!==n):state.openPanes.push(n);}}
+ else if(a==="openPaneSwitcher"){state.paneSwitcherOpen=true;}
+ else if(a==="openOnObjectBuild"){state.activeView="report";const v=getVisual(d.id||state.selectedVisualId);if(v){state.selectedVisualId=v.id;setTimeout(()=>refs.onObjectMenu?.classList.add("show"),0);}}
+ else if(a==="openFormatPane"){state.paneTab="visualizations";state.formatPane=true;}
+ else if(a==="showVisualTable"){showModal("Visual table","<p>Underlying data for the selected visual.</p><div class=\"filterCard\">Visual table • Data point table</div>");}
+ else if(a==="openSelectionPane"){showModal("Selection",currentPage().visuals.map(v=>'<div class="filterCard">'+esc(v.title||prettyType(v.type))+'</div>').join("")||"No visuals");}
+ else if(a==="openBookmarksPane"){showModal("Bookmarks",state.bookmarks.map(b=>'<div class="filterCard">'+esc(b.name)+'</div>').join("")||"No bookmarks");}
+ else if(a==="toggleRibbonCollapsed"){state.ribbonCollapsed=d.value!==undefined?!!d.value:!state.ribbonCollapsed;}
+ else if(a==="showKeytips"){state.keytips=d.value!==undefined?!!d.value:true;}
+ else if(a==="searchRibbon"){state.ribbonSearch=d.query||"";if(refs.pbiSearch)refs.pbiSearch.value=state.ribbonSearch;state.statusText="Search: "+state.ribbonSearch;}
+ else if(a==="openContextMenu"){showModal(d.title||"Power BI",arr(d.items||["Copy","Show as a table","Spotlight","Get insights","Delete"]).map(x=>'<div class="filterCard">'+esc(x)+'</div>').join(""));}
+ else if(a==="setView"){if(["report","data","model","dax","tmdl"].includes(d.view)){state.activeView=d.view;state.serviceOpen=false;}else if(d.view==="service"){state.serviceOpen=true;state.activeView="service";}}
  else if(a==="openMenu")showModal(d.title||"Menu",arr(d.items).map(x=>`<div class="filterCard">${esc(x)}</div>`).join(""));
  else if(a==="pressButton"){state.statusText=(d.status||"Button")+" activated";if(d.target)drawBoundary(d.target);}
  else if(a==="highlightTarget")drawBoundary(d.target);
