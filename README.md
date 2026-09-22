@@ -19,7 +19,12 @@ The uploaded baseline contains a broad Java practice project covering threads, c
 
 - Editable source copy: `/project/`
 - Browser-ready complete project snapshot: `/project-data/`
-- IntelliJ simulator: `/simulator/`
+- Software simulators: `/simulator/<software>/`
+  - IntelliJ IDEA: `/simulator/intellij/`
+  - VS Code: `/simulator/vscode/`
+  - pgAdmin: `/simulator/pgadmin/`
+  - Postman: `/simulator/postman/`
+  - Command Prompt: `/simulator/cmd/`
 - Default preview file: `src/Threads/TwoThreads/MyThread.java`
 
 The original archive also contained compiled `.class` files. Those entries are represented in the simulator tree for visual fidelity; the editable `project/` folder focuses on Java source.

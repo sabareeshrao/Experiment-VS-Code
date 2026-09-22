@@ -29,13 +29,15 @@ jobs:
           rm -rf dist
 
           mkdir -p dist/IntelliJ-Simulator-UI
-          cp simulator/intellij.html dist/IntelliJ-Simulator-UI/
-          cp simulator/engine.js dist/IntelliJ-Simulator-UI/
+          cp simulator/intellij/index.html dist/IntelliJ-Simulator-UI/index.html
+          cp simulator/intellij/engine.js dist/IntelliJ-Simulator-UI/engine.js
+          cp simulator/intellij/ide-polish.css dist/IntelliJ-Simulator-UI/ide-polish.css
           cat > dist/IntelliJ-Simulator-UI/README_EDITING.txt <<'EOF'
           IntelliJ Simulator UI
           =====================
-          intellij.html = visual shell / CSS / layout
+          index.html    = visual shell / CSS / layout
           engine.js     = playback and IDE behavior engine
+          ide-polish.css = IntelliJ visual polish layer
 
           Preserve the existing element IDs used by engine.js when redesigning.
           EOF
