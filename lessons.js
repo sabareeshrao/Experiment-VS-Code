@@ -660,16 +660,16 @@ window.COURSE = {
     },
     {
       "title": "4: VS Code Integration Test",
-      "subtitle": "20-step VS Code test using a real multi-file workspace with full-length source code.",
+      "subtitle": "20-step VS Code test against the full Java Practice project using realistic Explorer, tabs, syntax coloring, terminal, and editor state.",
       "steps": [
         {
-          "title": "Open full StudentService.js in VS Code",
-          "why": "Ippudu VS Code lo small sample kakunda full-length source file open chestunnam. Syntax colors, line numbers, tabs, scrolling, strings, keywords, methods anni clear ga test cheyyachu.",
+          "title": "Open full Calculator.java in VS Code",
+          "why": "Ippudu VS Code lo actual Java Practice repo nundi Calculator.java open chestunnam. Full project tree, Java syntax colors, line numbers, tabs, indentation guides, minimap anni real VS Code laga test cheyyachu.",
           "software": "vscode",
           "action": {
             "action": "openFile",
             "data": {
-              "path": "src/studentService.js"
+              "path": "src/polymorphism/Calculator.java"
             }
           }
         },
