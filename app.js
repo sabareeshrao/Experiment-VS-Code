@@ -78,7 +78,7 @@
       );
       ensureScript(
         "/simulator/shared/layout-resize.js",
-        "simulator/shared/layout-resize.js?v=5",
+        "simulator/shared/layout-resize.js?v=6",
         "globalUiPersistence"
       );
     } catch (_) {}
