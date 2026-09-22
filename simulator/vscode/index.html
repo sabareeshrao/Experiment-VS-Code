@@ -50,11 +50,22 @@
     </aside>
 
     <main class="editorGroup" id="editorGroup">
-      <div class="tabs" id="tabs"></div>
+      <div class="tabsRow">
+        <div class="tabs" id="tabs"></div>
+        <div class="editorActions">
+          <button class="iconBtn markdownPreviewBtn hidden" id="markdownPreviewBtn" title="Open Preview to the Side (Ctrl+Shift+V)">
+            <svg viewBox="0 0 16 16"><path d="M2 2.5h8v11H2z"/><path d="M11.5 4.5h2.5v7h-2.5"/><path d="m5 6 2 2-2 2"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="breadcrumbs" id="breadcrumbs"></div>
-      <section class="editorArea">
+      <section class="editorArea" id="editorArea">
         <div class="codeViewport" id="codeViewport"><div class="codeTable" id="codeTable"></div></div>
         <aside class="minimap" id="minimap"></aside>
+        <article class="markdownPreview hidden" id="markdownPreview">
+          <div class="markdownPreviewHead"><span id="markdownPreviewTitle">Preview</span><button class="iconBtn" id="markdownPreviewClose" title="Close Preview">×</button></div>
+          <div class="markdownPreviewBody" id="markdownPreviewBody"></div>
+        </article>
       </section>
       <section class="panel">
         <div class="panelHead">
