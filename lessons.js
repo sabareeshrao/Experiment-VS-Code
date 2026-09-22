@@ -621,7 +621,7 @@ window.COURSE = {
       ]
     },
     {
-      "title": "3: VS Code Integration Test",
+      "title": "4: VS Code Integration Test",
       "subtitle": "Prove the lesson player can move into VS Code and then return to IntelliJ while keeping one continuous timeline.",
       "steps": [
         {
