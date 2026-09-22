@@ -98,7 +98,7 @@ button,input,select{font:inherit}
 .ssmsAssistant{position:fixed;right:18px;bottom:34px;width:min(360px,44vw);z-index:220;background:#252629;color:#dfe1e5;border:1px solid #45474d;border-radius:6px;box-shadow:0 12px 32px rgba(0,0,0,.48);display:none;overflow:hidden}.ssmsAssistant.show{display:block}.ssmsAssistant.minimized .assistantBody{display:none}.assistantHead{height:31px;display:flex;align-items:center;gap:7px;padding:0 7px;background:#202124;border-bottom:1px solid #34363b;cursor:move;user-select:none}.assistantIcon{width:19px;height:19px;border-radius:4px;display:grid;place-items:center;background:#315f9c;color:#fff;font-size:8px;font-weight:800}.assistantTitles{min-width:0;flex:1}.assistantTitles strong,.assistantTitles span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.assistantTitles strong{font-size:10px}.assistantTitles span{font-size:9px;color:#9da1a8}.assistantHead button{width:24px;height:24px;border:0;background:transparent;color:#9da1a8;border-radius:4px}.assistantHead button:hover{background:#34363b;color:#fff}.assistantBody{padding:9px 10px 10px;font:10.5px/1.5 "Segoe UI",Arial,sans-serif}.assistantMeta{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;background:#34363b;color:#aeb4bf;font-size:9px}
 
 </style>
-<link rel="stylesheet" href="ssms-light.css">
+<link rel="stylesheet" href="ssms-light.css?v=2">
 </head>
 <body class="theme-light" data-sim-app="sql_server_management_studio">
 <div class="app" id="app">
@@ -152,7 +152,7 @@ button,input,select{font:inherit}
   <div class="assistantHead" id="ssmsAssistantDrag"><div class="assistantIcon">AI</div><div class="assistantTitles"><strong id="ssmsAssistantTitle">Step explanation</strong><span id="ssmsAssistantStage">Developer guidance</span></div><button id="ssmsAssistantMin" title="Minimize">—</button><button id="ssmsAssistantClose" title="Hide">×</button></div>
   <div class="assistantBody"><div class="assistantMeta" id="ssmsAssistantMeta">Step</div><div id="ssmsAssistantText"></div></div>
 </div>
-<script src="engine.js?v=7"></script>
+<script src="engine.js?v=8"></script>
   <script src="../shared/highlighter.js?v=3"></script>
   <script src="../shared/explanation-controls.js?v=6"></script>
   <script src="../shared/layout-resize.js?v=6"></script>
