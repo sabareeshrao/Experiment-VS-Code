@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Java Practice Developer Playback</title>
+  <script>
+    window.__PLAYBACK_BOOT_TOKEN__=Date.now().toString(36);
+    (function(){
+      var l=document.createElement("link");
+      l.rel="stylesheet";
+      l.href="styles.css?boot="+encodeURIComponent(window.__PLAYBACK_BOOT_TOKEN__);
+      document.head.appendChild(l);
+    })();
+  </script>
+</head>
+<body data-sim-player="1">
+  <div class="learning-shell" id="learningShell">
+    <aside class="progress-sidebar">
+      <div class="brand-row">
+        <div class="brand-mark"><span></span><span></span><span></span></div>
+        <div><strong>Java Project Playback</strong><small>Developer build simulation</small></div>
+      </div>
+
+      <div class="sidebar-tools">
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="stepSearch" placeholder="Search steps...">
+        </label>
+        <button id="fullCodeBtn" class="full-code-btn" type="button">
+          <span class="full-code-icon">◫</span>
+          <span>View Full Code</span>
+        </button>
+      </div>
+
+      <nav id="stageList" class="stage-list" aria-label="Project stages"></nav>
+    </aside>
+
+    <main class="workspace">
+      <header class="workspace-head">
+        <div>
+          <div class="head-meta"><div class="eyebrow" id="stageLabel">PROJECT PREVIEW</div><span class="software-badge" id="softwareBadge">IntelliJ IDEA</span></div>
+          <h1 id="stepTitle">Java Practice</h1>
+        </div>
+        <div class="head-actions">
+          <a class="library-link" href="./">← Library</a>
+          <button id="toggleSidebar">Hide progress</button>
+          <button id="ideFullscreen">IDE fullscreen</button>
+        </div>
+      </header>
+
+      <section class="ide-shell" id="ideShell">
+        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" data-src="simulator/intellij/index.html?v=32" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="eclipseFrame" class="sim-frame" data-app="eclipse" data-src="simulator/eclipse/index.html?v=1" title="Eclipse IDE simulator"></iframe>
+        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" data-src="simulator/pgadmin/index.html?v=24" title="pgAdmin simulator"></iframe>
+        <iframe id="vscodeFrame" class="sim-frame" data-app="vscode" data-src="simulator/vscode/index.html?v=31" title="Visual Studio Code simulator"></iframe>
+        <iframe id="postmanFrame" class="sim-frame" data-app="postman" data-src="simulator/postman/index.html?v=21" title="Postman simulator"></iframe>
+        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" data-src="simulator/cmd/index.html?v=24" title="Windows Command Prompt simulator"></iframe>
+        <iframe id="powershellFrame" class="sim-frame" data-app="powershell" data-src="simulator/powershell/index.html?v=1" title="Windows PowerShell simulator"></iframe>
+        <iframe id="linuxFrame" class="sim-frame" data-app="linux" data-src="simulator/linux/index.html?v=28" title="Linux workstation simulator"></iframe>
+        <iframe id="ssmsFrame" class="sim-frame" data-app="ssms" data-src="simulator/ssms/index.html?v=25" title="SQL Server Management Studio simulator"></iframe>
+        <iframe id="jiraFrame" class="sim-frame" data-app="jira" data-src="simulator/jira/index.html?v=18" title="Jira simulator"></iframe>
+        <iframe id="jenkinsFrame" class="sim-frame" data-app="jenkins" data-src="simulator/jenkins/index.html?v=10" title="Jenkins simulator"></iframe>
+        <iframe id="powerbiFrame" class="sim-frame" data-app="powerbi" data-src="simulator/powerbi/index.html?v=8" title="Power BI Desktop simulator"></iframe>
+        <iframe id="gitFrame" class="sim-frame" data-app="git" data-src="simulator/git/index.html?v=3" title="Git simulator"></iframe>
+        <iframe id="githubFrame" class="sim-frame" data-app="github" data-src="simulator/github/index.html?v=3" title="GitHub simulator"></iframe>
+        <iframe id="githubActionsFrame" class="sim-frame" data-app="github_actions" data-src="simulator/github_actions/index.html?v=3" title="GitHub Actions simulator"></iframe>
+        <iframe id="mysqlWorkbenchFrame" class="sim-frame" data-app="mysqlworkbench" data-src="simulator/mysql_workbench/index.html?v=11" title="MySQL Workbench simulator"></iframe>
+        <iframe id="redisFrame" class="sim-frame" data-app="redis" data-src="simulator/redis/index.html?v=3" title="Redis Insight simulator"></iframe>
+        <iframe id="springInitializerFrame" class="sim-frame" data-app="spring_initializer" data-src="simulator/spring_initializer/index.html?v=1" title="Spring Initializr simulator"></iframe>
+        <iframe id="mavenCentralFrame" class="sim-frame" data-app="maven_central" data-src="simulator/maven_central/index.html?v=1" title="Maven Central simulator"></iframe>
+        <iframe id="kubernetesFrame" class="sim-frame" data-app="kubernetes" data-src="simulator/kubernetes/index.html?v=4" title="Kubernetes Headlamp and kubectl simulator"></iframe>
+      </section>
+
+      <footer class="playback-bar hidden" id="playbackBar">
+        <button id="prevBtn">← Prev</button>
+        <button id="replayBtn">↻ Replay step</button>
+        <div class="step-meter"><span id="stepCounter">0 / 0</span><div><i id="stepProgress"></i></div></div>
+        <button id="nextBtn" class="primary">Next →</button>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      var boot=window.__PLAYBACK_BOOT_TOKEN__||Date.now().toString(36);
+      var queue=[
+        "project-data/part-01.js","project-data/part-02.js","project-data/part-03.js","project-data/part-04.js",
+        "project-data/part-05.js","project-data/part-06.js","project-data/part-07.js","project-data/part-08.js",
+        "project-data/index.js","lessons.js","simulator/shared/explanation-controls.js","app.js"
+      ];
+      function next(i){
+        if(i>=queue.length)return;
+        var s=document.createElement("script");
+        s.src=queue[i]+"?boot="+encodeURIComponent(boot);
+        s.onload=function(){next(i+1)};
+        s.onerror=function(){
+          console.error("Playback asset failed:",queue[i]);
+          var title=document.getElementById("stepTitle");
+          if(title)title.textContent="Playback failed to load. Reload the page.";
+        };
+        document.body.appendChild(s);
+      }
+      next(0);
+    })();
+  </script>
+</body>
+</html>

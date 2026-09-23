@@ -1,0 +1,135 @@
+*{box-sizing:border-box}
+:root{
+ --bg:#111214;--sidebar:#17181a;--surface:#1c1d20;--surface2:#222327;--line:#2e3035;
+ --text:#e8e8eb;--muted:#9699a2;--amber:#e8a04b;--amberBg:#2a2116;--blue:#6a7df0
+}
+html,body{width:100%;height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+button,input{font:inherit}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
+
+.learning-shell{width:100vw;height:100vh;display:grid;grid-template-columns:300px minmax(0,1fr);background:var(--bg);overflow:hidden}
+.progress-sidebar{grid-column:1;min-width:0;height:100vh;background:#17181a;border-right:1px solid #292b30;padding:17px 14px;overflow:auto;overscroll-behavior:contain}
+.workspace{grid-column:2;width:100%;min-width:0;height:100vh;padding:12px 14px 11px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:9px;overflow:hidden}
+body.sidebar-hidden .learning-shell{display:block;width:100vw;height:100vh}
+body.sidebar-hidden .progress-sidebar{display:none!important}
+body.sidebar-hidden .workspace{display:grid!important;width:100vw!important;max-width:none!important;height:100vh!important;margin:0!important;grid-column:auto!important}
+body.sidebar-hidden .ide-shell{width:100%;min-width:0}
+
+.brand-row{display:flex;gap:10px;align-items:center;margin-bottom:17px;padding:0 3px}
+.brand-row strong,.brand-row small{display:block}.brand-row strong{font-size:14px}.brand-row small{font-size:10px;color:var(--muted);margin-top:2px}
+.brand-mark{width:29px;height:29px;position:relative}.brand-mark span{position:absolute;left:4px;width:21px;height:5px;border-radius:2px;transform:skewY(-20deg)}
+.brand-mark span:nth-child(1){top:3px;background:#f17a25}.brand-mark span:nth-child(2){top:11px;background:#efaa59}.brand-mark span:nth-child(3){top:19px;background:#969aa3}
+
+.sidebar-tools{display:block;margin-bottom:16px}
+.search-box{height:38px;border:1px solid #34363b;border-radius:8px;background:#1d1e21;display:flex;align-items:center;padding:0 10px;gap:7px}
+.search-box span{color:#858994}.search-box input{width:100%;background:transparent;border:0;outline:0;color:#eee;font-size:11px}.search-box input::placeholder{color:#777b84}
+
+.stage-list{display:grid;gap:6px;padding-bottom:20px}
+.stage-block{border-radius:7px;overflow:hidden}
+.stage-head{width:100%;border:0;background:transparent;color:#e1e1e5;display:flex;align-items:center;gap:7px;padding:8px 7px;text-align:left;font-weight:700;font-size:11px;cursor:pointer}
+.stage-head:hover{background:#1f2023}.stage-block.current .stage-head{background:#282117;color:#f2c37c}
+.stage-count{margin-left:auto;color:#81858e;font-size:9px;font-weight:600}.stage-block.current .stage-count{color:#c89d60}.stage-chevron{color:#8f939c;font-size:9px}
+.steps-wrap{display:none;margin-left:9px;border-left:1px solid #3a342b;padding:3px 0 4px 9px}.stage-block.open .steps-wrap{display:block}
+.step-link{width:100%;border:1px solid transparent;background:transparent;color:#bfc1c8;text-align:left;border-radius:6px;padding:6px 8px;font-size:10.5px;line-height:1.35;cursor:pointer}
+.step-link:hover{background:#202125;color:#fff}.step-link.active{background:#2b2115;border-color:#9f6a27;color:#ffd08a}.step-link.done{color:#9599a2}
+.lesson-heading{padding:8px 8px 4px;color:#858994;font-size:9px;font-weight:750;letter-spacing:.035em;text-transform:none}
+.step-number{display:inline-block;min-width:22px;color:#71757e}.step-link.active .step-number{color:#eba94f}
+
+.workspace-head{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:45px}
+.eyebrow{font-size:8.5px;letter-spacing:.13em;color:#868a94;font-weight:800}.workspace-head h1{margin:3px 0 0;font-size:17px;line-height:1.2}
+.head-actions{display:flex;gap:6px}.head-actions button,.playback-bar button{border:1px solid #34363b;background:#1d1e21;color:#e7e7eb;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:650;cursor:pointer}
+.head-actions button:hover,.playback-bar button:hover{background:#27292d}.playback-bar button:disabled{opacity:.4;cursor:not-allowed}
+
+.ide-shell{position:relative;width:100%;min-width:0;min-height:0;border:1px solid #2d2f34;border-radius:8px;overflow:hidden;background:#1e1f22;box-shadow:0 10px 28px rgba(0,0,0,.24)}
+#ideFrame{display:block;width:100%;height:100%;border:0;background:#1e1f22}
+
+.playback-bar{min-height:44px;display:flex;align-items:center;justify-content:center;gap:7px;background:#17181a;border:1px solid #292b30;border-radius:8px;padding:5px 8px}
+.playback-bar .primary{background:#5368e8;border-color:#6476ee}.step-meter{display:flex;align-items:center;gap:8px;min-width:180px;justify-content:center;font-size:9.5px;color:#adafb7}
+.step-meter>div{width:88px;height:3px;background:#303239;border-radius:999px;overflow:hidden}.step-meter i{display:block;height:100%;width:0;background:#7285ff;border-radius:inherit;transition:width .2s ease}
+
+@media(max-width:980px){.learning-shell{grid-template-columns:240px minmax(0,1fr)}}
+@media(max-width:760px){.learning-shell{display:block}.progress-sidebar{display:none}.workspace{grid-column:auto;width:100vw;padding:8px}.workspace-head h1{font-size:15px}}
+
+/* Full-project preview mode */
+.hidden{display:none!important}
+.sidebar-tools{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.full-code-btn{
+  width:100%;height:40px;border:1px solid #353840;border-radius:8px;
+  background:#202226;color:#dfe1e6;display:flex;align-items:center;justify-content:flex-start;
+  gap:9px;padding:0 11px;font-size:11px;font-weight:650;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease
+}
+.full-code-btn:hover{background:#292c31;border-color:#474b54}
+.full-code-btn.active{background:#263958;border-color:#416da9;color:#f2f6ff}
+.full-code-icon{width:18px;height:18px;display:grid;place-items:center;color:#79a8ef;font-size:13px}
+.stage-list:empty{display:none}
+.workspace.no-playback{grid-template-rows:auto minmax(0,1fr)}
+.project-preview-note{font-size:10px;color:#858994;padding:3px 5px 0}
+
+/* Multi-software workspace */
+.head-meta{display:flex;align-items:center;gap:8px}
+.software-badge{
+  display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid #353942;
+  border-radius:999px;background:#1f2125;color:#aeb4bf;font-size:8.5px;font-weight:700;letter-spacing:.02em
+}
+.software-badge.pgadmin{border-color:#3f607a;background:#1d2b36;color:#8fb9db}\n.software-badge.vscode{border-color:#0e639c;background:#162b3b;color:#75beff}
+.software-badge.postman{border-color:#a94d2b;background:#382218;color:#ff8a61}
+.software-badge.cmd{border-color:#5b5b5b;background:#202020;color:#f2f2f2}
+.software-badge.linux{border-color:#8b3a22;background:#351d16;color:#f39a72}
+.software-badge.ssms{border-color:#3b6385;background:#172a3a;color:#8fc7ef}
+.software-badge.jira{border-color:#1f6feb;background:#14243d;color:#79b8ff}
+.software-badge.jenkins{border-color:#9b3d48;background:#321c20;color:#f1a7b1}
+.software-badge.intellij{border-color:#51446b;background:#292238;color:#bca6df}
+.ide-shell{isolation:isolate}
+.sim-frame{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:#1e1f22;
+  opacity:0;visibility:hidden;pointer-events:none;z-index:1
+}
+.sim-frame.active{opacity:1;visibility:visible;pointer-events:auto;z-index:2}
+
+/* Compact sidebar steps: software is shown once in the workspace header */
+.step-link{
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  width:100%;
+  padding:6px 8px;
+  gap:0;
+}
+.step-number{
+  display:inline-block;
+  flex:0 0 28px;
+  min-width:28px;
+  color:#71757e;
+}
+.step-main{
+  display:block;
+  min-width:0;
+  flex:1;
+}
+
+
+/* Bookshelf navigation */
+.library-link{
+  display:inline-flex;align-items:center;text-decoration:none;border:1px solid #34363b;
+  background:#1d1e21;color:#e7e7eb;border-radius:7px;padding:7px 10px;
+  font-size:10px;font-weight:650;cursor:pointer
+}
+.library-link:hover{background:#27292d;color:#fff}
+
+.software-badge.powerbi{border-color:#c7a300;background:#332d12;color:#f2c811}
+
+.software-badge.git{border-color:#d95b3d;background:#341d17;color:#f58c73}
+.software-badge.github{border-color:#586069;background:#20242a;color:#d0d7de}
+.software-badge.github-actions{border-color:#1f6feb;background:#14243d;color:#79b8ff}
+
+.software-badge.mysqlworkbench{border-color:#2f6f9f;background:#142839;color:#7fc0ee}
+
+.software-badge.redis{border-color:#b7352a;background:#321917;color:#ff8075}
+
+.software-badge.spring-initializer{border-color:#5b9d37;background:#1d3218;color:#a6dc7e}
+.software-badge.maven-central{border-color:#a94d47;background:#321b1a;color:#ef8e88}
+
+
+.software-badge.kubernetes{border-color:#326ce5;background:#142b5c;color:#8fb5ff}
