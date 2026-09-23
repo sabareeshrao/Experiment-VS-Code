@@ -144,87 +144,14 @@
   }
 
   function setupIntelliJ(){
-    try{
-      const native=JSON.parse(localStorage.getItem("developerJourney.intellij.nativeLayout.v1")||"{}")||{};
-      const patch={};
-      for(const key of ["leftW","rightW","bottomH","leftCollapsed"]){
-        if(saved[key]==null && native[key]!=null) patch[key]=native[key];
-      }
-      if(Object.keys(patch).length) commit(patch);
-    }catch(_){}
     if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
     if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
     if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
-
-    const left=document.getElementById("leftPanel");
-    const work=document.getElementById("work");
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
-    const projectToggle=document.querySelector(".leftRail .rail[title='Project']");
-    const maxLeft=()=>{
-      const workW=work?.clientWidth||innerWidth;
-      const rightUsed=work?.classList.contains("hasRightTools")
-        ? readCssNumber(root,"--rightW",270)+3
-        : 0;
-      return Math.max(140,Math.min(560,workW-rightUsed-430));
-    };
-    let expandedLeftW=clamp(get("leftExpandedW",get("leftW",250)),100,maxLeft());
-
-    const setProjectCollapsed=(collapsed,persist=false)=>{
-      if(collapsed){
-        const current=readCssNumber(root,"--leftW",expandedLeftW);
-        if(current>=100) expandedLeftW=clamp(current,100,maxLeft());
-        root.style.setProperty("--leftW","0px");
-        left?.classList.add("hidden");
-        if(l)l.style.display="none";
-        projectToggle?.classList.remove("active");
-      }else{
-        expandedLeftW=clamp(get("leftExpandedW",expandedLeftW||250),100,maxLeft());
-        root.style.setProperty("--leftW",px(expandedLeftW));
-        left?.classList.remove("hidden");
-        if(l)l.style.display="";
-        projectToggle?.classList.add("active");
-      }
-      if(persist)commit({
-        leftCollapsed:!!collapsed,
-        leftExpandedW:expandedLeftW,
-        leftW:expandedLeftW
-      });
-    };
-
-    setProjectCollapsed(saved.leftCollapsed===true,false);
-
-    if(projectToggle && projectToggle.dataset.simProjectToggleWired!=="1"){
-      projectToggle.dataset.simProjectToggleWired="1";
-      projectToggle.style.cursor="pointer";
-      projectToggle.setAttribute("aria-label","Toggle Project tool window");
-      projectToggle.addEventListener("click",e=>{
-        const collapsed=!left?.classList.contains("hidden");
-        setProjectCollapsed(collapsed,true);
-        e.preventDefault();
-        e.stopPropagation();
-      },true);
-    }
-
-    wirePersistentSplitter(
-      l,
-      "x",
-      ()=>readCssNumber(root,"--leftW",expandedLeftW),
-      v=>{
-        expandedLeftW=clamp(v,100,maxLeft());
-        root.style.setProperty("--leftW",px(expandedLeftW));
-      },
-      {min:100,max:maxLeft,sign:1,key:"leftW"}
-    );
-    l?.addEventListener("pointerup",()=>{
-      if(!left?.classList.contains("hidden")){
-        expandedLeftW=clamp(readCssNumber(root,"--leftW",expandedLeftW),100,maxLeft());
-        commit({leftCollapsed:false,leftExpandedW:expandedLeftW,leftW:expandedLeftW});
-      }
-    },true);
-
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",250),v=>root.style.setProperty("--leftW",px(v)),{min:120,max:560,sign:1,key:"leftW"});
     wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",270),v=>root.style.setProperty("--rightW",px(v)),{min:150,max:560,sign:-1,key:"rightW"});
     wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",190),v=>root.style.setProperty("--bottomH",px(v)),{min:80,max:460,sign:-1,key:"bottomH"});
-    rememberExisting(l,()=>({leftW:left?.classList.contains("hidden")?expandedLeftW:readCssNumber(root,"--leftW",expandedLeftW),leftExpandedW:expandedLeftW,leftCollapsed:!!left?.classList.contains("hidden")}));
+    rememberExisting(l,()=>({leftW:readCssNumber(root,"--leftW",250)}));
     rememberExisting(r,()=>({rightW:readCssNumber(root,"--rightW",270)}));
     rememberExisting(h,()=>({bottomH:readCssNumber(root,"--bottomH",190)}));
   }
@@ -506,63 +433,15 @@
   }
 
   function setupMySQLWorkbench(){
-    try{
-      const native=JSON.parse(localStorage.getItem("developerJourney.mysqlworkbench.nativeLayout.v1")||"{}")||{};
-      const patch={};
-      for(const key of ["leftW","rightW","bottomH"]){
-        if(saved[key]==null && native[key]!=null) patch[key]=native[key];
-      }
-      if(Object.keys(patch).length) commit(patch);
-    }catch(_){}
-
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
     const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
-    const workspace=document.querySelector(".workspace");
-    const responsive=()=>innerWidth<=880;
-    const rightVisible=()=>!responsive() && right && !right.classList.contains("hiddenPanel");
-    const maxLeft=()=>{
-      const w=workspace?.clientWidth||innerWidth;
-      const rightUsed=rightVisible()?readCssNumber(root,"--rightW",235)+5:0;
-      return Math.max(160,Math.min(420,w-rightUsed-340));
-    };
-    const maxRight=()=>{
-      const w=workspace?.clientWidth||innerWidth;
-      const leftUsed=left&&!left.classList.contains("hiddenPanel")?readCssNumber(root,"--leftW",255)+5:0;
-      return Math.max(160,Math.min(420,w-leftUsed-340));
-    };
-    const maxBottom=()=>Math.max(110,Math.min(380,(workspace?.clientHeight||innerHeight)-150));
-    const setLeft=v=>{
-      v=clamp(v,140,maxLeft());
-      root.style.setProperty("--leftW",px(v));
-      if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(v));
-      return v;
-    };
-    const setRight=v=>{
-      v=clamp(v,150,maxRight());
-      root.style.setProperty("--rightW",px(v));
-      if(right&&!right.classList.contains("hiddenPanel")&&!responsive())root.style.setProperty("--rightTrack",px(v));
-      return v;
-    };
-    const setBottom=v=>{
-      v=clamp(v,90,maxBottom());
-      root.style.setProperty("--bottomH",px(v));
-      if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(v));
-      return v;
-    };
-    const applyResponsive=()=>{
-      setLeft(get("leftW",readCssNumber(root,"--leftW",255)));
-      if(responsive()){
-        root.style.setProperty("--rightTrack","0px");
-      }else if(right&&!right.classList.contains("hiddenPanel")){
-        setRight(get("rightW",readCssNumber(root,"--rightW",235)));
-      }
-      setBottom(get("bottomH",readCssNumber(root,"--bottomH",185)));
-    };
-    applyResponsive();
-    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",255),setLeft,{min:140,max:maxLeft,sign:1,key:"leftW"});
-    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",235),setRight,{min:150,max:maxRight,sign:-1,key:"rightW"});
-    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",185),setBottom,{min:90,max:maxBottom,sign:-1,key:"bottomH"});
-    window.addEventListener("resize",applyResponsive);
+    const setLeft=v=>{root.style.setProperty("--leftW",px(v));if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(v))};
+    const setRight=v=>{root.style.setProperty("--rightW",px(v));if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(v))};
+    const setBottom=v=>{root.style.setProperty("--bottomH",px(v));if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(v))};
+    if(saved.leftW)setLeft(get("leftW",255));if(saved.rightW)setRight(get("rightW",235));if(saved.bottomH)setBottom(get("bottomH",185));
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",255),setLeft,{min:120,max:560,sign:1,key:"leftW"});
+    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",235),setRight,{min:140,max:560,sign:-1,key:"rightW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",185),setBottom,{min:80,max:460,sign:-1,key:"bottomH"});
   }
 
   function setupJenkins(){
@@ -766,27 +645,7 @@
     if(root.classList.contains("sim-layout-dragging")) return;
 
     if(app==="intellij"){
-      const left=document.getElementById("leftPanel");
-      const work=document.getElementById("work");
-      const split=document.getElementById("splitL");
-      const projectToggle=document.querySelector(".leftRail .rail[title='Project']");
-      const workW=work?.clientWidth||innerWidth;
-      const rightUsed=work?.classList.contains("hasRightTools")
-        ? readCssNumber(root,"--rightW",270)+3
-        : 0;
-      const maxLeft=Math.max(140,Math.min(560,workW-rightUsed-430));
-      if(saved.leftCollapsed===true){
-        root.style.setProperty("--leftW","0px");
-        left?.classList.add("hidden");
-        if(split)split.style.display="none";
-        projectToggle?.classList.remove("active");
-      }else{
-        const width=clamp(get("leftExpandedW",get("leftW",250)),100,maxLeft);
-        root.style.setProperty("--leftW",px(width));
-        left?.classList.remove("hidden");
-        if(split)split.style.display="";
-        projectToggle?.classList.add("active");
-      }
+      if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",250)));
       if(saved.rightW) root.style.setProperty("--rightW",px(get("rightW",270)));
       if(saved.bottomH) root.style.setProperty("--bottomH",px(get("bottomH",190)));
     }
@@ -895,21 +754,9 @@
     }
     if(app==="mysql_workbench"){
       const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
-      const workspace=document.querySelector(".workspace");
-      const responsive=innerWidth<=880;
-      const total=workspace?.clientWidth||innerWidth;
-      const rightDesired=clamp(get("rightW",235),150,420);
-      const rightW=responsive?0:Math.min(rightDesired,Math.max(150,total-500));
-      const leftDesired=clamp(get("leftW",255),140,420);
-      const leftW=Math.min(leftDesired,Math.max(140,total-rightW-345));
-      const bottomH=clamp(get("bottomH",185),90,Math.max(110,Math.min(380,(workspace?.clientHeight||innerHeight)-150)));
-      root.style.setProperty("--leftW",px(leftW));
-      if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(leftW));
-      root.style.setProperty("--rightW",px(rightDesired));
-      if(responsive())root.style.setProperty("--rightTrack","0px");
-      else if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(rightW));
-      root.style.setProperty("--bottomH",px(bottomH));
-      if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(bottomH));
+      if(saved.leftW){root.style.setProperty("--leftW",px(get("leftW",255)));if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(get("leftW",255)))}
+      if(saved.rightW){root.style.setProperty("--rightW",px(get("rightW",235)));if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(get("rightW",235)))}
+      if(saved.bottomH){root.style.setProperty("--bottomH",px(get("bottomH",185)));if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(get("bottomH",185)))}
     }
 
     if(app==="linux"){

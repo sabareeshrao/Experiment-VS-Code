@@ -191,17 +191,6 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
 .qnaVisual{width:100%;padding:9px;font-size:9px;color:var(--muted)}.qnaInput{border:1px solid var(--line);background:var(--panel2);border-radius:3px;padding:7px;margin-bottom:8px;color:var(--text)}
 .treeMap{display:flex;width:100%;height:100%;gap:2px}.treeMap span{display:flex;align-items:center;justify-content:center;background:#f2c811;border:1px solid #d4ae00;font-size:9px;min-width:0}
 
-
-/* UI stacking regression guard: transient controls must never sit under panes. */
-.workspace{position:relative;isolation:isolate}
-.onObjectMenu{position:fixed!important;z-index:460!important}
-.modalShade{position:fixed!important;z-index:500!important}
-.modalShade.minimized{background:transparent!important;pointer-events:none;align-items:flex-start!important;justify-content:flex-end!important;padding:8px}
-.modalShade.minimized .modal{pointer-events:auto;margin-top:4px}
-.toast{position:fixed!important;z-index:540!important}
-.keytip{z-index:560!important}
-.viewTip{z-index:570!important}
-.boundary{z-index:180}
 </style>
 </head>
 <body class="theme-light">
@@ -264,9 +253,9 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
 </div>
 <script src="icons.js?v=2"></script>
 <script src="capabilities.js?v=1"></script>
-<script src="engine.js?v=7"></script>
+<script src="engine.js?v=8"></script>
 <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=10"></script>
-<script src="../shared/layout-resize.js?v=13"></script>
+<script src="../shared/layout-resize.js?v=14"></script>
 </body>
 </html>
