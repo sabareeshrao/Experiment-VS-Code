@@ -1,14 +1,5 @@
 {
-  "schema_version": 2,
-  "practice_mode": {
-    "supported_interactions": [
-      "click",
-      "type",
-      "terminal"
-    ],
-    "runtime": "simulator/shared/practice-controller.js",
-    "lesson_field": "practice"
-  },
+  "schema_version": 1,
   "file_purpose": "AI FIRST READ — capability map for transcript-to-lesson JSON generation.",
   "generated_by": "scripts/build-capability-index.cjs",
   "rules": [
@@ -25,16 +16,6 @@
     "required_capability": "Feature needed by this transcript step.",
     "feature_available": "Boolean determined from this index, never memory.",
     "canonical_action": "Existing simulator action name when available.",
-    "practice": {
-      "sequence": [
-        {
-          "interaction": "click | type | terminal",
-          "target": "Semantic target from software.<id>.practice_targets",
-          "prompt": "Visible user instruction",
-          "text": "Required for type/terminal"
-        }
-      ]
-    },
     "missing_feature_request": {
       "surface": "Missing product-owned surface.",
       "interaction": "Required interaction.",
@@ -72,7 +53,6 @@
         "oauth2",
         "openfeign",
         "persistent-layout",
-        "practice-mode",
         "project-context-menu",
         "refactor-dialog",
         "resilience4j",
@@ -88,10 +68,6 @@
         "spring-security",
         "tool-window",
         "webclient"
-      ],
-      "practice_targets": [
-        "code-editor",
-        "run-button"
       ],
       "indexed_actions": [],
       "action_lookup_required": true
@@ -115,7 +91,6 @@
         "source-control",
         "tool-panel"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -139,7 +114,6 @@
         "maintenance-dialog",
         "multi-row-insert",
         "persistent-layout",
-        "practice-mode",
         "properties-dialog",
         "query-context-menu",
         "query-history",
@@ -147,12 +121,6 @@
         "query-tool",
         "resizable-sidebars",
         "schema-diff",
-        "sql-editor"
-      ],
-      "practice_targets": [
-        "data-output",
-        "execute-query",
-        "query-tool",
         "sql-editor"
       ],
       "indexed_actions": [],
@@ -171,18 +139,11 @@
         "environment-dialog",
         "mock-monitor",
         "persistent-layout",
-        "practice-mode",
         "request-context-menu",
         "resizable-sidebars",
         "response-context-menu",
         "runner-dialog",
         "variables"
-      ],
-      "practice_targets": [
-        "environment-selector",
-        "method-selector",
-        "send-request",
-        "url-editor"
       ],
       "indexed_actions": [],
       "action_lookup_required": true
@@ -200,14 +161,10 @@
         "find-dialog",
         "history-panel",
         "persistent-layout",
-        "practice-mode",
         "properties-dialog",
         "resizable-sidebars",
         "selection-mode",
         "terminal-context-menu"
-      ],
-      "practice_targets": [
-        "terminal-input"
       ],
       "indexed_actions": [],
       "action_lookup_required": true
@@ -223,7 +180,6 @@
         "files-context-menu",
         "network-details",
         "persistent-layout",
-        "practice-mode",
         "preferences-dialog",
         "process-context-menu",
         "properties-dialog",
@@ -231,9 +187,6 @@
         "service-details",
         "system-monitor-details",
         "terminal-context-menu"
-      ],
-      "practice_targets": [
-        "terminal-input"
       ],
       "indexed_actions": [],
       "action_lookup_required": true
@@ -276,7 +229,6 @@
         "tool-window",
         "tool-window-pin"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -299,7 +251,6 @@
         "resizable-sidebars",
         "workflow-dialog"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -323,7 +274,6 @@
         "resizable-sidebars",
         "stage-context-menu"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -353,7 +303,6 @@
         "tmdl-view",
         "visual-formatting"
       ],
-      "practice_targets": [],
       "indexed_actions": [
         "applyTmdl",
         "newDaxQuery",
@@ -415,7 +364,6 @@
         "working-tree",
         "worktrees"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -465,7 +413,6 @@
         "upload",
         "web-editor"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -511,7 +458,6 @@
         "workflow-list",
         "yaml"
       ],
-      "practice_targets": [],
       "indexed_actions": [],
       "action_lookup_required": true
     },
@@ -546,7 +492,6 @@
         "users-privileges",
         "visual-explain"
       ],
-      "practice_targets": [],
       "indexed_actions": [
         "openConnectionAdvanced",
         "openConnectionParameters",
@@ -595,7 +540,6 @@
         "list-crud",
         "memory-analysis",
         "persistent-layout",
-        "practice-mode",
         "profile",
         "profiler",
         "pubsub",
@@ -613,15 +557,6 @@
         "tree-view",
         "vector-set-view",
         "workbench"
-      ],
-      "practice_targets": [
-        "add-key",
-        "cli-input",
-        "key-list",
-        "search-editor",
-        "search-run",
-        "workbench-editor",
-        "workbench-run"
       ],
       "indexed_actions": [
         "addSetMember",

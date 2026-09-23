@@ -48,8 +48,7 @@
         "git",
         "database",
         "resizable-sidebars",
-        "persistent-layout",
-        "practice-mode"
+        "persistent-layout"
       ],
       "menus": [
         "editor",
@@ -75,11 +74,7 @@
         "refactor",
         "settings"
       ],
-      "targetFidelity": 90,
-      "practiceTargets": [
-        "code-editor",
-        "run-button"
-      ]
+      "targetFidelity": 90
     },
     "vscode": {
       "registry": "VSCODE_CAPABILITIES",
@@ -136,8 +131,7 @@
         "dml-insert",
         "multi-row-insert",
         "create-table-as-select",
-        "insert-into-select",
-        "practice-mode"
+        "insert-into-select"
       ],
       "menus": [
         "browser",
@@ -153,12 +147,6 @@
       "dialogPresets": [
         "properties",
         "maintenance"
-      ],
-      "practiceTargets": [
-        "sql-editor",
-        "execute-query",
-        "query-tool",
-        "data-output"
       ]
     },
     "postman": {
@@ -173,8 +161,7 @@
         "code-snippet",
         "variables",
         "resizable-sidebars",
-        "persistent-layout",
-        "practice-mode"
+        "persistent-layout"
       ],
       "menus": [
         "request",
@@ -194,12 +181,6 @@
       "dialogPresets": [
         "code",
         "runner"
-      ],
-      "practiceTargets": [
-        "url-editor",
-        "send-request",
-        "method-selector",
-        "environment-selector"
       ]
     },
     "cmd": {
@@ -213,8 +194,7 @@
         "environment-panel",
         "selection-mode",
         "resizable-sidebars",
-        "persistent-layout",
-        "practice-mode"
+        "persistent-layout"
       ],
       "menus": [
         "terminal"
@@ -227,9 +207,6 @@
       "dialogPresets": [
         "properties",
         "find"
-      ],
-      "practiceTargets": [
-        "terminal-input"
       ]
     },
     "linux": {
@@ -244,8 +221,7 @@
         "service-details",
         "network-details",
         "resizable-sidebars",
-        "persistent-layout",
-        "practice-mode"
+        "persistent-layout"
       ],
       "menus": [
         "terminal",
@@ -262,9 +238,6 @@
       "dialogPresets": [
         "preferences",
         "properties"
-      ],
-      "practiceTargets": [
-        "terminal-input"
       ]
     },
     "jira": {
@@ -707,8 +680,7 @@
         "connection-dialog",
         "database-environment-tag",
         "resizable-sidebars",
-        "persistent-layout",
-        "practice-mode"
+        "persistent-layout"
       ],
       "actions": [
         "setView",
@@ -761,15 +733,6 @@
         "database",
         "settings",
         "key-editor"
-      ],
-      "practiceTargets": [
-        "key-list",
-        "add-key",
-        "workbench-editor",
-        "workbench-run",
-        "cli-input",
-        "search-editor",
-        "search-run"
       ]
     }
   }

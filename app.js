@@ -77,8 +77,6 @@
     redis: false
   };
 
-  const practiceReady = Object.fromEntries(Object.keys(frames).map(name => [name, false]));
-
   const SIM_BOOT_TOKEN =
     window.__PLAYBACK_BOOT_TOKEN__ ||
     (Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
@@ -93,7 +91,6 @@
     if (!raw) return false;
 
     engineReady[target] = false;
-    practiceReady[target] = false;
     frame.dataset.simLoading = "1";
 
     const url = new URL(raw, location.href);
@@ -137,11 +134,6 @@
         "simulator/shared/layout-resize.js?v=6",
         "globalUiPersistence"
       );
-      ensureScript(
-        "/simulator/shared/practice-controller.js",
-        "simulator/shared/practice-controller.js?v=1",
-        "globalPracticeRuntime"
-      );
     } catch (_) {}
   }
 
@@ -169,8 +161,13 @@
       normalizeSoftware(flat[current].software) === name
     ) {
       setTimeout(() => {
-        seekSoftware(current, name, false);
-        if (name !== "mysqlworkbench") scheduleCurrentExplanation(140);
+        // Do not depend on a second readiness handshake here. The document has
+        // already finished loading, so replay the cumulative state immediately.
+        sendSeekNow(current, name, false);
+        if (name !== "mysqlworkbench") {
+          highlightCurrentAction(current, name);
+          scheduleCurrentExplanation(140);
+        }
       }, 0);
     }
   }
@@ -229,7 +226,6 @@
   const prevBtn = $("prevBtn");
   const nextBtn = $("nextBtn");
   const replayBtn = $("replayBtn");
-  const practiceBtn = $("practiceBtn");
   const stepCounter = $("stepCounter");
   const stepProgress = $("stepProgress");
   const stepSearch = $("stepSearch");
@@ -260,9 +256,6 @@
   let fullCodeMode = new URL(location.href).searchParams.get("view") === "full";
   let activeSoftware = fullCodeMode ? "intellij" : (flat[current]?.software || "intellij");
   let openStages = new Set(flat.length ? [flat[current].stageIndex] : []);
-  let practiceMode = false;
-  let practiceCompletedIndex = -1;
-  let practiceToken = 0;
 
   const fullProjectPackage =
     typeof window.buildFullProjectPackage === "function"
@@ -321,34 +314,6 @@
       .slice(0, index + 1)
       .filter(step => normalizeSoftware(step.software) === target)
       .map(step => step.action);
-  }
-
-  function practiceSpecFor(index) { return flat[index]?.practice || null; }
-
-  function stopPracticeAll() {
-    Object.values(frames).forEach(frame => {
-      if (!frame?.contentWindow || frame.dataset.simLoaded !== "1") return;
-      frame.contentWindow.postMessage({ type: "SIM_PRACTICE_STOP" }, SIM_TARGET_ORIGIN);
-    });
-  }
-
-  function sendPracticePrompt(index, target) {
-    const practice = practiceSpecFor(index);
-    if (!practiceMode || !practice || !practiceReady[target]) return;
-    frames[target].contentWindow.postMessage({ type: "SIM_PRACTICE_STEP", practice, token: practiceToken, stepNumber: index + 1, title: flat[index]?.title || "" }, SIM_TARGET_ORIGIN);
-  }
-
-  function preparePracticeStep(index, target) {
-    sendSeekNow(index - 1, target, false);
-    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR" }, SIM_TARGET_ORIGIN);
-    setTimeout(() => sendPracticePrompt(index, target), 80);
-  }
-
-  function canAdvance() {
-    if (!flat.length || current >= flat.length - 1) return false;
-    if (!practiceMode) return true;
-    const practice = practiceSpecFor(current);
-    return !practice || practiceCompletedIndex === current;
   }
 
   function sendCoursePackage(software) {
@@ -515,11 +480,8 @@
     ensureFrameLoaded(target);
     if (!engineReady[target] || !flat.length) return;
 
-    const practice = practiceSpecFor(index);
-    if (practiceMode && practice && normalizeSoftware(flat[index]?.software) === target) {
-      preparePracticeStep(index, target);
-      return;
-    }
+    // Never block navigation on visual guidance. The step state is rebuilt
+    // immediately, then the relevant control is highlighted independently.
     sendSeekNow(index, target, animateFinal);
     if (target !== "mysqlworkbench") highlightCurrentAction(index, target);
   }
@@ -710,13 +672,7 @@
     stepCounter.textContent = (current + 1) + " / " + flat.length;
     stepProgress.style.width = (((current + 1) / flat.length) * 100) + "%";
     prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === flat.length - 1 || (practiceMode && !!practiceSpecFor(current) && practiceCompletedIndex !== current);
-    if (practiceBtn) {
-      practiceBtn.classList.toggle("active", practiceMode);
-      practiceBtn.classList.toggle("complete", practiceMode && practiceCompletedIndex === current);
-      practiceBtn.textContent = !practiceMode ? "Practice" : (practiceSpecFor(current) ? (practiceCompletedIndex === current ? "Practice ✓" : "Practice On") : "Practice • Observe");
-      practiceBtn.title = practiceMode && practiceSpecFor(current) ? "Complete the blue highlighted hands-on action to continue." : "Toggle hands-on practice mode.";
-    }
+    nextBtn.disabled = current === flat.length - 1;
 
     setPlaybackVisibility();
     renderSidebar();
@@ -733,9 +689,6 @@
     fullCodeBtn.classList.remove("active");
     fullCodeBtn.querySelector("span:last-child").textContent = "View Full Code";
 
-    stopPracticeAll();
-    practiceCompletedIndex = -1;
-    practiceToken += 1;
     current = Math.max(0, Math.min(flat.length - 1, index));
     const software = normalizeSoftware(flat[current].software);
 
@@ -759,29 +712,9 @@
 
     if (!software) return;
 
-    if (event.data?.type === "SIM_PRACTICE_READY") {
-      practiceReady[software] = true;
-      if (practiceMode && !fullCodeMode && flat.length && normalizeSoftware(flat[current].software) === software && practiceSpecFor(current) && engineReady[software]) setTimeout(() => sendPracticePrompt(current, software), 20);
-      return;
-    }
-
-    if (event.data?.type === "SIM_PRACTICE_COMPLETE") {
-      if (!practiceMode || fullCodeMode || !flat.length || software !== normalizeSoftware(flat[current].software) || event.data.token !== practiceToken) return;
-      practiceCompletedIndex = current;
-      frames[software].contentWindow.postMessage({ type: "SIM_PRACTICE_STOP" }, SIM_TARGET_ORIGIN);
-      sendSeekNow(current, software, true);
-      renderCurrentStep();
-      scheduleCurrentExplanation(80);
-      const completedStep = current, completedToken = practiceToken;
-      setTimeout(() => { if (practiceMode && current === completedStep && practiceToken === completedToken && current < flat.length - 1) goToStep(current + 1, true); }, 700);
-      return;
-    }
-
-    if (event.data?.type === "SIM_PRACTICE_WRONG") return;
-
     if (event.data?.type === "SIM_NAVIGATE") {
       if (fullCodeMode || !flat.length) return;
-      if (event.data.direction === "next" && canAdvance()) goToStep(current + 1, true);
+      if (event.data.direction === "next" && current < flat.length - 1) goToStep(current + 1, true);
       if (event.data.direction === "prev" && current > 0) goToStep(current - 1, false);
       return;
     }
@@ -822,7 +755,7 @@
         doc.addEventListener("keydown", event => {
           if (fullCodeMode || !flat.length) return;
           if (!event.altKey || event.ctrlKey || event.metaKey) return;
-          if (event.key === "ArrowRight" && canAdvance()) {
+          if (event.key === "ArrowRight" && current < flat.length - 1) {
             event.preventDefault();
             event.stopPropagation();
             goToStep(current + 1, true);
@@ -840,21 +773,13 @@
 
   Object.values(frames).forEach(installFrameNavigationBridge);
 
-  fullCodeBtn.onclick = () => { practiceMode = false; practiceCompletedIndex = -1; stopPracticeAll(); loadFullCode(); };
+  fullCodeBtn.onclick = loadFullCode;
 
   prevBtn.onclick = () => goToStep(current - 1, false);
-  nextBtn.onclick = () => { if (canAdvance()) goToStep(current + 1, true); };
+  nextBtn.onclick = () => goToStep(current + 1, true);
   replayBtn.onclick = () => {
     if (!flat.length || fullCodeMode) return;
-    if (practiceMode) goToStep(current, false);
-    else seekSoftware(current, flat[current].software, true);
-  };
-  practiceBtn.onclick = () => {
-    if (!flat.length || fullCodeMode) return;
-    practiceMode = !practiceMode;
-    practiceCompletedIndex = -1;
-    stopPracticeAll();
-    goToStep(current, false);
+    seekSoftware(current, flat[current].software, true);
   };
 
   stepSearch.oninput = renderSidebar;
@@ -878,7 +803,7 @@
   document.addEventListener("keydown", event => {
     if (fullCodeMode || !flat.length) return;
 
-    if (event.key === "ArrowRight" && canAdvance()) {
+    if (event.key === "ArrowRight" && current < flat.length - 1) {
       goToStep(current + 1, true);
     }
 

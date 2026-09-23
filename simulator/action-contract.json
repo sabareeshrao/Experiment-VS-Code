@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "policy": [
     "app.js orchestrates playback and must not implement product-specific UI.",
     "Each simulator owns its DOM, CSS, menus, dialogs and product behavior.",
@@ -17,16 +17,11 @@
       "SIM_HIGHLIGHT",
       "SIM_HIGHLIGHT_CLEAR",
       "SIM_SETTING",
-      "SIM_PING",
-      "SIM_PRACTICE_STEP",
-      "SIM_PRACTICE_STOP"
+      "SIM_PING"
     ],
     "simulatorToParent": [
       "ENGINE_READY",
-      "SIM_NAVIGATE",
-      "SIM_PRACTICE_READY",
-      "SIM_PRACTICE_COMPLETE",
-      "SIM_PRACTICE_WRONG"
+      "SIM_NAVIGATE"
     ],
     "requiredEngineMarkers": [
       "ENGINE_READY",
@@ -152,22 +147,6 @@
       "User-adjusted pane sizes must persist per software and restore after reload, SIM_PACKAGE, SIM_SEEK, and responsive resize.",
       "Shared layout code provides resize/persistence mechanics only; each simulator continues to own its product-specific DOM and visual design.",
       "A simulator with no side pane is exempt from exposing a side-pane handle but still loads the shared runtime."
-    ]
-  },
-  "practicePolicy": {
-    "runtime": "simulator/shared/practice-controller.js",
-    "lessonField": "practice",
-    "interactions": [
-      "click",
-      "type",
-      "terminal"
-    ],
-    "rules": [
-      "Practice mode replays simulator state only through the step before the current hands-on action.",
-      "The current action is committed only after the required user interaction succeeds.",
-      "Lesson practice targets are semantic names; each simulator owns the DOM selector for its targets.",
-      "Shared practice code may draw guidance, capture typing and validate interaction, but must not define product-specific UI.",
-      "Tab autocompletes the next expected token during type and terminal practice."
     ]
   }
 }

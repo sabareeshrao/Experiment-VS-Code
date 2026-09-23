@@ -77,7 +77,6 @@ for (const file of requiredRootFiles) {
 assert(exists("simulator/action-contract.json"), "Missing simulator/action-contract.json");
 assert(exists("simulator/adaptive-capabilities.json"), "Missing simulator/adaptive-capabilities.json");
 assert(exists("scripts/build-capability-index.cjs"), "Missing scripts/build-capability-index.cjs");
-assert(exists("simulator/shared/practice-controller.js"), "Missing simulator/shared/practice-controller.js");
 
 let contract;
 let manifest;
@@ -185,19 +184,6 @@ if (contract && manifest && course) {
       const supported = supportedBySoftware.get(software);
       if (supported && action && !supported.has(action)) {
         fail(where + ": " + software + " does not declare action " + action);
-      }
-
-      if (step.practice) {
-        const parts = Array.isArray(step.practice.sequence) ? step.practice.sequence : [step.practice];
-        assert(parts.length > 0, where + ": practice sequence is empty");
-        const manifestKey = simulators[software]?.manifestKey;
-        const allowedTargets = new Set(manifestSimulators[manifestKey]?.practiceTargets || []);
-        for (const part of parts) {
-          assert(["click","type","terminal"].includes(part?.interaction), where + ": unsupported practice interaction " + String(part?.interaction));
-          assert(typeof part?.target === "string" && part.target.trim(), where + ": practice target is missing");
-          assert(allowedTargets.has(part?.target), where + ": practice target " + String(part?.target) + " is not registered for " + software);
-          if (part?.interaction === "type" || part?.interaction === "terminal") assert(typeof part?.text === "string" && part.text.length > 0, where + ": typing practice is missing expected text");
-        }
       }
     }
   }
