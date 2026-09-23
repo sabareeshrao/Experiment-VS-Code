@@ -32,6 +32,31 @@ function save(){
     }));
   }catch(_){}
 }
+function suppressLegacyAssistants(){
+  if(!IS_EMBEDDED)return;
+  var nodes=document.querySelectorAll('[data-sim-explanation]:not(#'+HOST_ID+'),#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant,#mysqlWorkbenchAssistant,#k8sAssistant');
+  nodes.forEach(function(el){
+    try{
+      el.classList.add("hidden");
+      el.classList.remove("show");
+      el.setAttribute("aria-hidden","true");
+      el.style.setProperty("display","none","important");
+      el.style.setProperty("visibility","hidden","important");
+      el.style.setProperty("pointer-events","none","important");
+      el.style.setProperty("height","0","important");
+      el.style.setProperty("max-height","0","important");
+      el.style.setProperty("overflow","hidden","important");
+    }catch(_){}
+  });
+}
+var legacyObserver=null;
+function watchLegacyAssistants(){
+  if(!IS_EMBEDDED||legacyObserver||typeof MutationObserver!=="function")return;
+  suppressLegacyAssistants();
+  legacyObserver=new MutationObserver(function(){suppressLegacyAssistants()});
+  try{legacyObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["class","style","hidden"]})}catch(_){}
+}
+
 function ensureStyle(){
   if(document.getElementById("sim-global-explanation-style-v3"))return;
   var s=document.createElement("style");
@@ -269,5 +294,6 @@ document.addEventListener("keydown",function(e){
 // In embedded simulators this runtime only suppresses legacy/native assistants.
 // The player owns the one visible global card.
 ensureStyle();
+if(IS_EMBEDDED)watchLegacyAssistants();
 if(IS_PLAYER)ensureHost();
 })();

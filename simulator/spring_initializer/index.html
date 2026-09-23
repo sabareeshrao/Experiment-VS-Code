@@ -14,7 +14,7 @@ h2{font-size:16px;margin:0 0 12px}h3{font-size:11px;margin:17px 0 7px;text-trans
 .depHead{display:flex;align-items:center;gap:7px}.depHead h2{margin:0}.addBtn{border:1px solid var(--greenDark);background:#fff;color:#315c1c;border-radius:5px;padding:7px 10px;font-weight:700;cursor:pointer}.depList{display:flex;flex-direction:column;gap:7px;margin-top:12px}.dep{display:flex;align-items:center;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:6px;background:#fbfcfd}.dep span{flex:1;font-size:11px}.dep button{border:0;background:transparent;color:#a13d3d;cursor:pointer}.empty{font-size:11px;color:var(--muted);padding:14px 0}
 .generate{width:100%;margin-top:16px;border:0;background:var(--green);color:#fff;border-radius:6px;padding:11px;font-weight:800;cursor:pointer}.generate:hover{background:var(--greenDark)}.summary{display:none;margin-top:12px;padding:10px;border:1px solid #cfe3c2;border-radius:6px;background:#eef7e9;font:11px/1.5 Consolas,monospace;white-space:pre-wrap}.summary.show{display:block}
 .shade{position:absolute;inset:54px 0 0;background:rgba(0,0,0,.24);display:none;z-index:40}.shade.show{display:block}.drawer{position:absolute;right:0;top:0;bottom:0;width:min(470px,92vw);background:#fff;border-left:1px solid var(--line);box-shadow:-8px 0 28px rgba(0,0,0,.16);display:grid;grid-template-rows:52px 48px minmax(0,1fr)}.drawerHead{display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-weight:750}.drawerHead button{margin-left:auto;border:0;background:transparent;font-size:20px;cursor:pointer}.depSearch{margin:8px 12px;border:1px solid var(--line);border-radius:5px;padding:0 10px}.catalog{overflow:auto;padding:8px 12px}.catRow{padding:10px;border-bottom:1px solid #edf0f2;cursor:pointer}.catRow:hover{background:#f5f8f3}.catRow b{display:block;font-size:12px}.catRow span{font-size:10px;color:var(--muted)}
-.assistant{position:absolute;right:16px;bottom:16px;width:320px;max-width:calc(100vw - 32px);z-index:90;background:#222831;color:#e8edf3;border:1px solid #414954;border-radius:7px;box-shadow:0 10px 28px rgba(0,0,0,.28);overflow:hidden}.assistantHead{display:flex;align-items:center;gap:7px;height:32px;padding:0 8px;background:#1b2027;border-bottom:1px solid #3b424c;cursor:grab}.assistantHead .grow{flex:1}.assistantHead button{width:24px;height:24px;border:0;background:transparent;color:#aeb8c2;border-radius:4px}.assistantBody{padding:10px 11px;font-size:11px;line-height:1.48}.assistant.minimized .assistantBody{display:none}
+
 @media(max-width:780px){.main{grid-template-columns:1fr}.side{position:static}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
@@ -49,14 +49,10 @@ h2{font-size:16px;margin:0 0 12px}h3{font-size:11px;margin:17px 0 7px;text-trans
 <input id="dependencySearch" class="depSearch" placeholder="Search dependencies">
 <div id="dependencyCatalog" class="catalog"></div>
 </div></div>
-<aside id="assistant" class="assistant" data-sim-explanation data-sim-persist="position">
-<div class="assistantHead" data-sim-explanation-drag><strong>AI</strong><span data-sim-explanation-meta>Spring Initializr</span><span class="grow"></span><button data-sim-explanation-min title="Minimize">−</button><button data-sim-explanation-close title="Close">×</button></div>
-<div class="assistantBody" data-sim-explanation-text>Configure a Spring Boot project and generate it.</div>
-</aside>
 </div>
 <script src="engine.js?v=1"></script>
 <script src="../shared/highlighter.js?v=9"></script>
-<script src="../shared/explanation-controls.js?v=17"></script>
+<script src="../shared/explanation-controls.js?v=21"></script>
 <script src="../shared/layout-resize.js?v=10"></script>
 </body>
 </html>
