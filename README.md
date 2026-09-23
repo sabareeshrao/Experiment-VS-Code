@@ -165,3 +165,17 @@ Repository validation fails if `lessons.js` does not exactly match the JSON sour
 ## Redis Insight visibility
 
 Redis was already present in the deployed repository, and the Pages workflow was succeeding. It was not reachable through the lesson player because no current lesson step uses `software: "redis"`. The library now exposes a **Redis Insight Lab** link, and `player.html?software=redis` opens Redis directly in software-preview mode. Future Redis lesson JSON will continue to activate it normally through lesson playback.
+
+
+## Missing-feature expansion
+
+The capability audit is now implemented in the simulator platform.
+
+Two standalone simulators were added:
+
+- **Spring Initializr** — Maven/Gradle, language, Spring Boot version, project metadata, Jar/War, Java version, Properties/YAML, dependency selection, and Generate behavior.
+- **Maven Central** — dependency search, search results, artifact details, version selection, Maven dependency XML, and copy behavior.
+
+The exact requested IntelliJ IDEA, Postman, and MySQL Workbench capability names are registered in `simulator/adaptive-capabilities.json` so transcript-to-JSON generation can mark them available instead of repeatedly requesting already-supported UI. IntelliJ additionally implements inline editor diagnostics, expandable External Libraries/JDK entries, run/restart/clear-console controls, Maven lifecycle behavior with generated target artifacts, import/New Maven project flows, and a Java desktop application preview.
+
+`scripts/validate-repo.cjs` treats these requested capability names as regression-protected platform requirements.

@@ -128,6 +128,22 @@ if (exists("simulator/shared/explanation-controls.js")) {
 const packageWorkflow = exists(".github/workflows/package-simulator.yml")
   ? read(".github/workflows/package-simulator.yml")
   : "";
+const requestedCapabilitySets = {
+  intellij: ["code-editor","project-file-navigation","go-to-definition","editor-diagnostics","code-completion-popup","quick-fix-intention-actions","run-application-control","java-main-run","run-console-output","run-console-controls","external-libraries-view","java-documentation-view","import-existing-project","new-maven-project-wizard","maven-lifecycle-tool-window","integrated-terminal","java-desktop-app-preview"],
+  postman: ["http-method-selector","request-url-editor","query-params-editor","request-body-editor","send-request","response-body-viewer","response-status-display"],
+  mysql_workbench: ["execute-query","schema-refresh"],
+  spring_initializer: ["spring-initializr-generator","language-selector","build-tool-selector","spring-boot-version-selector","project-metadata","packaging-selector","java-version-selector","config-format-selector","dependency-selector","generate-project"],
+  maven_central: ["dependency-search","search-results","artifact-page","version-list","maven-dependency-snippet","copy-dependency-xml"]
+};
+if (manifest) {
+  for (const [key, required] of Object.entries(requestedCapabilitySets)) {
+    const available = new Set(manifest.simulators?.[key]?.features || []);
+    for (const feature of required) {
+      assert(available.has(feature), key + ": requested capability missing: " + feature);
+    }
+  }
+}
+
 if (exists("simulator/powerbi/index.html")) {
   const pbiIndex = read("simulator/powerbi/index.html");
   assert(pbiIndex.includes('id="onObjectClose"'), "Power BI on-object menu has no close control");
