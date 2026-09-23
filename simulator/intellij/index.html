@@ -185,6 +185,38 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 .awtPreview{width:430px;max-width:100%;margin:auto;border:1px solid #6a6d72;background:#ececec;color:#202124;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .awtTitle{height:30px;background:#d9d9d9;border-bottom:1px solid #aaa;display:flex;align-items:center;padding:0 9px;font-weight:600}
 .awtBody{height:210px;display:grid;place-items:center}.awtButton{padding:8px 18px;border:1px solid #888;background:#f5f5f5;border-radius:3px}.awtStatus{text-align:center;padding:7px;border-top:1px solid #bbb;font-size:10px}
+
+/* v9: responsive anti-crop pass for embedded playback */
+.left,.projectHead,.editorPane,.editorWrap,.bottom,.bottomBody{min-width:0!important}
+.projectHeadTitle{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.editorWrap{
+  grid-template-columns:50px minmax(0,1fr)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+}
+.code{min-width:max-content!important}
+.tree{overflow:auto!important}
+.editorWrap,.tree,.rightBody,.bottomBody,.terminalViewport{
+  scrollbar-width:thin!important;
+  scrollbar-color:#4d5057 transparent!important;
+}
+.editorWrap::-webkit-scrollbar,.tree::-webkit-scrollbar,.rightBody::-webkit-scrollbar,.bottomBody::-webkit-scrollbar,.terminalViewport::-webkit-scrollbar{
+  display:block!important;width:8px!important;height:8px!important
+}
+.editorWrap::-webkit-scrollbar-thumb,.tree::-webkit-scrollbar-thumb,.rightBody::-webkit-scrollbar-thumb,.bottomBody::-webkit-scrollbar-thumb,.terminalViewport::-webkit-scrollbar-thumb{
+  background:#4d5057!important;border-radius:8px
+}
+.editorWrap::-webkit-scrollbar-track,.tree::-webkit-scrollbar-track,.rightBody::-webkit-scrollbar-track,.bottomBody::-webkit-scrollbar-track,.terminalViewport::-webkit-scrollbar-track{
+  background:transparent!important
+}
+@media(max-width:1050px){
+  .runConfig{min-width:135px!important;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+  .projectHeadTool[title="Autoscroll"],.projectHeadTool[title="More"]{display:none}
+}
+@media(max-width:820px){
+  .toolbar #searchBtn,.toolbar #gitBtn{display:none}
+  .toolbar{padding-left:32px}
+}
 </style>
 <link rel="stylesheet" href="ide-polish.css?v=1">
 </head>
@@ -223,6 +255,6 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 <script src="enterprise-ui.js?v=1"></script>
 <script src="engine.js?v=13"></script>
 <script src="adaptive-ui.js?v=1"></script>
-  <script src="../shared/highlighter.js?v=7"></script>\n  <script src="../shared/explanation-controls.js?v=9"></script>  <script src="../shared/layout-resize.js?v=10"></script>
+  <script src="../shared/highlighter.js?v=7"></script>\n  <script src="../shared/explanation-controls.js?v=9"></script>  <script src="../shared/layout-resize.js?v=11"></script>
 </body>
 </html>
