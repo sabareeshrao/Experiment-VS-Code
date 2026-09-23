@@ -636,6 +636,7 @@
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
+      answer: step.answer || "",
       stage: stage.title
     }, SIM_TARGET_ORIGIN);
   }

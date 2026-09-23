@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var CONTROLS_VERSION=12;
+var CONTROLS_VERSION=13;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -43,6 +43,9 @@ if(!document.getElementById(STYLE_ID)){
     "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
     ".simExplainGlobalBody .jenkinsAssistantBody{padding:0!important;font:inherit!important;line-height:inherit!important;color:inherit!important}",
     ".simExplainGlobalBody p{margin:0!important}",
+    ".simExplainAnswer{margin-top:10px!important;padding:9px 10px!important;border:1px solid #4b5563!important;border-radius:5px!important;background:#1d1f23!important;color:#f2f2f2!important;font:600 10.5px/1.5 'Segoe UI',Arial,sans-serif!important;white-space:pre-wrap!important}",
+    ".simExplainAnswer::before{content:'Answer';display:block;margin-bottom:4px;color:#9aa4b2;font:700 9px/1.2 'Segoe UI',Arial,sans-serif!important;letter-spacing:.04em;text-transform:uppercase}",
+    "body.theme-light .simExplainAnswer,body[data-sim-app='postman']:not(.theme-dark) .simExplainAnswer{background:#f7f7f8!important;color:#222!important;border-color:#c8ccd2!important}",
     ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
 
     /* Explanation-card scrollbars follow Postman's unobtrusive treatment. */
@@ -375,6 +378,15 @@ function refresh(m){
   var text=getText(box);
   if(title&&m&&m.title)title.textContent=m.title;
   if(text&&m&&m.text!==undefined)text.textContent=m.text||"";
+  var body=getBody(box);
+  if(body){
+    var answer=body.querySelector(".simExplainAnswer");
+    if(m&&m.answer){
+      if(!answer){answer=document.createElement("div");answer.className="simExplainAnswer";body.appendChild(answer);}
+      answer.textContent=String(m.answer);
+      answer.style.display="";
+    }else if(answer){answer.style.display="none";}
+  }
   box.classList.remove("hidden","minimized","min");
   box.classList.add("show");
   box.style.display="";
