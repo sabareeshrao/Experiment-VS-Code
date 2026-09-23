@@ -38,7 +38,12 @@ function surfaceContinuation(action){const groups={
  migration:['openMigrationWizard','configureMigrationSource','configureMigrationTarget','runMigration'],
  transfer:['openSchemaTransferWizard','runSchemaTransfer']
 };return !!groups[surfaceMode]?.includes(action)}
-function clearTransientBeforeAction(action){clearTimeout(toastTimer);refs.toast.classList.remove('show');refs.menuPopup.classList.remove('show');hideContext();hideAutocomplete();if(refs.modalLayer.classList.contains('show')&&!['testConnection'].includes(action))closeModal();if(surfaceMode&&!surfaceContinuation(action))closeSurface()}
+function clearTransientBeforeAction(action){
+ clearTimeout(toastTimer);refs.toast.classList.remove('show');refs.menuPopup.classList.remove('show');hideContext();hideAutocomplete();
+ if(!['typeSql','showAutocomplete','hideAutocomplete','setSql'].includes(action)&&currentSqlRange){currentSqlRange=null;renderSql()}
+ if(refs.modalLayer.classList.contains('show')&&!['testConnection'].includes(action))closeModal();
+ if(surfaceMode&&!surfaceContinuation(action))closeSurface()
+}
 function card(title,body){return `<div class="eduCard"><h3>${esc(title)}</h3>${body}</div>`}
 
 function status(t){refs.statusText.textContent=t||'Ready'}

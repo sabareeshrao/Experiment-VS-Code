@@ -89,11 +89,8 @@ function ensureFallbackAssistant(){
   box.setAttribute("data-sim-explanation","1");
   box.innerHTML='<div data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><span class="grow"></span><button type="button" data-sim-explanation-min title="Minimize">−</button><button type="button" data-sim-explanation-close title="Close">×</button></div><div data-sim-explanation-body><p data-sim-explanation-text></p></div>';
   document.body.appendChild(box);
-  var min=box.querySelector("[data-sim-explanation-min]");
-  var close=box.querySelector("[data-sim-explanation-close]");
-  if(min)min.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();box.classList.toggle("minimized");});
-  if(close)close.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();box.classList.add("hidden");box.classList.remove("show");});
   applyUnifiedClasses(box);
+  bindBasicExplanationControls(box);
   return box;
 }
 function getHead(box){
@@ -282,10 +279,26 @@ function changeScale(delta){
   localStorage.setItem(scaleKey,String(next));
   applyScale();
 }
+function bindBasicExplanationControls(box){
+  if(!box||box.dataset.simBasicControlsBound==="1")return;
+  box.dataset.simBasicControlsBound="1";
+  var min=box.querySelector("[data-sim-explanation-min]");
+  var close=box.querySelector("[data-sim-explanation-close]");
+  if(min)min.addEventListener("click",function(e){
+    e.preventDefault();e.stopPropagation();
+    box.classList.toggle("minimized");
+  });
+  if(close)close.addEventListener("click",function(e){
+    e.preventDefault();e.stopPropagation();
+    box.classList.add("hidden");
+    box.classList.remove("show");
+  });
+}
 function ensureControls(){
   var box=getAssistant();
   if(!box)return;
   applyUnifiedClasses(box);
+  bindBasicExplanationControls(box);
   bindPositionPersistence();
   var head=getHead(box);
   if(!head||head.querySelector(".simExplainSizeControls")){applyScale();return;}
