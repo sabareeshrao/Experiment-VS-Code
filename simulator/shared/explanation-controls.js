@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var CONTROLS_VERSION=16;
+var CONTROLS_VERSION=17;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -8,21 +8,25 @@ window.__SIM_EXPLANATION_CONTROLS__=true;
 // Additive only: answer styling lives inside the existing explanation body.
 // It does not change the assistant's width, position, scale controls, header or drag behavior.
 var ANSWER_STYLE_ID="sim-explanation-answer-style";
-if(!document.getElementById(ANSWER_STYLE_ID)){
-  var answerStyle=document.createElement("style");
+var answerStyle=document.getElementById(ANSWER_STYLE_ID);
+if(!answerStyle){
+  answerStyle=document.createElement("style");
   answerStyle.id=ANSWER_STYLE_ID;
-  answerStyle.textContent=".simExplainAnswer{margin-top:10px;padding:8px 9px;border:1px solid rgba(140,146,156,.48);border-radius:5px;background:rgba(0,0,0,.16);color:inherit;white-space:pre-wrap}.simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#9aa0aa;font:700 9px/1.2 'Segoe UI',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase}";
   document.head.appendChild(answerStyle);
 }
+answerStyle.textContent=".simExplainAnswer{margin-top:10px;padding:8px 9px;border:1px solid rgba(140,146,156,.48);border-radius:5px;background:rgba(0,0,0,.16);color:inherit;white-space:pre-wrap}.simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#9aa0aa;font:700 9px/1.2 'Segoe UI',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase}";
 
 var STYLE_ID="sim-explanation-controls-style";
-if(!document.getElementById(STYLE_ID)){
-  var style=document.createElement("style");
+var style=document.getElementById(STYLE_ID);
+if(!style){
+  style=document.createElement("style");
   style.id=STYLE_ID;
-  style.textContent=[
+  document.head.appendChild(style);
+}
+style.textContent=[
     /* One explanation-card UI for every simulator.  Postman's compact card is
        the visual reference: neutral surface, quiet header, clear controls. */
-    "[data-sim-explanation].simExplainUnified{position:fixed!important;z-index:20000!important;width:min(360px,calc(100vw - 18px));max-width:calc(100vw - 18px)!important;background:#242424!important;color:#e8e8e8!important;border:1px solid #4b4b4b!important;border-radius:6px!important;box-shadow:0 10px 34px rgba(0,0,0,.42)!important;overflow:hidden!important;user-select:none!important;touch-action:none!important}",
+    "[data-sim-explanation].simExplainUnified{position:fixed!important;z-index:20000!important;max-width:calc(100vw - 18px)!important;background:#242424!important;color:#e8e8e8!important;border:1px solid #4b4b4b!important;border-radius:6px!important;box-shadow:0 10px 34px rgba(0,0,0,.42)!important;overflow:hidden!important;user-select:none!important;touch-action:none!important}",
     "body.theme-light [data-sim-explanation].simExplainUnified,body[data-sim-app='postman']:not(.theme-dark) [data-sim-explanation].simExplainUnified{background:#fff!important;color:#222!important;border-color:#888!important;box-shadow:0 10px 34px rgba(0,0,0,.25)!important}",
     "[data-sim-explanation].simExplainUnified.hidden{display:none!important}",
     "[data-sim-explanation].simExplainUnified.show{display:block!important}",
@@ -49,7 +53,7 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
     ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
 
-    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;height:auto!important;max-height:calc(100vh - 96px)!important;overflow:auto!important;user-select:text!important}",
+    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;height:auto!important;max-height:none!important;overflow:visible!important;user-select:text!important}",
     "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
     ".simExplainGlobalBody .jenkinsAssistantBody{padding:0!important;font:inherit!important;line-height:inherit!important;color:inherit!important}",
     ".simExplainGlobalBody p{margin:0!important}",
@@ -66,15 +70,13 @@ if(!document.getElementById(STYLE_ID)){
        applied at runtime. */
     "[data-sim-explanation-drag],#ideAssistantDrag,#assistantHead,#pgAssistantHead,#ssmsAssistantDrag,#jiraAssistantHead,#jenkinsAssistantHead,.ideAssistantHead,.assistantHead,.pgAssistantHead{cursor:grab!important;touch-action:none!important;user-select:none!important}"
   ].join("");
-  document.head.appendChild(style);
-}
 
 var assistantSelectors=["[data-sim-explanation]","#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
 var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
 var textSelectors=["[data-sim-explanation-text]","#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
 var pathParts=location.pathname.split("/").filter(Boolean);
 var appKey=(document.body&&document.body.dataset&&document.body.dataset.simApp)||pathParts[pathParts.length-2]||"global";
-var scaleKey="sim.explanationScale.v1";
+var scaleKey="sim.explanationScale.v2."+appKey;
 var positionKey="sim.explanationPosition.v2."+appKey;
 var minimizedKey="sim.explanationMinimized.v1."+appKey;
 var dragPending=false;
@@ -93,6 +95,18 @@ function getAssistant(){
     if(el)return el;
   }
   return null;
+}
+function captureNativeMetrics(box){
+  if(!box||box.dataset.simNativeMetrics==="1")return;
+  var body=getBody(box);
+  var r=box.getBoundingClientRect();
+  var cs=body?getComputedStyle(body):null;
+  if(r.width>0)box.dataset.simExplainBaseWidth=String(Math.round(r.width*100)/100);
+  if(cs){
+    var fs=parseFloat(cs.fontSize);
+    if(Number.isFinite(fs)&&fs>0)box.dataset.simExplainBaseFont=String(fs);
+  }
+  box.dataset.simNativeMetrics="1";
 }
 function ensureFallbackAssistant(){
   var existing=getAssistant();
@@ -271,8 +285,30 @@ function bindPositionPersistence(){
   document.addEventListener("pointercancel",finishDrag,true);
 }
 function rememberBase(box,body,text){
-  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth="360";
-  if(!box.dataset.simExplainBaseFont)box.dataset.simExplainBaseFont="10.5";
+  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth=String(Math.max(240,Math.round(box.getBoundingClientRect().width||360)));
+  if(!box.dataset.simExplainBaseFont){
+    var fs=body?parseFloat(getComputedStyle(body).fontSize):NaN;
+    box.dataset.simExplainBaseFont=String(Number.isFinite(fs)&&fs>0?fs:10.5);
+  }
+}
+function fitExplanationToViewport(box){
+  if(!box)return;
+  var body=getBody(box);
+  if(!body)return;
+  body.style.maxHeight="none";
+  body.style.overflowY="visible";
+  requestAnimationFrame(function(){
+    var head=getHead(box);
+    var natural=box.getBoundingClientRect();
+    var available=Math.max(96,innerHeight-8);
+    if(natural.height>available){
+      var headH=head?head.getBoundingClientRect().height:0;
+      var bodyMax=Math.max(56,available-headH-2);
+      body.style.maxHeight=Math.floor(bodyMax)+"px";
+      body.style.overflowY="auto";
+    }
+    restorePosition();
+  });
 }
 function applyScale(){
   var box=getAssistant();
@@ -281,19 +317,31 @@ function applyScale(){
   rememberBase(box,body,text);
   var baseWidth=parseFloat(box.dataset.simExplainBaseWidth)||340;
   var baseFont=parseFloat(box.dataset.simExplainBaseFont)||11;
-  var width=Math.max(240,baseWidth+(level*58));
-  var font=Math.max(9,baseFont+(level*1.45));
-  box.style.width="min("+Math.round(width)+"px, calc(100vw - 18px))";
+  if(level===0){
+    box.style.width="";
+    if(body){
+      body.style.fontSize="";
+      body.style.lineHeight="";
+    }
+    if(text){
+      text.style.fontSize="";
+      text.style.lineHeight="";
+    }
+  }else{
+    var width=Math.max(240,baseWidth+(level*58));
+    var font=Math.max(9,baseFont+(level*1.45));
+    box.style.width="min("+Math.round(width)+"px, calc(100vw - 18px))";
+    if(body){
+      body.style.fontSize=font.toFixed(1)+"px";
+      body.style.lineHeight="1.58";
+    }
+    if(text){
+      text.style.fontSize="inherit";
+      text.style.lineHeight="inherit";
+    }
+  }
   box.style.maxWidth="calc(100vw - 18px)";
-  if(body){
-    body.style.fontSize=font.toFixed(1)+"px";
-    body.style.lineHeight="1.58";
-  }
-  if(text){
-    text.style.fontSize="inherit";
-    text.style.lineHeight="inherit";
-  }
-  requestAnimationFrame(restorePosition);
+  fitExplanationToViewport(box);
 }
 function changeScale(delta){
   var next=Math.max(-2,Math.min(4,getScale()+delta));
@@ -330,6 +378,7 @@ function bindBasicExplanationControls(box){
 function ensureControls(){
   var box=getAssistant();
   if(!box)return;
+  captureNativeMetrics(box);
   applyUnifiedClasses(box);
   ensureBasicHeaderButtons(box);
   bindBasicExplanationControls(box);
@@ -380,6 +429,7 @@ function hideLanguageLabels(box){
 function refresh(m){
   var box=getAssistant()||ensureFallbackAssistant();
   if(!box)return;
+  captureNativeMetrics(box);
   applyUnifiedClasses(box);
   var title=firstWithin(box,["[data-sim-explanation-title]","#ideAssistantTitle","#assistantTitle","#pgAssistantTitle","#ssmsAssistantTitle","#jenkinsAssistantTitle"]);
   var text=getText(box);
@@ -413,7 +463,7 @@ function refresh(m){
   hideLanguageLabels(box);
   hideExplanationMeta(box);
   applyScale();
-  requestAnimationFrame(restorePosition);
+  fitExplanationToViewport(box);
 }
 
 window.addEventListener("message",function(e){
@@ -446,6 +496,5 @@ document.addEventListener("keydown",function(e){
 
 window.addEventListener("resize",function(){
   applyScale();
-  requestAnimationFrame(restorePosition);
 });
 })();
