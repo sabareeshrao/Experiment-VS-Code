@@ -39,3 +39,14 @@ body.theme-dark{--surface:#27292d;--surface2:#2b2d30;--surface3:#35373b;--line:#
 @media(max-width:1100px){:root{--leftW:210px;--rightW:220px}.treeRoot,.treeRow,.treeAux{font-size:11px}.nodeMeta{display:none}}
 @media(max-width:950px){.work,.work.hasRightTools,.work.projectHidden.hasRightTools{padding-right:0;grid-template-columns:var(--leftW) 3px minmax(0,1fr)}.work.projectHidden{grid-template-columns:0 0 minmax(0,1fr)}.sdkChip{display:none}}
 @media(max-width:650px){.work,.work.hasRightTools,.work.projectHidden,.work.projectHidden.hasRightTools{padding:0;grid-template-columns:minmax(0,1fr)}.menu{padding-left:0;font-size:10px}.menuItem{padding:4px}.toolbar{padding-left:5px}.titlebar{padding:0 7px}.windowGlyphs{display:none}.debugGrid{grid-template-columns:1fr 1fr}.debugPane:last-child{grid-column:1/-1}.status{padding-left:0;font-size:10px}.status #statusText{max-width:30%}}
+
+.editorPane.editorSplit{grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);grid-template-rows:34px minmax(0,1fr)}
+.editorPane.editorSplit>.tabs{grid-column:1/4;grid-row:1}
+.editorPane.editorSplit>.editorWrap{grid-column:1;grid-row:2;min-width:0}
+.editorSplitDivider{display:none;background:#393b40;grid-column:2;grid-row:2}
+.editorSplitWrap{display:none;grid-column:3;grid-row:2;min-width:0;min-height:0;background:#1e1f22;grid-template-rows:31px minmax(0,1fr);overflow:hidden}
+.editorPane.editorSplit>.editorSplitDivider{display:block}
+.editorPane.editorSplit>.editorSplitWrap{display:grid!important}
+.editorSplitHead{height:31px;display:flex;align-items:center;padding:0 8px;background:#2b2d30;border-bottom:1px solid #393b40;font-size:11px;color:#bcbec4}
+.editorSplitHead>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.editorSplitClose{margin-left:auto;width:24px;height:24px;border:0;background:transparent;color:#92969f;cursor:pointer}
+.editorSplitCode{min-width:0;min-height:0;overflow:auto;padding:8px 0 30px;font:12px/22px "JetBrains Mono","Cascadia Code",Consolas,monospace}.splitCodeLine{display:grid;grid-template-columns:44px minmax(max-content,1fr);min-height:22px}.splitLineNo{text-align:right;padding-right:9px;color:#6f737a;user-select:none}.splitCodeText{padding:0 12px;white-space:pre}

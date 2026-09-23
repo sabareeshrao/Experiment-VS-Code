@@ -218,7 +218,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
   .toolbar{padding-left:32px}
 }
 </style>
-<link rel="stylesheet" href="ide-polish.css?v=2">
+<link rel="stylesheet" href="ide-polish.css?v=3">
 </head>
 <body class="theme-dark" data-sim-app="intellij_idea">
 <div class="app" id="app">
@@ -234,7 +234,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
    <div class="toolRail rightRail"><button class="rail" title="Notifications">○</button><button class="rail" title="Database">▤</button><button class="rail" title="Maven">m</button></div>
    <div class="left" id="leftPanel"><div class="head projectHead"><span class="projectHeadTitle">Project⌄</span><div class="grow"></div><button class="projectHeadTool" title="New">＋</button><button class="projectHeadTool" title="Autoscroll">⌖</button><button class="projectHeadTool" title="Collapse All">⌃</button><button class="projectHeadTool" title="Expand All">⌄</button><button class="projectHeadTool" title="More">⋮</button><span id="projectViewLabel" class="hidden">Project</span></div><div class="tree" id="tree"></div></div>
    <div class="splitV splitL" id="splitL"></div>
-   <div class="editorPane" id="editorPane"><div class="tabs" id="tabs"></div><div class="editorWrap" id="editorWrap"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre><div class="popup completion" id="completion"></div><div class="popup intentions" id="intentions"></div></div></div>
+   <div class="editorPane" id="editorPane"><div class="tabs" id="tabs"></div><div class="editorWrap" id="editorWrap"><div class="gutter" id="gutter"></div><pre class="code" id="code"></pre><div class="popup completion" id="completion"></div><div class="popup intentions" id="intentions"></div></div><div class="editorSplitDivider" id="editorSplitDivider"></div><section class="editorSplitWrap hidden" id="editorSplitWrap"><div class="editorSplitHead"><span id="editorSplitTitle">Split Editor</span><button class="editorSplitClose" id="editorSplitClose" title="Close Split">×</button></div><div class="editorSplitCode" id="editorSplitCode"></div></section></div>
    <div class="splitV splitR" id="splitR"></div>
    <div class="right" id="rightPanel"><div class="toolWindowTabs"><div class="twTab active" data-right="structure">Structure</div><div class="twTab" data-right="maven" data-feature="maven">Maven</div><div class="twTab" data-right="database" data-feature="database">Database</div></div><div class="rightBody" id="rightBody"></div></div>
    <div class="splitH" id="splitH"></div>
@@ -253,7 +253,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="enterprise-ui.js?v=1"></script>
-<script src="engine.js?v=17"></script>
+<script src="engine.js?v=18"></script>
 <script src="adaptive-ui.js?v=1"></script>
   <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=9"></script>
