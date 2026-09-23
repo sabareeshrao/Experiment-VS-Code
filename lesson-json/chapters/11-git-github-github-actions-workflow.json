@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "chapter-11",
+  "title": "11: Git, GitHub & GitHub Actions Workflow",
+  "subtitle": "Verify the integrated source-control and CI simulators in one realistic Java developer flow.",
+  "steps": [
+    {
+      "title": "Open the Java Practice repository in Git",
+      "why": "Developer local repository ni Git lo open chestadu. Working tree, current branch, remotes, staged changes mariyu commit history ikkada manage chestam.",
+      "software": "git",
+      "action": {
+        "action": "openRepository",
+        "data": {
+          "name": "Java-Practice",
+          "path": "C:\\Users\\developer\\Java-Practice",
+          "branch": "main"
+        }
+      }
+    },
+    {
+      "title": "Review the Student.java diff",
+      "why": "Commit cheyyadaniki mundu exact source changes ni diff lo review chestam. Added and removed lines ni verify chesi accidental changes avoid chestam.",
+      "software": "git",
+      "action": {
+        "action": "showDiff",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    },
+    {
+      "title": "Stage Student.java for commit",
+      "why": "Reviewed file ni staging area ki move chestam. Git lo commit ki include kavalsina exact changes ni staging separate chestundi.",
+      "software": "git",
+      "action": {
+        "action": "stageFile",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    },
+    {
+      "title": "Inspect local Git commit history",
+      "why": "Local repository history lo previous commits, hashes, branches mariyu project progression ni verify chestam.",
+      "software": "git",
+      "action": {
+        "action": "openHistory",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open the Java Practice repository on GitHub",
+      "why": "Local Git work remote collaboration ki GitHub lo kanipistundi. Repository files, branches, commits, issues, pull requests mariyu settings remote side lo manage chestam.",
+      "software": "github",
+      "action": {
+        "action": "openRepository",
+        "data": {
+          "name": "Java-Practice"
+        }
+      }
+    },
+    {
+      "title": "Review pull request number 2",
+      "why": "Feature branch ni main branch tho merge cheyyadaniki mundu pull request lo discussion, checks, reviewers mariyu changed files ni inspect chestam.",
+      "software": "github",
+      "action": {
+        "action": "openPullRequest",
+        "data": {
+          "number": 2
+        }
+      }
+    },
+    {
+      "title": "Inspect repository security",
+      "why": "GitHub Security area lo dependency alerts, code scanning, secret scanning mariyu repository security posture ni review cheyyachu.",
+      "software": "github",
+      "action": {
+        "action": "openSecurity",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open GitHub Actions",
+      "why": "Repository automation ni GitHub Actions lo inspect chestam. Workflow YAML, triggers, jobs, runners, secrets, caches mariyu environments ikkada manage chestam.",
+      "software": "github_actions",
+      "action": {
+        "action": "openActions",
+        "data": {}
+      }
+    },
+    {
+      "title": "Inspect successful Java CI run 42",
+      "why": "CI run lo jobs and individual steps expand chesi checkout, Java setup, Maven verification, logs, annotations mariyu artifacts successful ga complete ayyayo verify chestam.",
+      "software": "github_actions",
+      "action": {
+        "action": "openRun",
+        "data": {
+          "id": "42"
+        }
+      }
+    },
+    {
+      "title": "Inspect GitHub Actions secrets and variables",
+      "why": "CI/CD credentials ni source code lo hard-code cheyyakunda repository secrets use chestam. Non-sensitive configuration values kosam Actions variables separate ga maintain chestam.",
+      "software": "github_actions",
+      "action": {
+        "action": "openSecrets",
+        "data": {}
+      }
+    }
+  ]
+}

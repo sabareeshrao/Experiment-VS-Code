@@ -1,0 +1,1037 @@
+{
+  "schema_version": 1,
+  "id": "chapter-10",
+  "title": "10: Power BI Desktop Feature-Rich Analytics Workflow",
+  "steps": [
+    {
+      "title": "Open the Campus Performance Analytics PBIX",
+      "why": "Blank report badulu already-developed campus dashboard ni open chesi realistic Power BI project madhyalo start chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openReport",
+        "data": {
+          "report": "Campus Performance Analytics"
+        }
+      }
+    },
+    {
+      "title": "Inspect the populated Executive Overview page",
+      "why": "Executive Overview lo KPI cards, department chart, attendance trend, slicer, donut mariyu matrix already populated unnayi.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectPage",
+        "data": {
+          "pageId": "page1"
+        }
+      }
+    },
+    {
+      "title": "Open Get Data without destroying the report",
+      "why": "Existing project lo new source add cheyyadam ela untundo Get Data surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openGetData",
+        "data": {}
+      }
+    },
+    {
+      "title": "Select the SQL Server connector",
+      "why": "Campus model source SQL Server kabatti connector selection state ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectConnector",
+        "data": {
+          "connector": "SQL Server"
+        }
+      }
+    },
+    {
+      "title": "Inspect the existing JavaPracticeDb connection",
+      "why": "Existing report source connection fields and Import mode ni realistic dialog lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "connectDataSource",
+        "data": {
+          "source": {
+            "name": "JavaPracticeDb",
+            "connector": "SQL Server"
+          },
+          "items": [
+            {
+              "name": "Department"
+            },
+            {
+              "name": "Course"
+            },
+            {
+              "name": "Student"
+            },
+            {
+              "name": "Enrollment"
+            },
+            {
+              "name": "Attendance"
+            },
+            {
+              "name": "Calendar"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Open Navigator for the campus model",
+      "why": "Navigator tree lo six source tables mariyu preview surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openNavigator",
+        "data": {}
+      }
+    },
+    {
+      "title": "Preview the Student source table",
+      "why": "Student table rows/columns Navigator preview lo ela kanipistayo chustam.",
+      "software": "powerbi",
+      "action": {
+        "action": "previewNavigatorItem",
+        "data": {
+          "name": "Student"
+        }
+      }
+    },
+    {
+      "title": "Close Navigator and keep the current model",
+      "why": "Existing model ni disturb cheyyakunda Navigator close chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "cancelNavigator",
+        "data": {}
+      }
+    },
+    {
+      "title": "Inspect recent data sources",
+      "why": "Power BI recent sources experience lo JavaPracticeDb source ni verify chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openRecentSources",
+        "data": {}
+      }
+    },
+    {
+      "title": "Inspect data source settings",
+      "why": "Credentials/source configuration entry point ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openDataSourceSettings",
+        "data": {}
+      }
+    },
+    {
+      "title": "Return to Executive Overview",
+      "why": "Populated dashboard canvas ki return ayi visual authoring features explore chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openReportView",
+        "data": {}
+      }
+    },
+    {
+      "title": "Select the Average Score by Department chart",
+      "why": "Visual select ayyaka resize handles, Visualizations pane mariyu formatting context active avuthayi.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "scoreByDept"
+        }
+      }
+    },
+    {
+      "title": "Open the modern on-object Build visual menu",
+      "why": "Selected chart meeda direct build/format affordance ni display chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openOnObjectBuild",
+        "data": {
+          "id": "scoreByDept"
+        }
+      }
+    },
+    {
+      "title": "Open the Format visual surface",
+      "why": "Selected chart formatting options ni Visualizations pane lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openFormatPane",
+        "data": {
+          "id": "scoreByDept"
+        }
+      }
+    },
+    {
+      "title": "Show the selected visual as a data table",
+      "why": "Chart underlying values ni table form lo inspect cheyyadam demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "showVisualTable",
+        "data": {
+          "id": "scoreByDept"
+        }
+      }
+    },
+    {
+      "title": "Select the Semester slicer",
+      "why": "Slicer visual ni select chesi report interactions demonstrate cheyyadaniki prepare chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "semesterSlicer"
+        }
+      }
+    },
+    {
+      "title": "Filter the report to Spring 2026",
+      "why": "Slicer selection cross-filter state ni set chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addSlicerSelection",
+        "data": {
+          "id": "semesterSlicer",
+          "field": "Enrollment[semester]",
+          "value": "Spring 2026"
+        }
+      }
+    },
+    {
+      "title": "Apply a report-level 2026 filter",
+      "why": "Filters pane lo report-level filtering concept ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setReportFilter",
+        "data": {
+          "field": "Calendar[Year]",
+          "value": "2026"
+        }
+      }
+    },
+    {
+      "title": "Open the Selection pane",
+      "why": "Canvas objects listing/visibility workflow ni Selection pane lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openSelectionPane",
+        "data": {}
+      }
+    },
+    {
+      "title": "Create an Executive Snapshot bookmark",
+      "why": "Current report state ni reusable bookmark ga store chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addBookmark",
+        "data": {
+          "id": "bmExecLive",
+          "name": "Executive Snapshot - Live"
+        }
+      }
+    },
+    {
+      "title": "Open the Bookmarks pane",
+      "why": "Saved navigation/report states ni Bookmarks pane lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openBookmarksPane",
+        "data": {}
+      }
+    },
+    {
+      "title": "Apply the Executive Snapshot bookmark",
+      "why": "Stored report page/filter state ni restore chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "applyBookmark",
+        "data": {
+          "id": "bmExecutive"
+        }
+      }
+    },
+    {
+      "title": "Open the Student Performance page",
+      "why": "Scatter chart, course comparison, student detail table mariyu risk slicer unna second report page ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectPage",
+        "data": {
+          "pageId": "page2"
+        }
+      }
+    },
+    {
+      "title": "Select Average Score by Course",
+      "why": "Course comparison visual ni select chesi visual-type and field-well operations demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "courseScores"
+        }
+      }
+    },
+    {
+      "title": "Change the course chart to clustered bar",
+      "why": "Same data ni different visual encoding lo show cheyyadam demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setVisualType",
+        "data": {
+          "id": "courseScores",
+          "type": "clusteredBar"
+        }
+      }
+    },
+    {
+      "title": "Add course name to the axis field well",
+      "why": "Visual field well binding ni explicitly add chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addFieldToWell",
+        "data": {
+          "id": "courseScores",
+          "well": "x",
+          "field": "Course[course_name]"
+        }
+      }
+    },
+    {
+      "title": "Add Average Score to the values field well",
+      "why": "Measure ni values well ki bind chesi visual construction pattern demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addFieldToWell",
+        "data": {
+          "id": "courseScores",
+          "well": "values",
+          "field": "Measures[Average Score]"
+        }
+      }
+    },
+    {
+      "title": "Apply conditional formatting to course scores",
+      "why": "Data-driven formatting state ni selected visual meeda apply chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setConditionalFormatting",
+        "data": {
+          "id": "courseScores",
+          "field": "Measures[Average Score]",
+          "rule": "color scale"
+        }
+      }
+    },
+    {
+      "title": "Add a report tooltip to the course chart",
+      "why": "Hover context kosam tooltip field ni selected visual ki attach chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setVisualTooltip",
+        "data": {
+          "id": "courseScores",
+          "fields": [
+            "Course[course_name]",
+            "Measures[Average Score]"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Configure slicer-to-table interaction",
+      "why": "Risk Status slicer Student Detail table ni filter cheyyela visual interaction set chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setInteraction",
+        "data": {
+          "source": "riskSlicer",
+          "target": "studentTable",
+          "mode": "filter"
+        }
+      }
+    },
+    {
+      "title": "Drill down on course performance",
+      "why": "Hierarchy-enabled visual navigation lo next detail level ki drill chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "drillDown",
+        "data": {
+          "id": "courseScores"
+        }
+      }
+    },
+    {
+      "title": "Drill back up",
+      "why": "Previous hierarchy level ki return avutham.",
+      "software": "powerbi",
+      "action": {
+        "action": "drillUp",
+        "data": {
+          "id": "courseScores"
+        }
+      }
+    },
+    {
+      "title": "Add a trend line to Score vs Attendance",
+      "why": "Scatter visual analytics pane concept ni trend line tho demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addTrendLine",
+        "data": {
+          "id": "scoreScatter"
+        }
+      }
+    },
+    {
+      "title": "Inspect the Analytics pane",
+      "why": "Trend/forecast/constant-line tools ekkada untayo pane surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openAnalyticsPane",
+        "data": {
+          "id": "scoreScatter"
+        }
+      }
+    },
+    {
+      "title": "Open the Visual Gallery page",
+      "why": "Common Power BI chart/table/slicer/AI visual types one page lo side-by-side inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectPage",
+        "data": {
+          "pageId": "page4"
+        }
+      }
+    },
+    {
+      "title": "Select the donut visual",
+      "why": "Part-to-whole chart selection and context ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g3"
+        }
+      }
+    },
+    {
+      "title": "Select the scatter visual",
+      "why": "Relationship/distribution visual type ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g4"
+        }
+      }
+    },
+    {
+      "title": "Select the funnel visual",
+      "why": "Stage-conversion style visualization ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g5"
+        }
+      }
+    },
+    {
+      "title": "Select the gauge visual",
+      "why": "Target/progress visualization ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g6"
+        }
+      }
+    },
+    {
+      "title": "Select the table visual",
+      "why": "Tabular detail visual ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g9"
+        }
+      }
+    },
+    {
+      "title": "Select the matrix visual",
+      "why": "Pivot-style matrix visual ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g10"
+        }
+      }
+    },
+    {
+      "title": "Select the decomposition tree",
+      "why": "AI-assisted decomposition visual surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g11"
+        }
+      }
+    },
+    {
+      "title": "Select Key Influencers",
+      "why": "AI explanatory visual surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectVisual",
+        "data": {
+          "id": "g12"
+        }
+      }
+    },
+    {
+      "title": "Open Table view for Student",
+      "why": "Semantic model lo raw Student rows/columns ni Table view lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openDataView",
+        "data": {
+          "table": "Student"
+        }
+      }
+    },
+    {
+      "title": "Sort Student Name ascending",
+      "why": "Table view grid lo column sorting behavior ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "sortDataColumn",
+        "data": {
+          "table": "Student",
+          "column": "Student Name",
+          "direction": "asc"
+        }
+      }
+    },
+    {
+      "title": "Filter to At Risk students",
+      "why": "Table view column filtering state ni risk_status meeda apply chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "filterDataColumn",
+        "data": {
+          "table": "Student",
+          "column": "risk_status",
+          "value": "At Risk"
+        }
+      }
+    },
+    {
+      "title": "Mark City as a geographic category",
+      "why": "Field metadata lo City data category ni set chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setDataCategory",
+        "data": {
+          "table": "Student",
+          "column": "city",
+          "value": "City"
+        }
+      }
+    },
+    {
+      "title": "Inspect Enrollment data",
+      "why": "Fact-style Enrollment table grid ni Table view lo switch chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectDataTable",
+        "data": {
+          "table": "Enrollment"
+        }
+      }
+    },
+    {
+      "title": "Set Score default summarization to Average",
+      "why": "Numeric score field reporting default ni Sum badulu Average ga set chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setSummarization",
+        "data": {
+          "table": "Enrollment",
+          "column": "score",
+          "value": "Average"
+        }
+      }
+    },
+    {
+      "title": "Open Model view with all six tables",
+      "why": "Department, Course, Student, Enrollment, Attendance, Calendar relationship diagram ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openModelView",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open Manage Relationships",
+      "why": "Five active one-to-many relationships list/dialog ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openManageRelationships",
+        "data": {}
+      }
+    },
+    {
+      "title": "Create a Course hierarchy",
+      "why": "Department-to-course drill hierarchy ni semantic model lo create chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "createHierarchy",
+        "data": {
+          "id": "courseHierarchy2",
+          "name": "Department > Course",
+          "table": "Course",
+          "levels": [
+            "department_id",
+            "course_name"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Mark Calendar as the date table",
+      "why": "Time intelligence kosam Calendar semantic role ni explicitly mark chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "markDateTable",
+        "data": {
+          "table": "Calendar",
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Hide Student gender from report authors",
+      "why": "Model field visibility setting ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "hideField",
+        "data": {
+          "table": "Student",
+          "field": "gender",
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Confirm Import storage mode",
+      "why": "Table storage mode behavior ni semantic model lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setTableStorageMode",
+        "data": {
+          "table": "Enrollment",
+          "mode": "Import"
+        }
+      }
+    },
+    {
+      "title": "Create a Pass Rate DAX measure",
+      "why": "Modeling workflow lo reusable measure ni create chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "createMeasure",
+        "data": {
+          "id": "m_pass_rate",
+          "name": "Pass Rate",
+          "table": "Measures",
+          "dax": "DIVIDE(CALCULATE(COUNTROWS(Enrollment), Enrollment[score] >= 70), COUNTROWS(Enrollment))",
+          "format": "0.0%"
+        }
+      }
+    },
+    {
+      "title": "Format Pass Rate as a percentage",
+      "why": "Measure display formatting ni percentage style ki set chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "formatMeasure",
+        "data": {
+          "name": "Pass Rate",
+          "format": "0.0%"
+        }
+      }
+    },
+    {
+      "title": "Open DAX Query View",
+      "why": "Semantic model meeda DAX query authoring surface, Model explorer mariyu Results pane ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openDaxQueryView",
+        "data": {}
+      }
+    },
+    {
+      "title": "Create a new DAX query tab",
+      "why": "Multiple DAX query tabs workflow ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "newDaxQuery",
+        "data": {
+          "id": "dax2",
+          "name": "At Risk Analysis"
+        }
+      }
+    },
+    {
+      "title": "Type an At Risk DAX query",
+      "why": "EVALUATE + SUMMARIZECOLUMNS query ni editor lo type chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "typeDaxQuery",
+        "data": {
+          "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Student[risk_status],\n    \"Students\", [Total Students],\n    \"Average Score\", [Average Score]\n)"
+        }
+      }
+    },
+    {
+      "title": "Run the DAX query",
+      "why": "Query results grid lo risk status summary rows ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "runDaxQuery",
+        "data": {
+          "results": [
+            [
+              "Risk Status",
+              "Students",
+              "Average Score"
+            ],
+            [
+              "At Risk",
+              2,
+              "76.0"
+            ],
+            [
+              "On Track",
+              4,
+              "88.0"
+            ],
+            [
+              "High Performer",
+              2,
+              "96.0"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "title": "Open TMDL View",
+      "why": "Semantic model metadata ni code-first TMDL editor lo inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openTmdlView",
+        "data": {}
+      }
+    },
+    {
+      "title": "Script the Enrollment table to TMDL",
+      "why": "Fact table metadata/measure definition ni TMDL script ga generate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "scriptTmdlObject",
+        "data": {
+          "table": "Enrollment"
+        }
+      }
+    },
+    {
+      "title": "Preview TMDL changes",
+      "why": "Apply cheyyaka mundu semantic model changes validation/preview workflow ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "previewTmdl",
+        "data": {
+          "text": "Preview ready: Enrollment model changes validated with 0 errors."
+        }
+      }
+    },
+    {
+      "title": "Apply the TMDL script",
+      "why": "Validated TMDL metadata changes ni semantic model ki apply chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "applyTmdl",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open Power Query Editor with existing queries",
+      "why": "Six existing queries, preview grid, formula bar mariyu Applied Steps unna real transformation workspace ni open chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openPowerQuery",
+        "data": {
+          "query": "Enrollment"
+        }
+      }
+    },
+    {
+      "title": "Select the Enrollment query",
+      "why": "Fact query transformation history and preview ni focus chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectQuery",
+        "data": {
+          "query": "Enrollment"
+        }
+      }
+    },
+    {
+      "title": "Show column quality indicators",
+      "why": "Valid/error/empty data quality diagnostics ni query preview context lo enable chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "toggleColumnQuality",
+        "data": {
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Show column distribution",
+      "why": "Distinct/value distribution profiling surface ni enable chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "toggleColumnDistribution",
+        "data": {
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Profile the Score column",
+      "why": "Score field distinct/unique/error statistics ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "profileColumn",
+        "data": {
+          "query": "Enrollment",
+          "column": "score",
+          "distinct": 10,
+          "unique": 8,
+          "empty": 0,
+          "error": 0
+        }
+      }
+    },
+    {
+      "title": "Add a Performance Group conditional column",
+      "why": "Power Query Add Column workflow lo score-based classification ni add chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "addConditionalColumn",
+        "data": {
+          "query": "Enrollment",
+          "name": "Performance Group",
+          "condition": {
+            "column": "score",
+            "operator": ">=",
+            "value": 90,
+            "then": "Excellent",
+            "else": "Standard"
+          }
+        }
+      }
+    },
+    {
+      "title": "Group enrollment rows by semester",
+      "why": "Power Query Group By transformation ni fact dataset meeda demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "groupBy",
+        "data": {
+          "query": "Enrollment",
+          "columns": [
+            "semester"
+          ],
+          "aggregation": "Count Rows"
+        }
+      }
+    },
+    {
+      "title": "Close and Apply the query work",
+      "why": "Power Query changes ni semantic model ki commit chesi report authoring environment ki return avutham.",
+      "software": "powerbi",
+      "action": {
+        "action": "closeAndApply",
+        "data": {}
+      }
+    },
+    {
+      "title": "Return to Executive Overview after modeling",
+      "why": "Transformed/modelled data tho populated dashboard ni malli inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectPage",
+        "data": {
+          "pageId": "page1"
+        }
+      }
+    },
+    {
+      "title": "Open Performance Analyzer",
+      "why": "Report visual render timings inspect cheyyadaniki Optimize workflow ni open chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openPerformanceAnalyzer",
+        "data": {}
+      }
+    },
+    {
+      "title": "Start performance recording",
+      "why": "Visual query/render timing capture ni start chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "startPerformanceRecording",
+        "data": {}
+      }
+    },
+    {
+      "title": "Refresh all dashboard visuals",
+      "why": "Recording active unna appudu visuals ni refresh chesi timing events collect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "refreshVisuals",
+        "data": {
+          "durationBase": 31
+        }
+      }
+    },
+    {
+      "title": "Stop performance recording",
+      "why": "Captured timing results ni freeze chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "stopPerformanceRecording",
+        "data": {}
+      }
+    },
+    {
+      "title": "Copy a visual DAX query",
+      "why": "Performance Analyzer nundi underlying DAX query copy workflow ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "copyPerformanceQuery",
+        "data": {
+          "query": "EVALUATE SUMMARIZECOLUMNS(Course[course_name], \"Average Score\", [Average Score])"
+        }
+      }
+    },
+    {
+      "title": "Open Mobile layout",
+      "why": "Phone-specific report layout authoring surface ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openMobileLayout",
+        "data": {}
+      }
+    },
+    {
+      "title": "Position the Total Students KPI for mobile",
+      "why": "Desktop visual ni mobile canvas position list lo place chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "setMobileVisualPosition",
+        "data": {
+          "id": "kpiStudents",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 100
+        }
+      }
+    },
+    {
+      "title": "Publish the Campus Performance report",
+      "why": "Desktop nundi Power BI Service publish workflow ni start chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "publishReport",
+        "data": {}
+      }
+    },
+    {
+      "title": "Choose the Campus Analytics workspace",
+      "why": "Report destination workspace ni select chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "selectWorkspace",
+        "data": {
+          "workspace": "Campus Analytics"
+        }
+      }
+    },
+    {
+      "title": "Complete publishing",
+      "why": "PBIX/report semantic model publication success state ni demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "completePublish",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open the published report in Power BI Service",
+      "why": "Published artifact service-side view ni inspect chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openPowerBIService",
+        "data": {}
+      }
+    },
+    {
+      "title": "Export the report as PDF",
+      "why": "Report export workflow ni PDF format tho demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "exportReport",
+        "data": {
+          "format": "PDF"
+        }
+      }
+    },
+    {
+      "title": "Share the report to Microsoft Teams",
+      "why": "Collaboration/share workflow ni Teams destination tho demonstrate chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "shareReport",
+        "data": {
+          "channel": "Microsoft Teams"
+        }
+      }
+    },
+    {
+      "title": "Return to the full Executive Overview dashboard",
+      "why": "Feature tour end lo populated Power BI report canvas ki return ayi complete project state ni leave chestam.",
+      "software": "powerbi",
+      "action": {
+        "action": "openReportView",
+        "data": {}
+      }
+    }
+  ]
+}

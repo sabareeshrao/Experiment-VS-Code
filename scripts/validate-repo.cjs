@@ -68,7 +68,9 @@ const requiredRootFiles = [
   "app.js",
   "lessons.js",
   "README.md",
-  "AI_CAPABILITY_INDEX.json"
+  "AI_CAPABILITY_INDEX.json",
+  "lesson-json/course.json",
+  "lesson-json/chapter.schema.json"
 ];
 for (const file of requiredRootFiles) {
   assert(exists(file), "Missing required root file: " + file);
@@ -77,6 +79,7 @@ for (const file of requiredRootFiles) {
 assert(exists("simulator/action-contract.json"), "Missing simulator/action-contract.json");
 assert(exists("simulator/adaptive-capabilities.json"), "Missing simulator/adaptive-capabilities.json");
 assert(exists("scripts/build-capability-index.cjs"), "Missing scripts/build-capability-index.cjs");
+assert(exists("scripts/build-lessons.cjs"), "Missing scripts/build-lessons.cjs");
 
 let contract;
 let manifest;
@@ -92,6 +95,14 @@ try {
 } catch (error) {
   fail("Cannot parse simulator/adaptive-capabilities.json: " + error.message);
 }
+try {
+  const {buildCourse,renderLessons}=require("./build-lessons.cjs");
+  const expectedLessons=renderLessons(buildCourse(ROOT));
+  assert(read("lessons.js")===expectedLessons,"lessons.js is stale relative to lesson-json. Run: node scripts/build-lessons.cjs");
+} catch (error) {
+  fail("Cannot compile lesson-json source: " + error.message);
+}
+
 try {
   const raw = read("lessons.js").trim()
     .replace(/^window\.COURSE\s*=\s*/, "")

@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "id": "chapter-09",
+  "title": "9: Jenkins CI/CD Workflow",
+  "subtitle": "Troubleshoot a failed Java build, verify Jenkins pipeline configuration, rerun the Student API CI/CD pipeline, and inspect the successful output.",
+  "steps": [
+    {
+      "title": "Review Student.java before CI troubleshooting",
+      "why": "Jenkins failure ni investigate cheyyadaniki mundu developer latest Student.java change ni IntelliJ lo review chestadu. Build failure code change tho related aa ani context establish avuthundi.",
+      "software": "intellij",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    },
+    {
+      "title": "Open the Jenkins dashboard",
+      "why": "CI status check cheyyadaniki developer Jenkins dashboard open chestadu. Java Practice jobs health mariyu latest build status ikkada quick ga kanipistayi.",
+      "software": "jenkins",
+      "action": {
+        "action": "openDashboard",
+        "data": {}
+      }
+    },
+    {
+      "title": "Search for the Java Practice pipeline",
+      "why": "Multiple Jenkins jobs unna environment lo search use chesi java-practice-api pipeline ni fast ga locate chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "typeSearch",
+        "data": {
+          "text": "java-practice-api",
+          "boundary": false
+        }
+      }
+    },
+    {
+      "title": "Open java-practice-api",
+      "why": "Student API ki sambandhinchina pipeline configuration, build history mariyu latest result inspect cheyyadaniki job open chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openJob",
+        "data": {
+          "name": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Open failed build #41",
+      "why": "Latest build fail ayyindi kabatti exact stage, console output, test failure inspect cheyyadaniki build #41 open chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openBuild",
+        "data": {
+          "job": "java-practice-api",
+          "number": 41
+        }
+      }
+    },
+    {
+      "title": "Inspect the failed console output",
+      "why": "Console Output CI failure root cause identify cheyyadaniki primary place. Integration test 500 response valla build fail ayyindani verify chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "showConsole",
+        "data": {
+          "job": "java-practice-api",
+          "number": 41,
+          "text": "Started by user developer\\nRunning on linux-java21-agent\\n[Pipeline] Checkout\\nChecking out main\\n[Pipeline] Build\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nERROR StudentApiIntegrationTest: expected 200 but received 500\\nFinished: FAILURE"
+        }
+      }
+    },
+    {
+      "title": "Open the JUnit test report",
+      "why": "Console summary tarvatha exact failed test, message mariyu stack location ni Jenkins Test Result view lo inspect chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openTestResults",
+        "data": {
+          "job": "java-practice-api",
+          "number": 41
+        }
+      }
+    },
+    {
+      "title": "Open Jenkins node status",
+      "why": "Failure infrastructure problem aa kaada ani rule out cheyyadaniki Linux Java 21 agent online undho executors available unnaya ani Nodes view lo verify chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openNodes",
+        "data": {}
+      }
+    },
+    {
+      "title": "Return to the Java Practice job",
+      "why": "Agent healthy ani confirm ayyaka configuration ni validate cheyyadaniki Java Practice pipeline ki return avutham.",
+      "software": "jenkins",
+      "action": {
+        "action": "openJob",
+        "data": {
+          "name": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Open pipeline configuration",
+      "why": "SCM, Java environment, parameters, trigger mariyu Jenkinsfile settings expected values tho unnaya ani Configure screen lo check chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openConfigureJob",
+        "data": {
+          "job": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Verify the Git repository",
+      "why": "Pipeline correct source repository ni checkout cheyyali. Git URL ni Java Practice repo ki set chesi SCM configuration ni establish chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setScmGit",
+        "data": {
+          "job": "java-practice-api",
+          "url": "https://github.com/example/java-practice.git",
+          "branch": "*/main",
+          "credentials": "github-token"
+        }
+      }
+    },
+    {
+      "title": "Verify the main branch",
+      "why": "Production-like CI main branch meeda expected code ni build chesthundha ani branch specification ni confirm chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setScmBranch",
+        "data": {
+          "job": "java-practice-api",
+          "branch": "*/main"
+        }
+      }
+    },
+    {
+      "title": "Verify SCM credentials",
+      "why": "Private repository access simulation kosam Jenkins credential id correct ga attach ayyindha ani confirm chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setScmCredentials",
+        "data": {
+          "job": "java-practice-api",
+          "credentials": "github-token"
+        }
+      }
+    },
+    {
+      "title": "Set JAVA_HOME for the build",
+      "why": "Jenkins agent correct JDK 21 ni use cheyyadaniki JAVA_HOME environment variable set chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setEnvironmentVariable",
+        "data": {
+          "job": "java-practice-api",
+          "name": "JAVA_HOME",
+          "value": "/usr/lib/jvm/java-21-openjdk-amd64"
+        }
+      }
+    },
+    {
+      "title": "Set Maven memory options",
+      "why": "Maven build ki stable JVM memory settings maintain cheyyadaniki MAVEN_OPTS environment variable configure chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setEnvironmentVariable",
+        "data": {
+          "job": "java-practice-api",
+          "name": "MAVEN_OPTS",
+          "value": "-Xmx1024m"
+        }
+      }
+    },
+    {
+      "title": "Enable build parameters",
+      "why": "Same pipeline ni QA leka staging target tho reuse cheyyadaniki parameterized build enable chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setParameterized",
+        "data": {
+          "job": "java-practice-api",
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Add TARGET_ENV parameter",
+      "why": "Deployment target ni build start time lo select cheyyadaniki Choice parameter add chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "addParameter",
+        "data": {
+          "job": "java-practice-api",
+          "name": "TARGET_ENV",
+          "type": "Choice",
+          "default": "qa",
+          "description": "Deployment target",
+          "choices": [
+            "qa",
+            "staging"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Configure the CI trigger",
+      "why": "Repository changes regular ga validate avvadaniki Jenkins cron trigger ni configure chestam. Simulator scheduling state ni preserve chestundi.",
+      "software": "jenkins",
+      "action": {
+        "action": "setBuildTrigger",
+        "data": {
+          "job": "java-practice-api",
+          "type": "cron",
+          "value": "H/15 * * * *",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "title": "Use Jenkinsfile from source control",
+      "why": "Pipeline definition application repo tho version control lo undali. Jenkinsfile script path ni SCM-based pipeline ga configure chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setPipelineDefinition",
+        "data": {
+          "job": "java-practice-api",
+          "definition": "Pipeline script from SCM",
+          "scriptPath": "Jenkinsfile"
+        }
+      }
+    },
+    {
+      "title": "Update the Java Jenkinsfile",
+      "why": "Build, unit test, integration test, packaging mariyu QA deployment stages ni Jenkinsfile lo define chestam. CI workflow code laga versioned ga untundi.",
+      "software": "jenkins",
+      "action": {
+        "action": "setJenkinsfile",
+        "data": {
+          "job": "java-practice-api",
+          "text": "pipeline {\n    agent { label 'linux && java21' }\n    tools {\n        jdk 'JDK 21'\n        maven 'Maven 3.9'\n    }\n    parameters {\n        choice(name: 'TARGET_ENV', choices: ['qa', 'staging'], description: 'Deployment target')\n    }\n    stages {\n        stage('Checkout') { steps { checkout scm } }\n        stage('Build') { steps { sh 'mvn -B clean package -DskipTests' } }\n        stage('Test') {\n            parallel {\n                stage('Unit') { steps { sh 'mvn -B test' } }\n                stage('Integration') { steps { sh 'mvn -B verify -Pintegration' } }\n            }\n        }\n        stage('Package') { steps { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }\n        stage('Deploy QA') { steps { echo \"Deploying to ${params.TARGET_ENV}\" } }\n    }\n    post {\n        always { junit 'target/surefire-reports/*.xml' }\n    }\n}",
+          "boundary": false
+        }
+      }
+    },
+    {
+      "title": "Validate Jenkinsfile syntax",
+      "why": "Pipeline rerun mundu Jenkinsfile syntax valid ga undha ani validate chestam. Configuration mistake valla unnecessary build failure avoid avuthundi.",
+      "software": "jenkins",
+      "action": {
+        "action": "validateJenkinsfile",
+        "data": {
+          "valid": true,
+          "message": "Jenkinsfile syntax is valid"
+        }
+      }
+    },
+    {
+      "title": "Open Build with Parameters",
+      "why": "Corrected pipeline ni QA target tho explicit ga run cheyyadaniki Build with Parameters screen open chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openBuildWithParameters",
+        "data": {
+          "job": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Start build #42 for QA",
+      "why": "TARGET_ENV=qa tho new CI run start chestam. Jenkins build history lo #42 running build ga create avuthundi.",
+      "software": "jenkins",
+      "action": {
+        "action": "buildWithParameters",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42,
+          "status": "running",
+          "progress": 12,
+          "time": "Today, 14:05",
+          "parameters": {
+            "TARGET_ENV": "qa"
+          },
+          "stages": [
+            {
+              "name": "Checkout",
+              "status": "running",
+              "duration": "",
+              "log": "Checking out main"
+            },
+            {
+              "name": "Build",
+              "status": "",
+              "duration": "",
+              "log": ""
+            },
+            {
+              "name": "Test",
+              "status": "",
+              "duration": "",
+              "log": ""
+            },
+            {
+              "name": "Package",
+              "status": "",
+              "duration": "",
+              "log": ""
+            },
+            {
+              "name": "Deploy QA",
+              "status": "",
+              "duration": "",
+              "log": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Follow Maven and test console output",
+      "why": "Build execute avuthunnappudu developer console logs follow chesi Maven compile/test progress mariyu pipeline stage transitions ni observe chestadu.",
+      "software": "jenkins",
+      "action": {
+        "action": "appendConsole",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42,
+          "text": "[Pipeline] Build\\nmvn -B clean package -DskipTests\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nStudent API integration tests passed"
+        }
+      }
+    },
+    {
+      "title": "Complete build #42 successfully",
+      "why": "Unit mariyu integration tests pass ayyaka package archive mariyu QA deploy stages complete ayi Jenkins build SUCCESS avuthundi.",
+      "software": "jenkins",
+      "action": {
+        "action": "setBuildStatus",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42,
+          "status": "success",
+          "progress": 100,
+          "duration": "34 sec",
+          "time": "Today, 14:05",
+          "console": "Started by user developer\\nRunning on linux-java21-agent\\nCheckout completed\\nBUILD SUCCESS\\n42 unit tests passed\\nStudent API integration tests passed\\nArchived target/java-practice-1.0.0.jar\\nQA deployment completed\\nFinished: SUCCESS",
+          "stages": [
+            {
+              "name": "Checkout",
+              "status": "success",
+              "duration": "3s",
+              "log": "Checking out main\nCheckout completed."
+            },
+            {
+              "name": "Build",
+              "status": "success",
+              "duration": "13s",
+              "log": "mvn -B clean package -DskipTests\nBUILD SUCCESS"
+            },
+            {
+              "name": "Test",
+              "status": "success",
+              "duration": "11s",
+              "parallel": true,
+              "branches": [
+                {
+                  "name": "Unit",
+                  "status": "success",
+                  "duration": "4s",
+                  "log": "42 tests passed."
+                },
+                {
+                  "name": "Integration",
+                  "status": "success",
+                  "duration": "11s",
+                  "log": "Student API integration tests passed."
+                }
+              ],
+              "log": "All tests passed."
+            },
+            {
+              "name": "Package",
+              "status": "success",
+              "duration": "2s",
+              "log": "Archived target/java-practice-1.0.0.jar"
+            },
+            {
+              "name": "Deploy QA",
+              "status": "success",
+              "duration": "5s",
+              "log": "QA deployment completed."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Publish successful JUnit results",
+      "why": "Jenkins build green ayina test evidence separate ga report avvali. JUnit totals and test status ni build record lo publish chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "setTestResults",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42,
+          "results": {
+            "total": 43,
+            "passed": 43,
+            "failed": 0,
+            "tests": [
+              {
+                "name": "getStudent_returns200",
+                "suite": "StudentApiIntegrationTest",
+                "status": "passed",
+                "duration": "0.31s"
+              },
+              {
+                "name": "studentModel_mapsFields",
+                "suite": "StudentServiceTest",
+                "status": "passed",
+                "duration": "0.02s"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Review successful test results",
+      "why": "Build success badge matrame kakunda all 43 tests pass ayyaya ani Test Result view lo verify chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openTestResults",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42
+        }
+      }
+    },
+    {
+      "title": "Archive the Java application artifact",
+      "why": "Successful Maven package ni downstream deploy/release kosam Jenkins artifact ga preserve chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "addArtifact",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42,
+          "name": "target/java-practice-1.0.0.jar",
+          "size": "18.4 MB",
+          "description": "Java Practice application artifact"
+        }
+      }
+    },
+    {
+      "title": "Inspect archived artifacts",
+      "why": "Build output expected JAR create ayyindha ani Artifacts view lo verify chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openArtifacts",
+        "data": {
+          "job": "java-practice-api",
+          "number": 42
+        }
+      }
+    },
+    {
+      "title": "Inspect the source change attached to the job",
+      "why": "CI result ni triggering code change tho correlate cheyyadaniki Jenkins Changes view lo JAVA-101 commit ni inspect chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openChanges",
+        "data": {
+          "job": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Inspect the Jenkins workspace",
+      "why": "Jenkins agent checkout lo Jenkinsfile, pom.xml mariyu Student source expected ga unnaya ani Workspace view lo verify chestam.",
+      "software": "jenkins",
+      "action": {
+        "action": "openWorkspace",
+        "data": {
+          "job": "java-practice-api"
+        }
+      }
+    },
+    {
+      "title": "Return to Student.java after CI succeeds",
+      "why": "Jenkins pipeline green ayyaka developer malli IntelliJ ki return avuthadu. Code change nundi CI verification varaku developer journey continuity preserve avuthundi.",
+      "software": "intellij",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    }
+  ]
+}

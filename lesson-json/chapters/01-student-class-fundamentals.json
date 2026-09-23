@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "id": "chapter-01",
+  "title": "1: Student Class Fundamentals",
+  "subtitle": "Build Student.java from an empty project and understand fields, getters, and setters.",
+  "steps": [
+    {
+      "title": "Create the Java project",
+      "why": "Oka developer empty Java project tho start chestadu. Source files rayadaniki mundu project peru, JDK, mariyu Java language level set avuthayi.",
+      "action": {
+        "action": "newProject",
+        "data": {
+          "name": "Java Practice",
+          "sdk": "Java 21",
+          "languageLevel": "21"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Create the src folder",
+      "why": "Java source code ki oka source location kavali. Ee teaching repo lo Student.java direct ga src folder kinda untundi.",
+      "action": {
+        "action": "createPackage",
+        "data": {
+          "name": "src",
+          "path": "src"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Create Student.java",
+      "why": "Munduga source file ni create chestam. Class body empty ga untundi kabatti prati member ni step-by-step ga add cheyyachu.",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": "src/Student.java",
+          "language": "java",
+          "content": ""
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Declare the Student class",
+      "why": "Ee class declaration Student ane kottha type ni define chestundi. Student gurinchi data mariyu methods anni ee braces lopala untayi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "public class Student {\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add the rollNo field",
+      "why": "rollNo student roll number ni store chestundi. Idi whole number kabatti int type use chestunnam.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    int rollNo;\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add the attendance field",
+      "why": "isPresent attendance true leka false ani store chestundi. Kabatti boolean type ee data ki correct choice.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "    boolean isPresent;\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add the marks array",
+      "why": "Oka student ki multiple marks untayi. float[] use chesthe chala decimal marks ni oka array lo store cheyyachu.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "    float[] marks;\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add the name field",
+      "why": "name text value kabatti Java lo String type use chestunnam.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "    String name;\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add getRollNo",
+      "why": "Getter current field value ni return chestundi. getRollNo() dwara caller rollNo ni clear ga read cheyyagaladu.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public int getRollNo() {\n        return rollNo;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add setRollNo",
+      "why": "Setter kottha value ni teesukoni object field lo assign chestundi. this.rollNo ante current Student object lo unna rollNo field ani clear ga chupistundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public void setRollNo(int rollNo) {\n        this.rollNo = rollNo;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add the presence getter",
+      "why": "Boolean properties ki Java lo is... ane method naming common. isPresent() attendance state ni return chestundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public boolean isPresent() {\n        return isPresent;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add setPresent",
+      "why": "setPresent() student attendance boolean value ni update chestundi. Assignment Student class lopale control lo untundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public void setPresent(boolean present) {\n        isPresent = present;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add getMarks",
+      "why": "getMarks() marks array ni return chestundi. Dini dwara caller student marks ni read cheyyagaladu.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public float[] getMarks() {\n        return marks;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add setMarks",
+      "why": "setMarks() caller ichina marks array ni teesukoni current Student object lo store chestundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public void setMarks(float[] marks) {\n        this.marks = marks;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add getName",
+      "why": "getName() student name ni return chestundi. Field ni direct ga access cheyyakunda method dwara read cheyyachu.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public String getName() {\n        return name;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Add setName",
+      "why": "setName() oka String value ni teesukoni current Student object yokka name field lo assign chestundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n    public void setName(String name) {\n        this.name = name;\n    }\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Close the Student class",
+      "why": "Final closing brace tho Student class complete avuthundi. Ee point lo Student.java repository source structure ni match chestundi.",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "file": "src/Student.java",
+          "position": "end",
+          "code": "\n}\n"
+        }
+      },
+      "software": "intellij"
+    },
+    {
+      "title": "Review the completed class structure",
+      "why": "Structure view lo class motham scan cheyyakunda four fields, getters, setters anni oka sari choodachu. Developer ki class shape fast ga ardham avuthundi.",
+      "action": {
+        "action": "showFileStructure",
+        "data": {
+          "file": "src/Student.java"
+        }
+      },
+      "software": "intellij"
+    }
+  ]
+}

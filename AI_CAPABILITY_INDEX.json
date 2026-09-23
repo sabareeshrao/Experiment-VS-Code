@@ -1,9 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "lesson_source": {
+    "root": "lesson-json",
+    "course_manifest": "lesson-json/course.json",
+    "chapter_schema": "lesson-json/chapter.schema.json",
+    "generated_output": "lessons.js",
+    "compiler": "scripts/build-lessons.cjs"
+  },
   "file_purpose": "AI FIRST READ — capability map for transcript-to-lesson JSON generation.",
   "generated_by": "scripts/build-capability-index.cjs",
   "rules": [
     "Read this file before generating lesson JSON.",
+    "Create or edit chapters under lesson-json/; do not hand-edit lessons.js.",
+    "After lesson JSON changes run node scripts/build-lessons.cjs, then validate.",
     "Use the canonical software id and existing product feature names.",
     "Set feature_available=true only when the required feature appears in software.<id>.features. If it is absent, set feature_available=false.",
     "When indexed_actions is non-empty, reuse those canonical action names. When action_lookup_required=true, read action_source before choosing an action name.",

@@ -1,0 +1,5007 @@
+{
+  "schema_version": 1,
+  "title": "Java Practice Developer Playback",
+  "subtitle": "Lesson-by-lesson reconstruction of the Java teaching repository.",
+  "books": [
+    {
+      "id": "book-1",
+      "title": "Java & Developer Tool Foundations",
+      "subtitle": "Java fundamentals, PostgreSQL, API testing, VS Code, and Windows command-line development.",
+      "chapterStart": 1,
+      "chapterEnd": 5
+    },
+    {
+      "id": "book-2",
+      "title": "Linux, Database & Delivery Workflow",
+      "subtitle": "Linux workstation work, SQL Server, Jira collaboration, and Jenkins CI/CD.",
+      "chapterStart": 6,
+      "chapterEnd": 9
+    },
+    {
+      "id": "book-3",
+      "title": "Power BI Desktop: Full Analytics Feature Tour",
+      "subtitle": "A populated campus analytics project covering Report, Table, Model, Power Query, DAX Query, TMDL, visual analytics, performance, mobile, and publishing.",
+      "chapterStart": 10,
+      "chapterEnd": 10
+    },
+    {
+      "id": "book-4",
+      "title": "Source Control & Automation",
+      "subtitle": "Git local workflow, GitHub collaboration, and GitHub Actions CI.",
+      "chapterStart": 11,
+      "chapterEnd": 11
+    },
+    {
+      "id": "book-5",
+      "title": "MySQL Workbench: SQL Development & Database Engineering",
+      "subtitle": "A populated MySQL project covering SQL editing, schema objects, table design, administration, performance, EER modeling, migration, and preferences.",
+      "chapterStart": 12,
+      "chapterEnd": 12
+    }
+  ],
+  "package": {
+    "apps": {
+      "intellij_idea": {
+        "project": {
+          "name": "Java Practice",
+          "sdk": "Java 21",
+          "languageLevel": "21"
+        },
+        "tree": [],
+        "files": {},
+        "problems": [],
+        "breakpoints": [],
+        "runConfigurations": [],
+        "maven": {},
+        "spring": {},
+        "jpa": {},
+        "git": {
+          "branch": "main",
+          "changes": [],
+          "history": []
+        },
+        "database": {},
+        "tests": {},
+        "terminal": "",
+        "console": "",
+        "visibleFeatures": []
+      },
+      "pgadmin": {
+        "title": "Java Practice",
+        "database": "java_practice",
+        "connection": "java_practice/postgres@Local PostgreSQL",
+        "initialSelection": "Servers/Local PostgreSQL/Databases/java_practice",
+        "tree": [
+          {
+            "name": "Servers",
+            "path": "Servers",
+            "type": "folder",
+            "open": true,
+            "children": [
+              {
+                "name": "Local PostgreSQL",
+                "path": "Servers/Local PostgreSQL",
+                "type": "server",
+                "open": true,
+                "children": [
+                  {
+                    "name": "Databases",
+                    "path": "Servers/Local PostgreSQL/Databases",
+                    "type": "folder",
+                    "open": true,
+                    "children": [
+                      {
+                        "name": "java_practice",
+                        "path": "Servers/Local PostgreSQL/Databases/java_practice",
+                        "type": "database",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "Schemas",
+                            "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas",
+                            "type": "folder",
+                            "open": true,
+                            "children": [
+                              {
+                                "name": "public",
+                                "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public",
+                                "type": "schema",
+                                "open": true,
+                                "children": [
+                                  {
+                                    "name": "Tables",
+                                    "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public/Tables",
+                                    "type": "folder",
+                                    "open": true,
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "vscode": {
+        "workspaceName": "Java Practice",
+        "year": 2026,
+        "aiEnabled": false,
+        "initialFile": "src/studentService.js",
+        "files": {
+          "src/studentService.js": {
+            "content": "import { apiClient } from \"./apiClient.js\";\n\nconst API_URL = \"/api/students\";\nconst DEFAULT_LIMIT = 10;\n\nexport class StudentService {\n    constructor(client = apiClient) {\n        this.client = client;\n        this.cache = new Map();\n    }\n\n    async getStudents(limit = DEFAULT_LIMIT) {\n        const response = await this.client.get(`${API_URL}?limit=${limit}`);\n\n        if (!response.ok) {\n            throw new Error(`Unable to load students: ${response.status}`);\n        }\n\n        const students = await response.json();\n        this.cacheStudents(students);\n        return students;\n    }\n\n    async getStudentById(id) {\n        if (this.cache.has(id)) {\n            return this.cache.get(id);\n        }\n\n        const response = await this.client.get(`${API_URL}/${id}`);\n\n        if (!response.ok) {\n            return null;\n        }\n\n        const student = await response.json();\n        this.cache.set(student.rollNo, student);\n        return student;\n    }\n\n    cacheStudents(students) {\n        students.forEach((student) => {\n            this.cache.set(student.rollNo, student);\n        });\n    }\n\n    getPresentStudents(students) {\n        return students.filter((student) => student.isPresent === true);\n    }\n\n    getAverageMark(student) {\n        if (!student.marks || student.marks.length === 0) {\n            return 0;\n        }\n\n        const total = student.marks.reduce((sum, mark) => sum + mark, 0);\n        return Math.round((total / student.marks.length) * 100) / 100;\n    }\n\n    formatStudent(student) {\n        const average = this.getAverageMark(student);\n        return `${student.rollNo} - ${student.name} - Average: ${average}`;\n    }\n}\n\nexport const studentService = new StudentService();\n"
+          },
+          "src/apiClient.js": {
+            "content": "export const apiClient = {\n    get(url) {\n        return fetch(url, {\n            method: \"GET\",\n            headers: {\n                Accept: \"application/json\"\n            }\n        });\n    }\n};\n"
+          }
+        },
+        "tree": [],
+        "settings": {
+          "theme": "dark",
+          "fontSize": 13,
+          "minimap": true
+        },
+        "git": {
+          "branch": "main",
+          "changes": [],
+          "staged": [],
+          "history": []
+        },
+        "terminals": [
+          {
+            "id": "terminal-1",
+            "name": "PowerShell",
+            "shell": "PowerShell",
+            "text": ""
+          }
+        ],
+        "terminal": "PS Java Practice> ",
+        "problems": [],
+        "debug": {},
+        "tests": [],
+        "extensions": [],
+        "openTabs": [
+          {
+            "path": "src/studentService.js",
+            "pinned": true
+          },
+          {
+            "path": "src/apiClient.js",
+            "pinned": true
+          }
+        ]
+      },
+      "postman": {
+        "workspaceName": "Java Practice API Workspace",
+        "activeEnvironment": "Local",
+        "environments": {
+          "Local": {
+            "baseUrl": "http://localhost:8080"
+          }
+        },
+        "globals": {},
+        "collections": [
+          {
+            "name": "Java Practice API",
+            "description": "Requests used to test the Java Practice application during the developer journey.",
+            "variables": {},
+            "requests": [
+              {
+                "id": "get-student",
+                "name": "Get Student",
+                "method": "GET",
+                "url": "{{baseUrl}}/api/students/101",
+                "params": [],
+                "headers": {
+                  "Accept": "application/json"
+                },
+                "auth": {
+                  "type": "No Auth",
+                  "fields": {}
+                },
+                "bodyMode": "raw",
+                "body": "",
+                "tests": "",
+                "examples": []
+              }
+            ],
+            "folders": []
+          }
+        ],
+        "initialRequest": "get-student",
+        "history": [],
+        "console": [],
+        "cookies": [],
+        "mocks": [],
+        "monitors": [],
+        "runner": {},
+        "websocket": {},
+        "grpc": {},
+        "documentation": {},
+        "liveNetwork": false
+      },
+      "cmd": {
+        "title": "Command Prompt - Java Practice",
+        "cwd": "C:\\Users\\developer\\JavaPractice",
+        "env": {
+          "JAVA_HOME": "C:\\Program Files\\Java\\jdk-21",
+          "MAVEN_HOME": "C:\\apache-maven-3.9.9",
+          "PATH": "C:\\Windows\\System32;C:\\Program Files\\Java\\jdk-21\\bin;C:\\apache-maven-3.9.9\\bin;C:\\Program Files\\Git\\cmd"
+        },
+        "directories": [
+          "C:\\Users\\developer\\JavaPractice",
+          "C:\\Users\\developer\\JavaPractice\\src",
+          "C:\\Users\\developer\\JavaPractice\\docs"
+        ],
+        "files": {
+          "C:\\Users\\developer\\JavaPractice\\README.md": "# Java Practice\\nDeveloper journey project.\\n",
+          "C:\\Users\\developer\\JavaPractice\\src\\Student.java": "public class Student {\\n    int rollNo;\\n    boolean isPresent;\\n    float[] marks;\\n    String name;\\n}\\n",
+          "C:\\Users\\developer\\JavaPractice\\.gitignore": "out/\\n.idea/\\n"
+        },
+        "promptSuffix": ">",
+        "initialOutput": "Microsoft Windows [Version 11.0.26100.6584]\\n(c) Microsoft Corporation. All rights reserved.\\n"
+      },
+      "linux": {
+        "distro": "Ubuntu 24.04 LTS",
+        "user": "developer",
+        "hostname": "java-dev",
+        "home": "/home/developer",
+        "currentPath": "/home/developer/JavaPractice",
+        "activeWindow": "terminal",
+        "files": {
+          "/home/developer": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-x---",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/src": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/src/Student.java": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "public class Student {\n    int rollNo;\n    boolean isPresent;\n    float[] marks;\n    String name;\n}\n"
+          },
+          "/home/developer/JavaPractice/README.md": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "# Java Practice\n\nJava 21 developer journey project.\n"
+          },
+          "/home/developer/JavaPractice/pom.xml": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>com.javapractice</groupId>\n  <artifactId>java-practice</artifactId>\n  <version>1.0.0</version>\n</project>\n"
+          },
+          "/home/developer/JavaPractice/scripts": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/scripts/health-check.sh": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "#!/usr/bin/env bash\necho Health check passed\n"
+          },
+          "/home/developer/JavaPractice/logs": {
+            "type": "dir",
+            "owner": "developer",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/home/developer/JavaPractice/logs/app.log": {
+            "type": "file",
+            "owner": "developer",
+            "permissions": "-rw-r--r--",
+            "content": "2026-09-22 10:58:00 INFO JavaPracticeApplication ready\n2026-09-22 10:59:14 INFO GET /api/students/101 200\n"
+          },
+          "/etc": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "12 KB"
+          },
+          "/var": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/var/log": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxr-xr-x",
+            "size": "4.0 KB"
+          },
+          "/tmp": {
+            "type": "dir",
+            "owner": "root",
+            "permissions": "drwxrwxrwt",
+            "size": "4.0 KB"
+          }
+        },
+        "terminal": {
+          "env": {
+            "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+            "MAVEN_HOME": "/opt/apache-maven-3.9.9",
+            "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/opt/apache-maven-3.9.9/bin"
+          },
+          "history": [],
+          "commandHistory": []
+        },
+        "processes": [
+          {
+            "pid": 1,
+            "name": "systemd",
+            "user": "root",
+            "cpu": 0.1,
+            "memory": "18M"
+          },
+          {
+            "pid": 822,
+            "name": "postgres",
+            "user": "postgres",
+            "cpu": 0.4,
+            "memory": "96M"
+          },
+          {
+            "pid": 1307,
+            "name": "dockerd",
+            "user": "root",
+            "cpu": 0.3,
+            "memory": "132M"
+          }
+        ],
+        "services": [
+          {
+            "name": "java-practice.service",
+            "description": "Java Practice Spring Boot API",
+            "status": "inactive",
+            "enabled": true
+          },
+          {
+            "name": "postgresql.service",
+            "description": "PostgreSQL database server",
+            "status": "active",
+            "enabled": true
+          },
+          {
+            "name": "docker.service",
+            "description": "Docker Application Container Engine",
+            "status": "active",
+            "enabled": true
+          }
+        ],
+        "packages": [
+          {
+            "name": "openjdk-21-jdk",
+            "version": "21.0.5",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "maven",
+            "version": "3.9.9",
+            "status": "installed",
+            "repository": "apache"
+          },
+          {
+            "name": "git",
+            "version": "2.43.0",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "curl",
+            "version": "8.5.0",
+            "status": "installed",
+            "repository": "ubuntu"
+          },
+          {
+            "name": "docker.io",
+            "version": "28.4.0",
+            "status": "installed",
+            "repository": "docker"
+          }
+        ],
+        "network": {
+          "interfaces": [
+            {
+              "name": "lo",
+              "state": "up",
+              "address": "127.0.0.1/8",
+              "gateway": ""
+            },
+            {
+              "name": "eth0",
+              "state": "up",
+              "address": "192.168.1.42/24",
+              "gateway": "192.168.1.1"
+            }
+          ],
+          "routes": [
+            {
+              "destination": "default",
+              "gateway": "192.168.1.1",
+              "dev": "eth0"
+            }
+          ],
+          "sockets": [
+            {
+              "protocol": "tcp",
+              "state": "LISTEN",
+              "local": "127.0.0.1:5432",
+              "remote": "0.0.0.0:*",
+              "process": "postgres/822"
+            },
+            {
+              "protocol": "tcp",
+              "state": "LISTEN",
+              "local": "0.0.0.0:22",
+              "remote": "0.0.0.0:*",
+              "process": "sshd/940"
+            }
+          ]
+        },
+        "logs": [
+          {
+            "id": "l1",
+            "time": "10:58:00",
+            "level": "info",
+            "unit": "java-practice.service",
+            "message": "Java Practice service configuration loaded"
+          },
+          {
+            "id": "l2",
+            "time": "10:58:05",
+            "level": "info",
+            "unit": "postgresql.service",
+            "message": "database system is ready to accept connections"
+          },
+          {
+            "id": "l3",
+            "time": "10:59:00",
+            "level": "info",
+            "unit": "docker.service",
+            "message": "Docker daemon ready"
+          }
+        ],
+        "disks": [
+          {
+            "device": "/dev/nvme0n1p2",
+            "fs": "ext4",
+            "size": "120G",
+            "used": "38G",
+            "available": "76G",
+            "percent": "32%",
+            "mount": "/"
+          },
+          {
+            "device": "tmpfs",
+            "fs": "tmpfs",
+            "size": "7.8G",
+            "used": "12M",
+            "available": "7.8G",
+            "percent": "1%",
+            "mount": "/run"
+          }
+        ]
+      },
+      "sql_server_management_studio": {
+        "title": "SQL Server Management Studio 22",
+        "version": "22",
+        "connected": false,
+        "connection": {
+          "serverType": "Database Engine",
+          "serverName": "localhost",
+          "authentication": "Windows Authentication",
+          "userName": "developer",
+          "database": "JavaPracticeDb"
+        },
+        "currentDatabase": "JavaPracticeDb",
+        "currentUser": "developer",
+        "statusText": "Disconnected",
+        "databases": [
+          {
+            "name": "master",
+            "system": true,
+            "tables": [],
+            "views": [],
+            "procedures": [],
+            "functions": [],
+            "users": []
+          },
+          {
+            "name": "JavaPracticeDb",
+            "system": false,
+            "tables": [],
+            "views": [],
+            "procedures": [],
+            "functions": [],
+            "users": [
+              {
+                "name": "developer"
+              }
+            ]
+          }
+        ],
+        "expandedNodes": [],
+        "queryTabs": [],
+        "activeQueryId": null,
+        "intellisenseCache": [
+          {
+            "label": "SELECT",
+            "kind": "Keyword"
+          },
+          {
+            "label": "FROM",
+            "kind": "Keyword"
+          },
+          {
+            "label": "WHERE",
+            "kind": "Keyword"
+          },
+          {
+            "label": "CREATE TABLE",
+            "kind": "Keyword"
+          },
+          {
+            "label": "INSERT INTO",
+            "kind": "Keyword"
+          },
+          {
+            "label": "dbo",
+            "kind": "Schema"
+          },
+          {
+            "label": "student",
+            "kind": "Table"
+          },
+          {
+            "label": "roll_no",
+            "kind": "Column"
+          },
+          {
+            "label": "is_present",
+            "kind": "Column"
+          },
+          {
+            "label": "name",
+            "kind": "Column"
+          }
+        ],
+        "sessions": [
+          {
+            "id": 51,
+            "login": "developer",
+            "status": "running",
+            "command": "SELECT",
+            "database": "JavaPracticeDb"
+          },
+          {
+            "id": 52,
+            "login": "sa",
+            "status": "sleeping",
+            "command": "AWAITING COMMAND",
+            "database": "master"
+          }
+        ],
+        "agentJobs": [],
+        "backups": [],
+        "files": {},
+        "registeredServers": [
+          {
+            "name": "Local Java SQL",
+            "server": "localhost",
+            "group": "Local Server Groups"
+          }
+        ],
+        "linkedServers": [],
+        "agentJobHistory": [],
+        "options": {
+          "lineNumbers": true,
+          "wordWrap": false,
+          "includeActualPlan": false
+        }
+      },
+      "jira": {
+        "siteName": "Java Practice Team",
+        "user": "Developer",
+        "project": {
+          "key": "JAVA",
+          "name": "Java Practice API"
+        },
+        "boardName": "Java Practice Sprint Board",
+        "activeView": "board",
+        "columns": [
+          {
+            "id": "todo",
+            "name": "TO DO"
+          },
+          {
+            "id": "progress",
+            "name": "IN PROGRESS"
+          },
+          {
+            "id": "review",
+            "name": "CODE REVIEW"
+          },
+          {
+            "id": "done",
+            "name": "DONE"
+          }
+        ],
+        "sprint": {
+          "id": "s12",
+          "name": "Sprint 12",
+          "goal": "Deliver and validate the Student API workflow",
+          "status": "active",
+          "startDate": "2026-09-21",
+          "endDate": "2026-10-02"
+        },
+        "sprints": [
+          {
+            "id": "s12",
+            "name": "Sprint 12",
+            "goal": "Deliver and validate the Student API workflow",
+            "status": "active",
+            "startDate": "2026-09-21",
+            "endDate": "2026-10-02"
+          },
+          {
+            "id": "s13",
+            "name": "Sprint 13",
+            "goal": "Harden validation and monitoring",
+            "status": "future",
+            "startDate": "2026-10-05",
+            "endDate": "2026-10-16"
+          }
+        ],
+        "versions": [
+          {
+            "name": "1.2.0",
+            "status": "unreleased",
+            "releaseDate": "2026-10-02",
+            "description": "Student API release"
+          }
+        ],
+        "issues": [
+          {
+            "key": "JAVA-100",
+            "type": "Epic",
+            "summary": "Student API delivery",
+            "status": "IN PROGRESS",
+            "assignee": "Tech Lead",
+            "reporter": "Product Owner",
+            "priority": "High",
+            "points": 13,
+            "labels": [
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Deliver the Student API from model through database and API validation.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-101",
+            "type": "Story",
+            "summary": "Expose GET /api/students/{rollNo}",
+            "status": "TO DO",
+            "assignee": "Unassigned",
+            "reporter": "Tech Lead",
+            "priority": "High",
+            "points": 5,
+            "parent": "JAVA-100",
+            "labels": [
+              "backend",
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Implement and verify the Student lookup endpoint using the existing Student model and database record.",
+            "sprint": "Sprint 12",
+            "fixVersions": [],
+            "dueDate": "",
+            "originalEstimate": "",
+            "remainingEstimate": "",
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [
+              {
+                "type": "blocks",
+                "key": "JAVA-104"
+              }
+            ],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-102",
+            "type": "Bug",
+            "summary": "Return 404 when student roll number is missing",
+            "status": "IN PROGRESS",
+            "assignee": "Developer",
+            "reporter": "QA Engineer",
+            "priority": "Medium",
+            "points": 3,
+            "parent": "JAVA-100",
+            "labels": [
+              "backend",
+              "validation"
+            ],
+            "component": "Student API",
+            "description": "Handle unknown roll numbers with the expected API error response.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-103",
+            "type": "Story",
+            "summary": "Add Student API integration tests",
+            "status": "CODE REVIEW",
+            "assignee": "Developer",
+            "reporter": "Tech Lead",
+            "priority": "Medium",
+            "points": 3,
+            "parent": "JAVA-100",
+            "labels": [
+              "test",
+              "student-api"
+            ],
+            "component": "Student API",
+            "description": "Cover success and not-found scenarios with integration tests.",
+            "sprint": "Sprint 12",
+            "fixVersions": [
+              "1.2.0"
+            ],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [
+                {
+                  "name": "test/JAVA-103-student-api"
+                }
+              ],
+              "commits": [],
+              "pullRequests": [
+                {
+                  "title": "JAVA-103 integration tests",
+                  "status": "OPEN"
+                }
+              ],
+              "builds": [],
+              "deployments": []
+            }
+          },
+          {
+            "key": "JAVA-104",
+            "type": "Task",
+            "summary": "Document Student API contract",
+            "status": "TO DO",
+            "assignee": "Developer",
+            "reporter": "Tech Lead",
+            "priority": "Low",
+            "points": 2,
+            "parent": "JAVA-100",
+            "labels": [
+              "docs"
+            ],
+            "component": "Student API",
+            "description": "Document request, response, and error examples for the Student endpoint.",
+            "sprint": "Sprint 13",
+            "fixVersions": [],
+            "comments": [],
+            "attachments": [],
+            "subtasks": [],
+            "links": [
+              {
+                "type": "is blocked by",
+                "key": "JAVA-101"
+              }
+            ],
+            "activity": [],
+            "watchers": [],
+            "worklogs": [],
+            "development": {
+              "branches": [],
+              "commits": [],
+              "pullRequests": [],
+              "builds": [],
+              "deployments": []
+            }
+          }
+        ],
+        "components": [
+          {
+            "name": "Student API",
+            "lead": "Tech Lead",
+            "description": "Student REST API and persistence workflow",
+            "issueCount": 5
+          }
+        ],
+        "filters": [
+          {
+            "name": "My active Java work",
+            "jql": "project = JAVA AND assignee = currentUser() AND status != DONE ORDER BY key ASC"
+          }
+        ],
+        "quickFilters": [],
+        "automations": [],
+        "workflows": [
+          {
+            "name": "Java Delivery Workflow",
+            "statuses": [
+              "TO DO",
+              "IN PROGRESS",
+              "CODE REVIEW",
+              "DONE"
+            ]
+          }
+        ],
+        "dashboard": {
+          "gadgets": [
+            {
+              "type": "assigned",
+              "title": "Assigned to me"
+            },
+            {
+              "type": "sprint-health",
+              "title": "Sprint health"
+            },
+            {
+              "type": "created-resolved",
+              "title": "Created vs resolved"
+            },
+            {
+              "type": "activity",
+              "title": "Activity stream"
+            }
+          ]
+        }
+      },
+      "jenkins": {
+        "title": "Dashboard",
+        "user": "developer",
+        "description": "CI/CD for the Java Practice Student API",
+        "jobs": [
+          {
+            "name": "java-practice-api",
+            "type": "Pipeline",
+            "description": "Build, test, package, and validate the Java Practice Student API.",
+            "status": "failed",
+            "health": 82,
+            "lastSuccess": "#40",
+            "lastFailure": "#41",
+            "duration": "29 sec",
+            "config": {
+              "jenkinsfile": "pipeline {\n    agent { label 'linux && java21' }\n    tools {\n        jdk 'JDK 21'\n        maven 'Maven 3.9'\n    }\n    parameters {\n        choice(name: 'TARGET_ENV', choices: ['qa', 'staging'], description: 'Deployment target')\n    }\n    stages {\n        stage('Checkout') { steps { checkout scm } }\n        stage('Build') { steps { sh 'mvn -B clean package -DskipTests' } }\n        stage('Test') {\n            parallel {\n                stage('Unit') { steps { sh 'mvn -B test' } }\n                stage('Integration') { steps { sh 'mvn -B verify -Pintegration' } }\n            }\n        }\n        stage('Package') { steps { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }\n        stage('Deploy QA') { steps { echo \"Deploying to ${params.TARGET_ENV}\" } }\n    }\n    post {\n        always { junit 'target/surefire-reports/*.xml' }\n    }\n}",
+              "pipelineDefinition": "Pipeline script from SCM",
+              "scriptPath": "Jenkinsfile",
+              "scm": {
+                "type": "Git",
+                "url": "https://github.com/example/java-practice.git",
+                "branch": "*/main",
+                "credentials": "github-token"
+              },
+              "parameterized": true,
+              "agentLabel": "linux && java21",
+              "buildDiscarder": "Keep 14 day(s), 30 build(s)"
+            },
+            "parameters": [
+              {
+                "name": "TARGET_ENV",
+                "type": "Choice",
+                "default": "qa",
+                "description": "Deployment target",
+                "choices": [
+                  "qa",
+                  "staging"
+                ]
+              }
+            ],
+            "env": {
+              "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+              "MAVEN_OPTS": "-Xmx1024m"
+            },
+            "triggers": [
+              {
+                "type": "cron",
+                "value": "H/15 * * * *"
+              }
+            ],
+            "postBuildActions": [
+              {
+                "type": "junit",
+                "config": {
+                  "patterns": "target/surefire-reports/*.xml"
+                }
+              }
+            ],
+            "pipeline": [
+              {
+                "name": "Checkout",
+                "status": "success",
+                "duration": "3s",
+                "log": "Checking out main\nCheckout completed."
+              },
+              {
+                "name": "Build",
+                "status": "success",
+                "duration": "14s",
+                "log": "mvn -B clean package -DskipTests\nBUILD SUCCESS"
+              },
+              {
+                "name": "Test",
+                "status": "failed",
+                "duration": "9s",
+                "parallel": true,
+                "branches": [
+                  {
+                    "name": "Unit",
+                    "status": "success",
+                    "duration": "4s",
+                    "log": "42 tests passed."
+                  },
+                  {
+                    "name": "Integration",
+                    "status": "failed",
+                    "duration": "9s",
+                    "log": "StudentApiIntegrationTest expected 200 but received 500."
+                  }
+                ],
+                "log": "Integration test failed."
+              },
+              {
+                "name": "Package",
+                "status": "skipped",
+                "duration": "",
+                "log": "Skipped because tests failed."
+              },
+              {
+                "name": "Deploy QA",
+                "status": "skipped",
+                "duration": "",
+                "log": "Skipped because tests failed."
+              }
+            ],
+            "builds": [
+              {
+                "number": 41,
+                "status": "failed",
+                "time": "Today, 13:18",
+                "duration": "29 sec",
+                "durationSeconds": 29,
+                "progress": 100,
+                "cause": "Started by user developer",
+                "console": "Started by user developer\nRunning on linux-java21-agent\n[Pipeline] Checkout\nChecking out main\n[Pipeline] Build\nBUILD SUCCESS\n[Pipeline] Test\n42 unit tests passed\nERROR StudentApiIntegrationTest: expected 200 but received 500\nFinished: FAILURE",
+                "stages": [
+                  {
+                    "name": "Checkout",
+                    "status": "success",
+                    "duration": "3s",
+                    "log": "Checking out main\nCheckout completed."
+                  },
+                  {
+                    "name": "Build",
+                    "status": "success",
+                    "duration": "14s",
+                    "log": "mvn -B clean package -DskipTests\nBUILD SUCCESS"
+                  },
+                  {
+                    "name": "Test",
+                    "status": "failed",
+                    "duration": "9s",
+                    "parallel": true,
+                    "branches": [
+                      {
+                        "name": "Unit",
+                        "status": "success",
+                        "duration": "4s",
+                        "log": "42 tests passed."
+                      },
+                      {
+                        "name": "Integration",
+                        "status": "failed",
+                        "duration": "9s",
+                        "log": "StudentApiIntegrationTest expected 200 but received 500."
+                      }
+                    ],
+                    "log": "Integration test failed."
+                  },
+                  {
+                    "name": "Package",
+                    "status": "skipped",
+                    "duration": "",
+                    "log": "Skipped because tests failed."
+                  },
+                  {
+                    "name": "Deploy QA",
+                    "status": "skipped",
+                    "duration": "",
+                    "log": "Skipped because tests failed."
+                  }
+                ],
+                "testResults": {
+                  "total": 43,
+                  "passed": 42,
+                  "failed": 1,
+                  "tests": [
+                    {
+                      "name": "getStudent_returns200",
+                      "suite": "StudentApiIntegrationTest",
+                      "status": "failed",
+                      "duration": "0.34s",
+                      "message": "Expected 200, received 500",
+                      "stackTrace": "at StudentApiIntegrationTest.java:74",
+                      "output": "GET /api/students/101 => 500"
+                    },
+                    {
+                      "name": "studentModel_mapsFields",
+                      "suite": "StudentServiceTest",
+                      "status": "passed",
+                      "duration": "0.02s"
+                    }
+                  ]
+                },
+                "artifacts": [],
+                "environment": {
+                  "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+                  "BUILD_NUMBER": "41",
+                  "TARGET_ENV": "qa"
+                },
+                "parameters": {
+                  "TARGET_ENV": "qa"
+                }
+              },
+              {
+                "number": 40,
+                "status": "success",
+                "time": "Yesterday, 16:02",
+                "duration": "31 sec",
+                "durationSeconds": 31,
+                "progress": 100,
+                "cause": "GitHub push by developer",
+                "console": "Finished: SUCCESS",
+                "stages": [
+                  {
+                    "name": "Checkout",
+                    "status": "success",
+                    "duration": "3s",
+                    "log": "Checking out main\nCheckout completed."
+                  },
+                  {
+                    "name": "Build",
+                    "status": "success",
+                    "duration": "13s",
+                    "log": "mvn -B clean package -DskipTests\nBUILD SUCCESS"
+                  },
+                  {
+                    "name": "Test",
+                    "status": "success",
+                    "duration": "11s",
+                    "parallel": true,
+                    "branches": [
+                      {
+                        "name": "Unit",
+                        "status": "success",
+                        "duration": "4s",
+                        "log": "42 tests passed."
+                      },
+                      {
+                        "name": "Integration",
+                        "status": "success",
+                        "duration": "11s",
+                        "log": "Student API integration tests passed."
+                      }
+                    ],
+                    "log": "All tests passed."
+                  },
+                  {
+                    "name": "Package",
+                    "status": "success",
+                    "duration": "2s",
+                    "log": "Archived target/java-practice-1.0.0.jar"
+                  },
+                  {
+                    "name": "Deploy QA",
+                    "status": "success",
+                    "duration": "5s",
+                    "log": "QA deployment completed."
+                  }
+                ],
+                "testResults": {
+                  "total": 42,
+                  "passed": 42,
+                  "failed": 0,
+                  "tests": []
+                },
+                "artifacts": [
+                  {
+                    "name": "target/java-practice-1.0.0.jar",
+                    "size": "18.4 MB"
+                  }
+                ],
+                "environment": {
+                  "JAVA_HOME": "/usr/lib/jvm/java-21-openjdk-amd64",
+                  "BUILD_NUMBER": "40",
+                  "TARGET_ENV": "qa"
+                },
+                "parameters": {
+                  "TARGET_ENV": "qa"
+                }
+              }
+            ],
+            "workspace": [
+              {
+                "path": "Jenkinsfile",
+                "content": "pipeline {\n    agent { label 'linux && java21' }\n    tools {\n        jdk 'JDK 21'\n        maven 'Maven 3.9'\n    }\n    parameters {\n        choice(name: 'TARGET_ENV', choices: ['qa', 'staging'], description: 'Deployment target')\n    }\n    stages {\n        stage('Checkout') { steps { checkout scm } }\n        stage('Build') { steps { sh 'mvn -B clean package -DskipTests' } }\n        stage('Test') {\n            parallel {\n                stage('Unit') { steps { sh 'mvn -B test' } }\n                stage('Integration') { steps { sh 'mvn -B verify -Pintegration' } }\n            }\n        }\n        stage('Package') { steps { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }\n        stage('Deploy QA') { steps { echo \"Deploying to ${params.TARGET_ENV}\" } }\n    }\n    post {\n        always { junit 'target/surefire-reports/*.xml' }\n    }\n}"
+              },
+              {
+                "path": "pom.xml",
+                "content": "<project>\\n  <modelVersion>4.0.0</modelVersion>\\n  <artifactId>java-practice</artifactId>\\n</project>"
+              },
+              {
+                "path": "src/Student.java",
+                "content": "public class Student {\\n    int rollNo;\\n    boolean isPresent;\\n    float[] marks;\\n    String name;\\n}\\n"
+              },
+              {
+                "path": "src/test/StudentApiIntegrationTest.java",
+                "content": "class StudentApiIntegrationTest { /* integration coverage */ }"
+              }
+            ],
+            "changes": [
+              {
+                "hash": "8f4c2ad",
+                "message": "JAVA-101 implement student lookup endpoint",
+                "author": "Developer",
+                "time": "Today, 13:12",
+                "files": [
+                  {
+                    "path": "src/Student.java",
+                    "diff": "@@ Student.java @@\\n class Student {\\n+    int rollNo;\\n+    String name;\\n }"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "java-practice-docs",
+            "type": "Freestyle project",
+            "description": "Publish Java Practice developer documentation.",
+            "status": "success",
+            "health": 100,
+            "lastSuccess": "#12",
+            "lastFailure": "",
+            "duration": "12 sec",
+            "config": {},
+            "pipeline": [],
+            "builds": [
+              {
+                "number": 12,
+                "status": "success",
+                "time": "Today, 09:04",
+                "duration": "12 sec",
+                "progress": 100,
+                "console": "Documentation generated.\\nFinished: SUCCESS"
+              }
+            ],
+            "folder": "Java Practice"
+          }
+        ],
+        "queue": [],
+        "views": [
+          {
+            "name": "Java Pipelines",
+            "jobs": [
+              "java-practice-api"
+            ]
+          }
+        ],
+        "folders": [
+          {
+            "name": "Java Practice",
+            "description": "Java developer CI/CD jobs",
+            "jobs": [
+              "java-practice-api",
+              "java-practice-docs"
+            ]
+          }
+        ],
+        "multibranch": [
+          {
+            "name": "java-practice-branches",
+            "repository": "https://github.com/example/java-practice.git",
+            "branches": [
+              {
+                "name": "main",
+                "status": "failed",
+                "job": "java-practice-api"
+              },
+              {
+                "name": "feature/JAVA-101-student-get",
+                "status": "success",
+                "pullRequest": 101,
+                "log": "Jenkinsfile found and branch indexed."
+              }
+            ],
+            "lastScan": "Today, 13:10",
+            "scanLog": "Found main\\nFound PR-101\\nScan completed."
+          }
+        ],
+        "manage": {
+          "credentials": [
+            {
+              "id": "github-token",
+              "type": "Username with password",
+              "username": "developer",
+              "description": "GitHub SCM credential",
+              "scope": "Global",
+              "domain": "Global credentials"
+            }
+          ],
+          "nodes": [
+            {
+              "name": "linux-java21-agent",
+              "online": true,
+              "labels": [
+                "linux",
+                "java21",
+                "docker"
+              ],
+              "executors": 2,
+              "remoteFS": "/var/jenkins",
+              "launchMethod": "Inbound agent",
+              "log": "Agent connected\\nJDK 21 available\\nMaven 3.9 available\\n2 executors ready."
+            },
+            {
+              "name": "windows-agent",
+              "online": false,
+              "labels": [
+                "windows"
+              ],
+              "executors": 1,
+              "remoteFS": "C:\\\\Jenkins",
+              "log": "Agent offline."
+            }
+          ],
+          "plugins": [
+            {
+              "id": "git",
+              "name": "Git",
+              "version": "5.7.0",
+              "availableVersion": "5.8.0",
+              "installed": true,
+              "enabled": true,
+              "description": "Git source control integration."
+            },
+            {
+              "id": "workflow-aggregator",
+              "name": "Pipeline",
+              "version": "600",
+              "installed": true,
+              "enabled": true,
+              "description": "Jenkins Pipeline suite."
+            },
+            {
+              "id": "junit",
+              "name": "JUnit",
+              "version": "1300",
+              "installed": true,
+              "enabled": true,
+              "description": "JUnit test reports and trends."
+            }
+          ],
+          "tools": [
+            {
+              "name": "JDK 21",
+              "type": "JDK",
+              "version": "21",
+              "home": "/usr/lib/jvm/java-21-openjdk-amd64"
+            },
+            {
+              "name": "Maven 3.9",
+              "type": "Maven",
+              "version": "3.9.9",
+              "home": "/opt/apache-maven-3.9.9"
+            }
+          ],
+          "security": {
+            "realm": "Jenkins user database",
+            "authorization": "Matrix-based security",
+            "csrf": true,
+            "permissions": [
+              "admin:Overall/Administer",
+              "developer:Job/Build",
+              "developer:Job/Read"
+            ]
+          },
+          "sharedLibraries": [
+            {
+              "name": "java-ci",
+              "defaultVersion": "main",
+              "repository": "https://github.com/example/jenkins-shared-library.git"
+            }
+          ],
+          "systemLog": [
+            "INFO Jenkins is ready",
+            "INFO Connected agent linux-java21-agent"
+          ]
+        }
+      },
+      "power_bi": {
+        "title": "Campus Performance Analytics - Power BI Desktop",
+        "reportName": "Campus Performance Analytics",
+        "activeView": "report",
+        "theme": "light",
+        "ribbonTab": "Home",
+        "paneTab": "data",
+        "statusText": "Campus Performance Analytics • 6 tables • 5 relationships",
+        "canvasZoom": 100,
+        "canvasFit": "Fit to page",
+        "gridlines": false,
+        "snapToGrid": true,
+        "lockObjects": false,
+        "storageMode": "Import",
+        "sources": [
+          {
+            "name": "JavaPracticeDb",
+            "connector": "SQL Server",
+            "server": "localhost",
+            "database": "JavaPracticeDb"
+          }
+        ],
+        "navigator": {
+          "items": [
+            {
+              "name": "Department"
+            },
+            {
+              "name": "Course"
+            },
+            {
+              "name": "Student"
+            },
+            {
+              "name": "Enrollment"
+            },
+            {
+              "name": "Attendance"
+            },
+            {
+              "name": "Calendar"
+            }
+          ],
+          "selected": [
+            "Department",
+            "Course",
+            "Student",
+            "Enrollment",
+            "Attendance",
+            "Calendar"
+          ],
+          "preview": "Student"
+        },
+        "tables": [
+          {
+            "name": "Department",
+            "x": 60,
+            "y": 80,
+            "columns": [
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "department",
+                "type": "Text"
+              },
+              {
+                "name": "dean",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                10,
+                "Computer Science",
+                "Dr. Patel"
+              ],
+              [
+                20,
+                "Business",
+                "Dr. Harris"
+              ],
+              [
+                30,
+                "GIS",
+                "Dr. Rao"
+              ],
+              [
+                40,
+                "Data Science",
+                "Dr. Chen"
+              ]
+            ]
+          },
+          {
+            "name": "Course",
+            "x": 350,
+            "y": 70,
+            "columns": [
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_name",
+                "type": "Text"
+              },
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "credits",
+                "type": "Whole Number"
+              },
+              {
+                "name": "instructor",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                101,
+                "Java Programming",
+                10,
+                4,
+                "Prof. Kim"
+              ],
+              [
+                102,
+                "Database Systems",
+                10,
+                4,
+                "Prof. Lee"
+              ],
+              [
+                201,
+                "Business Analytics",
+                20,
+                3,
+                "Prof. Smith"
+              ],
+              [
+                301,
+                "GIS Applications",
+                30,
+                4,
+                "Prof. Rao"
+              ],
+              [
+                401,
+                "Data Visualization",
+                40,
+                3,
+                "Prof. Chen"
+              ]
+            ]
+          },
+          {
+            "name": "Student",
+            "x": 60,
+            "y": 390,
+            "columns": [
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Student Name",
+                "type": "Text"
+              },
+              {
+                "name": "gender",
+                "type": "Text"
+              },
+              {
+                "name": "city",
+                "type": "Text",
+                "dataCategory": "City"
+              },
+              {
+                "name": "admission_year",
+                "type": "Whole Number"
+              },
+              {
+                "name": "risk_status",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                "Asha Patel",
+                "F",
+                "Austin",
+                2024,
+                "On Track"
+              ],
+              [
+                2,
+                "Ravi Kumar",
+                "M",
+                "Round Rock",
+                2024,
+                "At Risk"
+              ],
+              [
+                3,
+                "Maya Chen",
+                "F",
+                "Cedar Park",
+                2025,
+                "High Performer"
+              ],
+              [
+                4,
+                "Noah Williams",
+                "M",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                5,
+                "Sofia Garcia",
+                "F",
+                "Austin",
+                2024,
+                "High Performer"
+              ],
+              [
+                6,
+                "Ethan Brown",
+                "M",
+                "Georgetown",
+                2023,
+                "At Risk"
+              ],
+              [
+                7,
+                "Isha Rao",
+                "F",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                8,
+                "Liam Johnson",
+                "M",
+                "Austin",
+                2023,
+                "On Track"
+              ]
+            ]
+          },
+          {
+            "name": "Enrollment",
+            "x": 350,
+            "y": 380,
+            "columns": [
+              {
+                "name": "enrollment_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "semester",
+                "type": "Text"
+              },
+              {
+                "name": "score",
+                "type": "Whole Number"
+              },
+              {
+                "name": "grade",
+                "type": "Text"
+              },
+              {
+                "name": "performance_band",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                101,
+                "Spring 2026",
+                94,
+                "A",
+                "Excellent"
+              ],
+              [
+                2,
+                2,
+                102,
+                "Spring 2026",
+                78,
+                "C",
+                "Needs Support"
+              ],
+              [
+                3,
+                3,
+                101,
+                "Spring 2026",
+                97,
+                "A",
+                "Excellent"
+              ],
+              [
+                4,
+                4,
+                301,
+                "Spring 2026",
+                88,
+                "B",
+                "Good"
+              ],
+              [
+                5,
+                5,
+                401,
+                "Spring 2026",
+                95,
+                "A",
+                "Excellent"
+              ],
+              [
+                6,
+                6,
+                201,
+                "Spring 2026",
+                74,
+                "C",
+                "Needs Support"
+              ],
+              [
+                7,
+                7,
+                301,
+                "Spring 2026",
+                90,
+                "A",
+                "Excellent"
+              ],
+              [
+                8,
+                8,
+                102,
+                "Spring 2026",
+                84,
+                "B",
+                "Good"
+              ],
+              [
+                9,
+                1,
+                401,
+                "Fall 2025",
+                91,
+                "A",
+                "Excellent"
+              ],
+              [
+                10,
+                4,
+                102,
+                "Fall 2025",
+                86,
+                "B",
+                "Good"
+              ]
+            ]
+          },
+          {
+            "name": "Attendance",
+            "x": 660,
+            "y": 370,
+            "columns": [
+              {
+                "name": "attendance_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "present",
+                "type": "Text"
+              },
+              {
+                "name": "attendance_pct",
+                "type": "Decimal Number"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                "2026-01-15",
+                "Y",
+                96
+              ],
+              [
+                2,
+                2,
+                "2026-01-15",
+                "Y",
+                82
+              ],
+              [
+                3,
+                3,
+                "2026-01-15",
+                "Y",
+                99
+              ],
+              [
+                4,
+                4,
+                "2026-01-15",
+                "Y",
+                93
+              ],
+              [
+                5,
+                5,
+                "2026-01-15",
+                "Y",
+                98
+              ],
+              [
+                6,
+                6,
+                "2026-01-15",
+                "N",
+                76
+              ],
+              [
+                7,
+                7,
+                "2026-01-15",
+                "Y",
+                94
+              ],
+              [
+                8,
+                8,
+                "2026-01-15",
+                "Y",
+                91
+              ]
+            ]
+          },
+          {
+            "name": "Calendar",
+            "x": 670,
+            "y": 80,
+            "columns": [
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "Month",
+                "type": "Text"
+              },
+              {
+                "name": "MonthNo",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Quarter",
+                "type": "Text"
+              },
+              {
+                "name": "Year",
+                "type": "Whole Number"
+              }
+            ],
+            "rows": [
+              [
+                "2026-01-01",
+                "Jan",
+                1,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-02-01",
+                "Feb",
+                2,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-03-01",
+                "Mar",
+                3,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-04-01",
+                "Apr",
+                4,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-05-01",
+                "May",
+                5,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-06-01",
+                "Jun",
+                6,
+                "Q2",
+                2026
+              ]
+            ],
+            "dateTable": true
+          }
+        ],
+        "queries": [
+          {
+            "id": "Department",
+            "name": "Department",
+            "columns": [
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "department",
+                "type": "Text"
+              },
+              {
+                "name": "dean",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                10,
+                "Computer Science",
+                "Dr. Patel"
+              ],
+              [
+                20,
+                "Business",
+                "Dr. Harris"
+              ],
+              [
+                30,
+                "GIS",
+                "Dr. Rao"
+              ],
+              [
+                40,
+                "Data Science",
+                "Dr. Chen"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Sql.Database(\"localhost\", \"JavaPracticeDb\")"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Course",
+            "name": "Course",
+            "columns": [
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_name",
+                "type": "Text"
+              },
+              {
+                "name": "department_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "credits",
+                "type": "Whole Number"
+              },
+              {
+                "name": "instructor",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                101,
+                "Java Programming",
+                10,
+                4,
+                "Prof. Kim"
+              ],
+              [
+                102,
+                "Database Systems",
+                10,
+                4,
+                "Prof. Lee"
+              ],
+              [
+                201,
+                "Business Analytics",
+                20,
+                3,
+                "Prof. Smith"
+              ],
+              [
+                301,
+                "GIS Applications",
+                30,
+                4,
+                "Prof. Rao"
+              ],
+              [
+                401,
+                "Data Visualization",
+                40,
+                3,
+                "Prof. Chen"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Course\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Student",
+            "name": "Student",
+            "columns": [
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Student Name",
+                "type": "Text"
+              },
+              {
+                "name": "gender",
+                "type": "Text"
+              },
+              {
+                "name": "city",
+                "type": "Text",
+                "dataCategory": "City"
+              },
+              {
+                "name": "admission_year",
+                "type": "Whole Number"
+              },
+              {
+                "name": "risk_status",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                "Asha Patel",
+                "F",
+                "Austin",
+                2024,
+                "On Track"
+              ],
+              [
+                2,
+                "Ravi Kumar",
+                "M",
+                "Round Rock",
+                2024,
+                "At Risk"
+              ],
+              [
+                3,
+                "Maya Chen",
+                "F",
+                "Cedar Park",
+                2025,
+                "High Performer"
+              ],
+              [
+                4,
+                "Noah Williams",
+                "M",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                5,
+                "Sofia Garcia",
+                "F",
+                "Austin",
+                2024,
+                "High Performer"
+              ],
+              [
+                6,
+                "Ethan Brown",
+                "M",
+                "Georgetown",
+                2023,
+                "At Risk"
+              ],
+              [
+                7,
+                "Isha Rao",
+                "F",
+                "Leander",
+                2025,
+                "On Track"
+              ],
+              [
+                8,
+                "Liam Johnson",
+                "M",
+                "Austin",
+                2023,
+                "On Track"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Student\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              },
+              {
+                "name": "Trimmed Text",
+                "action": "trimColumn"
+              },
+              {
+                "name": "Added Risk Label",
+                "action": "addConditionalColumn"
+              }
+            ]
+          },
+          {
+            "id": "Enrollment",
+            "name": "Enrollment",
+            "columns": [
+              {
+                "name": "enrollment_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "course_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "semester",
+                "type": "Text"
+              },
+              {
+                "name": "score",
+                "type": "Whole Number"
+              },
+              {
+                "name": "grade",
+                "type": "Text"
+              },
+              {
+                "name": "performance_band",
+                "type": "Text"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                101,
+                "Spring 2026",
+                94,
+                "A",
+                "Excellent"
+              ],
+              [
+                2,
+                2,
+                102,
+                "Spring 2026",
+                78,
+                "C",
+                "Needs Support"
+              ],
+              [
+                3,
+                3,
+                101,
+                "Spring 2026",
+                97,
+                "A",
+                "Excellent"
+              ],
+              [
+                4,
+                4,
+                301,
+                "Spring 2026",
+                88,
+                "B",
+                "Good"
+              ],
+              [
+                5,
+                5,
+                401,
+                "Spring 2026",
+                95,
+                "A",
+                "Excellent"
+              ],
+              [
+                6,
+                6,
+                201,
+                "Spring 2026",
+                74,
+                "C",
+                "Needs Support"
+              ],
+              [
+                7,
+                7,
+                301,
+                "Spring 2026",
+                90,
+                "A",
+                "Excellent"
+              ],
+              [
+                8,
+                8,
+                102,
+                "Spring 2026",
+                84,
+                "B",
+                "Good"
+              ],
+              [
+                9,
+                1,
+                401,
+                "Fall 2025",
+                91,
+                "A",
+                "Excellent"
+              ],
+              [
+                10,
+                4,
+                102,
+                "Fall 2025",
+                86,
+                "B",
+                "Good"
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Enrollment\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              },
+              {
+                "name": "Added Performance Band",
+                "action": "addConditionalColumn"
+              }
+            ]
+          },
+          {
+            "id": "Attendance",
+            "name": "Attendance",
+            "columns": [
+              {
+                "name": "attendance_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "student_id",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "present",
+                "type": "Text"
+              },
+              {
+                "name": "attendance_pct",
+                "type": "Decimal Number"
+              }
+            ],
+            "rows": [
+              [
+                1,
+                1,
+                "2026-01-15",
+                "Y",
+                96
+              ],
+              [
+                2,
+                2,
+                "2026-01-15",
+                "Y",
+                82
+              ],
+              [
+                3,
+                3,
+                "2026-01-15",
+                "Y",
+                99
+              ],
+              [
+                4,
+                4,
+                "2026-01-15",
+                "Y",
+                93
+              ],
+              [
+                5,
+                5,
+                "2026-01-15",
+                "Y",
+                98
+              ],
+              [
+                6,
+                6,
+                "2026-01-15",
+                "N",
+                76
+              ],
+              [
+                7,
+                7,
+                "2026-01-15",
+                "Y",
+                94
+              ],
+              [
+                8,
+                8,
+                "2026-01-15",
+                "Y",
+                91
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Attendance\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          },
+          {
+            "id": "Calendar",
+            "name": "Calendar",
+            "columns": [
+              {
+                "name": "Date",
+                "type": "Date"
+              },
+              {
+                "name": "Month",
+                "type": "Text"
+              },
+              {
+                "name": "MonthNo",
+                "type": "Whole Number"
+              },
+              {
+                "name": "Quarter",
+                "type": "Text"
+              },
+              {
+                "name": "Year",
+                "type": "Whole Number"
+              }
+            ],
+            "rows": [
+              [
+                "2026-01-01",
+                "Jan",
+                1,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-02-01",
+                "Feb",
+                2,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-03-01",
+                "Mar",
+                3,
+                "Q1",
+                2026
+              ],
+              [
+                "2026-04-01",
+                "Apr",
+                4,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-05-01",
+                "May",
+                5,
+                "Q2",
+                2026
+              ],
+              [
+                "2026-06-01",
+                "Jun",
+                6,
+                "Q2",
+                2026
+              ]
+            ],
+            "steps": [
+              {
+                "name": "Source",
+                "action": "source",
+                "formula": "Source{[Schema=\"dbo\",Item=\"Calendar\"]}[Data]"
+              },
+              {
+                "name": "Navigation",
+                "action": "navigation"
+              },
+              {
+                "name": "Changed Type",
+                "action": "changeDataType"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "department_course",
+            "fromTable": "Department",
+            "fromColumn": "department_id",
+            "toTable": "Course",
+            "toColumn": "department_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "course_enrollment",
+            "fromTable": "Course",
+            "fromColumn": "course_id",
+            "toTable": "Enrollment",
+            "toColumn": "course_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "student_enrollment",
+            "fromTable": "Student",
+            "fromColumn": "student_id",
+            "toTable": "Enrollment",
+            "toColumn": "student_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "student_attendance",
+            "fromTable": "Student",
+            "fromColumn": "student_id",
+            "toTable": "Attendance",
+            "toColumn": "student_id",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          },
+          {
+            "id": "calendar_attendance",
+            "fromTable": "Calendar",
+            "fromColumn": "Date",
+            "toTable": "Attendance",
+            "toColumn": "Date",
+            "cardinality": "1:*",
+            "crossFilter": "Single",
+            "active": true
+          }
+        ],
+        "measures": [
+          {
+            "id": "m_total_students",
+            "name": "Total Students",
+            "table": "Measures",
+            "dax": "DISTINCTCOUNT(Student[student_id])",
+            "format": "0",
+            "folder": "Enrollment KPIs"
+          },
+          {
+            "id": "m_avg_score",
+            "name": "Average Score",
+            "table": "Measures",
+            "dax": "AVERAGE(Enrollment[score])",
+            "format": "0.0",
+            "folder": "Academic KPIs"
+          },
+          {
+            "id": "m_attendance",
+            "name": "Attendance %",
+            "table": "Measures",
+            "dax": "AVERAGE(Attendance[attendance_pct]) / 100",
+            "format": "0.0%",
+            "folder": "Attendance KPIs"
+          },
+          {
+            "id": "m_at_risk",
+            "name": "At Risk Students",
+            "table": "Measures",
+            "dax": "CALCULATE([Total Students], Student[risk_status] = \"At Risk\")",
+            "format": "0",
+            "folder": "Student Risk"
+          },
+          {
+            "id": "m_enrollments",
+            "name": "Total Enrollments",
+            "table": "Measures",
+            "dax": "COUNTROWS(Enrollment)",
+            "format": "0",
+            "folder": "Enrollment KPIs"
+          },
+          {
+            "id": "m_high",
+            "name": "High Performers",
+            "table": "Measures",
+            "dax": "CALCULATE(DISTINCTCOUNT(Enrollment[student_id]), Enrollment[score] >= 90)",
+            "format": "0",
+            "folder": "Academic KPIs"
+          }
+        ],
+        "calculatedColumns": [
+          {
+            "table": "Enrollment",
+            "name": "Performance Band",
+            "dax": "IF(Enrollment[score]>=90,\"Excellent\",IF(Enrollment[score]>=80,\"Good\",\"Needs Support\"))"
+          }
+        ],
+        "calculatedTables": [],
+        "pages": [
+          {
+            "id": "page1",
+            "name": "Executive Overview",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "kpiStudents",
+                "type": "card",
+                "title": "Total Students",
+                "x": 18,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "8"
+                }
+              },
+              {
+                "id": "kpiScore",
+                "type": "card",
+                "title": "Average Score",
+                "x": 246,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "88.7"
+                }
+              },
+              {
+                "id": "kpiAttendance",
+                "type": "card",
+                "title": "Attendance %",
+                "x": 474,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "91.1%"
+                }
+              },
+              {
+                "id": "kpiRisk",
+                "type": "card",
+                "title": "At Risk Students",
+                "x": 702,
+                "y": 18,
+                "w": 210,
+                "h": 82,
+                "data": {
+                  "value": "2"
+                }
+              },
+              {
+                "id": "scoreByDept",
+                "type": "clusteredColumn",
+                "title": "Average Score by Department",
+                "x": 18,
+                "y": 120,
+                "w": 445,
+                "h": 205,
+                "data": {
+                  "categories": [
+                    "CS",
+                    "Business",
+                    "GIS",
+                    "Data Science"
+                  ],
+                  "values": [
+                    88,
+                    74,
+                    89,
+                    95
+                  ]
+                }
+              },
+              {
+                "id": "attendanceTrend",
+                "type": "line",
+                "title": "Attendance Trend",
+                "x": 480,
+                "y": 120,
+                "w": 432,
+                "h": 205,
+                "data": {
+                  "categories": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun"
+                  ],
+                  "values": [
+                    89,
+                    90,
+                    92,
+                    91,
+                    93,
+                    94
+                  ]
+                }
+              },
+              {
+                "id": "semesterSlicer",
+                "type": "slicer",
+                "title": "Semester",
+                "x": 18,
+                "y": 345,
+                "w": 205,
+                "h": 165,
+                "data": {
+                  "items": [
+                    {
+                      "label": "Spring 2026",
+                      "selected": true
+                    },
+                    {
+                      "label": "Fall 2025",
+                      "selected": false
+                    },
+                    {
+                      "label": "Spring 2025",
+                      "selected": false
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "gradeMix",
+                "type": "donut",
+                "title": "Grade Distribution",
+                "x": 240,
+                "y": 345,
+                "w": 205,
+                "h": 165,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C"
+                  ],
+                  "values": [
+                    5,
+                    3,
+                    2
+                  ]
+                }
+              },
+              {
+                "id": "topStudents",
+                "type": "matrix",
+                "title": "Top Student Performance",
+                "x": 462,
+                "y": 345,
+                "w": 450,
+                "h": 165,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "Course",
+                    "Score"
+                  ],
+                  "rows": [
+                    [
+                      "Maya Chen",
+                      "Java Programming",
+                      97
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "Data Visualization",
+                      95
+                    ],
+                    [
+                      "Asha Patel",
+                      "Java Programming",
+                      94
+                    ],
+                    [
+                      "Isha Rao",
+                      "GIS Applications",
+                      90
+                    ]
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page2",
+            "name": "Student Performance",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "scoreScatter",
+                "type": "scatter",
+                "title": "Score vs Attendance",
+                "x": 18,
+                "y": 20,
+                "w": 440,
+                "h": 225,
+                "data": {
+                  "points": [
+                    [
+                      94,
+                      96
+                    ],
+                    [
+                      78,
+                      82
+                    ],
+                    [
+                      97,
+                      99
+                    ],
+                    [
+                      88,
+                      93
+                    ],
+                    [
+                      95,
+                      98
+                    ],
+                    [
+                      74,
+                      76
+                    ],
+                    [
+                      90,
+                      94
+                    ],
+                    [
+                      84,
+                      91
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "courseScores",
+                "type": "clusteredColumn",
+                "title": "Average Score by Course",
+                "x": 480,
+                "y": 20,
+                "w": 432,
+                "h": 225,
+                "data": {
+                  "categories": [
+                    "Java",
+                    "Database",
+                    "Business",
+                    "GIS",
+                    "Data Viz"
+                  ],
+                  "values": [
+                    95.5,
+                    82.7,
+                    74,
+                    89,
+                    93
+                  ]
+                }
+              },
+              {
+                "id": "studentTable",
+                "type": "table",
+                "title": "Student Detail",
+                "x": 18,
+                "y": 270,
+                "w": 610,
+                "h": 235,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "City",
+                    "Risk",
+                    "Score"
+                  ],
+                  "rows": [
+                    [
+                      "Asha Patel",
+                      "Austin",
+                      "On Track",
+                      94
+                    ],
+                    [
+                      "Ravi Kumar",
+                      "Round Rock",
+                      "At Risk",
+                      78
+                    ],
+                    [
+                      "Maya Chen",
+                      "Cedar Park",
+                      "High Performer",
+                      97
+                    ],
+                    [
+                      "Noah Williams",
+                      "Leander",
+                      "On Track",
+                      88
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "Austin",
+                      "High Performer",
+                      95
+                    ],
+                    [
+                      "Ethan Brown",
+                      "Georgetown",
+                      "At Risk",
+                      74
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "riskSlicer",
+                "type": "slicer",
+                "title": "Risk Status",
+                "x": 650,
+                "y": 270,
+                "w": 262,
+                "h": 235,
+                "data": {
+                  "items": [
+                    {
+                      "label": "High Performer"
+                    },
+                    {
+                      "label": "On Track"
+                    },
+                    {
+                      "label": "At Risk"
+                    }
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page3",
+            "name": "Attendance",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "attCard",
+                "type": "card",
+                "title": "Current Attendance",
+                "x": 18,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "91.1%"
+                }
+              },
+              {
+                "id": "presentCard",
+                "type": "card",
+                "title": "Students Present",
+                "x": 298,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "7 / 8"
+                }
+              },
+              {
+                "id": "absenceCard",
+                "type": "card",
+                "title": "Students Below 85%",
+                "x": 578,
+                "y": 18,
+                "w": 260,
+                "h": 90,
+                "data": {
+                  "value": "2"
+                }
+              },
+              {
+                "id": "monthlyAttendance",
+                "type": "line",
+                "title": "Monthly Attendance %",
+                "x": 18,
+                "y": 130,
+                "w": 550,
+                "h": 230,
+                "data": {
+                  "categories": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun"
+                  ],
+                  "values": [
+                    89,
+                    90,
+                    92,
+                    91,
+                    93,
+                    94
+                  ]
+                }
+              },
+              {
+                "id": "attendanceByStudent",
+                "type": "clusteredBar",
+                "title": "Attendance by Student",
+                "x": 590,
+                "y": 130,
+                "w": 322,
+                "h": 230,
+                "data": {
+                  "categories": [
+                    "Asha",
+                    "Ravi",
+                    "Maya",
+                    "Noah",
+                    "Sofia",
+                    "Ethan",
+                    "Isha",
+                    "Liam"
+                  ],
+                  "values": [
+                    96,
+                    82,
+                    99,
+                    93,
+                    98,
+                    76,
+                    94,
+                    91
+                  ]
+                }
+              },
+              {
+                "id": "attendanceTable",
+                "type": "matrix",
+                "title": "Attendance Detail",
+                "x": 18,
+                "y": 380,
+                "w": 894,
+                "h": 130,
+                "data": {
+                  "columns": [
+                    "Student",
+                    "Attendance %",
+                    "Status"
+                  ],
+                  "rows": [
+                    [
+                      "Maya Chen",
+                      "99%",
+                      "Excellent"
+                    ],
+                    [
+                      "Sofia Garcia",
+                      "98%",
+                      "Excellent"
+                    ],
+                    [
+                      "Asha Patel",
+                      "96%",
+                      "Good"
+                    ],
+                    [
+                      "Ethan Brown",
+                      "76%",
+                      "Needs Attention"
+                    ]
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page4",
+            "name": "Visual Gallery",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "g1",
+                "type": "clusteredColumn",
+                "title": "Column",
+                "x": 18,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g2",
+                "type": "line",
+                "title": "Line",
+                "x": 250,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g3",
+                "type": "donut",
+                "title": "Donut",
+                "x": 482,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g4",
+                "type": "scatter",
+                "title": "Scatter",
+                "x": 714,
+                "y": 18,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g5",
+                "type": "funnel",
+                "title": "Funnel",
+                "x": 18,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g6",
+                "type": "gauge",
+                "title": "Gauge",
+                "x": 250,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g7",
+                "type": "card",
+                "title": "Card",
+                "x": 482,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "value": "88.7"
+                }
+              },
+              {
+                "id": "g8",
+                "type": "slicer",
+                "title": "Slicer",
+                "x": 714,
+                "y": 186,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "items": [
+                    {
+                      "label": "Java"
+                    },
+                    {
+                      "label": "Database"
+                    },
+                    {
+                      "label": "GIS"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "g9",
+                "type": "table",
+                "title": "Table",
+                "x": 18,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "columns": [
+                    "Category",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "A",
+                      42
+                    ],
+                    [
+                      "B",
+                      35
+                    ],
+                    [
+                      "C",
+                      23
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "g10",
+                "type": "matrix",
+                "title": "Matrix",
+                "x": 250,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "columns": [
+                    "Category",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "A",
+                      42
+                    ],
+                    [
+                      "B",
+                      35
+                    ],
+                    [
+                      "C",
+                      23
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "g11",
+                "type": "decomposition",
+                "title": "Decomposition",
+                "x": 482,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              },
+              {
+                "id": "g12",
+                "type": "keyInfluencers",
+                "title": "Key influencers",
+                "x": 714,
+                "y": 354,
+                "w": 214,
+                "h": 148,
+                "data": {
+                  "categories": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ],
+                  "values": [
+                    42,
+                    35,
+                    23,
+                    51
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          },
+          {
+            "id": "page5",
+            "name": "Student Drillthrough",
+            "hidden": false,
+            "visuals": [
+              {
+                "id": "detailCard",
+                "type": "card",
+                "title": "Selected Student",
+                "x": 25,
+                "y": 20,
+                "w": 300,
+                "h": 90,
+                "data": {
+                  "value": "Asha Patel"
+                }
+              },
+              {
+                "id": "detailTable",
+                "type": "table",
+                "title": "Enrollment History",
+                "x": 25,
+                "y": 130,
+                "w": 880,
+                "h": 350,
+                "data": {
+                  "columns": [
+                    "Semester",
+                    "Course",
+                    "Score",
+                    "Grade"
+                  ],
+                  "rows": [
+                    [
+                      "Spring 2026",
+                      "Java Programming",
+                      94,
+                      "A"
+                    ],
+                    [
+                      "Fall 2025",
+                      "Data Visualization",
+                      91,
+                      "A"
+                    ]
+                  ]
+                }
+              }
+            ],
+            "background": "#ffffff",
+            "wallpaper": "#d4d4d4",
+            "size": {
+              "width": 960,
+              "height": 540
+            }
+          }
+        ],
+        "activePageId": "page1",
+        "selectedVisualId": "scoreByDept",
+        "selectedTable": "Student",
+        "selectedQuery": "Student",
+        "filters": {
+          "report": [
+            {
+              "field": "Calendar[Year]",
+              "value": "2026"
+            }
+          ],
+          "page": {
+            "page1": []
+          },
+          "visual": {}
+        },
+        "bookmarks": [
+          {
+            "id": "bmExecutive",
+            "name": "Executive Snapshot",
+            "snapshot": {
+              "activePageId": "page1",
+              "selectedVisualId": "scoreByDept"
+            }
+          },
+          {
+            "id": "bmRisk",
+            "name": "At Risk Students",
+            "snapshot": {
+              "activePageId": "page2",
+              "selectedVisualId": "studentTable"
+            }
+          }
+        ],
+        "interactions": [
+          {
+            "source": "semesterSlicer",
+            "target": "scoreByDept",
+            "mode": "filter"
+          },
+          {
+            "source": "riskSlicer",
+            "target": "studentTable",
+            "mode": "filter"
+          }
+        ],
+        "hierarchies": [
+          {
+            "id": "academicHierarchy",
+            "name": "Academic Hierarchy",
+            "table": "Course",
+            "levels": [
+              "department_id",
+              "course_name"
+            ]
+          }
+        ],
+        "performance": {
+          "recording": false,
+          "events": []
+        },
+        "publish": {
+          "workspace": null,
+          "status": ""
+        },
+        "mobile": {
+          "enabled": false,
+          "visuals": []
+        },
+        "powerQueryOpen": false,
+        "formulaBar": true,
+        "columnQuality": true,
+        "columnDistribution": false,
+        "columnProfile": false,
+        "serviceOpen": false,
+        "daxQueries": [
+          {
+            "id": "dax1",
+            "name": "Course Performance",
+            "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Course[course_name],\n    \"Average Score\", [Average Score]\n)",
+            "results": [
+              [
+                "Course",
+                "Average Score"
+              ],
+              [
+                "Java Programming",
+                "95.5"
+              ],
+              [
+                "Database Systems",
+                "82.7"
+              ],
+              [
+                "Business Analytics",
+                "74.0"
+              ],
+              [
+                "GIS Applications",
+                "89.0"
+              ],
+              [
+                "Data Visualization",
+                "93.0"
+              ]
+            ]
+          }
+        ],
+        "activeDaxQueryId": "dax1",
+        "tmdlScripts": [
+          {
+            "id": "tmdl1",
+            "name": "Student Model",
+            "text": "createOrReplace\n\ttable Student\n\t\tcolumn student_id\n\t\t\tdataType: int64\n\t\tcolumn 'Student Name'\n\t\t\tdataType: string\n\n\tmeasure 'Total Students' = DISTINCTCOUNT(Student[student_id])",
+            "preview": "Model is synchronized. No pending changes."
+          }
+        ],
+        "activeTmdlScriptId": "tmdl1",
+        "modelExplorerOpen": true,
+        "openPanes": [
+          "filters",
+          "visualizations",
+          "data"
+        ],
+        "ribbonCollapsed": false,
+        "keytips": false
+      },
+      "git": {
+        "title": "Git",
+        "version": "Local Repository",
+        "repository": {
+          "name": "Java-Practice",
+          "path": "C:\\Users\\developer\\Java-Practice",
+          "initialized": true
+        },
+        "activeBranch": "main",
+        "branches": [
+          {
+            "name": "main",
+            "current": true
+          },
+          {
+            "name": "feature/student-api"
+          }
+        ],
+        "remotes": [
+          {
+            "name": "origin",
+            "url": "https://github.com/sabareeshrao/Java-Practice.git"
+          }
+        ],
+        "tags": [
+          {
+            "name": "v1.0.0",
+            "hash": "a17b6f1"
+          }
+        ],
+        "stashes": [],
+        "files": [
+          {
+            "path": "src/Student.java",
+            "status": "M",
+            "staged": false,
+            "content": "public class Student {\\n    private int rollNo;\\n    private String name;\\n}\\n",
+            "oldContent": "public class Student {\\n    private int rollNo;\\n}\\n"
+          },
+          {
+            "path": "README.md",
+            "status": "M",
+            "staged": true,
+            "content": "# Java Practice\\n\\nHands-on Java developer workflow.\\n",
+            "oldContent": "# Java Practice\\n"
+          }
+        ],
+        "commits": [
+          {
+            "hash": "a17b6f1",
+            "message": "Add Student domain model",
+            "author": "Developer",
+            "date": "Today",
+            "branch": "main",
+            "files": [
+              "src/Student.java"
+            ]
+          },
+          {
+            "hash": "8ef31aa",
+            "message": "Initialize Java practice project",
+            "author": "Developer",
+            "date": "Yesterday",
+            "branch": "main",
+            "files": [
+              "README.md"
+            ]
+          }
+        ],
+        "conflicts": [],
+        "terminalOpen": true,
+        "terminalShell": "Git",
+        "terminalHistory": [],
+        "config": {
+          "user": {
+            "name": "Developer",
+            "email": "developer@example.com"
+          },
+          "settings": {},
+          "credentialHelper": "manager",
+          "signingKey": "",
+          "signCommits": false
+        },
+        "remoteBranches": [
+          {
+            "name": "origin/main",
+            "remote": "origin"
+          }
+        ],
+        "reflog": [],
+        "rebasePlan": [],
+        "gitignore": "*.class\\nout/\\n.idea/\\n",
+        "hooks": {},
+        "lfs": {
+          "patterns": []
+        },
+        "submodules": [],
+        "worktrees": []
+      },
+      "github": {
+        "user": "sabareeshrao",
+        "displayName": "Java Developer",
+        "contributions": 64,
+        "activeRepo": "Java-Practice",
+        "repositories": [
+          {
+            "owner": "sabareeshrao",
+            "name": "Java-Practice",
+            "description": "Hands-on Java developer practice repository",
+            "defaultBranch": "main",
+            "private": false,
+            "stars": 2,
+            "watchers": 1,
+            "forks": 1,
+            "cloneUrl": "https://github.com/sabareeshrao/Java-Practice.git",
+            "branches": [
+              {
+                "name": "main",
+                "protected": true
+              },
+              {
+                "name": "feature/student-api"
+              }
+            ],
+            "tags": [
+              {
+                "name": "v1.0.0",
+                "hash": "a17b6f1",
+                "date": "Today"
+              }
+            ],
+            "releases": [
+              {
+                "name": "Java Practice v1.0.0",
+                "tag": "v1.0.0",
+                "notes": "Initial practice milestone."
+              }
+            ],
+            "files": [
+              {
+                "path": "src/Student.java",
+                "content": "public class Student {\\n    private int rollNo;\\n    private String name;\\n}\\n",
+                "message": "Add Student domain model",
+                "time": "Today"
+              },
+              {
+                "path": "README.md",
+                "content": "# Java Practice\\n\\nHands-on Java developer workflow.",
+                "message": "Update README",
+                "time": "Today"
+              },
+              {
+                "path": ".github/workflows/ci.yml",
+                "content": "name: CI\\non: [push, pull_request]\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n",
+                "message": "Add CI workflow",
+                "time": "Today"
+              }
+            ],
+            "readme": "# Java Practice\\n\\nHands-on Java developer workflow.",
+            "commits": [
+              {
+                "hash": "a17b6f1",
+                "message": "Add Student domain model",
+                "author": "Developer",
+                "date": "Today",
+                "files": [
+                  "src/Student.java"
+                ],
+                "diff": [
+                  "@@ Student.java",
+                  "-    int rollNo;",
+                  "+    private int rollNo;",
+                  "+    private String name;"
+                ]
+              },
+              {
+                "hash": "8ef31aa",
+                "message": "Initialize Java practice project",
+                "author": "Developer",
+                "date": "Yesterday",
+                "files": [
+                  "README.md"
+                ]
+              }
+            ],
+            "issues": [
+              {
+                "number": 1,
+                "title": "Add validation for student roll number",
+                "body": "Reject invalid roll numbers before persistence.",
+                "author": "sabareeshrao",
+                "state": "open",
+                "labels": [
+                  "enhancement"
+                ],
+                "assignee": "sabareeshrao",
+                "comments": []
+              }
+            ],
+            "pullRequests": [
+              {
+                "number": 2,
+                "title": "Add Student REST endpoint",
+                "head": "feature/student-api",
+                "base": "main",
+                "author": "sabareeshrao",
+                "state": "open",
+                "merged": false,
+                "reviewers": [
+                  "reviewer"
+                ],
+                "comments": [
+                  {
+                    "author": "reviewer",
+                    "text": "Please add one validation test."
+                  }
+                ],
+                "checks": [
+                  {
+                    "name": "build",
+                    "status": "success"
+                  },
+                  {
+                    "name": "tests",
+                    "status": "success"
+                  }
+                ],
+                "filesChanged": [
+                  "src/StudentController.java"
+                ],
+                "diff": [
+                  "+@RestController",
+                  "+class StudentController {",
+                  "+}"
+                ]
+              }
+            ],
+            "projects": [
+              {
+                "name": "Java Practice Board",
+                "description": "Backlog, in progress, review and done"
+              }
+            ],
+            "discussions": [
+              {
+                "title": "API error response conventions",
+                "category": "General",
+                "author": "sabareeshrao",
+                "comments": 2
+              }
+            ],
+            "security": {
+              "dependabot": 0,
+              "codeScanning": 0,
+              "secretScanning": 0,
+              "policy": true
+            },
+            "insights": {
+              "contributors": 2,
+              "clones": 14,
+              "visitors": 8
+            },
+            "settings": {},
+            "branchProtection": [
+              {
+                "branch": "main",
+                "rule": "Require pull request review and passing checks"
+              }
+            ],
+            "collaborators": [
+              {
+                "name": "reviewer",
+                "role": "Write"
+              }
+            ]
+          }
+        ]
+      },
+      "github_actions": {
+        "owner": "sabareeshrao",
+        "repository": "Java-Practice",
+        "workflows": [
+          {
+            "id": "ci",
+            "name": "Java CI",
+            "file": "ci.yml",
+            "enabled": true,
+            "events": [
+              "push",
+              "pull_request",
+              "workflow_dispatch"
+            ],
+            "dispatch": true,
+            "permissions": "contents: read",
+            "concurrency": "ci-main",
+            "yaml": "name: Java CI\\non:\\n  push:\\n    branches: [ main ]\\n  pull_request:\\n    branches: [ main ]\\n  workflow_dispatch:\\njobs:\\n  build:\\n    runs-on: ubuntu-latest\\n    steps:\\n      - uses: actions/checkout@v4\\n      - uses: actions/setup-java@v4\\n        with:\\n          java-version: '17'\\n      - run: mvn -B verify"
+          }
+        ],
+        "runs": [
+          {
+            "id": "42",
+            "name": "Java CI",
+            "event": "push",
+            "branch": "main",
+            "status": "success",
+            "commit": "a17b6f1",
+            "actor": "sabareeshrao",
+            "runner": "ubuntu-latest",
+            "duration": "1m 42s",
+            "jobs": [
+              {
+                "name": "build",
+                "status": "success",
+                "runner": "ubuntu-latest",
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "success",
+                    "log": "Runner image: ubuntu-latest"
+                  },
+                  {
+                    "name": "Checkout",
+                    "status": "success",
+                    "log": "Checked out a17b6f1"
+                  },
+                  {
+                    "name": "Set up Java",
+                    "status": "success",
+                    "log": "Java 17 configured"
+                  },
+                  {
+                    "name": "Maven verify",
+                    "status": "success",
+                    "log": "BUILD SUCCESS"
+                  }
+                ]
+              }
+            ],
+            "summary": "Build and tests passed.",
+            "annotations": [],
+            "artifacts": [
+              {
+                "name": "java-practice-jar",
+                "size": "24 KB",
+                "retention": "90 days"
+              }
+            ]
+          }
+        ],
+        "templates": [
+          {
+            "name": "Java with Maven",
+            "description": "Build and test with Maven."
+          },
+          {
+            "name": "Java with Gradle",
+            "description": "Build and test with Gradle."
+          }
+        ],
+        "secrets": [
+          {
+            "name": "SONAR_TOKEN",
+            "updated": "Today"
+          }
+        ],
+        "variables": [
+          {
+            "name": "JAVA_VERSION",
+            "value": "17",
+            "updated": "Today"
+          }
+        ],
+        "caches": [
+          {
+            "key": "maven-Linux-pom",
+            "ref": "refs/heads/main",
+            "size": "18 MB",
+            "lastAccessed": "Today"
+          }
+        ],
+        "artifacts": [],
+        "environments": [
+          {
+            "name": "production",
+            "reviewers": [
+              "reviewer"
+            ],
+            "waitTimer": 0,
+            "secrets": [
+              "DEPLOY_TOKEN"
+            ]
+          }
+        ],
+        "runners": [
+          {
+            "name": "linux-java17-agent",
+            "os": "Linux",
+            "labels": [
+              "self-hosted",
+              "linux",
+              "java17"
+            ],
+            "status": "online"
+          }
+        ],
+        "marketplace": []
+      },
+      "mysql_workbench": {
+        "title": "Campus Analytics - MySQL Workbench",
+        "version": "MySQL Workbench 8.0 Community",
+        "showHome": false,
+        "connections": [
+          {
+            "id": "local-mysql",
+            "name": "Local instance MySQL80",
+            "host": "localhost",
+            "port": 3306,
+            "user": "root",
+            "schema": "java_practice",
+            "connected": true
+          }
+        ],
+        "activeConnection": "local-mysql",
+        "activeSchema": "java_practice",
+        "tree": [
+          {
+            "name": "java_practice",
+            "type": "schema",
+            "path": "schemas/java_practice",
+            "open": true,
+            "properties": {
+              "Charset": "utf8mb4",
+              "Collation": "utf8mb4_0900_ai_ci"
+            },
+            "children": [
+              {
+                "name": "Tables",
+                "type": "folder",
+                "path": "schemas/java_practice/tables",
+                "open": true,
+                "children": [
+                  {
+                    "name": "department",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/department",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 4,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 4
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`department` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "department_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/department_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "department_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/department_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "dean",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/department/columns/dean",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/department/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/fks",
+                        "open": true,
+                        "children": []
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/department/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "course",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/course",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 5,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 5,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_course_department",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/course/fks/fk_course_department",
+                          "properties": {
+                            "Column": "department_id",
+                            "References": "department.department_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`course` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "course_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/course_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "course_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/course_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(120)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "department_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/department_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "credits",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/credits",
+                            "properties": {
+                              "Datatype": "INT"
+                            }
+                          },
+                          {
+                            "name": "instructor",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/course/columns/instructor",
+                            "properties": {
+                              "Datatype": "VARCHAR(100)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/course/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_course_department",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/course/fks/fk_course_department",
+                            "properties": {
+                              "Column": "department_id",
+                              "References": "department.department_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/course/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "student",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/student",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 8,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 8,
+                      "triggers": [
+                        {
+                          "name": "before_student_update",
+                          "type": "trigger",
+                          "path": "schemas/java_practice/tables/student/triggers/before_student_update"
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`student` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_name",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/student_name",
+                            "properties": {
+                              "Datatype": "VARCHAR(120)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "email",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/email",
+                            "properties": {
+                              "Datatype": "VARCHAR(160)",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "city",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/city",
+                            "properties": {
+                              "Datatype": "VARCHAR(80)"
+                            }
+                          },
+                          {
+                            "name": "admission_year",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/admission_year",
+                            "properties": {
+                              "Datatype": "INT"
+                            }
+                          },
+                          {
+                            "name": "risk_status",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/risk_status",
+                            "properties": {
+                              "Datatype": "VARCHAR(40)"
+                            }
+                          },
+                          {
+                            "name": "updated_at",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/student/columns/updated_at",
+                            "properties": {
+                              "Datatype": "TIMESTAMP",
+                              "Default": "CURRENT_TIMESTAMP"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/student/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/fks",
+                        "open": true,
+                        "children": []
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/student/triggers",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "before_student_update",
+                            "type": "trigger",
+                            "path": "schemas/java_practice/tables/student/triggers/before_student_update"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "enrollment",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/enrollment",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 10,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 10,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_enrollment_student",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_student",
+                          "properties": {
+                            "Column": "student_id",
+                            "References": "student.student_id"
+                          }
+                        },
+                        {
+                          "name": "fk_enrollment_course",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_course",
+                          "properties": {
+                            "Column": "course_id",
+                            "References": "course.course_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`enrollment` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "enrollment_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/enrollment_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "course_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/course_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "semester",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/semester",
+                            "properties": {
+                              "Datatype": "VARCHAR(30)"
+                            }
+                          },
+                          {
+                            "name": "score",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/score",
+                            "properties": {
+                              "Datatype": "DECIMAL(5,2)"
+                            }
+                          },
+                          {
+                            "name": "grade",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/enrollment/columns/grade",
+                            "properties": {
+                              "Datatype": "CHAR(1)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/enrollment/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_enrollment_student",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_student",
+                            "properties": {
+                              "Column": "student_id",
+                              "References": "student.student_id"
+                            }
+                          },
+                          {
+                            "name": "fk_enrollment_course",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/enrollment/fks/fk_enrollment_course",
+                            "properties": {
+                              "Column": "course_id",
+                              "References": "course.course_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/enrollment/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "attendance",
+                    "type": "table",
+                    "path": "schemas/java_practice/tables/attendance",
+                    "open": true,
+                    "properties": {
+                      "Engine": "InnoDB",
+                      "Rows": 8,
+                      "Collation": "utf8mb4_0900_ai_ci",
+                      "rows": 8,
+                      "foreignKeys": [
+                        {
+                          "name": "fk_attendance_student",
+                          "type": "foreignKey",
+                          "path": "schemas/java_practice/tables/attendance/fks/fk_attendance_student",
+                          "properties": {
+                            "Column": "student_id",
+                            "References": "student.student_id"
+                          }
+                        }
+                      ]
+                    },
+                    "ddl": "CREATE TABLE `java_practice`.`attendance` (...);",
+                    "children": [
+                      {
+                        "name": "Columns",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/columns",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "attendance_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "PK": "YES",
+                              "NN": "YES",
+                              "AI": "YES"
+                            }
+                          },
+                          {
+                            "name": "student_id",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/student_id",
+                            "properties": {
+                              "Datatype": "INT",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "attendance_date",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_date",
+                            "properties": {
+                              "Datatype": "DATE",
+                              "NN": "YES"
+                            }
+                          },
+                          {
+                            "name": "present",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/present",
+                            "properties": {
+                              "Datatype": "TINYINT(1)"
+                            }
+                          },
+                          {
+                            "name": "attendance_pct",
+                            "type": "column",
+                            "path": "schemas/java_practice/tables/attendance/columns/attendance_pct",
+                            "properties": {
+                              "Datatype": "DECIMAL(5,2)"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Indexes",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/indexes",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "PRIMARY",
+                            "type": "index",
+                            "path": "schemas/java_practice/tables/attendance/indexes/PRIMARY",
+                            "properties": {
+                              "Type": "BTREE",
+                              "Unique": "YES"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Foreign Keys",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/fks",
+                        "open": true,
+                        "children": [
+                          {
+                            "name": "fk_attendance_student",
+                            "type": "foreignKey",
+                            "path": "schemas/java_practice/tables/attendance/fks/fk_attendance_student",
+                            "properties": {
+                              "Column": "student_id",
+                              "References": "student.student_id"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Triggers",
+                        "type": "folder",
+                        "path": "schemas/java_practice/tables/attendance/triggers",
+                        "open": true,
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Views",
+                "type": "folder",
+                "path": "schemas/java_practice/views",
+                "open": true,
+                "children": [
+                  {
+                    "name": "vw_student_performance",
+                    "type": "view",
+                    "path": "schemas/java_practice/views/vw_student_performance",
+                    "ddl": "CREATE VIEW vw_student_performance AS SELECT s.student_name,c.course_name,e.score,e.grade FROM student s JOIN enrollment e ON e.student_id=s.student_id JOIN course c ON c.course_id=e.course_id;"
+                  }
+                ]
+              },
+              {
+                "name": "Stored Procedures",
+                "type": "folder",
+                "path": "schemas/java_practice/procedures",
+                "open": true,
+                "children": [
+                  {
+                    "name": "sp_students_at_risk",
+                    "type": "procedure",
+                    "path": "schemas/java_practice/procedures/sp_students_at_risk",
+                    "ddl": "CREATE PROCEDURE sp_students_at_risk() BEGIN SELECT * FROM student WHERE risk_status='At Risk'; END;"
+                  }
+                ]
+              },
+              {
+                "name": "Functions",
+                "type": "folder",
+                "path": "schemas/java_practice/functions",
+                "open": true,
+                "children": [
+                  {
+                    "name": "fn_grade_label",
+                    "type": "function",
+                    "path": "schemas/java_practice/functions/fn_grade_label",
+                    "ddl": "CREATE FUNCTION fn_grade_label(score DECIMAL(5,2)) RETURNS VARCHAR(20) RETURN IF(score>=90,'Excellent',IF(score>=80,'Good','Needs Support'));"
+                  }
+                ]
+              },
+              {
+                "name": "Events",
+                "type": "folder",
+                "path": "schemas/java_practice/events",
+                "open": true,
+                "children": [
+                  {
+                    "name": "evt_weekly_summary",
+                    "type": "event",
+                    "path": "schemas/java_practice/events/evt_weekly_summary",
+                    "ddl": "CREATE EVENT evt_weekly_summary ON SCHEDULE EVERY 1 WEEK DO INSERT INTO audit_log(message) VALUES('weekly summary');"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "initialSelection": "schemas/java_practice/tables/student",
+        "queryTabs": [
+          {
+            "id": "sql-main",
+            "title": "student_analysis.sql",
+            "sql": "SELECT\n    s.student_id,\n    s.student_name,\n    c.course_name,\n    e.score,\n    e.grade\nFROM student s\nJOIN enrollment e ON e.student_id = s.student_id\nJOIN course c ON c.course_id = e.course_id\nORDER BY e.score DESC;",
+            "dirty": false,
+            "savedPath": "C:\\sql\\student_analysis.sql"
+          },
+          {
+            "id": "sql-risk",
+            "title": "risk_report.sql",
+            "sql": "SELECT student_id, student_name, city, risk_status\nFROM student\nWHERE risk_status = 'At Risk';",
+            "dirty": false,
+            "savedPath": "C:\\sql\\risk_report.sql"
+          }
+        ],
+        "initialQuery": "sql-main",
+        "outputs": [
+          {
+            "status": "success",
+            "time": "10:21:04",
+            "action": "Query",
+            "sql": "SELECT student performance...",
+            "response": "5 row(s) returned",
+            "duration": "0.014 sec"
+          },
+          {
+            "status": "success",
+            "time": "10:20:32",
+            "action": "Schema",
+            "message": "USE `java_practice`",
+            "response": "Default schema changed",
+            "duration": "0.001 sec"
+          }
+        ],
+        "results": [
+          {
+            "id": "result-students",
+            "title": "Result Grid",
+            "columns": [
+              "student_id",
+              "student_name",
+              "email",
+              "city",
+              "admission_year",
+              "risk_status"
+            ],
+            "rows": [
+              {
+                "student_id": 1,
+                "student_name": "Asha Patel",
+                "email": "asha@example.edu",
+                "city": "Austin",
+                "admission_year": 2024,
+                "risk_status": "On Track"
+              },
+              {
+                "student_id": 2,
+                "student_name": "Ravi Kumar",
+                "email": "ravi@example.edu",
+                "city": "Round Rock",
+                "admission_year": 2024,
+                "risk_status": "At Risk"
+              },
+              {
+                "student_id": 3,
+                "student_name": "Maya Chen",
+                "email": "maya@example.edu",
+                "city": "Cedar Park",
+                "admission_year": 2025,
+                "risk_status": "High Performer"
+              },
+              {
+                "student_id": 4,
+                "student_name": "Noah Williams",
+                "email": "noah@example.edu",
+                "city": "Leander",
+                "admission_year": 2025,
+                "risk_status": "On Track"
+              },
+              {
+                "student_id": 5,
+                "student_name": "Sofia Garcia",
+                "email": "sofia@example.edu",
+                "city": "Austin",
+                "admission_year": 2024,
+                "risk_status": "High Performer"
+              }
+            ],
+            "editable": true,
+            "pinned": true
+          }
+        ],
+        "activeResult": "result-students",
+        "snippets": [
+          {
+            "id": "sn-risk",
+            "name": "At Risk Students",
+            "sql": "SELECT * FROM student WHERE risk_status = 'At Risk';"
+          },
+          {
+            "id": "sn-top",
+            "name": "Top Scores",
+            "sql": "SELECT * FROM enrollment WHERE score >= 90 ORDER BY score DESC;"
+          }
+        ],
+        "rightMode": "help",
+        "bottomMode": "results",
+        "autoCommit": true,
+        "sqlMode": "STRICT_TRANS_TABLES",
+        "isolationLevel": "REPEATABLE READ",
+        "safeUpdates": true,
+        "rowLimit": 1000,
+        "users": [
+          {
+            "user": "root",
+            "host": "localhost",
+            "privileges": [
+              "ALL PRIVILEGES"
+            ],
+            "locked": false
+          },
+          {
+            "user": "java_app",
+            "host": "localhost",
+            "privileges": [
+              "SELECT",
+              "INSERT",
+              "UPDATE",
+              "DELETE"
+            ],
+            "locked": false
+          },
+          {
+            "user": "report_user",
+            "host": "%",
+            "privileges": [
+              "SELECT"
+            ],
+            "locked": false
+          }
+        ],
+        "serverRunning": true,
+        "serverConnections": [
+          {
+            "id": 21,
+            "user": "root",
+            "host": "localhost",
+            "db": "java_practice",
+            "command": "Query",
+            "time": 0
+          },
+          {
+            "id": 22,
+            "user": "java_app",
+            "host": "localhost",
+            "db": "java_practice",
+            "command": "Sleep",
+            "time": 14
+          },
+          {
+            "id": 23,
+            "user": "report_user",
+            "host": "10.0.0.24",
+            "db": "java_practice",
+            "command": "Sleep",
+            "time": 31
+          }
+        ],
+        "model": {
+          "name": "Campus Analytics Model",
+          "zoom": 100,
+          "tables": [
+            {
+              "name": "department",
+              "columns": [
+                "department_id INT PK",
+                "department_name VARCHAR(100)",
+                "dean VARCHAR(100)"
+              ]
+            },
+            {
+              "name": "course",
+              "columns": [
+                "course_id INT PK",
+                "course_name VARCHAR(120)",
+                "department_id INT FK",
+                "credits INT"
+              ]
+            },
+            {
+              "name": "student",
+              "columns": [
+                "student_id INT PK",
+                "student_name VARCHAR(120)",
+                "email VARCHAR(160)",
+                "city VARCHAR(80)",
+                "risk_status VARCHAR(40)"
+              ]
+            },
+            {
+              "name": "enrollment",
+              "columns": [
+                "enrollment_id INT PK",
+                "student_id INT FK",
+                "course_id INT FK",
+                "semester VARCHAR(30)",
+                "score DECIMAL(5,2)"
+              ]
+            },
+            {
+              "name": "attendance",
+              "columns": [
+                "attendance_id INT PK",
+                "student_id INT FK",
+                "attendance_date DATE",
+                "attendance_pct DECIMAL(5,2)"
+              ]
+            }
+          ],
+          "relationships": [
+            {
+              "from": "department.department_id",
+              "to": "course.department_id",
+              "type": "1:N"
+            },
+            {
+              "from": "course.course_id",
+              "to": "enrollment.course_id",
+              "type": "1:N"
+            },
+            {
+              "from": "student.student_id",
+              "to": "enrollment.student_id",
+              "type": "1:N"
+            },
+            {
+              "from": "student.student_id",
+              "to": "attendance.student_id",
+              "type": "1:N"
+            }
+          ]
+        }
+      },
+      "redis": {
+        "state": {}
+      }
+    }
+  },
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "path": "chapters/01-student-class-fundamentals.json"
+    },
+    {
+      "id": "chapter-02",
+      "path": "chapters/02-postgresql-pgadmin-developer-workflow.json"
+    },
+    {
+      "id": "chapter-03",
+      "path": "chapters/03-api-testing-software-handoff.json"
+    },
+    {
+      "id": "chapter-04",
+      "path": "chapters/04-vscode-integration-test.json"
+    },
+    {
+      "id": "chapter-05",
+      "path": "chapters/05-command-prompt-developer-workflow.json"
+    },
+    {
+      "id": "chapter-06",
+      "path": "chapters/06-linux-developer-workstation.json"
+    },
+    {
+      "id": "chapter-07",
+      "path": "chapters/07-sql-server-management-studio-workflow.json"
+    },
+    {
+      "id": "chapter-08",
+      "path": "chapters/08-jira-developer-workflow.json"
+    },
+    {
+      "id": "chapter-09",
+      "path": "chapters/09-jenkins-cicd-workflow.json"
+    },
+    {
+      "id": "chapter-10",
+      "path": "chapters/10-power-bi-desktop-feature-rich-analytics-workflow.json"
+    },
+    {
+      "id": "chapter-11",
+      "path": "chapters/11-git-github-github-actions-workflow.json"
+    },
+    {
+      "id": "chapter-12",
+      "path": "chapters/12-mysql-workbench-sql-development-database-engineering.json"
+    }
+  ]
+}

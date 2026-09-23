@@ -142,3 +142,26 @@ Set `feature_available: true` only when the required feature exists under the ta
 Do not hand-edit the generated index. Repository validation fails when it becomes stale.
 
 Redis Insight is integrated as the canonical `redis` simulator using the same `SIM_PACKAGE`, `SIM_SEEK`, `SIM_EXPLAIN`, and `ENGINE_READY` contract.
+
+
+## JSON lesson source
+
+All existing course content is now sourced from structured JSON under `lesson-json/`.
+
+- `lesson-json/course.json` owns course metadata, books, simulator baseline package state, and chapter order.
+- `lesson-json/chapters/*.json` owns one chapter per file.
+- `lesson-json/chapter.schema.json` documents the chapter contract.
+- `lessons.js` is generated browser output and should not be edited directly.
+
+After adding or editing a transcript-derived chapter:
+
+```bash
+node scripts/build-lessons.cjs
+node scripts/validate-repo.cjs
+```
+
+Repository validation fails if `lessons.js` does not exactly match the JSON source.
+
+## Redis Insight visibility
+
+Redis was already present in the deployed repository, and the Pages workflow was succeeding. It was not reachable through the lesson player because no current lesson step uses `software: "redis"`. The library now exposes a **Redis Insight Lab** link, and `player.html?software=redis` opens Redis directly in software-preview mode. Future Redis lesson JSON will continue to activate it normally through lesson playback.

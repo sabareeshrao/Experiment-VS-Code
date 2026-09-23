@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "id": "chapter-07",
+  "title": "7: SQL Server Management Studio Workflow",
+  "subtitle": "Test a realistic IntelliJ → SSMS → T-SQL → results/performance → IntelliJ workflow with a stateful virtual SQL Server.",
+  "steps": [
+    {
+      "title": "Review Student.java before SQL Server work",
+      "why": "SQL Server table design start cheyyadaniki mundu developer Student.java model ni IntelliJ lo review chestadu. Java fields database columns tho ela map avvalo clarity vastundi.",
+      "software": "intellij",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    },
+    {
+      "title": "Open the SQL Server connection dialog",
+      "why": "Database work start cheyyadaniki SSMS lo Database Engine connection dialog open chestam. Server, authentication mariyu target database details ikkada configure chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "openConnectDialog",
+        "data": {}
+      }
+    },
+    {
+      "title": "Set localhost as the SQL Server",
+      "why": "Development environment lo local SQL Server instance ni connect cheyyadaniki server name localhost ga set chestunnam.",
+      "software": "ssms",
+      "action": {
+        "action": "setConnectionField",
+        "data": {
+          "field": "serverName",
+          "value": "localhost"
+        }
+      }
+    },
+    {
+      "title": "Use Windows Authentication",
+      "why": "Local developer machine lo Windows Authentication common secure option. Separate SQL password lekunda current Windows identity ni use chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "setConnectionField",
+        "data": {
+          "field": "authentication",
+          "value": "Windows Authentication"
+        }
+      }
+    },
+    {
+      "title": "Connect and open the Databases node",
+      "why": "Connection successful ayyaka Object Explorer lo server tree mariyu Databases node available avuthayi. Ikkada nundi application database ni navigate chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "connectServer",
+        "data": {
+          "database": "JavaPracticeDb",
+          "userName": "developer",
+          "expandDatabases": true,
+          "statusText": "Ready"
+        }
+      }
+    },
+    {
+      "title": "Expand JavaPracticeDb",
+      "why": "Application-specific tables, views, programmability objects choodadaniki JavaPracticeDb database node ni expand chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "expandNode",
+        "data": {
+          "id": "db:JavaPracticeDb",
+          "select": true
+        }
+      }
+    },
+    {
+      "title": "Set JavaPracticeDb as the query database",
+      "why": "Query execute ayye database context explicit ga JavaPracticeDb ki set chesthe commands wrong database meeda run avvakunda untayi.",
+      "software": "ssms",
+      "action": {
+        "action": "changeDatabase",
+        "data": {
+          "database": "JavaPracticeDb"
+        }
+      }
+    },
+    {
+      "title": "Open a new SQL query",
+      "why": "DDL mariyu data validation commands rayadaniki new query editor open chestam. Ee editor manual typing kuda support chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "newQuery",
+        "data": {
+          "id": "student-query",
+          "title": "student_setup.sql",
+          "database": "JavaPracticeDb"
+        }
+      }
+    },
+    {
+      "title": "Type the student table definition",
+      "why": "Java Student model ki corresponding SQL Server table ni T-SQL tho define chestam. Primary key mariyu NOT NULL constraints kuda schema lo include chestunnam.",
+      "software": "ssms",
+      "action": {
+        "action": "typeSql",
+        "data": {
+          "sql": "CREATE TABLE dbo.student (\n    roll_no INT PRIMARY KEY,\n    is_present BIT NOT NULL,\n    name NVARCHAR(100) NOT NULL\n);",
+          "boundary": true
+        }
+      }
+    },
+    {
+      "title": "Execute CREATE TABLE",
+      "why": "Execute chesthe simulator virtual T-SQL engine statement ni parse chesi dbo.student table ni actual simulator database state lo create chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "executeQuery",
+        "data": {}
+      }
+    },
+    {
+      "title": "Refresh Object Explorer",
+      "why": "Schema change taruvatha Object Explorer refresh chesthe newly created table tree lo kanipistundi. Real SSMS workflow lo idi common step.",
+      "software": "ssms",
+      "action": {
+        "action": "refreshObjectExplorer",
+        "data": {}
+      }
+    },
+    {
+      "title": "Expand the Tables folder",
+      "why": "JavaPracticeDb Tables folder open chesi dbo.student object create ayyindha ani visual ga verify chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "expandNode",
+        "data": {
+          "id": "folder:JavaPracticeDb:Tables",
+          "select": true
+        }
+      }
+    },
+    {
+      "title": "Insert two student rows",
+      "why": "Table schema verify ayyaka sample records insert chestam. Multi-row INSERT virtual database state ni update chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "typeSql",
+        "data": {
+          "sql": "INSERT INTO dbo.student (roll_no, is_present, name)\nVALUES (101, 1, 'Ravi'),\n       (102, 1, 'Anita');"
+        }
+      }
+    },
+    {
+      "title": "Execute the INSERT",
+      "why": "INSERT run ayyaka Ravi mariyu Anita rows dbo.student table lo persist avuthayi. Subsequent SELECT same state nundi data read chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "executeQuery",
+        "data": {}
+      }
+    },
+    {
+      "title": "Write a SELECT for student 101",
+      "why": "Backend expected record ni database level lo verify cheyyadaniki roll_no 101 meeda filtered SELECT query rayadam normal debugging workflow.",
+      "software": "ssms",
+      "action": {
+        "action": "typeSql",
+        "data": {
+          "sql": "SELECT roll_no, is_present, name\nFROM dbo.student\nWHERE roll_no = 101;"
+        }
+      }
+    },
+    {
+      "title": "Execute the SELECT and inspect the grid",
+      "why": "Query execute chesthe hard-coded screenshot kaakunda virtual table state nundi dynamic result grid generate avuthundi.",
+      "software": "ssms",
+      "action": {
+        "action": "executeQuery",
+        "data": {}
+      }
+    },
+    {
+      "title": "Show the actual execution plan",
+      "why": "Query performance understand cheyyadaniki execution plan operators ni inspect chestam. Scan leka seek laanti access pattern ni visual ga identify cheyyachu.",
+      "software": "ssms",
+      "action": {
+        "action": "showActualExecutionPlan",
+        "data": {
+          "table": "dbo.student"
+        }
+      }
+    },
+    {
+      "title": "Inspect client statistics",
+      "why": "Rows returned mariyu execution timing laanti client statistics query behavior ni quick ga assess cheyyadaniki useful.",
+      "software": "ssms",
+      "action": {
+        "action": "showClientStatistics",
+        "data": {}
+      }
+    },
+    {
+      "title": "Type a transaction with ROLLBACK",
+      "why": "Production data ni modify cheyyadaniki mundu transaction behavior understand cheyyali. UPDATE taruvatha ROLLBACK chesthe original value restore avuthundi.",
+      "software": "ssms",
+      "action": {
+        "action": "typeSql",
+        "data": {
+          "sql": "BEGIN TRAN;\nUPDATE dbo.student\nSET name = 'Ravi Kumar'\nWHERE roll_no = 101;\nROLLBACK;"
+        }
+      }
+    },
+    {
+      "title": "Execute and roll back the transaction",
+      "why": "Virtual T-SQL engine BEGIN TRAN, UPDATE mariyu ROLLBACK ni statefully process chestundi. Change permanent ga save kakunda undo avuthundi.",
+      "software": "ssms",
+      "action": {
+        "action": "executeQuery",
+        "data": {}
+      }
+    },
+    {
+      "title": "Save the SQL script",
+      "why": "Useful schema and test queries ni source control lo preserve cheyyadaniki .sql file ga save chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "saveQuery",
+        "data": {
+          "path": "C:\\JavaPractice\\sql\\student_setup.sql",
+          "fileName": "student_setup.sql"
+        }
+      }
+    },
+    {
+      "title": "Open Activity Monitor",
+      "why": "Database sessions mariyu running commands troubleshoot cheyyadaniki Activity Monitor use chestam. Developer connection status ni ikkada inspect cheyyachu.",
+      "software": "ssms",
+      "action": {
+        "action": "openActivityMonitor",
+        "data": {}
+      }
+    },
+    {
+      "title": "Create an index for student lookups",
+      "why": "Frequently filtered roll_no column meeda index maintain chesthe query access path realistic ga model cheyyachu. Object Explorer lo Indexes node kuda update avuthundi.",
+      "software": "ssms",
+      "action": {
+        "action": "createIndex",
+        "data": {
+          "database": "JavaPracticeDb",
+          "table": "dbo.student",
+          "name": "IX_student_roll_no",
+          "columns": [
+            "roll_no"
+          ],
+          "unique": true
+        }
+      }
+    },
+    {
+      "title": "Inspect Object Explorer details",
+      "why": "Current database objects ni quick summary ga choodadaniki Object Explorer Details useful. Table count mariyu selected object context verify chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "showObjectExplorerDetails",
+        "data": {}
+      }
+    },
+    {
+      "title": "Back up JavaPracticeDb",
+      "why": "Schema/data changes taruvatha database backup create cheyyadam production-safe workflow lo important. Simulator backup history ni statefully maintain chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "backupDatabase",
+        "data": {
+          "database": "JavaPracticeDb",
+          "type": "Full",
+          "path": "C:\\SQLBackups\\JavaPracticeDb_full.bak",
+          "time": "13:30"
+        }
+      }
+    },
+    {
+      "title": "Create a SQL Server Agent maintenance job",
+      "why": "Recurring database maintenance automate cheyyadaniki SQL Server Agent job create chestam. Ee job ki steps and status simulator state lo persist avuthayi.",
+      "software": "ssms",
+      "action": {
+        "action": "createAgentJob",
+        "data": {
+          "name": "JavaPractice Nightly Maintenance",
+          "steps": [
+            {
+              "name": "Update Statistics",
+              "command": "UPDATE STATISTICS dbo.student"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Schedule the maintenance job",
+      "why": "Job manual ga matrame కాకుండా schedule meeda run avvali. Daily 2 AM schedule add chesi automated operations workflow ni simulate chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "createAgentSchedule",
+        "data": {
+          "job": "JavaPractice Nightly Maintenance",
+          "schedule": "Nightly 2 AM",
+          "frequency": "Daily",
+          "time": "02:00"
+        }
+      }
+    },
+    {
+      "title": "Run the SQL Server Agent job",
+      "why": "Job configuration validate cheyyadaniki manual test run chestam. Successful run job history lo record avuthundi.",
+      "software": "ssms",
+      "action": {
+        "action": "runAgentJob",
+        "data": {
+          "name": "JavaPractice Nightly Maintenance",
+          "time": "13:31",
+          "duration": "00:00:02"
+        }
+      }
+    },
+    {
+      "title": "Review SQL Server Agent job history",
+      "why": "Scheduled task successful ga execute ayyindha ani Job History lo status, run time mariyu duration inspect chestam.",
+      "software": "ssms",
+      "action": {
+        "action": "showAgentJobHistory",
+        "data": {}
+      }
+    },
+    {
+      "title": "Open the SSMS query editor context menu",
+      "why": "SSMS lo query editor meeda right-click chesthe execution, IntelliSense, execution plans, live statistics, results mode, Properties mariyu Query Options laanti commands oka contextual menu lo available untayi. Ee lesson transcript-driven UI capability ni simulator lo directly demonstrate chestundi.",
+      "software": "ssms",
+      "action": {
+        "action": "openContextMenu",
+        "data": {
+          "menu": "queryEditor",
+          "x": 650,
+          "y": 255,
+          "context": {
+            "kind": "queryEditor"
+          }
+        }
+      }
+    },
+    {
+      "title": "Inspect dbo.student Object Dependencies",
+      "why": "Database object relationships understand cheyyadaniki SSMS Object Dependencies dialog use chestam. Dependency direction radio options, expandable dependency list, connection details mariyu object metadata oka dedicated SSMS dialog lo display avuthayi.",
+      "software": "ssms",
+      "action": {
+        "action": "showObjectDependencies",
+        "data": {
+          "object": "dbo.student",
+          "type": "Table",
+          "direction": "dependsOn",
+          "selected": "dbo.student",
+          "dependencies": [
+            {
+              "name": "JavaPracticeDb",
+              "type": "Database",
+              "level": 0
+            },
+            {
+              "name": "dbo.student",
+              "type": "Table",
+              "level": 1
+            },
+            {
+              "name": "PK_student",
+              "type": "Primary Key",
+              "level": 2
+            },
+            {
+              "name": "IX_student_roll_no",
+              "type": "Index",
+              "level": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Return to Student.java after database verification",
+      "why": "Database schema, data mariyu query checks complete ayyaka developer malli IntelliJ ki return avuthadu. Project timeline continuity preserve avuthundi.",
+      "software": "intellij",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/Student.java"
+        }
+      }
+    }
+  ]
+}

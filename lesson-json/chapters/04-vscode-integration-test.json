@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "id": "chapter-04",
+  "title": "4: VS Code Integration Test",
+  "subtitle": "20-step VS Code test against the full Java Practice project using realistic Explorer, tabs, syntax coloring, terminal, and editor state.",
+  "steps": [
+    {
+      "title": "Open full Calculator.java in VS Code",
+      "why": "Ippudu VS Code lo actual Java Practice repo nundi Calculator.java open chestunnam. Full project tree, Java syntax colors, line numbers, tabs, indentation guides, minimap anni real VS Code laga test cheyyachu.",
+      "software": "vscode",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/polymorphism/Calculator.java"
+        }
+      }
+    },
+    {
+      "title": "Create journey-notes.md",
+      "why": "VS Code Explorer mariyu editor correct ga work chestunnaya ani test cheyyadaniki notes file create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": "journey-notes.md",
+          "content": "# Java Practice Journey\n"
+        }
+      }
+    },
+    {
+      "title": "Add first journey note",
+      "why": "Existing file lo incremental typing correct ga work chesthundha ani test chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "path": "journey-notes.md",
+          "code": "VS Code integration started.\n"
+        }
+      }
+    },
+    {
+      "title": "Create README.md",
+      "why": "Project documentation kosam README.md create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": "README.md",
+          "content": "# Java Practice\n\nDeveloper journey project.\n"
+        }
+      }
+    },
+    {
+      "title": "Add setup section to README",
+      "why": "README lo additional section add chesi normal editing flow ni test chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "path": "README.md",
+          "code": "\n## Setup\nUse Java 21 for the exercises.\n"
+        }
+      }
+    },
+    {
+      "title": "Create VS Code settings",
+      "why": "Project-level VS Code configuration file create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": ".vscode/settings.json",
+          "content": "{\n  \"editor.fontSize\": 14\n}\n"
+        }
+      }
+    },
+    {
+      "title": "Create launch.json",
+      "why": "Debug configuration kosam launch.json create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": ".vscode/launch.json",
+          "content": "{\n  \"version\": \"0.2.0\",\n  \"configurations\": []\n}\n"
+        }
+      }
+    },
+    {
+      "title": "Create tasks.json",
+      "why": "Task runner configuration ni project lo add chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": ".vscode/tasks.json",
+          "content": "{\n  \"version\": \"2.0.0\",\n  \"tasks\": []\n}\n"
+        }
+      }
+    },
+    {
+      "title": "Check Java version in terminal",
+      "why": "Integrated terminal correct ga lesson action receive chesthundha ani java version command run chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "java -version",
+          "output": "openjdk version \"21\""
+        }
+      }
+    },
+    {
+      "title": "List project files",
+      "why": "Terminal nundi project root files ni verify chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "dir",
+          "output": "README.md  journey-notes.md  .vscode"
+        }
+      }
+    },
+    {
+      "title": "Check Git status",
+      "why": "VS Code terminal lo Git workflow kuda simulate cheyyagalama ani verify chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "git status",
+          "output": "On branch main\nChanges not staged for commit"
+        }
+      }
+    },
+    {
+      "title": "Check current branch",
+      "why": "Developer current branch main ani confirm chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "git branch --show-current",
+          "output": "main"
+        }
+      }
+    },
+    {
+      "title": "Create architecture notes",
+      "why": "Project architecture gurinchi documentation file create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": "docs/architecture.md",
+          "content": "# Architecture\n\nJava Practice project notes.\n"
+        }
+      }
+    },
+    {
+      "title": "Add simulator integration note",
+      "why": "Multiple software handoff gurinchi architecture note lo add chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "path": "docs/architecture.md",
+          "code": "\nIntelliJ, VS Code, pgAdmin and Postman are part of the journey.\n"
+        }
+      }
+    },
+    {
+      "title": "Create database notes",
+      "why": "Database work ki related note file create chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": "docs/database.md",
+          "content": "# Database\n\nDatabase: java_practice\n"
+        }
+      }
+    },
+    {
+      "title": "Add student table note",
+      "why": "Database note lo student table details add chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "typeCode",
+        "data": {
+          "path": "docs/database.md",
+          "code": "Table: student\nColumns: roll_no, is_present, marks, name\n"
+        }
+      }
+    },
+    {
+      "title": "Create .gitignore",
+      "why": "Repository cleanliness kosam common generated/editor files ni ignore chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "createFile",
+        "data": {
+          "path": ".gitignore",
+          "content": "out/\n.idea/\n"
+        }
+      }
+    },
+    {
+      "title": "Run javac version",
+      "why": "Java compiler availability ni terminal lo verify chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "javac -version",
+          "output": "javac 21"
+        }
+      }
+    },
+    {
+      "title": "Open journey-notes.md again",
+      "why": "Earlier create chesina file state preserve ayyindha ani malli open chesi check chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "journey-notes.md"
+        }
+      }
+    },
+    {
+      "title": "Finish VS Code integration test",
+      "why": "Final terminal command tho VS Code simulator lesson flow complete ga work chesthundha ani verify chestunnam.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "echo VS Code integration complete",
+          "output": "VS Code integration complete"
+        }
+      }
+    }
+  ]
+}
