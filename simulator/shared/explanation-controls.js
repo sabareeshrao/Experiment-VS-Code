@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var CONTROLS_VERSION=13;
+var CONTROLS_VERSION=14;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -46,6 +46,10 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainAnswer{margin-top:10px!important;padding:9px 10px!important;border:1px solid #4b5563!important;border-radius:5px!important;background:#1d1f23!important;color:#f2f2f2!important;font:600 10.5px/1.5 'Segoe UI',Arial,sans-serif!important;white-space:pre-wrap!important}",
     ".simExplainAnswer::before{content:'Answer';display:block;margin-bottom:4px;color:#9aa4b2;font:700 9px/1.2 'Segoe UI',Arial,sans-serif!important;letter-spacing:.04em;text-transform:uppercase}",
     "body.theme-light .simExplainAnswer,body[data-sim-app='postman']:not(.theme-dark) .simExplainAnswer{background:#f7f7f8!important;color:#222!important;border-color:#c8ccd2!important}",
+    "body[data-sim-app='spring_initializer'] [data-sim-explanation].simExplainUnified{width:320px!important;max-width:calc(100vw - 32px)!important;background:#222831!important;color:#e8edf3!important;border-color:#414954!important;border-radius:7px!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important}",
+    "body[data-sim-app='spring_initializer'] .simExplainGlobalHead{height:32px!important;min-height:32px!important;background:#1b2027!important;border-bottom-color:#3b424c!important;padding:0 8px!important}",
+    "body[data-sim-app='spring_initializer'] .simExplainGlobalBody{background:#222831!important;color:#e8edf3!important;padding:10px 11px!important;font-size:11px!important;line-height:1.48!important;max-height:min(280px,calc(100vh - 96px))!important;overflow:auto!important}",
+    "body[data-sim-app='spring_initializer'] .simExplainAnswer{background:#1b2027!important;border-color:#414954!important;color:#f2f5f8!important}",
     ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
 
     /* Explanation-card scrollbars follow Postman's unobtrusive treatment. */
@@ -67,8 +71,8 @@ var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#ass
 var textSelectors=["[data-sim-explanation-text]","#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
 var pathParts=location.pathname.split("/").filter(Boolean);
 var appKey=(document.body&&document.body.dataset&&document.body.dataset.simApp)||pathParts[pathParts.length-2]||"global";
-var scaleKey="sim.explanationScale.v1";
-var positionKey="sim.explanationPosition.v2."+appKey;
+var scaleKey="sim.explanationScale.v2."+appKey;
+var positionKey="sim.explanationPosition.v3."+appKey;
 var minimizedKey="sim.explanationMinimized.v1."+appKey;
 var dragPending=false;
 var universalDrag=null;
@@ -174,7 +178,7 @@ function defaultPosition(box){
   box.style.left="auto";
   box.style.top="auto";
   box.style.right="16px";
-  box.style.bottom="38px";
+  box.style.bottom=appKey==="spring_initializer"?"16px":"38px";
 }
 function restorePosition(){
   var box=getAssistant();
@@ -264,8 +268,8 @@ function bindPositionPersistence(){
   document.addEventListener("pointercancel",finishDrag,true);
 }
 function rememberBase(box,body,text){
-  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth="360";
-  if(!box.dataset.simExplainBaseFont)box.dataset.simExplainBaseFont="10.5";
+  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth=appKey==="spring_initializer"?"320":"360";
+  if(!box.dataset.simExplainBaseFont)box.dataset.simExplainBaseFont=appKey==="spring_initializer"?"11":"10.5";
 }
 function applyScale(){
   var box=getAssistant();
