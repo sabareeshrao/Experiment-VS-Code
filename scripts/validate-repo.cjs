@@ -116,6 +116,10 @@ try { const {build,json}=require("./build-capability-index.cjs"); assert(read("A
 
 const player = exists("player.html") ? read("player.html") : "";
 const app = exists("app.js") ? read("app.js") : "";
+assert(
+  player.includes('id="redisLabBtn"') && player.includes('player.html?software=redis'),
+  "player.html is missing visible Redis Insight Lab navigation"
+);
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
 assert(app.includes("explanation-controls.js?v=12"), "Universal explanation-controls v12 injection is missing from app.js");
 assert(exists("simulator/shared/explanation-controls.js"), "Missing simulator/shared/explanation-controls.js");

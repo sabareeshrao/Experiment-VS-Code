@@ -257,6 +257,7 @@
   const toggleSidebar = $("toggleSidebar");
   const ideFullscreen = $("ideFullscreen");
   const fullCodeBtn = $("fullCodeBtn");
+  const redisLabBtn = $("redisLabBtn");
   const playbackBar = $("playbackBar");
   const workspace = document.querySelector(".workspace");
 
@@ -690,6 +691,7 @@
 
   function loadFullCode() {
     softwarePreview = null;
+    redisLabBtn?.classList.remove("active");
     ensureFrameLoaded("intellij");
     fullCodeMode = true;
     switchWorkspace("intellij");
@@ -724,6 +726,7 @@
     if (!softwarePreview) return;
     switchWorkspace(softwarePreview);
     fullCodeBtn.classList.remove("active");
+    redisLabBtn?.classList.toggle("active", softwarePreview === "redis");
     fullCodeBtn.querySelector("span:last-child").textContent = "View Full Code";
     stageLabel.textContent = "SOFTWARE LAB";
     stepTitle.textContent = appLabels[softwarePreview] || softwarePreview;
@@ -771,6 +774,7 @@
 
     const wasFullCode = fullCodeMode;
     softwarePreview = null;
+    redisLabBtn?.classList.remove("active");
     fullCodeMode = false;
 
     fullCodeBtn.classList.remove("active");

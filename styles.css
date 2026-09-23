@@ -129,3 +129,18 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 
 .software-badge.spring-initializer{border-color:#5b9d37;background:#1d3218;color:#a6dc7e}
 .software-badge.maven-central{border-color:#a94d47;background:#321b1a;color:#ef8e88}
+
+.software-lab-btn{
+  width:100%;min-height:40px;border:1px solid #353840;border-radius:8px;
+  background:#202226;color:#dfe1e6;display:flex;align-items:center;justify-content:flex-start;
+  gap:9px;padding:0 11px;font-size:11px;font-weight:650;cursor:pointer;text-decoration:none;
+  box-sizing:border-box;transition:background .15s ease,border-color .15s ease,color .15s ease
+}
+.software-lab-btn:hover{background:#292c31;border-color:#474b54}
+.software-lab-btn.redis-lab-btn{border-color:#6f2f32;background:#27191b;color:#ffd8d8}
+.software-lab-btn.redis-lab-btn:hover{background:#341d20;border-color:#a9474d}
+.software-lab-btn.redis-lab-btn.active{background:#482126;border-color:#d55a63;color:#fff}
+.software-lab-icon{
+  width:18px;height:18px;border-radius:4px;display:grid;place-items:center;
+  background:#d82c37;color:#fff;font-size:10px;font-weight:800;line-height:1
+}
