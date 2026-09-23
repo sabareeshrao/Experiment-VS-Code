@@ -446,4 +446,11 @@ if (errors.length) {
   process.exit(1);
 }
 
+
+/* IDE split editor + terminal lesson guards. */
+if (exists("simulator/intellij/index.html") && exists("simulator/intellij/engine.js")) { const h=read("simulator/intellij/index.html"), e=read("simulator/intellij/engine.js"); assert(h.includes('id="editorSplitWrap"'), "IntelliJ split editor DOM missing"); assert(e.includes("function renderSplitEditor()") && e.includes('case"splitEditor"'), "IntelliJ split editor behavior missing"); }
+if (exists("simulator/vscode/index.html") && exists("simulator/vscode/engine.js")) { const h=read("simulator/vscode/index.html"), e=read("simulator/vscode/engine.js"); assert(h.includes('id="editorSplitPane"'), "VS Code split editor DOM missing"); assert(e.includes("function renderSplitEditor()") && e.includes('case"splitEditor"'), "VS Code split editor behavior missing"); }
+if (exists("lesson-json/chapters/01-student-class-fundamentals.json")) { const c=read("lesson-json/chapters/01-student-class-fundamentals.json"); assert(c.includes('"Split the IntelliJ editor"') && c.includes('"Use IntelliJ terminal with the split editor"'), "IntelliJ split/terminal lessons missing"); }
+if (exists("lesson-json/chapters/04-vscode-integration-test.json")) { const c=read("lesson-json/chapters/04-vscode-integration-test.json"); assert(c.includes('"Split the VS Code editor"') && c.includes('"Use VS Code terminal with the split editor"'), "VS Code split/terminal lessons missing"); }
+
 console.log("Repository validation passed.");

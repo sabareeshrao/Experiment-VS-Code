@@ -234,6 +234,29 @@
         }
       },
       "software": "intellij"
+    },
+    {
+      "title": "Split the IntelliJ editor",
+      "why": "Split editor lo Student.java ni side-by-side choodadam valla oka file lo different sections ni parallel ga compare cheyyachu. Real project work lo developer editor groups ni use chesi navigation speed penchukuntadu.",
+      "software": "intellij",
+      "action": {
+        "action": "splitEditor",
+        "data": {
+          "file": "src/Student.java"
+        }
+      }
+    },
+    {
+      "title": "Use IntelliJ terminal with the split editor",
+      "why": "Split editor open ga unchukoni bottom Terminal tool window lo project command run cheyyadam IDE nundi shell ki separate ga switch avvakunda development workflow ni continue cheyyadaniki use avuthundi.",
+      "software": "intellij",
+      "action": {
+        "action": "typeTerminal",
+        "data": {
+          "command": "java -version",
+          "output": "openjdk version 21"
+        }
+      }
     }
   ]
 }

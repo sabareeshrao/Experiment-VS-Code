@@ -231,6 +231,29 @@
       }
     },
     {
+      "title": "Split the VS Code editor",
+      "why": "VS Code lo rendu files ni side-by-side editor groups lo open chesi notes mariyu README ni parallel ga compare cheyyachu. Idi frequent file switching ni taggistundi.",
+      "software": "vscode",
+      "action": {
+        "action": "splitEditor",
+        "data": {
+          "file": "README.md"
+        }
+      }
+    },
+    {
+      "title": "Use VS Code terminal with the split editor",
+      "why": "Split editor ni open ga unchukoni integrated Terminal panel lo command run cheyyadam editor mariyu shell workflow ni okate screen lo maintain chestundi.",
+      "software": "vscode",
+      "action": {
+        "action": "terminalCommand",
+        "data": {
+          "command": "echo Split editor and terminal ready",
+          "output": "Split editor and terminal ready"
+        }
+      }
+    },
+    {
       "title": "Finish VS Code integration test",
       "why": "Final terminal command tho VS Code simulator lesson flow complete ga work chesthundha ani verify chestunnam.",
       "software": "vscode",

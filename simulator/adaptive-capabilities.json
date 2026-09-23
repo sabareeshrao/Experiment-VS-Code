@@ -70,7 +70,8 @@
         "new-maven-project-wizard",
         "maven-lifecycle-tool-window",
         "integrated-terminal",
-        "java-desktop-app-preview"
+        "java-desktop-app-preview",
+        "split-editor"
       ],
       "menus": [
         "editor",
@@ -115,7 +116,9 @@
         "explanation-box",
         "explanation-minimize-close",
         "persistent-explanation-position",
-        "persistent-explanation-minimize"
+        "persistent-explanation-minimize",
+        "integrated-terminal",
+        "split-editor"
       ],
       "menus": [
         "editor",

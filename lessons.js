@@ -5233,6 +5233,29 @@ window.COURSE = {
             }
           },
           "software": "intellij"
+        },
+        {
+          "title": "Split the IntelliJ editor",
+          "why": "Split editor lo Student.java ni side-by-side choodadam valla oka file lo different sections ni parallel ga compare cheyyachu. Real project work lo developer editor groups ni use chesi navigation speed penchukuntadu.",
+          "software": "intellij",
+          "action": {
+            "action": "splitEditor",
+            "data": {
+              "file": "src/Student.java"
+            }
+          }
+        },
+        {
+          "title": "Use IntelliJ terminal with the split editor",
+          "why": "Split editor open ga unchukoni bottom Terminal tool window lo project command run cheyyadam IDE nundi shell ki separate ga switch avvakunda development workflow ni continue cheyyadaniki use avuthundi.",
+          "software": "intellij",
+          "action": {
+            "action": "typeTerminal",
+            "data": {
+              "command": "java -version",
+              "output": "openjdk version 21"
+            }
+          }
         }
       ]
     },
@@ -6317,6 +6340,29 @@ window.COURSE = {
             "action": "openFile",
             "data": {
               "path": "journey-notes.md"
+            }
+          }
+        },
+        {
+          "title": "Split the VS Code editor",
+          "why": "VS Code lo rendu files ni side-by-side editor groups lo open chesi notes mariyu README ni parallel ga compare cheyyachu. Idi frequent file switching ni taggistundi.",
+          "software": "vscode",
+          "action": {
+            "action": "splitEditor",
+            "data": {
+              "file": "README.md"
+            }
+          }
+        },
+        {
+          "title": "Use VS Code terminal with the split editor",
+          "why": "Split editor ni open ga unchukoni integrated Terminal panel lo command run cheyyadam editor mariyu shell workflow ni okate screen lo maintain chestundi.",
+          "software": "vscode",
+          "action": {
+            "action": "terminalCommand",
+            "data": {
+              "command": "echo Split editor and terminal ready",
+              "output": "Split editor and terminal ready"
             }
           }
         },
