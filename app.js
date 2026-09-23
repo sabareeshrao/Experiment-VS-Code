@@ -168,14 +168,8 @@
       return;
     }
 
-    if (softwarePreview && name === softwarePreview) {
-      renderSoftwarePreview();
-      return;
-    }
-
     if (
       !fullCodeMode &&
-      !softwarePreview &&
       flat.length &&
       normalizeSoftware(flat[current].software) === name
     ) {
@@ -257,7 +251,6 @@
   const toggleSidebar = $("toggleSidebar");
   const ideFullscreen = $("ideFullscreen");
   const fullCodeBtn = $("fullCodeBtn");
-  const redisLabBtn = $("redisLabBtn");
   const playbackBar = $("playbackBar");
   const workspace = document.querySelector(".workspace");
 
@@ -276,14 +269,12 @@
 
   const requestedUrl = new URL(location.href);
   const requestedStep = Number(requestedUrl.searchParams.get("step"));
-  const requestedSoftware = requestedUrl.searchParams.get("software");
   let current = flat.length
     ? Math.max(0, Math.min(flat.length - 1, Number.isFinite(requestedStep) && requestedStep > 0 ? requestedStep - 1 : 0))
     : 0;
 
   let fullCodeMode = requestedUrl.searchParams.get("view") === "full";
-  let softwarePreview = requestedSoftware ? normalizeSoftware(requestedSoftware) : null;
-  let activeSoftware = fullCodeMode ? "intellij" : (softwarePreview || flat[current]?.software || "intellij");
+  let activeSoftware = fullCodeMode ? "intellij" : (flat[current]?.software || "intellij");
   let openStages = new Set(flat.length ? [flat[current].stageIndex] : []);
 
   const fullProjectPackage =
@@ -582,7 +573,6 @@
   function updateUrlForFullCode() {
     const url = new URL(location.href);
     url.searchParams.delete("step");
-    url.searchParams.delete("software");
     url.searchParams.set("view", "full");
     history.replaceState({}, "", url);
   }
@@ -590,13 +580,12 @@
   function updateUrlForStep() {
     const url = new URL(location.href);
     url.searchParams.delete("view");
-    url.searchParams.delete("software");
     url.searchParams.set("step", current + 1);
     history.replaceState({}, "", url);
   }
 
   function setPlaybackVisibility() {
-    const hasStages = flat.length > 0 && !fullCodeMode && !softwarePreview;
+    const hasStages = flat.length > 0 && !fullCodeMode;
     playbackBar.classList.toggle("hidden", !hasStages);
     workspace.classList.toggle("no-playback", !hasStages);
   }
@@ -690,8 +679,6 @@
   }
 
   function loadFullCode() {
-    softwarePreview = null;
-    redisLabBtn?.classList.remove("active");
     ensureFrameLoaded("intellij");
     fullCodeMode = true;
     switchWorkspace("intellij");
@@ -722,23 +709,7 @@
     }, SIM_TARGET_ORIGIN);
   }
 
-  function renderSoftwarePreview() {
-    if (!softwarePreview) return;
-    switchWorkspace(softwarePreview);
-    fullCodeBtn.classList.remove("active");
-    redisLabBtn?.classList.toggle("active", softwarePreview === "redis");
-    fullCodeBtn.querySelector("span:last-child").textContent = "View Full Code";
-    stageLabel.textContent = "SOFTWARE LAB";
-    stepTitle.textContent = appLabels[softwarePreview] || softwarePreview;
-    setPlaybackVisibility();
-    renderSidebar();
-  }
-
   function renderCurrentStep() {
-    if (softwarePreview) {
-      renderSoftwarePreview();
-      return;
-    }
     if (!flat.length) {
       switchWorkspace("intellij");
       stageLabel.textContent = fullCodeMode ? "FULL PROJECT" : "PROJECT PREVIEW";
@@ -773,8 +744,6 @@
     if (!flat.length) return;
 
     const wasFullCode = fullCodeMode;
-    softwarePreview = null;
-    redisLabBtn?.classList.remove("active");
     fullCodeMode = false;
 
     fullCodeBtn.classList.remove("active");
@@ -805,7 +774,7 @@
     if (!software) return;
 
     if (event.data?.type === "SIM_NAVIGATE") {
-      if (fullCodeMode || softwarePreview || !flat.length) return;
+      if (fullCodeMode || !flat.length) return;
       if (event.data.direction === "next" && current < flat.length - 1) goToStep(current + 1, true);
       if (event.data.direction === "prev" && current > 0) goToStep(current - 1, false);
       return;
@@ -845,7 +814,7 @@
         if (!doc || doc.__lessonNavBridgeInstalled) return;
         doc.__lessonNavBridgeInstalled = true;
         doc.addEventListener("keydown", event => {
-          if (fullCodeMode || softwarePreview || !flat.length) return;
+          if (fullCodeMode || !flat.length) return;
           if (!event.altKey || event.ctrlKey || event.metaKey) return;
           if (event.key === "ArrowRight" && current < flat.length - 1) {
             event.preventDefault();
@@ -893,7 +862,7 @@
   };
 
   document.addEventListener("keydown", event => {
-    if (fullCodeMode || softwarePreview || !flat.length) return;
+    if (fullCodeMode || !flat.length) return;
 
     if (event.key === "ArrowRight" && current < flat.length - 1) {
       goToStep(current + 1, true);
@@ -920,8 +889,6 @@
     fullCodeBtn.querySelector("span:last-child").textContent = "Full Code Open";
     stageLabel.textContent = "FULL PROJECT";
     stepTitle.textContent = "Java Practice";
-  } else if (softwarePreview) {
-    renderSoftwarePreview();
   } else {
     renderCurrentStep();
   }

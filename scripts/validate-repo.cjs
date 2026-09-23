@@ -116,11 +116,12 @@ try { const {build,json}=require("./build-capability-index.cjs"); assert(read("A
 
 const player = exists("player.html") ? read("player.html") : "";
 const app = exists("app.js") ? read("app.js") : "";
-assert(
-  player.includes('id="redisLabBtn"') && player.includes('player.html?software=redis'),
-  "player.html is missing visible Redis Insight Lab navigation"
-);
+assert(!player.includes('id="redisLabBtn"'), "Simulator-specific Redis sidebar navigation is forbidden; use lesson-driven activation");
+assert(!player.includes('player.html?software=redis'), "Simulator-specific software preview links are forbidden in player.html");
+assert(!app.includes('searchParams.get("software")'), "Simulator-specific software preview routing is forbidden in app.js");
+assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
+// Software simulators must be activated by lesson steps, not bespoke player navigation.
 assert(app.includes("explanation-controls.js?v=12"), "Universal explanation-controls v12 injection is missing from app.js");
 assert(exists("simulator/shared/explanation-controls.js"), "Missing simulator/shared/explanation-controls.js");
 if (exists("simulator/shared/explanation-controls.js")) {

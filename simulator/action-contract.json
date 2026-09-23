@@ -162,5 +162,13 @@
       "Shared layout code provides resize/persistence mechanics only; each simulator continues to own its product-specific DOM and visual design.",
       "A simulator with no side pane is exempt from exposing a side-pane handle but still loads the shared runtime."
     ]
+  },
+  "playerPolicy": {
+    "activation": "lesson-driven",
+    "rules": [
+      "A simulator is activated only by the current lesson step software field, except IntelliJ full-project view.",
+      "Do not add simulator-specific global sidebar buttons, direct software preview routes, or one-off navigation exceptions.",
+      "Registered simulators may exist without current lesson steps; they remain available for future JSON chapters without appearing as rogue player UI."
+    ]
   }
 }

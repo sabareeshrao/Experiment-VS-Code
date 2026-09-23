@@ -18,7 +18,8 @@
     "When indexed_actions is non-empty, reuse those canonical action names. When action_lookup_required=true, read action_source before choosing an action name.",
     "Never invent a new action if an existing canonical action already represents the transcript interaction.",
     "For feature_available=false, include missing_feature_request with the software-owned UI surface, interaction, expected UI and expected behavior.",
-    "Product-specific UI belongs only inside that simulator."
+    "Product-specific UI belongs only inside that simulator.",
+    "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."
   ],
   "lesson_json_contract": {
     "software": "Canonical key from software.",

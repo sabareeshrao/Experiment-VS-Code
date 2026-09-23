@@ -162,9 +162,9 @@ node scripts/validate-repo.cjs
 
 Repository validation fails if `lessons.js` does not exactly match the JSON source.
 
-## Redis Insight visibility
+## Simulator navigation rule
 
-Redis was already present in the deployed repository, and the Pages workflow was succeeding. It was not reachable through the lesson player because no current lesson step uses `software: "redis"`. The library now exposes a **Redis Insight Lab** link, and `player.html?software=redis` opens Redis directly in software-preview mode. Future Redis lesson JSON will continue to activate it normally through lesson playback.
+The player is lesson-driven. A simulator becomes visible when the current lesson step names that software. Do not add software-specific global sidebar buttons, one-off preview routes, or bespoke navigation exceptions for individual simulators. Redis is registered like every other simulator and will appear naturally when a Redis lesson chapter is added.
 
 
 ## Missing-feature expansion
