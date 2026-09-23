@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Visual Studio Code Simulator</title>
-<link rel="stylesheet" href="vscode.css?v=6">
+<link rel="stylesheet" href="vscode.css?v=30">
 </head>
 <body data-sim-app="vscode">
 <div class="app">
@@ -62,6 +62,7 @@
       <section class="editorArea" id="editorArea">
         <div class="codeViewport" id="codeViewport"><div class="codeTable" id="codeTable"></div></div>
         <aside class="minimap" id="minimap"></aside>
+        <section class="editorSplitPane hidden" id="editorSplitPane"><div class="editorSplitHead"><span id="editorSplitTitle">Split Editor</span><button class="iconBtn" id="editorSplitClose" title="Close Split">×</button></div><div class="editorSplitCode" id="editorSplitCode"></div></section>
         <article class="markdownPreview hidden" id="markdownPreview">
           <div class="markdownPreviewHead"><span id="markdownPreviewTitle">Preview</span><button class="iconBtn" id="markdownPreviewClose" title="Close Preview">×</button></div>
           <div class="markdownPreviewBody" id="markdownPreviewBody"></div>
@@ -103,7 +104,7 @@
   <div class="assistantBody"><span class="assistantTag" id="assistantStep">Step</span><span class="assistantLang">Telugu • English letters</span><p id="assistantText"></p></div>
 </div>
 
-<script src="engine.js?v=6"></script>
+<script src="engine.js?v=30"></script>
 <script src="adaptive-ui.js?v=1"></script>
   <script src="../shared/highlighter.js?v=7"></script>\n  <script src="../shared/explanation-controls.js?v=9"></script>  <script src="../shared/layout-resize.js?v=10"></script>
 </body>

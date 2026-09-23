@@ -7,7 +7,7 @@ var esc=function(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/<
 
 var R={
  tree:$("tree"),tabs:$("tabs"),breadcrumbs:$("breadcrumbs"),editorArea:$("editorArea"),codeViewport:$("codeViewport"),codeTable:$("codeTable"),minimap:$("minimap"),
- markdownPreviewBtn:$("markdownPreviewBtn"),markdownPreview:$("markdownPreview"),markdownPreviewBody:$("markdownPreviewBody"),markdownPreviewTitle:$("markdownPreviewTitle"),
+ markdownPreviewBtn:$("markdownPreviewBtn"),markdownPreview:$("markdownPreview"),markdownPreviewBody:$("markdownPreviewBody"),markdownPreviewTitle:$("markdownPreviewTitle"),splitEditorPane:$("editorSplitPane"),splitEditorTitle:$("editorSplitTitle"),splitEditorCode:$("editorSplitCode"),splitEditorClose:$("editorSplitClose"),
  terminal:$("terminal"),editorGroup:$("editorGroup"),position:$("positionLabel"),language:$("languageLabel"),branch:$("branchLabel"),command:$("commandLabel"),
  context:$("contextMenu"),assistant:$("assistant"),assistantHead:$("assistantHead"),assistantTitle:$("assistantTitle"),assistantStage:$("assistantStage"),
  assistantStep:$("assistantStep"),assistantText:$("assistantText")
@@ -369,6 +369,7 @@ function renderMarkdownPreview(){
    R.markdownPreviewBody.innerHTML=markdownToHtml(files[activeFile]?files[activeFile].content:"");
  }
 }
+function renderSplitEditor(){var splitFile=state.editorSplit&&state.splitFile&&files[state.splitFile]?state.splitFile:(state.editorSplit?activeFile:null);var enabled=!!splitFile;R.editorArea.classList.toggle("editorSplit",enabled);R.splitEditorPane.classList.toggle("hidden",!enabled);if(!enabled){R.splitEditorCode.innerHTML="";return}markdownPreviewOpen=false;R.editorArea.classList.remove("markdownSplit");R.markdownPreview.classList.add("hidden");R.splitEditorTitle.textContent=splitFile.split("/").pop();var lines=String(files[splitFile]?.content||"").split("\n");R.splitEditorCode.innerHTML=lines.map(function(line,index){return '<div class="splitCodeLine"><span class="splitLineNo">'+(index+1)+'</span><span class="splitCodeText">'+syntaxLine(line)+'</span></div>'}).join("")}
 function getPersistedPanelHeight(){
  var value=null;
  try{
@@ -510,6 +511,7 @@ function renderAll(){
  renderBreadcrumbs();
  renderCode();
  renderMarkdownPreview();
+ renderSplitEditor();
  renderPanel();
  renderChrome();
 }
@@ -600,8 +602,11 @@ async function apply(step,animate,token){
   }
   case"setTerminal":
    state.terminal=String(d.text||d.output||"");
-   panelVisible=true;
+   panelVisible=true;panelView="TERMINAL";
    break;
+  case"openTerminal":panelVisible=true;panelView="TERMINAL";break;
+  case"splitEditor":{var splitTarget=d.file||d.path||openedTabs.map(function(t){return t.path;}).find(function(p){return p!==activeFile&&files[p];})||activeFile;if(splitTarget&&files[splitTarget]){state.editorSplit=true;state.splitFile=splitTarget;markdownPreviewOpen=false;if(!openedTabs.some(function(t){return t.path===splitTarget;}))openedTabs.push({path:splitTarget,pinned:false});}break;}
+  case"unsplitEditor":state.editorSplit=false;state.splitFile=null;break;
   case"newProject":
    state.workspaceName=d.name||state.workspaceName||"Java Practice";
    break;
@@ -656,6 +661,7 @@ $("newFileBtn").onclick=function(){
  renderAll();
 };
 $("newFolderBtn").onclick=function(){expandedFolders.add("new-folder");renderTree();};
+R.splitEditorClose.onclick=function(){state.editorSplit=false;state.splitFile=null;renderAll();};
 $("panelClose").onclick=function(){panelVisible=false;renderPanel();};
 $("panelCollapse").onclick=function(){panelVisible=!panelVisible;renderPanel();};
 $("panelShrink").onclick=function(){
@@ -755,5 +761,5 @@ window.addEventListener("message",function(e){
 
 baseline={workspaceName:"Java Practice",files:{},terminal:"PS Java Practice> ",openTabs:[],git:{branch:"main"}};
 reset();
-parent.postMessage({type:"ENGINE_READY",app:"vscode",actions:["openFile","closeFile","createFile","setFile","typeCode","terminalCommand","setTerminal","newProject","createDirectory","createPackage"]},"*");
+parent.postMessage({type:"ENGINE_READY",app:"vscode",actions:["openFile","closeFile","createFile","setFile","typeCode","terminalCommand","setTerminal","openTerminal","splitEditor","unsplitEditor","newProject","createDirectory","createPackage"]},"*");
 })();
