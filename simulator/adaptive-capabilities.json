@@ -48,7 +48,12 @@
         "git",
         "database",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "editor",
@@ -88,7 +93,12 @@
         "debug",
         "extensions",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "editor",
@@ -131,7 +141,12 @@
         "dml-insert",
         "multi-row-insert",
         "create-table-as-select",
-        "insert-into-select"
+        "insert-into-select",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "browser",
@@ -161,7 +176,12 @@
         "code-snippet",
         "variables",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "request",
@@ -194,7 +214,12 @@
         "environment-panel",
         "selection-mode",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "terminal"
@@ -221,7 +246,12 @@
         "service-details",
         "network-details",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "terminal",
@@ -252,7 +282,12 @@
         "release-panel",
         "dashboard-gadget",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "issue",
@@ -283,7 +318,12 @@
         "plugin-panel",
         "node-panel",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "job",
@@ -335,7 +375,12 @@
         "standard-reports",
         "connection-color",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "queryEditor",
@@ -379,7 +424,15 @@
         "performance-analyzer",
         "publish",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize",
+        "dismissable-on-object-menu",
+        "dismissable-modal",
+        "minimizable-modal"
       ],
       "actions": [
         "openDaxQueryView",
@@ -449,7 +502,12 @@
         "context-menu",
         "adaptive-dialog",
         "persistent-layout",
-        "resizable-sidebars"
+        "resizable-sidebars",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "file",
@@ -505,7 +563,12 @@
         "context-menu",
         "adaptive-dialog",
         "persistent-layout",
-        "resizable-sidebars"
+        "resizable-sidebars",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "file",
@@ -557,7 +620,12 @@
         "context-menu",
         "adaptive-dialog",
         "persistent-layout",
-        "resizable-sidebars"
+        "resizable-sidebars",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "menus": [
         "workflow",
@@ -605,7 +673,13 @@
         "context-menus",
         "adaptive-dialogs",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize",
+        "seek-highlight-fallback"
       ],
       "actions": [
         "openPreferences",
@@ -680,7 +754,12 @@
         "connection-dialog",
         "database-environment-tag",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
       ],
       "actions": [
         "setView",

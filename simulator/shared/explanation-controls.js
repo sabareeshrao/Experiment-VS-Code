@@ -1,6 +1,8 @@
 (function(){
 "use strict";
-if(window.__SIM_EXPLANATION_CONTROLS__) return;
+var CONTROLS_VERSION=12;
+if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
+window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
 
 var STYLE_ID="sim-explanation-controls-style";
@@ -60,8 +62,11 @@ if(!document.getElementById(STYLE_ID)){
 var assistantSelectors=["[data-sim-explanation]","#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
 var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
 var textSelectors=["[data-sim-explanation-text]","#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
+var pathParts=location.pathname.split("/").filter(Boolean);
+var appKey=(document.body&&document.body.dataset&&document.body.dataset.simApp)||pathParts[pathParts.length-2]||"global";
 var scaleKey="sim.explanationScale.v1";
-var positionKey="sim.explanationPosition.v1";
+var positionKey="sim.explanationPosition.v2."+appKey;
+var minimizedKey="sim.explanationMinimized.v1."+appKey;
 var dragPending=false;
 var universalDrag=null;
 
@@ -128,6 +133,12 @@ function getText(box){
 function getScale(){
   var n=parseInt(localStorage.getItem(scaleKey)||"0",10);
   return Number.isFinite(n)?Math.max(-2,Math.min(4,n)):0;
+}
+function explanationMinimizedPreference(){
+  try{return localStorage.getItem(minimizedKey)==="1";}catch(_){return false;}
+}
+function saveExplanationMinimized(value){
+  try{localStorage.setItem(minimizedKey,value?"1":"0");}catch(_){}
 }
 function readPosition(){
   try{
@@ -279,6 +290,15 @@ function changeScale(delta){
   localStorage.setItem(scaleKey,String(next));
   applyScale();
 }
+function ensureBasicHeaderButtons(box){
+  if(!box)return;
+  var head=getHead(box);
+  if(!head)return;
+  if(!head.querySelector(".grow")){var grow=document.createElement("span");grow.className="grow";head.appendChild(grow);}
+  if(!box.querySelector("[data-sim-explanation-min]")){var min=document.createElement("button");min.type="button";min.setAttribute("data-sim-explanation-min","1");min.title="Minimize";min.textContent="−";head.appendChild(min);}
+  if(!box.querySelector("[data-sim-explanation-close]")){var close=document.createElement("button");close.type="button";close.setAttribute("data-sim-explanation-close","1");close.title="Close";close.textContent="×";head.appendChild(close);}
+}
+
 function bindBasicExplanationControls(box){
   if(!box||box.dataset.simBasicControlsBound==="1")return;
   box.dataset.simBasicControlsBound="1";
@@ -287,6 +307,9 @@ function bindBasicExplanationControls(box){
   if(min)min.addEventListener("click",function(e){
     e.preventDefault();e.stopPropagation();
     box.classList.toggle("minimized");
+    box.classList.remove("min");
+    saveExplanationMinimized(box.classList.contains("minimized"));
+    savePosition();
   });
   if(close)close.addEventListener("click",function(e){
     e.preventDefault();e.stopPropagation();
@@ -298,6 +321,7 @@ function ensureControls(){
   var box=getAssistant();
   if(!box)return;
   applyUnifiedClasses(box);
+  ensureBasicHeaderButtons(box);
   bindBasicExplanationControls(box);
   bindPositionPersistence();
   var head=getHead(box);
@@ -355,6 +379,7 @@ function refresh(m){
   box.classList.add("show");
   box.style.display="";
   ensureControls();
+  if(explanationMinimizedPreference())box.classList.add("minimized");
   hideLanguageLabels(box);
   hideExplanationMeta(box);
   applyScale();
@@ -379,6 +404,15 @@ if(document.readyState==="loading"){
   ensureControls();
   requestAnimationFrame(restorePosition);
 }
+
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Escape")return;
+  var box=getAssistant();
+  if(!box||box.classList.contains("hidden"))return;
+  // Escape closes only the current explanation. Minimized preference remains.
+  box.classList.add("hidden");
+  box.classList.remove("show");
+},true);
 
 window.addEventListener("resize",function(){
   applyScale();

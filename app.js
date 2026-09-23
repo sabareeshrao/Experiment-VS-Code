@@ -120,9 +120,14 @@
 
       // Universal rules for every current and future simulator.
       ensureScript(
-        "/simulator/shared/explanation-controls.js",
-        "simulator/shared/explanation-controls.js?v=11",
+        "/simulator/shared/explanation-controls.js?v=12",
+        "simulator/shared/explanation-controls.js?v=12",
         "globalExplanationRuntime"
+      );
+      ensureScript(
+        "/simulator/shared/highlighter.js",
+        "simulator/shared/highlighter.js?v=9",
+        "globalHighlightRuntime"
       );
       ensureScript(
         "/simulator/shared/boot-protocol.js",
@@ -170,9 +175,15 @@
         // Do not depend on a second readiness handshake here. The document has
         // already finished loading, so replay the cumulative state immediately.
         sendSeekNow(current, name, false);
-        if (name !== "mysqlworkbench") {
-          highlightCurrentAction(current, name);
-          scheduleCurrentExplanation(140);
+        highlightCurrentAction(current, name);
+        scheduleCurrentExplanation(140);
+        if (name === "mysqlworkbench") {
+          setTimeout(() => {
+            if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === name) {
+              highlightCurrentAction(current, name);
+              scheduleCurrentExplanation(20);
+            }
+          }, 320);
         }
       }, 0);
     }
@@ -418,6 +429,12 @@
       if (action === "openTmdlView") return plan(["#tmdlViewBtn"]);
       if (action === "scriptTmdlObject") return plan(["#scriptTmdlBtn"]);
       if (action === "openReportView") return plan(["#reportViewBtn"]);
+      if (action === "selectPage") return plan([`[data-page-id="${step.action.data?.id || step.action.data?.page || ""}"]`, ".pageTab"]);
+      if (action === "selectVisual") return plan([`[data-visual-id="${step.action.data?.id || ""}"]`, "#reportCanvas"]);
+      if (action === "openOnObjectBuild") return plan(["#onObjectMenu"]);
+      if (action === "openFormatPane" || action === "openAnalyticsPane") return plan(["#visualizationsPane"]);
+      if (action === "openSelectionPane" || action === "openBookmarksPane" || action === "openManageRelationships") return plan(["#modalShade .modal"]);
+      if (action === "openPerformanceAnalyzer") return plan(["#visualizationsPane", ".sidePanes"]);
     }
     if (software === "git") {
       if (action === "stageFile" || action === "unstageFile") return plan(["#mainView"]);
@@ -492,7 +509,12 @@
     // Never block navigation on visual guidance. The step state is rebuilt
     // immediately, then the relevant control is highlighted independently.
     sendSeekNow(index, target, animateFinal);
-    if (target !== "mysqlworkbench") highlightCurrentAction(index, target);
+    highlightCurrentAction(index, target);
+    if (target === "mysqlworkbench") {
+      setTimeout(() => {
+        if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === target) highlightCurrentAction(index, target);
+      }, 260);
+    }
   }
 
   function explainCurrentStep() {
@@ -724,7 +746,8 @@
 
     renderCurrentStep();
     seekSoftware(current, software, animateFinal);
-    if (software !== "mysqlworkbench") scheduleCurrentExplanation(120);
+    scheduleCurrentExplanation(120);
+    if (software === "mysqlworkbench") scheduleCurrentExplanation(420);
   }
 
   window.addEventListener("message", event => {
