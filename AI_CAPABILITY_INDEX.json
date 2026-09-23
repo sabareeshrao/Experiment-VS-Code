@@ -792,6 +792,83 @@
         "showMavenSnippet"
       ],
       "action_lookup_required": false
+    },
+    "eclipse": {
+      "display_name": "Eclipse IDE",
+      "directory": "eclipse",
+      "package_key": "eclipse",
+      "action_source": "simulator/eclipse/index.html",
+      "capability_source": "simulator/adaptive-capabilities.json#simulators.eclipse",
+      "target_fidelity": null,
+      "features": [
+        "action-highlight",
+        "bytecode-inspection",
+        "console-view",
+        "editor-tabs",
+        "explanation-box",
+        "explanation-minimize-close",
+        "java-class-creation",
+        "java-editor",
+        "java-project-explorer",
+        "package-creation",
+        "persistent-explanation-minimize",
+        "persistent-explanation-position",
+        "persistent-layout",
+        "problems-view",
+        "resizable-sidebars",
+        "run-application"
+      ],
+      "indexed_actions": [
+        "appendFileContent",
+        "createJavaFile",
+        "createPackage",
+        "highlightTarget",
+        "openFile",
+        "openProject",
+        "runApplication",
+        "selectProject",
+        "setFileContent",
+        "showBytecode",
+        "showConsole",
+        "showDialog",
+        "showProblems"
+      ],
+      "action_lookup_required": false
+    },
+    "powershell": {
+      "display_name": "Windows PowerShell",
+      "directory": "powershell",
+      "package_key": "powershell",
+      "action_source": "simulator/powershell/index.html",
+      "capability_source": "simulator/adaptive-capabilities.json#simulators.powershell",
+      "target_fidelity": null,
+      "features": [
+        "action-highlight",
+        "command-history",
+        "environment-variables",
+        "exit-code-display",
+        "explanation-box",
+        "explanation-minimize-close",
+        "git-command-execution",
+        "java-command-execution",
+        "persistent-explanation-minimize",
+        "persistent-explanation-position",
+        "persistent-layout",
+        "powershell-terminal",
+        "resizable-sidebars",
+        "working-directory"
+      ],
+      "indexed_actions": [
+        "clearTerminal",
+        "highlightTarget",
+        "runCommand",
+        "setCwd",
+        "setEnv",
+        "showDialog",
+        "showExitCode",
+        "showOutput"
+      ],
+      "action_lookup_required": false
     }
   }
 }

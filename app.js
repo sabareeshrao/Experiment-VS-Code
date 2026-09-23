@@ -7,10 +7,12 @@
 
   const frames = {
     intellij: $("ideFrame"),
+    eclipse: $("eclipseFrame"),
     vscode: $("vscodeFrame"),
     pgadmin: $("pgadminFrame"),
     postman: $("postmanFrame"),
     cmd: $("cmdFrame"),
+    powershell: $("powershellFrame"),
     linux: $("linuxFrame"),
     ssms: $("ssmsFrame"),
     jira: $("jiraFrame"),
@@ -27,10 +29,12 @@
 
   const appIds = {
     intellij: "intellij_idea",
+    eclipse: "eclipse",
     vscode: "vscode",
     pgadmin: "pgadmin",
     postman: "postman",
     cmd: "cmd",
+    powershell: "powershell",
     linux: "linux",
     ssms: "sql_server_management_studio",
     jira: "jira",
@@ -47,10 +51,12 @@
 
   const appLabels = {
     intellij: "IntelliJ IDEA",
+    eclipse: "Eclipse IDE",
     vscode: "VS Code",
     pgadmin: "pgAdmin 4",
     postman: "Postman",
     cmd: "Command Prompt",
+    powershell: "Windows PowerShell",
     linux: "Linux",
     ssms: "SQL Server Management Studio",
     jira: "Jira",
@@ -67,10 +73,12 @@
 
   const engineReady = {
     intellij: false,
+    eclipse: false,
     vscode: false,
     pgadmin: false,
     postman: false,
     cmd: false,
+    powershell: false,
     linux: false,
     ssms: false,
     jira: false,
@@ -283,6 +291,8 @@
       : null;
 
   function normalizeSoftware(value) {
+    if (value === "eclipse") return "eclipse";
+    if (value === "powershell" || value === "power_shell" || value === "pwsh") return "powershell";
     if (value === "pgadmin") return "pgadmin";
     if (value === "vscode") return "vscode";
     if (value === "postman") return "postman";
@@ -313,6 +323,8 @@
     });
 
     softwareBadge.textContent = appLabels[activeSoftware];
+    softwareBadge.classList.toggle("eclipse", activeSoftware === "eclipse");
+    softwareBadge.classList.toggle("powershell", activeSoftware === "powershell");
     softwareBadge.classList.toggle("pgadmin", activeSoftware === "pgadmin");
     softwareBadge.classList.toggle("vscode", activeSoftware === "vscode");
     softwareBadge.classList.toggle("postman", activeSoftware === "postman");
@@ -393,6 +405,18 @@
 
     // Blue guidance is only for controls the developer clicks.
     // Editors/terminals use their own native changed-line emphasis.
+    if (software === "eclipse") {
+      if (action === "openProject" || action === "createPackage" || action === "createJavaFile") return plan(["#newBtn"]);
+      if (action === "openFile") return plan(["#projectTree"]);
+      if (action === "runApplication") return plan(["#runBtn"]);
+      if (action === "showConsole" || action === "showBytecode") return plan(["#consoleTab"]);
+      if (action === "showProblems" || action === "showDialog") return plan(["#problemsTab"]);
+    }
+    if (software === "powershell") {
+      if (action === "runCommand") return plan(["#commandInput"]);
+      if (action === "clearTerminal") return plan(["#clearBtn"]);
+      if (action === "showExitCode") return plan(["#exitBadge"]);
+    }
     if (software === "intellij") {
       if (action === "newProject" || action === "openNewMavenProjectWizard" || action === "createMavenProject" || action === "createPackage" || action === "createFile") return plan(["#newBtn"]);
       if (action === "runJavaMain" || action === "runConfiguration") return plan(["#runBtn"]);

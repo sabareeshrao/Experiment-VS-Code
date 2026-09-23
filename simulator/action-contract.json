@@ -148,6 +148,20 @@
       "packageKey": "maven_central",
       "engineSource": "engine.js",
       "manifestKey": "maven_central"
+    },
+    "eclipse": {
+      "directory": "eclipse",
+      "frameId": "eclipseFrame",
+      "packageKey": "eclipse",
+      "engineSource": "index.html",
+      "manifestKey": "eclipse"
+    },
+    "powershell": {
+      "directory": "powershell",
+      "frameId": "powershellFrame",
+      "packageKey": "powershell",
+      "engineSource": "index.html",
+      "manifestKey": "powershell"
     }
   },
   "layoutPolicy": {

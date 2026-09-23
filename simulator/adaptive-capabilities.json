@@ -914,6 +914,94 @@
         "copyMavenSnippet",
         "highlightTarget"
       ]
+    },
+    "eclipse": {
+      "registry": "ECLIPSE_CAPABILITIES",
+      "features": [
+        "java-project-explorer",
+        "java-editor",
+        "editor-tabs",
+        "package-creation",
+        "java-class-creation",
+        "run-application",
+        "console-view",
+        "problems-view",
+        "bytecode-inspection",
+        "resizable-sidebars",
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
+      ],
+      "actions": [
+        "openProject",
+        "createPackage",
+        "createJavaFile",
+        "openFile",
+        "setFileContent",
+        "appendFileContent",
+        "runApplication",
+        "showConsole",
+        "showProblems",
+        "showBytecode",
+        "showDialog",
+        "selectProject",
+        "highlightTarget"
+      ],
+      "menus": [
+        "file",
+        "run",
+        "navigate"
+      ],
+      "toolWindows": [
+        "Project Explorer",
+        "Console",
+        "Problems"
+      ],
+      "dialogPresets": [
+        "new-java-class",
+        "problem"
+      ]
+    },
+    "powershell": {
+      "registry": "POWERSHELL_CAPABILITIES",
+      "features": [
+        "powershell-terminal",
+        "command-history",
+        "working-directory",
+        "environment-variables",
+        "exit-code-display",
+        "java-command-execution",
+        "git-command-execution",
+        "resizable-sidebars",
+        "persistent-layout",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
+      ],
+      "actions": [
+        "setCwd",
+        "runCommand",
+        "showOutput",
+        "clearTerminal",
+        "setEnv",
+        "showExitCode",
+        "showDialog",
+        "highlightTarget"
+      ],
+      "menus": [
+        "terminal"
+      ],
+      "toolWindows": [
+        "Terminal"
+      ],
+      "dialogPresets": [
+        "message"
+      ]
     }
   }
 }

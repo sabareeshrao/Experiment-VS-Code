@@ -4984,6 +4984,18 @@
         ],
         "selectedArtifact": "spring-data-jpa",
         "selectedVersion": "3.5.6"
+      },
+      "eclipse": {
+        "workspace": "Java-Experience",
+        "project": "geospatial-operations-tracker",
+        "files": {},
+        "openFile": ""
+      },
+      "powershell": {
+        "cwd": "C:\\Java-Experience",
+        "history": [],
+        "output": "",
+        "exitCode": 0
       }
     }
   },
