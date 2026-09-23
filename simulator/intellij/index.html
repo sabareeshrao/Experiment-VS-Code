@@ -177,6 +177,14 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 .terminalViewport pre{margin:0;white-space:pre-wrap;word-break:break-word;font:10.5px/17px "JetBrains Mono","Cascadia Code",Consolas,monospace;color:#c7c9ce}
 .console{font:10.5px/17px "JetBrains Mono","Cascadia Code",Consolas,monospace!important;color:#c7c9ce!important}
 
+
+.codeLine.diag-error{text-decoration:underline wavy #e05252;text-decoration-thickness:1px;text-underline-offset:3px}
+.codeLine.diag-warning{text-decoration:underline wavy #c89b3c;text-decoration-thickness:1px;text-underline-offset:3px}
+.bottomTabs .grow{flex:1}.bottomClear{height:23px;margin:2px 4px 0 0;padding:2px 8px!important;font-size:9px!important}
+.mavenGoal{padding:6px 8px;border-bottom:1px solid var(--line);cursor:pointer}.mavenGoal:hover{background:var(--surface3)}
+.awtPreview{width:430px;max-width:100%;margin:auto;border:1px solid #6a6d72;background:#ececec;color:#202124;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.awtTitle{height:30px;background:#d9d9d9;border-bottom:1px solid #aaa;display:flex;align-items:center;padding:0 9px;font-weight:600}
+.awtBody{height:210px;display:grid;place-items:center}.awtButton{padding:8px 18px;border:1px solid #888;background:#f5f5f5;border-radius:3px}.awtStatus{text-align:center;padding:7px;border-top:1px solid #bbb;font-size:10px}
 </style>
 <link rel="stylesheet" href="ide-polish.css?v=1">
 </head>
@@ -186,7 +194,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  <div class="menu" id="menu"><span class="menuItem" data-menu="File">File</span><span class="menuItem" data-menu="Edit">Edit</span><span class="menuItem" data-menu="View">View</span><span class="menuItem" data-menu="Navigate">Navigate</span><span class="menuItem" data-menu="Code">Code</span><span class="menuItem" data-menu="Refactor">Refactor</span><span class="menuItem" data-menu="Build">Build</span><span class="menuItem" data-menu="Run">Run</span><span class="menuItem" data-menu="Tools">Tools</span><span class="menuItem" data-menu="VCS">VCS</span><span class="menuItem" data-menu="Window">Window</span><span class="menuItem" data-menu="Help">Help</span><div class="menuPopup" id="menuPopup"></div></div>
  <div class="toolbar">
    <button class="tool" id="newBtn">＋</button><button class="tool" id="saveBtn">Save</button><div class="runConfig" id="runConfig" data-feature="run">Current File</div>
-   <button class="tool primary" id="runBtn" data-feature="run">▶ Run</button><button class="tool debug" id="debugBtn" data-feature="debug">🐞 Debug</button><button class="tool stop" id="stopBtn" data-feature="run">■</button>
+   <button class="tool primary" id="runBtn" data-feature="run">▶ Run</button><button class="tool debug" id="debugBtn" data-feature="debug">🐞 Debug</button><button class="tool stop" id="stopBtn" data-feature="run">■</button><button class="tool" id="restartBtn" data-feature="run" title="Restart">↻</button>
    <div class="grow"></div><button class="tool" id="searchBtn">Search Everywhere</button><button class="tool" id="gitBtn" data-feature="git">Git</button><button class="tool" id="terminalBtn" data-feature="terminal">Terminal</button>
  </div>
  <div class="work" id="work">
@@ -198,7 +206,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
    <div class="splitV splitR" id="splitR"></div>
    <div class="right" id="rightPanel"><div class="toolWindowTabs"><div class="twTab active" data-right="structure">Structure</div><div class="twTab" data-right="maven" data-feature="maven">Maven</div><div class="twTab" data-right="database" data-feature="database">Database</div></div><div class="rightBody" id="rightBody"></div></div>
    <div class="splitH" id="splitH"></div>
-   <div class="bottom" id="bottomPanel"><div class="bottomTabs" id="bottomTabs"><div class="bottomTab active" data-bottom="run" data-feature="run">Run</div><div class="bottomTab" data-bottom="debug" data-feature="debug">Debug</div><div class="bottomTab" data-bottom="tests" data-feature="tests">Tests</div><div class="bottomTab" data-bottom="terminal" data-feature="terminal">Terminal</div><div class="bottomTab" data-bottom="problems" data-feature="problems">Problems</div><div class="bottomTab" data-bottom="git" data-feature="git">Git</div><div class="bottomTab" data-bottom="services" data-feature="spring">Services</div></div><div class="bottomBody" id="bottomBody"></div></div>
+   <div class="bottom" id="bottomPanel"><div class="bottomTabs" id="bottomTabs"><div class="bottomTab active" data-bottom="run" data-feature="run">Run</div><div class="bottomTab" data-bottom="debug" data-feature="debug">Debug</div><div class="bottomTab" data-bottom="tests" data-feature="tests">Tests</div><div class="bottomTab" data-bottom="terminal" data-feature="terminal">Terminal</div><div class="bottomTab" data-bottom="problems" data-feature="problems">Problems</div><div class="bottomTab" data-bottom="git" data-feature="git">Git</div><div class="bottomTab" data-bottom="services" data-feature="spring">Services</div><div class="grow"></div><button class="tool bottomClear" id="clearConsoleBtn" title="Clear console">Clear</button></div><div class="bottomBody" id="bottomBody"></div></div>
  </div>
  <div class="status"><span id="statusText">Ready</span><span id="languageLevel">Java</span><span class="grow"></span><span id="encoding">UTF-8</span><span id="lineStatus">Ln 1, Col 1</span></div>
  <div class="modalLayer" id="modalLayer"><div class="modal"><div class="modalHead"><span id="modalTitle">Dialog</span><div class="grow"></div><button class="tool" id="modalClose">×</button></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
@@ -213,7 +221,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="enterprise-ui.js?v=1"></script>
-<script src="engine.js?v=12"></script>
+<script src="engine.js?v=13"></script>
 <script src="adaptive-ui.js?v=1"></script>
   <script src="../shared/highlighter.js?v=7"></script>\n  <script src="../shared/explanation-controls.js?v=9"></script>  <script src="../shared/layout-resize.js?v=10"></script>
 </body>
