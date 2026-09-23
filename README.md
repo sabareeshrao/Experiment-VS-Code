@@ -179,3 +179,16 @@ Two standalone simulators were added:
 The exact requested IntelliJ IDEA, Postman, and MySQL Workbench capability names are registered in `simulator/adaptive-capabilities.json` so transcript-to-JSON generation can mark them available instead of repeatedly requesting already-supported UI. IntelliJ additionally implements inline editor diagnostics, expandable External Libraries/JDK entries, run/restart/clear-console controls, Maven lifecycle behavior with generated target artifacts, import/New Maven project flows, and a Java desktop application preview.
 
 `scripts/validate-repo.cjs` treats these requested capability names as regression-protected platform requirements.
+
+
+## Downstream project integration
+
+This repository is the central reusable software/runtime master for independent project repositories.
+
+**Before creating or linking a new project, read `PROJECT_INTEGRATION_RULES.md` and `AGENTS.md`.**
+
+A downstream project keeps its own source, curriculum, Git history and GitHub Pages URL. It consumes this repository's player/runtime/simulators during its build and layers its own generated lesson/project data on top.
+
+Use `templates/downstream-project/` as the reference integration pattern.
+
+Do not copy this repository's master curriculum into downstream projects, and do not maintain downstream-specific copies of simulator source.

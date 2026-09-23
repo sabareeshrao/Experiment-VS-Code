@@ -1,0 +1,55 @@
+# AGENTS.md — READ BEFORE CHANGING OR LINKING PROJECTS
+
+This repository is the **central software/runtime master** for the Developer Playback system.
+
+Before making changes, every AI or developer must read:
+
+1. `PROJECT_INTEGRATION_RULES.md` — how downstream project repositories use this master.
+2. `SIMULATOR_INTEGRATION_RULES.md` — how software simulators are added or upgraded.
+3. `AI_CAPABILITY_INDEX.json` — machine-readable simulator/capability map when creating lessons from transcripts.
+
+## Core rule
+
+**Do not turn a downstream project into another copy of this repository.**
+
+The master owns reusable runtime/software. A downstream project owns its own curriculum and project source.
+
+### Master owns
+
+- `index.html`
+- `library.js`
+- `library.css`
+- `player.html`
+- `app.js`
+- `styles.css`
+- `simulator/`
+- shared boot/replay/highlight/explanation/layout infrastructure
+
+### Downstream project owns
+
+- its project source/reference source
+- its books, chapters, lessons and questions
+- its project-specific package/baseline data
+- its curriculum source
+- its adapter/generator that produces browser-ready lesson/project data
+- its own Git history and GitHub Pages deployment
+
+## New-project rule
+
+When asked to create a new learning/project repository:
+
+1. Keep the project in its **own GitHub repository**.
+2. Give it its **own GitHub Pages URL**.
+3. Link it to this master using the contract in `PROJECT_INTEGRATION_RULES.md`.
+4. Use `templates/downstream-project/` as the starting integration pattern.
+5. Never copy master simulator source into the downstream repository as independently maintained source.
+6. Never replace the downstream curriculum with this master's `lessons.js` or `lesson-json/`.
+7. Build the Pages artifact by combining:
+   - reusable runtime from this master
+   - project-specific generated curriculum/data from the downstream repo
+8. Record the exact master commit used by the deployment.
+9. Validate first/middle/last lesson, direct jumps, reload, replay, explanation UI and simulator state before calling the integration complete.
+
+If a downstream lesson requires a missing software capability, implement that capability **here in the master**, validate the master, then update the downstream project's master reference.
+
+Do not silently modify multiple downstream repositories when upgrading the master unless the user explicitly requests propagation.

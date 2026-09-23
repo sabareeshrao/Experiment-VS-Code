@@ -68,6 +68,8 @@ const requiredRootFiles = [
   "app.js",
   "lessons.js",
   "README.md",
+  "AGENTS.md",
+  "PROJECT_INTEGRATION_RULES.md",
   "AI_CAPABILITY_INDEX.json",
   "lesson-json/course.json",
   "lesson-json/chapter.schema.json"
@@ -490,3 +492,20 @@ if (exists("lesson-json/chapters/01-student-class-fundamentals.json")) { const c
 if (exists("lesson-json/chapters/04-vscode-integration-test.json")) { const c=read("lesson-json/chapters/04-vscode-integration-test.json"); assert(c.includes('"Split the VS Code editor"') && c.includes('"Use VS Code terminal with the split editor"'), "VS Code split/terminal lessons missing"); }
 
 console.log("Repository validation passed.");
+
+
+// Downstream integration contract guards.
+assert(exists("templates/downstream-project/README.md"), "Missing downstream project template README");
+assert(exists("templates/downstream-project/MASTER_SOFTWARE_REF.example"), "Missing downstream master reference template");
+assert(exists("templates/downstream-project/deploy-pages.yml"), "Missing downstream project deployment template");
+if (exists("PROJECT_INTEGRATION_RULES.md")) {
+  const downstreamRules = read("PROJECT_INTEGRATION_RULES.md");
+  assert(downstreamRules.includes("MASTER_SOFTWARE_REF"), "Downstream rules must define MASTER_SOFTWARE_REF");
+  assert(downstreamRules.includes("software-snapshot.json"), "Downstream rules must require software-snapshot.json");
+  assert(downstreamRules.includes("Do not patch the missing simulator feature only inside one downstream repository"), "Downstream simulator ownership rule is missing");
+}
+if (exists("AGENTS.md")) {
+  const agentRules = read("AGENTS.md");
+  assert(agentRules.includes("PROJECT_INTEGRATION_RULES.md"), "AGENTS.md must point to downstream integration rules");
+  assert(agentRules.includes("SIMULATOR_INTEGRATION_RULES.md"), "AGENTS.md must point to simulator integration rules");
+}
