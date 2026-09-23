@@ -5007,7 +5007,17 @@ window.COURSE = {
               "code": "public class Student {\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "public class Student {"
+              }
+            ]
+          }
         },
         {
           "title": "Add the rollNo field",
@@ -5020,7 +5030,17 @@ window.COURSE = {
               "code": "\n    int rollNo;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    int rollNo;"
+              }
+            ]
+          }
         },
         {
           "title": "Add the attendance field",
@@ -5033,7 +5053,17 @@ window.COURSE = {
               "code": "    boolean isPresent;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    boolean isPresent;"
+              }
+            ]
+          }
         },
         {
           "title": "Add the marks array",
@@ -5046,7 +5076,17 @@ window.COURSE = {
               "code": "    float[] marks;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    float[] marks;"
+              }
+            ]
+          }
         },
         {
           "title": "Add the name field",
@@ -5059,7 +5099,17 @@ window.COURSE = {
               "code": "    String name;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    String name;"
+              }
+            ]
+          }
         },
         {
           "title": "Add getRollNo",
@@ -5072,7 +5122,17 @@ window.COURSE = {
               "code": "\n    public int getRollNo() {\n        return rollNo;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public int getRollNo() {\n        return rollNo;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add setRollNo",
@@ -5085,7 +5145,17 @@ window.COURSE = {
               "code": "\n    public void setRollNo(int rollNo) {\n        this.rollNo = rollNo;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public void setRollNo(int rollNo) {\n        this.rollNo = rollNo;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add the presence getter",
@@ -5098,7 +5168,17 @@ window.COURSE = {
               "code": "\n    public boolean isPresent() {\n        return isPresent;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public boolean isPresent() {\n        return isPresent;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add setPresent",
@@ -5111,7 +5191,17 @@ window.COURSE = {
               "code": "\n    public void setPresent(boolean present) {\n        isPresent = present;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public void setPresent(boolean present) {\n        isPresent = present;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add getMarks",
@@ -5124,7 +5214,17 @@ window.COURSE = {
               "code": "\n    public float[] getMarks() {\n        return marks;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public float[] getMarks() {\n        return marks;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add setMarks",
@@ -5137,7 +5237,17 @@ window.COURSE = {
               "code": "\n    public void setMarks(float[] marks) {\n        this.marks = marks;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public void setMarks(float[] marks) {\n        this.marks = marks;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add getName",
@@ -5150,7 +5260,17 @@ window.COURSE = {
               "code": "\n    public String getName() {\n        return name;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public String getName() {\n        return name;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Add setName",
@@ -5163,7 +5283,17 @@ window.COURSE = {
               "code": "\n    public void setName(String name) {\n        this.name = name;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "    public void setName(String name) {\n        this.name = name;\n    }"
+              }
+            ]
+          }
         },
         {
           "title": "Close the Student class",
@@ -5176,7 +5306,17 @@ window.COURSE = {
               "code": "\n}\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "code-editor",
+                "prompt": "Type the highlighted code. Tab completes the next token.",
+                "text": "}"
+              }
+            ]
+          }
         },
         {
           "title": "Review the completed class structure",
@@ -5228,6 +5368,16 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE table_name (\n    column_name data_type,\n    column_name data_type,\n    column_name data_type\n);"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "CREATE TABLE table_name (\n    column_name data_type,\n    column_name data_type,\n    column_name data_type\n);"
+              }
+            ]
           }
         },
         {
@@ -5240,6 +5390,16 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE course (\n    course_number INTEGER,\n    name TEXT,\n    price NUMERIC\n);"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "CREATE TABLE course (\n    course_number INTEGER,\n    name TEXT,\n    price NUMERIC\n);"
+              }
+            ]
           }
         },
         {
@@ -5253,6 +5413,15 @@ window.COURSE = {
               "message": "Query returned successfully in approximately 120 milliseconds.",
               "statusText": "course table created"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5276,6 +5445,21 @@ window.COURSE = {
                 "rows": []
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5288,6 +5472,16 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO table_name\nVALUES (value1, value2, value3);"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO table_name\nVALUES (value1, value2, value3);"
+              }
+            ]
           }
         },
         {
@@ -5309,6 +5503,21 @@ window.COURSE = {
               "message": "INSERT 0 1 — Query executed successfully in approximately 84 milliseconds.",
               "statusText": "1 row inserted"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO course\nVALUES (1, 'PostgreSQL', 150);"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5338,6 +5547,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5362,6 +5586,16 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nVALUES (2, 'MySQL', 100);"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO course (course_number, name, price)\nVALUES (2, 'MySQL', 100);"
+              }
+            ]
           }
         },
         {
@@ -5386,6 +5620,15 @@ window.COURSE = {
               "message": "INSERT 0 1",
               "statusText": "MySQL course inserted"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5420,6 +5663,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5451,6 +5709,21 @@ window.COURSE = {
               "message": "INSERT 0 1",
               "statusText": "MongoDB course inserted"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO course (name, price, course_number)\nVALUES ('MongoDB', 100, 3);"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5490,6 +5763,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5502,6 +5790,16 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nVALUES\n    (4, 'PostgreSQL_new', 150),\n    (5, 'MySQL_new', 100),\n    (6, 'MongoDB_new', 100);"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO course (course_number, name, price)\nVALUES\n    (4, 'PostgreSQL_new', 150),\n    (5, 'MySQL_new', 100),\n    (6, 'MongoDB_new', 100);"
+              }
+            ]
           }
         },
         {
@@ -5546,6 +5844,15 @@ window.COURSE = {
               "message": "INSERT 0 3",
               "statusText": "3 rows inserted"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5600,6 +5907,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5612,6 +5934,16 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE new_course AS\nSELECT * FROM course;"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "CREATE TABLE new_course AS\nSELECT * FROM course;"
+              }
+            ]
           }
         },
         {
@@ -5657,6 +5989,15 @@ window.COURSE = {
               "message": "SELECT 6",
               "statusText": "new_course created with 6 rows"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5711,6 +6052,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM new_course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5723,6 +6079,16 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nSELECT course_number, name, price\nFROM new_course;"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "INSERT INTO course (course_number, name, price)\nSELECT course_number, name, price\nFROM new_course;"
+              }
+            ]
           }
         },
         {
@@ -5797,6 +6163,15 @@ window.COURSE = {
               "message": "INSERT 0 6",
               "statusText": "6 rows copied into course"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5881,6 +6256,21 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "sql-editor",
+                "prompt": "Type the SQL in the Query Tool. Tab completes the next token.",
+                "text": "SELECT * FROM course;"
+              },
+              {
+                "interaction": "click",
+                "target": "execute-query",
+                "prompt": "Now click Execute/Run."
+              }
+            ]
           }
         },
         {
@@ -5978,6 +6368,16 @@ window.COURSE = {
               "url": "{{baseUrl}}/api/students/101",
               "boundary": true
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "type",
+                "target": "url-editor",
+                "prompt": "Type the request URL. Tab completes the next token.",
+                "text": "{{baseUrl}}/api/students/101"
+              }
+            ]
           }
         },
         {
@@ -6019,6 +6419,15 @@ window.COURSE = {
                 "name": "Ravi"
               }
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "click",
+                "target": "send-request",
+                "prompt": "Click Send."
+              }
+            ]
           }
         },
         {
@@ -6324,6 +6733,16 @@ window.COURSE = {
             "data": {
               "command": "java -version"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "java -version"
+              }
+            ]
           }
         },
         {
@@ -6335,6 +6754,16 @@ window.COURSE = {
             "data": {
               "command": "echo %JAVA_HOME%"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo %JAVA_HOME%"
+              }
+            ]
           }
         },
         {
@@ -6346,6 +6775,16 @@ window.COURSE = {
             "data": {
               "command": "dir /b"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "dir /b"
+              }
+            ]
           }
         },
         {
@@ -6357,6 +6796,16 @@ window.COURSE = {
             "data": {
               "command": "cd src"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "cd src"
+              }
+            ]
           }
         },
         {
@@ -6368,6 +6817,16 @@ window.COURSE = {
             "data": {
               "command": "dir /b"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "dir /b"
+              }
+            ]
           }
         },
         {
@@ -6379,6 +6838,16 @@ window.COURSE = {
             "data": {
               "command": "cd .."
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "cd .."
+              }
+            ]
           }
         },
         {
@@ -6390,6 +6859,16 @@ window.COURSE = {
             "data": {
               "command": "cd /d C:\\Users\\developer\\JavaPractice\\docs"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "cd /d C:\\Users\\developer\\JavaPractice\\docs"
+              }
+            ]
           }
         },
         {
@@ -6401,6 +6880,16 @@ window.COURSE = {
             "data": {
               "command": "cd .."
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "cd .."
+              }
+            ]
           }
         },
         {
@@ -6412,6 +6901,16 @@ window.COURSE = {
             "data": {
               "command": "mkdir build"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "mkdir build"
+              }
+            ]
           }
         },
         {
@@ -6423,6 +6922,16 @@ window.COURSE = {
             "data": {
               "command": "set APP_ENV=local"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "set APP_ENV=local"
+              }
+            ]
           }
         },
         {
@@ -6434,6 +6943,16 @@ window.COURSE = {
             "data": {
               "command": "echo %APP_ENV%"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo %APP_ENV%"
+              }
+            ]
           }
         },
         {
@@ -6445,6 +6964,16 @@ window.COURSE = {
             "data": {
               "command": "echo build=verified > build\\status.txt"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo build=verified > build\\status.txt"
+              }
+            ]
           }
         },
         {
@@ -6456,6 +6985,16 @@ window.COURSE = {
             "data": {
               "command": "type build\\status.txt"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "type build\\status.txt"
+              }
+            ]
           }
         },
         {
@@ -6467,6 +7006,16 @@ window.COURSE = {
             "data": {
               "command": "echo Java Practice | findstr Java"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo Java Practice | findstr Java"
+              }
+            ]
           }
         },
         {
@@ -6478,6 +7027,16 @@ window.COURSE = {
             "data": {
               "command": "git status"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "git status"
+              }
+            ]
           }
         },
         {
@@ -6489,6 +7048,16 @@ window.COURSE = {
             "data": {
               "command": "javac -version"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "javac -version"
+              }
+            ]
           }
         },
         {
@@ -6539,6 +7108,16 @@ window.COURSE = {
             "data": {
               "command": "pwd"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "pwd"
+              }
+            ]
           }
         },
         {
@@ -6550,6 +7129,16 @@ window.COURSE = {
             "data": {
               "command": "ls -la"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "ls -la"
+              }
+            ]
           }
         },
         {
@@ -6561,6 +7150,16 @@ window.COURSE = {
             "data": {
               "command": "java -version"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "java -version"
+              }
+            ]
           }
         },
         {
@@ -6572,6 +7171,16 @@ window.COURSE = {
             "data": {
               "command": "echo $JAVA_HOME"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo $JAVA_HOME"
+              }
+            ]
           }
         },
         {
@@ -6583,6 +7192,16 @@ window.COURSE = {
             "data": {
               "command": "export APP_ENV=local && echo $APP_ENV"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "export APP_ENV=local && echo $APP_ENV"
+              }
+            ]
           }
         },
         {
@@ -6594,6 +7213,16 @@ window.COURSE = {
             "data": {
               "command": "mkdir -p build && touch build/status.txt"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "mkdir -p build && touch build/status.txt"
+              }
+            ]
           }
         },
         {
@@ -6605,6 +7234,16 @@ window.COURSE = {
             "data": {
               "command": "echo build=verified > build/status.txt && cat build/status.txt"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "echo build=verified > build/status.txt && cat build/status.txt"
+              }
+            ]
           }
         },
         {
@@ -6616,6 +7255,16 @@ window.COURSE = {
             "data": {
               "command": "cat README.md | grep Java"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "cat README.md | grep Java"
+              }
+            ]
           }
         },
         {
@@ -6627,6 +7276,16 @@ window.COURSE = {
             "data": {
               "command": "chmod +x scripts/health-check.sh"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "chmod +x scripts/health-check.sh"
+              }
+            ]
           }
         },
         {
@@ -6638,6 +7297,16 @@ window.COURSE = {
             "data": {
               "command": "./scripts/health-check.sh"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "./scripts/health-check.sh"
+              }
+            ]
           }
         },
         {
@@ -6649,6 +7318,16 @@ window.COURSE = {
             "data": {
               "command": "systemctl status java-practice.service"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "systemctl status java-practice.service"
+              }
+            ]
           }
         },
         {
@@ -6660,6 +7339,16 @@ window.COURSE = {
             "data": {
               "command": "sudo systemctl restart java-practice.service"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "sudo systemctl restart java-practice.service"
+              }
+            ]
           }
         },
         {
@@ -6671,6 +7360,16 @@ window.COURSE = {
             "data": {
               "command": "journalctl -u java-practice.service -n 5"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "journalctl -u java-practice.service -n 5"
+              }
+            ]
           }
         },
         {
@@ -6682,6 +7381,16 @@ window.COURSE = {
             "data": {
               "command": "ip addr"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "ip addr"
+              }
+            ]
           }
         },
         {
@@ -6693,6 +7402,16 @@ window.COURSE = {
             "data": {
               "command": "ss -tulpn"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "ss -tulpn"
+              }
+            ]
           }
         },
         {
@@ -6704,6 +7423,16 @@ window.COURSE = {
             "data": {
               "command": "df -h"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "df -h"
+              }
+            ]
           }
         },
         {
@@ -6715,6 +7444,16 @@ window.COURSE = {
             "data": {
               "command": "mvn test"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "mvn test"
+              }
+            ]
           }
         },
         {
@@ -6726,6 +7465,16 @@ window.COURSE = {
             "data": {
               "command": "mvn spring-boot:run"
             }
+          },
+          "practice": {
+            "sequence": [
+              {
+                "interaction": "terminal",
+                "target": "terminal-input",
+                "prompt": "Type the command. Tab completes the next token.",
+                "text": "mvn spring-boot:run"
+              }
+            ]
           }
         },
         {

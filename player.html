@@ -53,12 +53,12 @@
       </header>
 
       <section class="ide-shell" id="ideShell">
-        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" data-src="simulator/intellij/index.html?v=22" title="IntelliJ IDEA simulator"></iframe>
-        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" data-src="simulator/pgadmin/index.html?v=24" title="pgAdmin simulator"></iframe>
+        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" data-src="simulator/intellij/index.html?v=23" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" data-src="simulator/pgadmin/index.html?v=25" title="pgAdmin simulator"></iframe>
         <iframe id="vscodeFrame" class="sim-frame" data-app="vscode" data-src="simulator/vscode/index.html?v=29" title="Visual Studio Code simulator"></iframe>
-        <iframe id="postmanFrame" class="sim-frame" data-app="postman" data-src="simulator/postman/index.html?v=21" title="Postman simulator"></iframe>
-        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" data-src="simulator/cmd/index.html?v=24" title="Windows Command Prompt simulator"></iframe>
-        <iframe id="linuxFrame" class="sim-frame" data-app="linux" data-src="simulator/linux/index.html?v=28" title="Linux workstation simulator"></iframe>
+        <iframe id="postmanFrame" class="sim-frame" data-app="postman" data-src="simulator/postman/index.html?v=22" title="Postman simulator"></iframe>
+        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" data-src="simulator/cmd/index.html?v=25" title="Windows Command Prompt simulator"></iframe>
+        <iframe id="linuxFrame" class="sim-frame" data-app="linux" data-src="simulator/linux/index.html?v=29" title="Linux workstation simulator"></iframe>
         <iframe id="ssmsFrame" class="sim-frame" data-app="ssms" data-src="simulator/ssms/index.html?v=25" title="SQL Server Management Studio simulator"></iframe>
         <iframe id="jiraFrame" class="sim-frame" data-app="jira" data-src="simulator/jira/index.html?v=18" title="Jira simulator"></iframe>
         <iframe id="jenkinsFrame" class="sim-frame" data-app="jenkins" data-src="simulator/jenkins/index.html?v=10" title="Jenkins simulator"></iframe>
@@ -67,12 +67,13 @@
         <iframe id="githubFrame" class="sim-frame" data-app="github" data-src="simulator/github/index.html?v=3" title="GitHub simulator"></iframe>
         <iframe id="githubActionsFrame" class="sim-frame" data-app="github_actions" data-src="simulator/github_actions/index.html?v=3" title="GitHub Actions simulator"></iframe>
         <iframe id="mysqlWorkbenchFrame" class="sim-frame" data-app="mysqlworkbench" data-src="simulator/mysql_workbench/index.html?v=6" title="MySQL Workbench simulator"></iframe>
-        <iframe id="redisFrame" class="sim-frame" data-app="redis" data-src="simulator/redis/index.html?v=2" title="Redis Insight simulator"></iframe>
+        <iframe id="redisFrame" class="sim-frame" data-app="redis" data-src="simulator/redis/index.html?v=3" title="Redis Insight simulator"></iframe>
       </section>
 
       <footer class="playback-bar hidden" id="playbackBar">
         <button id="prevBtn">← Prev</button>
         <button id="replayBtn">↻ Replay step</button>
+        <button id="practiceBtn" class="practice-toggle" type="button">Practice</button>
         <div class="step-meter"><span id="stepCounter">0 / 0</span><div><i id="stepProgress"></i></div></div>
         <button id="nextBtn" class="primary">Next →</button>
       </footer>

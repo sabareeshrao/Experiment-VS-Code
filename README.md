@@ -142,3 +142,12 @@ Set `feature_available: true` only when the required feature exists under the ta
 Do not hand-edit the generated index. Repository validation fails when it becomes stale.
 
 Redis Insight is integrated as the canonical `redis` simulator using the same `SIM_PACKAGE`, `SIM_SEEK`, `SIM_EXPLAIN`, and `ENGINE_READY` contract.
+
+
+## Hands-on Practice mode
+
+The player has a `Practice` button beside normal navigation. Watch mode still replays actions automatically. Practice mode reconstructs the target simulator only through the previous step, highlights the required real control in blue, waits for the user, and commits the semantic lesson action only after success.
+
+The same lesson step carries optional practice metadata. A sequence can combine ghost typing and real clicks. Supported shared interactions are `click`, `type`, and `terminal`. Tab completes the next expected token during typing. Product-specific target names/selectors remain owned by each simulator; the shared controller only provides guidance, typing capture, validation and completion signaling.
+
+Existing IntelliJ code typing, pgAdmin SQL typing/Execute, Postman URL/Send, Windows CMD commands, and Linux terminal commands are practice-enabled for real regression testing.
