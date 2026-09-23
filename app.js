@@ -555,14 +555,16 @@
       if (action === "openPreferences") return plan(["#workbenchSurfaceTitle"]);
     }
     if (software === "spring_initializer") {
-      if (action === "setProjectType") return plan(["#projectType"]);
-      if (action === "setLanguage") return plan(["#language"]);
+      const v = String(step.action.data?.value ?? step.action.data?.projectType ?? step.action.data?.language ?? step.action.data?.version ?? step.action.data?.packaging ?? step.action.data?.format ?? "");
+      const q = value => String(value).replace(/\\/g,"\\\\").replace(/"/g,'\\"');
+      if (action === "setProjectType") return plan([`#projectType [data-value="${q(v || "Maven")}"]`]);
+      if (action === "setLanguage") return plan([`#language [data-value="${q(v || "Java")}"]`]);
       if (action === "setBootVersion") return plan(["#bootVersion"]);
       if (action === "setGroup") return plan(["#group"]);
       if (action === "setArtifact") return plan(["#artifact"]);
-      if (action === "setPackaging") return plan(["#packaging"]);
-      if (action === "setJavaVersion") return plan(["#javaVersion"]);
-      if (action === "setConfigFormat") return plan(["#configFormat"]);
+      if (action === "setPackaging") return plan([`#packaging [data-value="${q(v || "Jar")}"]`]);
+      if (action === "setJavaVersion") return plan([`#javaVersion [data-value="${q(v || "17")}"]`]);
+      if (action === "setConfigFormat") return plan([`#configFormat [data-value="${q(v || "Properties")}"]`]);
       if (action === "openDependencies" || action === "searchDependencies" || action === "addDependency") return plan(["#addDependencyBtn"]);
       if (action === "generateProject") return plan(["#generateBtn"]);
     }
