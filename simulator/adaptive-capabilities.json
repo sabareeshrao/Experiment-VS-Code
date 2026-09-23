@@ -1111,8 +1111,10 @@
         "CRDs",
         "Map View",
         "Projects",
-        "kubectl terminal"
-      ]
+        "kubectl terminal",
+        "90-step synchronized Headlamp + kubectl workflow"
+      ],
+      "lessonFeatureTourSteps": 95
     }
   }
 }

@@ -43,6 +43,13 @@ window.COURSE = {
       "subtitle": "Redis Insight Browser, Workbench, CLI, Search, Analyze, and Pub/Sub workflow.",
       "chapterStart": 13,
       "chapterEnd": 13
+    },
+    {
+      "id": "book-7",
+      "title": "Kubernetes: Headlamp UI & kubectl Operations",
+      "subtitle": "A synchronized Kubernetes cluster workflow covering workloads, networking, storage, configuration, RBAC, observability, YAML, troubleshooting, node operations, and kubectl.",
+      "chapterStart": 14,
+      "chapterEnd": 14
     }
   ],
   "package": {
@@ -4995,6 +5002,990 @@ window.COURSE = {
         "history": [],
         "output": "",
         "exitCode": 0
+      },
+      "kubernetes": {
+        "title": "campus-platform-dev",
+        "version": "v1.34.1",
+        "context": "campus-platform-dev",
+        "cluster": "campus-platform-dev",
+        "namespace": "campus-dev",
+        "view": "overview",
+        "resourceKind": null,
+        "selected": null,
+        "detailTab": "Overview",
+        "theme": "light",
+        "search": "",
+        "logSearch": "",
+        "container": "student-api",
+        "terminalOpen": false,
+        "terminalLines": [
+          {
+            "type": "out",
+            "text": "kubectl terminal ready — context campus-platform-dev"
+          }
+        ],
+        "execLines": [],
+        "eventFilter": "All",
+        "clusters": [
+          {
+            "name": "campus-platform-dev",
+            "status": "Healthy",
+            "version": "v1.34.1",
+            "server": "https://10.0.0.10:6443"
+          },
+          {
+            "name": "staging-cluster",
+            "status": "Healthy",
+            "version": "v1.34.1",
+            "server": "https://10.20.0.10:6443"
+          }
+        ],
+        "namespaces": [
+          {
+            "name": "campus-dev",
+            "status": "Active"
+          },
+          {
+            "name": "monitoring",
+            "status": "Active"
+          },
+          {
+            "name": "ingress-nginx",
+            "status": "Active"
+          },
+          {
+            "name": "kube-system",
+            "status": "Active"
+          }
+        ],
+        "resources": {
+          "deployments": [
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 2,
+              "available": 2,
+              "updated": 2,
+              "ready": "2/2",
+              "status": "Available",
+              "age": "12d",
+              "image": "ghcr.io/campus/student-api:1.8.4",
+              "revision": 7,
+              "labels": {
+                "app": "student-api",
+                "tier": "backend"
+              },
+              "yaml": "apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: student-api\\n  namespace: campus-dev\\nspec:\\n  replicas: 2\\n  selector:\\n    matchLabels:\\n      app: student-api\\n  template:\\n    metadata:\\n      labels:\\n        app: student-api\\n    spec:\\n      containers:\\n      - name: student-api\\n        image: ghcr.io/campus/student-api:1.8.4\\n        ports:\\n        - containerPort: 8080\\n"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 2,
+              "available": 1,
+              "updated": 2,
+              "ready": "1/2",
+              "status": "Progressing",
+              "age": "12d",
+              "image": "ghcr.io/campus/course-api:2.2.1",
+              "revision": 11,
+              "labels": {
+                "app": "course-api",
+                "tier": "backend"
+              }
+            },
+            {
+              "name": "frontend",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 3,
+              "available": 3,
+              "updated": 3,
+              "ready": "3/3",
+              "status": "Available",
+              "age": "20d",
+              "image": "ghcr.io/campus/frontend:4.6.0",
+              "revision": 18,
+              "labels": {
+                "app": "frontend",
+                "tier": "web"
+              }
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "kind": "Deployment",
+              "replicas": 1,
+              "available": 1,
+              "updated": 1,
+              "ready": "1/1",
+              "status": "Available",
+              "age": "30d",
+              "image": "quay.io/prometheus/prometheus:v3.5.0",
+              "revision": 4,
+              "labels": {
+                "app": "prometheus"
+              }
+            }
+          ],
+          "replicasets": [
+            {
+              "name": "student-api-7d8c7b8b9f",
+              "namespace": "campus-dev",
+              "desired": 2,
+              "current": 2,
+              "ready": 2,
+              "age": "2h",
+              "status": "Ready"
+            },
+            {
+              "name": "course-api-86dbf4d6c8",
+              "namespace": "campus-dev",
+              "desired": 2,
+              "current": 2,
+              "ready": 1,
+              "age": "1h",
+              "status": "Progressing"
+            },
+            {
+              "name": "frontend-5bc9d7f8cd",
+              "namespace": "campus-dev",
+              "desired": 3,
+              "current": 3,
+              "ready": 3,
+              "age": "3h",
+              "status": "Ready"
+            }
+          ],
+          "pods": [
+            {
+              "name": "student-api-7d8c7b8b9f-9x2lm",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "student-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "2h",
+              "ip": "10.244.1.21",
+              "node": "worker-a",
+              "labels": {
+                "app": "student-api",
+                "version": "1.8.4"
+              },
+              "containers": [
+                {
+                  "name": "student-api",
+                  "image": "ghcr.io/campus/student-api:1.8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "2026-09-23T12:10:01Z INFO Started StudentApplication",
+                "2026-09-23T12:10:03Z INFO Connected to mysql:3306",
+                "2026-09-23T12:15:44Z INFO GET /api/students 200 18ms"
+              ]
+            },
+            {
+              "name": "student-api-7d8c7b8b9f-kq8tp",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "student-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "2h",
+              "ip": "10.244.2.18",
+              "node": "worker-b",
+              "labels": {
+                "app": "student-api",
+                "version": "1.8.4"
+              },
+              "containers": [
+                {
+                  "name": "student-api",
+                  "image": "ghcr.io/campus/student-api:1.8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "2026-09-23T12:10:02Z INFO Started StudentApplication",
+                "2026-09-23T12:10:04Z INFO Health endpoint UP"
+              ]
+            },
+            {
+              "name": "course-api-86dbf4d6c8-vm2jk",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "course-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "1h",
+              "ip": "10.244.1.25",
+              "node": "worker-a",
+              "labels": {
+                "app": "course-api",
+                "version": "2.2.1"
+              },
+              "containers": [
+                {
+                  "name": "course-api",
+                  "image": "ghcr.io/campus/course-api:2.2.1",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "INFO Course API started",
+                "INFO cache warmed with 42 courses"
+              ]
+            },
+            {
+              "name": "course-api-86dbf4d6c8-zr7qp",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "course-api",
+              "ready": "0/1",
+              "status": "CrashLoopBackOff",
+              "restarts": 6,
+              "age": "38m",
+              "ip": "10.244.2.27",
+              "node": "worker-b",
+              "labels": {
+                "app": "course-api",
+                "version": "2.2.1"
+              },
+              "containers": [
+                {
+                  "name": "course-api",
+                  "image": "ghcr.io/campus/course-api:2.2.1",
+                  "ready": false,
+                  "restarts": 6
+                }
+              ],
+              "logs": [
+                "ERROR Failed to connect to redis:6379",
+                "WARN Back-off restarting failed container course-api",
+                "ERROR java.net.ConnectException: Connection refused"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-2plm4",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.1.31",
+              "node": "worker-a",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx entered RUNNING state",
+                "GET / 200"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-j7tzn",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.2.30",
+              "node": "worker-b",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx ready",
+                "GET /assets/app.js 200"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-rp9ds",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.3.16",
+              "node": "worker-c",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx ready"
+              ]
+            },
+            {
+              "name": "mysql-0",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "mysql",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "5d",
+              "ip": "10.244.3.9",
+              "node": "worker-c",
+              "labels": {
+                "app": "mysql"
+              },
+              "containers": [
+                {
+                  "name": "mysql",
+                  "image": "mysql:8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "mysqld: ready for connections",
+                "InnoDB initialization completed"
+              ]
+            },
+            {
+              "name": "node-exporter-9ts2k",
+              "namespace": "monitoring",
+              "kind": "Pod",
+              "owner": "node-exporter",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "5d",
+              "ip": "10.244.1.7",
+              "node": "worker-a",
+              "labels": {
+                "app": "node-exporter"
+              },
+              "containers": [
+                {
+                  "name": "node-exporter",
+                  "image": "quay.io/prometheus/node-exporter:v1.9.1",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "Listening on :9100"
+              ]
+            },
+            {
+              "name": "ingress-nginx-controller-6bd8f",
+              "namespace": "ingress-nginx",
+              "kind": "Pod",
+              "owner": "ingress-nginx-controller",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 1,
+              "age": "5d",
+              "ip": "10.244.2.4",
+              "node": "worker-b",
+              "labels": {
+                "app": "ingress-nginx"
+              },
+              "containers": [
+                {
+                  "name": "controller",
+                  "image": "registry.k8s.io/ingress-nginx/controller:v1.13.0",
+                  "ready": true,
+                  "restarts": 1
+                }
+              ],
+              "logs": [
+                "NGINX Ingress controller started"
+              ]
+            }
+          ],
+          "statefulsets": [
+            {
+              "name": "mysql",
+              "namespace": "campus-dev",
+              "ready": "1/1",
+              "status": "Ready",
+              "age": "5d",
+              "service": "mysql",
+              "labels": {
+                "app": "mysql"
+              },
+              "yaml": "apiVersion: apps/v1\\nkind: StatefulSet\\nmetadata:\\n  name: mysql\\n  namespace: campus-dev\\nspec:\\n  serviceName: mysql\\n  replicas: 1\\n"
+            }
+          ],
+          "daemonsets": [
+            {
+              "name": "node-exporter",
+              "namespace": "monitoring",
+              "desired": 3,
+              "current": 3,
+              "ready": 3,
+              "status": "Ready",
+              "age": "30d",
+              "labels": {
+                "app": "node-exporter"
+              }
+            }
+          ],
+          "jobs": [
+            {
+              "name": "db-migration-20260923",
+              "namespace": "campus-dev",
+              "completions": "1/1",
+              "duration": "18s",
+              "age": "2h",
+              "status": "Complete",
+              "labels": {
+                "job": "db-migration"
+              }
+            }
+          ],
+          "cronjobs": [
+            {
+              "name": "nightly-report",
+              "namespace": "campus-dev",
+              "schedule": "0 2 * * *",
+              "suspend": false,
+              "active": 0,
+              "lastSchedule": "10h",
+              "status": "Active",
+              "age": "21d",
+              "labels": {
+                "app": "reporting"
+              }
+            }
+          ],
+          "services": [
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.14.21",
+              "ports": "8080/TCP",
+              "age": "12d",
+              "selector": {
+                "app": "student-api"
+              },
+              "endpoints": [
+                "10.244.1.21:8080",
+                "10.244.2.18:8080"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.28.44",
+              "ports": "8081/TCP",
+              "age": "12d",
+              "selector": {
+                "app": "course-api"
+              },
+              "endpoints": [
+                "10.244.1.25:8081"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "frontend",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.38.72",
+              "ports": "80/TCP",
+              "age": "20d",
+              "selector": {
+                "app": "frontend"
+              },
+              "endpoints": [
+                "10.244.1.31:80",
+                "10.244.2.30:80",
+                "10.244.3.16:80"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "mysql",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "None",
+              "ports": "3306/TCP",
+              "age": "30d",
+              "selector": {
+                "app": "mysql"
+              },
+              "endpoints": [
+                "10.244.3.9:3306"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.50.10",
+              "ports": "9090/TCP",
+              "age": "30d",
+              "selector": {
+                "app": "prometheus"
+              },
+              "endpoints": [
+                "10.244.3.20:9090"
+              ],
+              "status": "Active"
+            }
+          ],
+          "ingresses": [
+            {
+              "name": "campus-ingress",
+              "namespace": "campus-dev",
+              "class": "nginx",
+              "hosts": "campus.local",
+              "address": "10.0.0.50",
+              "ports": "80, 443",
+              "age": "20d",
+              "backend": "frontend:80",
+              "tls": "campus-tls",
+              "status": "Active",
+              "labels": {
+                "app": "frontend"
+              }
+            }
+          ],
+          "networkpolicies": [
+            {
+              "name": "default-deny",
+              "namespace": "campus-dev",
+              "selector": "<all pods>",
+              "policyTypes": "Ingress,Egress",
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "allow-ingress-to-frontend",
+              "namespace": "campus-dev",
+              "selector": "app=frontend",
+              "policyTypes": "Ingress",
+              "age": "20d",
+              "status": "Active"
+            }
+          ],
+          "persistentvolumeclaims": [
+            {
+              "name": "mysql-data-mysql-0",
+              "namespace": "campus-dev",
+              "status": "Bound",
+              "volume": "pvc-a1b2c3",
+              "capacity": "20Gi",
+              "accessModes": "RWO",
+              "storageClass": "fast-ssd",
+              "age": "30d",
+              "labels": {
+                "app": "mysql"
+              }
+            },
+            {
+              "name": "student-uploads",
+              "namespace": "campus-dev",
+              "status": "Bound",
+              "volume": "pvc-d4e5f6",
+              "capacity": "10Gi",
+              "accessModes": "RWO",
+              "storageClass": "standard",
+              "age": "12d",
+              "labels": {
+                "app": "student-api"
+              }
+            }
+          ],
+          "persistentvolumes": [
+            {
+              "name": "pvc-a1b2c3",
+              "status": "Bound",
+              "capacity": "20Gi",
+              "accessModes": "RWO",
+              "reclaimPolicy": "Delete",
+              "claim": "campus-dev/mysql-data-mysql-0",
+              "storageClass": "fast-ssd",
+              "age": "30d"
+            },
+            {
+              "name": "pvc-d4e5f6",
+              "status": "Bound",
+              "capacity": "10Gi",
+              "accessModes": "RWO",
+              "reclaimPolicy": "Delete",
+              "claim": "campus-dev/student-uploads",
+              "storageClass": "standard",
+              "age": "12d"
+            }
+          ],
+          "storageclasses": [
+            {
+              "name": "standard",
+              "provisioner": "rancher.io/local-path",
+              "reclaimPolicy": "Delete",
+              "volumeBindingMode": "WaitForFirstConsumer",
+              "allowExpansion": true,
+              "age": "90d"
+            },
+            {
+              "name": "fast-ssd",
+              "provisioner": "csi.example.io",
+              "reclaimPolicy": "Delete",
+              "volumeBindingMode": "WaitForFirstConsumer",
+              "allowExpansion": true,
+              "age": "60d"
+            }
+          ],
+          "configmaps": [
+            {
+              "name": "student-api-config",
+              "namespace": "campus-dev",
+              "age": "12d",
+              "status": "Active",
+              "data": {
+                "SPRING_PROFILES_ACTIVE": "dev",
+                "COURSE_API_URL": "http://course-api:8081",
+                "UPLOAD_PATH": "/data/uploads"
+              },
+              "labels": {
+                "app": "student-api"
+              }
+            },
+            {
+              "name": "frontend-config",
+              "namespace": "campus-dev",
+              "age": "20d",
+              "status": "Active",
+              "data": {
+                "API_BASE_URL": "/api",
+                "FEATURE_ANALYTICS": "true"
+              },
+              "labels": {
+                "app": "frontend"
+              }
+            },
+            {
+              "name": "cluster-info",
+              "namespace": "kube-system",
+              "age": "90d",
+              "status": "Active",
+              "data": {
+                "cluster": "campus-platform-dev"
+              }
+            }
+          ],
+          "secrets": [
+            {
+              "name": "db-credentials",
+              "namespace": "campus-dev",
+              "type": "Opaque",
+              "age": "30d",
+              "status": "Active",
+              "data": {
+                "username": "cm9vdA==",
+                "password": "••••"
+              },
+              "labels": {
+                "app": "mysql"
+              }
+            },
+            {
+              "name": "jwt-secret",
+              "namespace": "campus-dev",
+              "type": "Opaque",
+              "age": "30d",
+              "status": "Active",
+              "data": {
+                "JWT_SECRET": "••••"
+              },
+              "labels": {
+                "app": "student-api"
+              }
+            },
+            {
+              "name": "campus-tls",
+              "namespace": "campus-dev",
+              "type": "kubernetes.io/tls",
+              "age": "20d",
+              "status": "Active",
+              "data": {
+                "tls.crt": "••••",
+                "tls.key": "••••"
+              },
+              "labels": {
+                "app": "frontend"
+              }
+            }
+          ],
+          "serviceaccounts": [
+            {
+              "name": "default",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "90d",
+              "status": "Active"
+            },
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "12d",
+              "status": "Active"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "12d",
+              "status": "Active"
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "secrets": 0,
+              "age": "30d",
+              "status": "Active"
+            }
+          ],
+          "roles": [
+            {
+              "name": "campus-reader",
+              "namespace": "campus-dev",
+              "rules": 4,
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "job-runner",
+              "namespace": "campus-dev",
+              "rules": 2,
+              "age": "21d",
+              "status": "Active"
+            }
+          ],
+          "clusterroles": [
+            {
+              "name": "cluster-viewer",
+              "rules": 8,
+              "age": "90d",
+              "status": "Active"
+            },
+            {
+              "name": "node-reader",
+              "rules": 3,
+              "age": "60d",
+              "status": "Active"
+            }
+          ],
+          "rolebindings": [
+            {
+              "name": "campus-reader-binding",
+              "namespace": "campus-dev",
+              "role": "Role/campus-reader",
+              "subjects": 2,
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "student-api-binding",
+              "namespace": "campus-dev",
+              "role": "Role/campus-reader",
+              "subjects": 1,
+              "age": "12d",
+              "status": "Active"
+            }
+          ],
+          "nodes": [
+            {
+              "name": "worker-a",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.21",
+              "cpu": 34,
+              "memory": 48,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-a",
+                "topology.kubernetes.io/zone": "lab-a"
+              }
+            },
+            {
+              "name": "worker-b",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.22",
+              "cpu": 51,
+              "memory": 63,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-b",
+                "topology.kubernetes.io/zone": "lab-b"
+              }
+            },
+            {
+              "name": "worker-c",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.23",
+              "cpu": 29,
+              "memory": 44,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-c",
+                "topology.kubernetes.io/zone": "lab-c"
+              }
+            }
+          ],
+          "events": [
+            {
+              "namespace": "campus-dev",
+              "type": "Warning",
+              "reason": "BackOff",
+              "object": "pod/course-api-86dbf4d6c8-zr7qp",
+              "message": "Back-off restarting failed container course-api",
+              "age": "42s"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Warning",
+              "reason": "Unhealthy",
+              "object": "pod/course-api-86dbf4d6c8-zr7qp",
+              "message": "Readiness probe failed: connection refused",
+              "age": "55s"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "ScalingReplicaSet",
+              "object": "deployment/student-api",
+              "message": "Scaled up replica set student-api-7d8c7b8b9f to 2",
+              "age": "2h"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "Pulled",
+              "object": "pod/student-api-7d8c7b8b9f-9x2lm",
+              "message": "Container image already present on machine",
+              "age": "2h"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "Completed",
+              "object": "job/db-migration-20260923",
+              "message": "Job completed successfully",
+              "age": "2h"
+            },
+            {
+              "namespace": "monitoring",
+              "type": "Normal",
+              "reason": "Started",
+              "object": "pod/node-exporter-9ts2k",
+              "message": "Started container node-exporter",
+              "age": "5d"
+            }
+          ],
+          "customresourcedefinitions": [
+            {
+              "name": "servicemonitors.monitoring.coreos.com",
+              "group": "monitoring.coreos.com",
+              "scope": "Namespaced",
+              "versions": "v1",
+              "age": "30d",
+              "status": "Established"
+            },
+            {
+              "name": "prometheusrules.monitoring.coreos.com",
+              "group": "monitoring.coreos.com",
+              "scope": "Namespaced",
+              "versions": "v1",
+              "age": "30d",
+              "status": "Established"
+            }
+          ]
+        },
+        "projects": [
+          {
+            "name": "Campus Platform",
+            "description": "Student, course and frontend application stack",
+            "namespaces": [
+              "campus-dev"
+            ],
+            "workloads": 5,
+            "services": 4,
+            "pods": 8
+          },
+          {
+            "name": "Observability",
+            "description": "Cluster monitoring and metrics workloads",
+            "namespaces": [
+              "monitoring"
+            ],
+            "workloads": 2,
+            "services": 1,
+            "pods": 4
+          }
+        ],
+        "plugins": [
+          {
+            "name": "Prometheus Metrics",
+            "description": "CPU and memory metrics integration"
+          },
+          {
+            "name": "Map View",
+            "description": "Resource relationship graph"
+          },
+          {
+            "name": "Projects",
+            "description": "Application-centric resource grouping"
+          }
+        ]
       }
     }
   },
@@ -10294,6 +11285,1066 @@ window.COURSE = {
               "time": "now",
               "message": "{\"status\":\"chapter13-ok\"}"
             }
+          }
+        }
+      ]
+    },
+    {
+      "title": "14: Kubernetes Headlamp UI & kubectl Operations",
+      "steps": [
+        {
+          "title": "Open the campus-platform-dev cluster overview",
+          "why": "Headlamp overview lo cluster health, node readiness, running pods, deployments mariyu resource usage ni first inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openOverview",
+            "data": {}
+          }
+        },
+        {
+          "title": "Inspect the cluster selector",
+          "why": "Headlamp multi-cluster workflow lo current campus-platform-dev context ni identify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectCluster",
+            "data": {
+              "cluster": "campus-platform-dev",
+              "context": "campus-platform-dev"
+            }
+          }
+        },
+        {
+          "title": "Show resources across all namespaces",
+          "why": "Namespace selector ni All namespaces ki marchi cluster-wide resources ela aggregate avuthayo chustam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectNamespace",
+            "data": {
+              "namespace": "__all__"
+            }
+          }
+        },
+        {
+          "title": "Return to the campus-dev namespace",
+          "why": "Application troubleshooting kosam campus-dev namespace ni focus chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectNamespace",
+            "data": {
+              "namespace": "campus-dev"
+            }
+          }
+        },
+        {
+          "title": "Open Deployments",
+          "why": "Student API, Course API mariyu frontend desired/current replica state ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "deployments"
+            }
+          }
+        },
+        {
+          "title": "Open the student-api Deployment",
+          "why": "Deployment detail lo image, labels, status and replica health ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "deployments",
+              "name": "student-api"
+            }
+          }
+        },
+        {
+          "title": "Inspect Pods owned by student-api",
+          "why": "Deployment-to-Pod ownership relation ni Pods tab lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceTab",
+            "data": {
+              "tab": "Pods"
+            }
+          }
+        },
+        {
+          "title": "Scale student-api to three replicas in the UI",
+          "why": "Headlamp Scale action semantic state ni use chesi same Kubernetes deployment replicas ni 3 ki increase chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "scaleDeployment",
+            "data": {
+              "name": "student-api",
+              "replicas": 3
+            }
+          }
+        },
+        {
+          "title": "Verify the third student-api Pod exists",
+          "why": "Pods list ki velli UI scale action shared cluster state ni update chesindo verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "pods"
+            }
+          }
+        },
+        {
+          "title": "Open a running student-api Pod",
+          "why": "Pod detail lo container, node, IP, labels and restart information inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "pods",
+              "name": "student-api-7d8c7b8b9f-9x2lm"
+            }
+          }
+        },
+        {
+          "title": "Open student-api container logs",
+          "why": "Container logs surface lo application startup, database connection and request entries inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openLogs",
+            "data": {
+              "name": "student-api-7d8c7b8b9f-9x2lm",
+              "container": "student-api"
+            }
+          }
+        },
+        {
+          "title": "Filter logs for HTTP requests",
+          "why": "Large log output lo GET request entries matrame search chesi troubleshooting workflow demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "searchLogs",
+            "data": {
+              "query": "GET"
+            }
+          }
+        },
+        {
+          "title": "Clear the log filter",
+          "why": "Full log stream ni restore chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "searchLogs",
+            "data": {
+              "query": ""
+            }
+          }
+        },
+        {
+          "title": "Open an exec shell inside the Pod",
+          "why": "Headlamp Pod Exec surface nundi selected container lo shell session open chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openExec",
+            "data": {
+              "name": "student-api-7d8c7b8b9f-9x2lm"
+            }
+          }
+        },
+        {
+          "title": "Run pwd inside the container",
+          "why": "Container filesystem current working directory ni exec session lo verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runExecCommand",
+            "data": {
+              "command": "pwd"
+            }
+          }
+        },
+        {
+          "title": "List application files inside the container",
+          "why": "Running container lo packaged app/config/logs structure ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runExecCommand",
+            "data": {
+              "command": "ls"
+            }
+          }
+        },
+        {
+          "title": "Open the Pod YAML",
+          "why": "Generated/current Pod specification ni raw YAML surface lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openYaml",
+            "data": {
+              "kind": "pods",
+              "name": "student-api-7d8c7b8b9f-9x2lm"
+            }
+          }
+        },
+        {
+          "title": "Return to the student-api Deployment YAML",
+          "why": "Deployment declarative specification lo replicas, image and selector configuration ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openYaml",
+            "data": {
+              "kind": "deployments",
+              "name": "student-api"
+            }
+          }
+        },
+        {
+          "title": "Edit the student-api Deployment YAML",
+          "why": "Headlamp YAML editor capability tho deployment manifest change state ni demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "editYaml",
+            "data": {
+              "kind": "deployments",
+              "name": "student-api",
+              "yaml": "apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: student-api\\n  namespace: campus-dev\\nspec:\\n  replicas: 3\\n  selector:\\n    matchLabels:\\n      app: student-api\\n  template:\\n    metadata:\\n      labels:\\n        app: student-api\\n    spec:\\n      containers:\\n      - name: student-api\\n        image: ghcr.io/campus/student-api:1.8.4\\n        env:\\n        - name: SPRING_PROFILES_ACTIVE\\n          value: dev\\n"
+            }
+          }
+        },
+        {
+          "title": "Apply the Deployment YAML",
+          "why": "Edited declarative resource ni cluster state ki apply cheyyadam demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "applyYaml",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open cluster Events",
+          "why": "Warnings and normal controller events ni time-ordered event table lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openEvents",
+            "data": {}
+          }
+        },
+        {
+          "title": "Filter Events to warnings",
+          "why": "Troubleshooting kosam Warning events matrame isolate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "filterEvents",
+            "data": {
+              "type": "Warning"
+            }
+          }
+        },
+        {
+          "title": "Open the Pods list again",
+          "why": "Warning source Pod ni resource list lo identify cheyyadaniki Pods view open chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "pods"
+            }
+          }
+        },
+        {
+          "title": "Open the crashing course-api Pod",
+          "why": "CrashLoopBackOff status, restart count and container readiness ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "pods",
+              "name": "course-api-86dbf4d6c8-zr7qp"
+            }
+          }
+        },
+        {
+          "title": "Inspect the failing course-api logs",
+          "why": "Redis connection failure and restart backoff evidence ni logs lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openLogs",
+            "data": {
+              "name": "course-api-86dbf4d6c8-zr7qp",
+              "container": "course-api"
+            }
+          }
+        },
+        {
+          "title": "Filter the failing logs for connection errors",
+          "why": "Connection refused lines ni isolate chesi root-cause evidence focus chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "searchLogs",
+            "data": {
+              "query": "Connection"
+            }
+          }
+        },
+        {
+          "title": "Open the integrated kubectl terminal",
+          "why": "UI troubleshooting nundi command-line Kubernetes workflow ki switch chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openTerminal",
+            "data": {}
+          }
+        },
+        {
+          "title": "List Pods across all namespaces with kubectl",
+          "why": "kubectl get pods -A dwara cluster-wide workload snapshot ni terminal lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl get pods -A"
+            }
+          }
+        },
+        {
+          "title": "Check the current kubectl context",
+          "why": "kubectl config current-context tho UI cluster selector ki CLI context match avuthundo verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl config current-context"
+            }
+          }
+        },
+        {
+          "title": "List available kubeconfig contexts",
+          "why": "Multi-cluster kubeconfig entries ni terminal lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl config get-contexts"
+            }
+          }
+        },
+        {
+          "title": "Switch kubectl to staging-cluster",
+          "why": "CLI context switching behavior ni demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl config use-context staging-cluster"
+            }
+          }
+        },
+        {
+          "title": "Switch kubectl back to campus-platform-dev",
+          "why": "Lesson work ni development cluster ki restore chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl config use-context campus-platform-dev"
+            }
+          }
+        },
+        {
+          "title": "List campus-dev Deployments from kubectl",
+          "why": "UI lo kanipinchina deployment readiness ni command-line table tho cross-check chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl get deployments"
+            }
+          }
+        },
+        {
+          "title": "Describe the student-api Deployment",
+          "why": "Declarative object summary, labels and current status ni kubectl describe style output lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl describe deployment student-api"
+            }
+          }
+        },
+        {
+          "title": "Scale student-api to four replicas with kubectl",
+          "why": "Terminal scale command same shared state ni mutate chestundi; Headlamp UI lo kuda reflect avvali.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl scale deployment/student-api --replicas=4"
+            }
+          }
+        },
+        {
+          "title": "Open student-api in Headlamp and verify four replicas",
+          "why": "CLI scale action taruvatha UI same deployment state ni four replicas ga display chestundo verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "deployments",
+              "name": "student-api"
+            }
+          }
+        },
+        {
+          "title": "Restart student-api with kubectl",
+          "why": "kubectl rollout restart dwara new Pod revision rollout initiate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl rollout restart deployment/student-api"
+            }
+          }
+        },
+        {
+          "title": "Check rollout status",
+          "why": "Controller desired replicas available ayyaka successful rollout status ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl rollout status deployment/student-api"
+            }
+          }
+        },
+        {
+          "title": "Roll back the Deployment revision",
+          "why": "kubectl rollout undo behavior ni shared deployment revision state tho demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl rollout undo deployment/student-api"
+            }
+          }
+        },
+        {
+          "title": "Open Services",
+          "why": "ClusterIP services, ports and service discovery addresses ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "services"
+            }
+          }
+        },
+        {
+          "title": "Open the student-api Service",
+          "why": "Selector-to-endpoint mapping mariyu ClusterIP/port details ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "services",
+              "name": "student-api"
+            }
+          }
+        },
+        {
+          "title": "Open student-api Service YAML",
+          "why": "Service selector, port and target-port configuration ni raw manifest form lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openYaml",
+            "data": {
+              "kind": "services",
+              "name": "student-api"
+            }
+          }
+        },
+        {
+          "title": "List Services with kubectl",
+          "why": "UI networking data ni kubectl get services output tho compare chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl get services"
+            }
+          }
+        },
+        {
+          "title": "Open Ingresses",
+          "why": "External HTTP routing resource ni Headlamp lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "ingresses"
+            }
+          }
+        },
+        {
+          "title": "Open campus-ingress",
+          "why": "Host, address, TLS and backend service mapping ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "ingresses",
+              "name": "campus-ingress"
+            }
+          }
+        },
+        {
+          "title": "Open Network Policies",
+          "why": "Default deny mariyu frontend ingress policy scope ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "networkpolicies"
+            }
+          }
+        },
+        {
+          "title": "Open PersistentVolumeClaims",
+          "why": "Application storage claims, bound volumes and storage classes ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "persistentvolumeclaims"
+            }
+          }
+        },
+        {
+          "title": "Open the MySQL PVC",
+          "why": "mysql-data claim capacity, access mode and bound PV ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "persistentvolumeclaims",
+              "name": "mysql-data-mysql-0"
+            }
+          }
+        },
+        {
+          "title": "Open PersistentVolumes",
+          "why": "Cluster-scoped backing volumes ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "persistentvolumes"
+            }
+          }
+        },
+        {
+          "title": "Open StorageClasses",
+          "why": "Dynamic provisioning classes and volume-binding modes ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "storageclasses"
+            }
+          }
+        },
+        {
+          "title": "Open StatefulSets",
+          "why": "Stable identity/storage workload category lo MySQL stateful workload ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "statefulsets"
+            }
+          }
+        },
+        {
+          "title": "Open the mysql StatefulSet",
+          "why": "StatefulSet service, readiness and stable Pod ownership ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "statefulsets",
+              "name": "mysql"
+            }
+          }
+        },
+        {
+          "title": "Inspect the mysql Pod",
+          "why": "StatefulSet-owned mysql-0 Pod running state ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "pods",
+              "name": "mysql-0"
+            }
+          }
+        },
+        {
+          "title": "Open ConfigMaps",
+          "why": "Non-secret application configuration resources ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "configmaps"
+            }
+          }
+        },
+        {
+          "title": "Open student-api-config",
+          "why": "Environment-style configuration key/value data ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "configmaps",
+              "name": "student-api-config"
+            }
+          }
+        },
+        {
+          "title": "Update a ConfigMap value",
+          "why": "Shared configuration state lo COURSE_API_URL value ni edit cheyyadam demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "editConfigMap",
+            "data": {
+              "name": "student-api-config",
+              "data": {
+                "COURSE_API_URL": "http://course-api:8081/api"
+              }
+            }
+          }
+        },
+        {
+          "title": "Open Secrets",
+          "why": "Opaque and TLS Secret resources ni list view lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "secrets"
+            }
+          }
+        },
+        {
+          "title": "Open db-credentials without exposing secret values",
+          "why": "Secret detail keys visible ayina values masked ga remain avvadam demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "secrets",
+              "name": "db-credentials"
+            }
+          }
+        },
+        {
+          "title": "Open ServiceAccounts",
+          "why": "Workload identities used by APIs and monitoring ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "serviceaccounts"
+            }
+          }
+        },
+        {
+          "title": "Open namespace Roles",
+          "why": "campus-dev permission rules ni Role resources lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "roles"
+            }
+          }
+        },
+        {
+          "title": "Open ClusterRoles",
+          "why": "Cluster-scoped reusable permission sets ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "clusterroles"
+            }
+          }
+        },
+        {
+          "title": "Open RoleBindings",
+          "why": "Subjects-to-role bindings ni namespace access-control view lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "rolebindings"
+            }
+          }
+        },
+        {
+          "title": "Ask kubectl whether the developer can list Pods",
+          "why": "RBAC permission evaluation ni kubectl auth can-i command tho verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl auth can-i list pods"
+            }
+          }
+        },
+        {
+          "title": "Open Nodes",
+          "why": "Worker readiness, versions, roles and internal IPs ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "nodes"
+            }
+          }
+        },
+        {
+          "title": "Open worker-b",
+          "why": "Node capacity, labels, CPU/memory and scheduling state ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "nodes",
+              "name": "worker-b"
+            }
+          }
+        },
+        {
+          "title": "Cordon worker-b with kubectl",
+          "why": "New Pods schedule kakunda worker-b ni unschedulable ga mark chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl cordon worker-b"
+            }
+          }
+        },
+        {
+          "title": "Verify worker-b is cordoned in Headlamp",
+          "why": "CLI node operation same UI node detail scheduling state lo reflect avuthundo verify chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "nodes",
+              "name": "worker-b"
+            }
+          }
+        },
+        {
+          "title": "Drain worker-b",
+          "why": "Maintenance workflow kosam kubectl drain simulation ni run chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl drain worker-b --ignore-daemonsets"
+            }
+          }
+        },
+        {
+          "title": "Uncordon worker-b",
+          "why": "Maintenance complete ayyaka node scheduling ni restore chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl uncordon worker-b"
+            }
+          }
+        },
+        {
+          "title": "Open Metrics",
+          "why": "metrics-server style CPU and memory utilization ni UI lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openMetrics",
+            "data": {}
+          }
+        },
+        {
+          "title": "Show Pod metrics with kubectl",
+          "why": "kubectl top pods tho per-Pod CPU/memory consumption ni terminal lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl top pods"
+            }
+          }
+        },
+        {
+          "title": "Show Node metrics with kubectl",
+          "why": "kubectl top nodes tho worker utilization ni compare chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl top nodes"
+            }
+          }
+        },
+        {
+          "title": "Open Kubernetes Map View",
+          "why": "Ingress → Service → Deployment → ReplicaSet → Pod and StatefulSet → PVC relationships ni visual graph lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openMapView",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Projects",
+          "why": "Multiple raw resources ni application-centric groups ga Headlamp Projects view lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openProjects",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open the Campus Platform project",
+          "why": "Campus application workloads, services, Pods and namespace summary ni project view lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openProject",
+            "data": {
+              "name": "Campus Platform"
+            }
+          }
+        },
+        {
+          "title": "Open CustomResourceDefinitions",
+          "why": "Kubernetes API extension resources ni list view lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "customresourcedefinitions"
+            }
+          }
+        },
+        {
+          "title": "Open the ServiceMonitor CRD",
+          "why": "monitoring.coreos.com custom resource schema registration ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "customresourcedefinitions",
+              "name": "servicemonitors.monitoring.coreos.com"
+            }
+          }
+        },
+        {
+          "title": "Open the Headlamp command palette",
+          "why": "Keyboard-style resource/navigation command discovery ni demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openCommandPalette",
+            "data": {}
+          }
+        },
+        {
+          "title": "Open Headlamp Settings and plugins",
+          "why": "Metrics, Map View and Projects extension surfaces ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openSettings",
+            "data": {}
+          }
+        },
+        {
+          "title": "Switch Headlamp to dark mode",
+          "why": "Software theme capability ni demonstrate chestam without changing Kubernetes resource state.",
+          "software": "kubernetes",
+          "action": {
+            "action": "toggleTheme",
+            "data": {
+              "theme": "dark"
+            }
+          }
+        },
+        {
+          "title": "Return Headlamp to light mode",
+          "why": "Primary Headlamp-style visual theme ni restore chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "toggleTheme",
+            "data": {
+              "theme": "light"
+            }
+          }
+        },
+        {
+          "title": "Discover Kubernetes API resources with kubectl",
+          "why": "kubectl api-resources tho built-in API kinds and short names ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl api-resources"
+            }
+          }
+        },
+        {
+          "title": "Explain Deployment schema with kubectl",
+          "why": "kubectl explain deployment.spec dwara API field documentation workflow ni demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl explain deployment.spec"
+            }
+          }
+        },
+        {
+          "title": "Inspect recent Events from kubectl",
+          "why": "UI Events view ki CLI equivalent ni terminal lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl get events"
+            }
+          }
+        },
+        {
+          "title": "Port-forward the student-api Service",
+          "why": "Local debugging kosam service port 8080 ni localhost ki forward cheyyadam demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl port-forward service/student-api 8080:8080"
+            }
+          }
+        },
+        {
+          "title": "Apply a Kubernetes manifest from the terminal",
+          "why": "Declarative kubectl apply workflow ni existing student-api resources meeda simulate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl apply -f k8s/deployment.yaml"
+            }
+          }
+        },
+        {
+          "title": "Preview manifest changes with kubectl diff",
+          "why": "Apply mundu desired-vs-live difference preview workflow ni demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runKubectl",
+            "data": {
+              "command": "kubectl diff -f k8s/deployment.yaml"
+            }
+          }
+        },
+        {
+          "title": "Open CronJobs",
+          "why": "Scheduled Kubernetes work and suspend/active state ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "cronjobs"
+            }
+          }
+        },
+        {
+          "title": "Open nightly-report",
+          "why": "Cron expression, suspension state and last schedule time ni inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "selectResource",
+            "data": {
+              "kind": "cronjobs",
+              "name": "nightly-report"
+            }
+          }
+        },
+        {
+          "title": "Suspend nightly-report",
+          "why": "Scheduled runs temporarily stop cheyyadaniki CronJob suspend state ni set chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "suspendCronJob",
+            "data": {
+              "name": "nightly-report",
+              "value": true
+            }
+          }
+        },
+        {
+          "title": "Run nightly-report manually",
+          "why": "CronJob nundi one-off Job create cheyyadam simulate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "runCronJob",
+            "data": {
+              "name": "nightly-report"
+            }
+          }
+        },
+        {
+          "title": "Open Jobs and verify the manual run",
+          "why": "One-off manual Job complete ayina state ni Jobs list lo inspect chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openResourceList",
+            "data": {
+              "kind": "jobs"
+            }
+          }
+        },
+        {
+          "title": "Search for student resources globally",
+          "why": "Headlamp global search/filter behavior ni student keyword tho demonstrate chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "searchResources",
+            "data": {
+              "kind": "pods",
+              "query": "student"
+            }
+          }
+        },
+        {
+          "title": "Clear the resource search",
+          "why": "Full Pod list ni restore chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "searchResources",
+            "data": {
+              "kind": "pods",
+              "query": ""
+            }
+          }
+        },
+        {
+          "title": "Return to the final cluster overview",
+          "why": "UI and kubectl operations complete ayyaka cluster health dashboard ki return chestam.",
+          "software": "kubernetes",
+          "action": {
+            "action": "openOverview",
+            "data": {}
           }
         }
       ]

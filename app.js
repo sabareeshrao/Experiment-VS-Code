@@ -388,7 +388,7 @@
     frames[target].contentWindow.postMessage({
       type: "SIM_PACKAGE",
       package: packageForApp,
-      theme: "dark",
+      theme: target === "kubernetes" ? "light" : "dark",
       autoType: true
     }, SIM_TARGET_ORIGIN);
   }
