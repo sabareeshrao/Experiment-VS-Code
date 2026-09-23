@@ -147,11 +147,68 @@
     if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
     if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
     if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
+
+    const left=document.getElementById("leftPanel");
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
-    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",250),v=>root.style.setProperty("--leftW",px(v)),{min:120,max:560,sign:1,key:"leftW"});
+    const projectToggle=document.querySelector(".leftRail .rail[title='Project']");
+    let expandedLeftW=clamp(get("leftExpandedW",get("leftW",250)),100,560);
+
+    const setProjectCollapsed=(collapsed,persist=false)=>{
+      if(collapsed){
+        const current=readCssNumber(root,"--leftW",expandedLeftW);
+        if(current>=100) expandedLeftW=clamp(current,100,560);
+        root.style.setProperty("--leftW","0px");
+        left?.classList.add("hidden");
+        if(l)l.style.display="none";
+        projectToggle?.classList.remove("active");
+      }else{
+        expandedLeftW=clamp(get("leftExpandedW",expandedLeftW||250),100,560);
+        root.style.setProperty("--leftW",px(expandedLeftW));
+        left?.classList.remove("hidden");
+        if(l)l.style.display="";
+        projectToggle?.classList.add("active");
+      }
+      if(persist)commit({
+        leftCollapsed:!!collapsed,
+        leftExpandedW:expandedLeftW,
+        leftW:expandedLeftW
+      });
+    };
+
+    setProjectCollapsed(saved.leftCollapsed===true,false);
+
+    if(projectToggle && projectToggle.dataset.simProjectToggleWired!=="1"){
+      projectToggle.dataset.simProjectToggleWired="1";
+      projectToggle.style.cursor="pointer";
+      projectToggle.setAttribute("aria-label","Toggle Project tool window");
+      projectToggle.addEventListener("click",e=>{
+        const collapsed=!left?.classList.contains("hidden");
+        setProjectCollapsed(collapsed,true);
+        e.preventDefault();
+        e.stopPropagation();
+      },true);
+    }
+
+    wirePersistentSplitter(
+      l,
+      "x",
+      ()=>readCssNumber(root,"--leftW",expandedLeftW),
+      v=>{
+        expandedLeftW=clamp(v,100,560);
+        root.style.setProperty("--leftW",px(expandedLeftW));
+      },
+      {min:100,max:560,sign:1,key:"leftW"}
+    );
+    l?.addEventListener("pointerup",()=>{
+      if(!left?.classList.contains("hidden")){
+        expandedLeftW=clamp(readCssNumber(root,"--leftW",expandedLeftW),100,560);
+        commit({leftCollapsed:false,leftExpandedW:expandedLeftW,leftW:expandedLeftW});
+      }
+    },true);
+
     wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",270),v=>root.style.setProperty("--rightW",px(v)),{min:150,max:560,sign:-1,key:"rightW"});
     wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",190),v=>root.style.setProperty("--bottomH",px(v)),{min:80,max:460,sign:-1,key:"bottomH"});
-    rememberExisting(l,()=>({leftW:readCssNumber(root,"--leftW",250)}));
+    rememberExisting(l,()=>({leftW:left?.classList.contains("hidden")?expandedLeftW:readCssNumber(root,"--leftW",expandedLeftW),leftExpandedW:expandedLeftW,leftCollapsed:!!left?.classList.contains("hidden")}));
     rememberExisting(r,()=>({rightW:readCssNumber(root,"--rightW",270)}));
     rememberExisting(h,()=>({bottomH:readCssNumber(root,"--bottomH",190)}));
   }
@@ -645,7 +702,21 @@
     if(root.classList.contains("sim-layout-dragging")) return;
 
     if(app==="intellij"){
-      if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",250)));
+      const left=document.getElementById("leftPanel");
+      const split=document.getElementById("splitL");
+      const projectToggle=document.querySelector(".leftRail .rail[title='Project']");
+      if(saved.leftCollapsed===true){
+        root.style.setProperty("--leftW","0px");
+        left?.classList.add("hidden");
+        if(split)split.style.display="none";
+        projectToggle?.classList.remove("active");
+      }else{
+        const width=clamp(get("leftExpandedW",get("leftW",250)),100,560);
+        root.style.setProperty("--leftW",px(width));
+        left?.classList.remove("hidden");
+        if(split)split.style.display="";
+        projectToggle?.classList.add("active");
+      }
       if(saved.rightW) root.style.setProperty("--rightW",px(get("rightW",270)));
       if(saved.bottomH) root.style.setProperty("--bottomH",px(get("bottomH",190)));
     }
