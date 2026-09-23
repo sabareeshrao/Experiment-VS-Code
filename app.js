@@ -129,7 +129,7 @@
             normalizeSoftware(flat[current].software) === name
           ) {
             seekSoftware(current, name, false);
-            scheduleCurrentExplanation(140);
+            if (name !== "mysqlworkbench") scheduleCurrentExplanation(140);
           }
           return true;
         }
@@ -148,7 +148,10 @@
 
   Object.entries(frames).forEach(([name, frame]) => {
     if (!frame) return;
-    frame.addEventListener("load", () => recoverFrameHandshake(name, frame));
+    frame.addEventListener("load", () => {
+      engineReady[name] = false;
+      recoverFrameHandshake(name, frame);
+    });
     setTimeout(() => recoverFrameHandshake(name, frame), 0);
   });
 
@@ -624,7 +627,7 @@
 
     renderCurrentStep();
     seekSoftware(current, software, animateFinal);
-    scheduleCurrentExplanation(120);
+    if (software !== "mysqlworkbench") scheduleCurrentExplanation(120);
   }
 
   window.addEventListener("message", event => {
@@ -662,6 +665,10 @@
 
     if (event.data?.type !== "ENGINE_READY") return;
 
+    // Simulators may re-announce readiness to recover a missed startup message.
+    // Once this exact iframe document is ready, repeated announcements must not
+    // trigger another package reset/replay.
+    if (engineReady[software]) return;
     engineReady[software] = true;
 
     if (fullCodeMode && software === "intellij") {
@@ -675,7 +682,7 @@
       setTimeout(() => {
         seekSoftware(current, software, false);
         renderCurrentStep();
-        scheduleCurrentExplanation(120);
+        if (software !== "mysqlworkbench") scheduleCurrentExplanation(120);
       }, 0);
     }
   });
