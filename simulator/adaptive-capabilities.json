@@ -122,7 +122,16 @@
         "erd",
         "schema-diff",
         "resizable-sidebars",
-        "persistent-layout"
+        "persistent-layout",
+        "query-tool",
+        "sql-editor",
+        "execute-query",
+        "query-messages",
+        "data-output-grid",
+        "dml-insert",
+        "multi-row-insert",
+        "create-table-as-select",
+        "insert-into-select"
       ],
       "menus": [
         "browser",

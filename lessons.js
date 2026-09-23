@@ -5190,7 +5190,7 @@ window.COURSE = {
     },
     {
       "title": "2: PostgreSQL / pgAdmin Developer Workflow",
-      "subtitle": "21-step IntelliJ → pgAdmin → IntelliJ PostgreSQL workflow with schema creation, data verification, filtering, EXPLAIN, and indexing.",
+      "subtitle": "27-step IntelliJ → pgAdmin → IntelliJ PostgreSQL INSERT/DML workflow covering CREATE TABLE, SELECT, single-row and multi-row INSERT, CREATE TABLE AS SELECT, and INSERT INTO SELECT.",
       "steps": [
         {
           "title": "Review Student fields before PostgreSQL work",
@@ -5204,215 +5204,133 @@ window.COURSE = {
           }
         },
         {
-          "title": "Open pgAdmin for the Java Practice database",
-          "why": "PostgreSQL database work kosam developer pgAdmin ki switch avuthadu. Project timeline same ga untundi, active software matrame maruthundi.",
+          "title": "Explain DML",
+          "why": "INSERT, UPDATE and DELETE are SQL Data Manipulation Language statements used to manipulate data stored inside database tables.",
           "software": "pgadmin",
           "action": {
-            "action": "setStatus",
+            "action": "showSqlConcept",
             "data": {
-              "text": "pgAdmin opened for Java Practice"
+              "message": "DML statements manipulate data stored inside tables.\n\nINSERT — add rows\nUPDATE — change existing rows\nDELETE — remove rows",
+              "statusText": "DML: INSERT, UPDATE, DELETE"
             }
           }
         },
         {
-          "title": "Select the java_practice database",
-          "why": "SQL correct database context lo execute avvali. Anduke Object Explorer lo java_practice database ni select chestam.",
-          "software": "pgadmin",
-          "action": {
-            "action": "selectTree",
-            "data": {
-              "path": "Servers/Local PostgreSQL/Databases/java_practice"
-            }
-          }
-        },
-        {
-          "title": "Open the PostgreSQL Query Tool",
-          "why": "DDL, INSERT, SELECT laanti SQL commands rayadaniki pgAdmin Query Tool ni open chestam.",
-          "software": "pgadmin",
-          "action": {
-            "action": "openQueryTool",
-            "data": {
-              "title": "Query Tool"
-            }
-          }
-        },
-        {
-          "title": "Write the student table DDL",
-          "why": "Student Java model ni PostgreSQL table ga represent cheyyadaniki roll_no, attendance, marks array, name columns create chestunnam.",
+          "title": "Explain CREATE TABLE syntax",
+          "why": "A PostgreSQL table is created by providing a table name followed by column names and their data types inside parentheses.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
             "data": {
               "replace": true,
-              "sql": "CREATE TABLE public.student (\n    roll_no INTEGER PRIMARY KEY,\n    is_present BOOLEAN NOT NULL,\n    marks REAL[],\n    name VARCHAR(100) NOT NULL\n);"
+              "sql": "CREATE TABLE table_name (\n    column_name data_type,\n    column_name data_type,\n    column_name data_type\n);"
             }
           }
         },
         {
-          "title": "Execute CREATE TABLE",
-          "why": "DDL execute chesthe public schema lo student table create avuthundi. Success message database command accept chesindani confirm chestundi.",
-          "software": "pgadmin",
-          "action": {
-            "action": "executeQuery",
-            "data": {
-              "message": "CREATE TABLE",
-              "statusText": "student table created"
-            }
-          }
-        },
-        {
-          "title": "Refresh Object Explorer after schema change",
-          "why": "Database object create chesina taruvatha pgAdmin Browser refresh cheyyadam normal workflow. Appudu kotha student table tree lo kanipisthundi.",
-          "software": "pgadmin",
-          "action": {
-            "action": "refreshTree",
-            "data": {
-              "statusText": "Object Explorer refreshed"
-            }
-          }
-        },
-        {
-          "title": "Inspect the new public.student table",
-          "why": "Created table ni tree lo select chesi columns correct ga vachaya ani developer quick ga verify chestadu.",
-          "software": "pgadmin",
-          "action": {
-            "action": "selectTree",
-            "data": {
-              "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public/Tables/student"
-            }
-          }
-        },
-        {
-          "title": "Write sample student INSERT statements",
-          "why": "Application integration test kosam realistic sample rows database lo insert chestam. Ravi mariyu Anita records later SELECT verification ki use avuthayi.",
+          "title": "Create the course table",
+          "why": "Create a table named course containing course_number INTEGER, name TEXT and price NUMERIC.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
             "data": {
               "replace": true,
-              "sql": "INSERT INTO public.student (roll_no, is_present, marks, name)\nVALUES\n    (101, TRUE, ARRAY[86.5, 91.0, 88.5], 'Ravi'),\n    (102, TRUE, ARRAY[79.0, 84.5, 88.0], 'Anita');"
+              "sql": "CREATE TABLE course (\n    course_number INTEGER,\n    name TEXT,\n    price NUMERIC\n);"
             }
           }
         },
         {
-          "title": "Execute the INSERT",
-          "why": "INSERT execute ayyaka rendu rows PostgreSQL virtual table state lo store avuthayi. Developer affected-row result ni verify chestadu.",
+          "title": "Execute the CREATE TABLE query",
+          "why": "Run the CREATE TABLE statement using pgAdmin's Execute/Run query functionality.",
           "software": "pgadmin",
           "action": {
             "action": "executeQuery",
             "data": {
-              "message": "INSERT 0 2",
-              "statusText": "2 rows inserted",
-              "rows": [
-                [
-                  101,
-                  true,
-                  "{86.5,91,88.5}",
-                  "Ravi"
-                ],
-                [
-                  102,
-                  true,
-                  "{79,84.5,88}",
-                  "Anita"
-                ]
-              ]
+              "createCourse": true,
+              "message": "Query returned successfully in approximately 120 milliseconds.",
+              "statusText": "course table created"
             }
           }
         },
         {
-          "title": "Write a SELECT for all students",
-          "why": "Inserted data expected ga store ayyinda ani verify cheyyadaniki student table meeda SELECT query run chestam.",
+          "title": "View the empty course table",
+          "why": "Use SELECT * to inspect course. The table has course_number, name and price columns and initially contains zero rows.",
           "software": "pgadmin",
           "action": {
-            "action": "typeSql",
+            "action": "typeAndExecuteSql",
             "data": {
               "replace": true,
-              "sql": "SELECT roll_no, is_present, marks, name\nFROM public.student\nORDER BY roll_no;"
-            }
-          }
-        },
-        {
-          "title": "Execute the student SELECT",
-          "why": "SELECT result lo database rows application expectations tho match avuthunnaya ani developer verify chestadu.",
-          "software": "pgadmin",
-          "action": {
-            "action": "executeQuery",
-            "data": {
-              "message": "SELECT 2",
-              "statusText": "2 rows returned",
+              "sql": "SELECT * FROM course;",
+              "message": "SELECT 0",
+              "statusText": "0 rows returned",
               "showTab": "data",
               "result": {
                 "columns": [
-                  "roll_no",
-                  "is_present",
-                  "marks",
-                  "name"
+                  "course_number",
+                  "name",
+                  "price"
                 ],
-                "rows": [
-                  [
-                    101,
-                    true,
-                    "{86.5,91,88.5}",
-                    "Ravi"
-                  ],
-                  [
-                    102,
-                    true,
-                    "{79,84.5,88}",
-                    "Anita"
-                  ]
-                ]
+                "rows": []
               }
             }
           }
         },
         {
-          "title": "Inspect Data Output",
-          "why": "pgAdmin Data Output grid lo columns mariyu row values visually inspect chestam. Idi backend debugging lo common database verification step.",
-          "software": "pgadmin",
-          "action": {
-            "action": "showResultTab",
-            "data": {
-              "tab": "data"
-            }
-          }
-        },
-        {
-          "title": "Write a filtered SELECT for student 101",
-          "why": "Specific backend record ni troubleshoot cheyyadaniki roll_no 101 meeda filtered query rayadam normal debugging workflow.",
+          "title": "Explain basic INSERT syntax",
+          "why": "VALUES can insert a row into a table. When column names are omitted, values normally must follow the table's expected column order.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
             "data": {
               "replace": true,
-              "sql": "SELECT roll_no, is_present, marks, name\nFROM public.student\nWHERE roll_no = 101;"
+              "sql": "INSERT INTO table_name\nVALUES (value1, value2, value3);"
             }
           }
         },
         {
-          "title": "Execute the filtered SELECT",
-          "why": "Filtered result Ravi record matrame return chesthunda ani verify chestam. Application API response tho database row ni compare cheyyadaniki idi useful.",
+          "title": "Insert the first course",
+          "why": "Insert the first record without explicitly specifying column names. This is not the preferred style because the reader must already know the table's column order.",
           "software": "pgadmin",
           "action": {
-            "action": "executeQuery",
+            "action": "typeAndExecuteSql",
             "data": {
+              "replace": true,
+              "sql": "INSERT INTO course\nVALUES (1, 'PostgreSQL', 150);",
+              "courseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ]
+              ],
+              "message": "INSERT 0 1 — Query executed successfully in approximately 84 milliseconds.",
+              "statusText": "1 row inserted"
+            }
+          }
+        },
+        {
+          "title": "Verify the first inserted row",
+          "why": "Query course again and use the Data Output grid to verify that the PostgreSQL course was inserted.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeAndExecuteSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT * FROM course;",
               "message": "SELECT 1",
               "statusText": "1 row returned",
               "showTab": "data",
               "result": {
                 "columns": [
-                  "roll_no",
-                  "is_present",
-                  "marks",
-                  "name"
+                  "course_number",
+                  "name",
+                  "price"
                 ],
                 "rows": [
                   [
-                    101,
-                    true,
-                    "{86.5,91,88.5}",
-                    "Ravi"
+                    1,
+                    "PostgreSQL",
+                    150
                   ]
                 ]
               }
@@ -5420,69 +5338,569 @@ window.COURSE = {
           }
         },
         {
-          "title": "Inspect the PostgreSQL EXPLAIN plan",
-          "why": "Query performance behavior ardham chesukodaniki developer EXPLAIN plan ni chustadu. Small table lo sequential scan normal ga untundi.",
+          "title": "Explain the recommended INSERT syntax",
+          "why": "The preferred approach explicitly writes destination column names. It makes the SQL easier to understand, makes each destination explicit, avoids relying on remembered table order, and permits a different explicit column order.",
           "software": "pgadmin",
           "action": {
-            "action": "showExplain",
+            "action": "showSqlConcept",
             "data": {
-              "statusText": "EXPLAIN plan generated",
-              "plan": [
-                {
-                  "node": "Seq Scan",
-                  "detail": "public.student"
-                },
-                {
-                  "node": "Filter",
-                  "detail": "roll_no = 101"
-                }
-              ]
+              "message": "Recommended INSERT syntax:\n\nINSERT INTO table_name (column1, column2, column3) VALUES (value1, value2, value3);\n\nExplicit column names make each destination clear and allow a different column order.",
+              "statusText": "Recommended INSERT syntax"
             }
           }
         },
         {
-          "title": "Write an index for roll_no lookups",
-          "why": "Repeated student ID lookups optimize cheyyadaniki roll_no meeda index create chestam. Real project lo query patterns batti indexes add chestaru.",
+          "title": "Insert the MySQL course using explicit columns",
+          "why": "Insert the second course while explicitly naming each destination column.",
           "software": "pgadmin",
           "action": {
             "action": "typeSql",
             "data": {
               "replace": true,
-              "sql": "CREATE INDEX idx_student_roll_no\nON public.student (roll_no);"
+              "sql": "INSERT INTO course (course_number, name, price)\nVALUES (2, 'MySQL', 100);"
             }
           }
         },
         {
-          "title": "Execute CREATE INDEX",
-          "why": "Index create ayyaka PostgreSQL filtered lookups ki index structure use cheyyagaladu. Simulator Object Explorer kuda new index state ni preserve chestundi.",
+          "title": "Execute the second INSERT",
+          "why": "Run the INSERT statement so the MySQL course record is inserted successfully.",
           "software": "pgadmin",
           "action": {
             "action": "executeQuery",
             "data": {
-              "message": "CREATE INDEX",
-              "statusText": "idx_student_roll_no created"
+              "courseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ]
+              ],
+              "message": "INSERT 0 1",
+              "statusText": "MySQL course inserted"
             }
           }
         },
         {
-          "title": "Refresh Object Explorer after index creation",
-          "why": "Index schema change Browser tree lo kanipinchadaniki Object Explorer ni refresh chestam.",
+          "title": "Verify that two rows exist",
+          "why": "Display course after the second insertion and confirm that the PostgreSQL and MySQL rows exist.",
           "software": "pgadmin",
           "action": {
-            "action": "refreshTree",
+            "action": "typeAndExecuteSql",
             "data": {
-              "statusText": "Object Explorer refreshed after index creation"
+              "replace": true,
+              "sql": "SELECT * FROM course;",
+              "message": "SELECT 2",
+              "statusText": "2 rows returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "course_number",
+                  "name",
+                  "price"
+                ],
+                "rows": [
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ]
+                ]
+              }
             }
           }
         },
         {
-          "title": "Inspect idx_student_roll_no in the table tree",
-          "why": "Indexes folder lo idx_student_roll_no visible ga unda ani verify chesi database optimization change successful ani confirm chestam.",
+          "title": "Reorder the INSERT column list",
+          "why": "The explicit INSERT column order does not have to match the table definition as long as VALUES follow the same explicit column order.",
           "software": "pgadmin",
           "action": {
-            "action": "selectTree",
+            "action": "typeAndExecuteSql",
             "data": {
-              "path": "Servers/Local PostgreSQL/Databases/java_practice/Schemas/public/Tables/student/Indexes/idx_student_roll_no"
+              "replace": true,
+              "sql": "INSERT INTO course (name, price, course_number)\nVALUES ('MongoDB', 100, 3);",
+              "courseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ],
+                [
+                  3,
+                  "MongoDB",
+                  100
+                ]
+              ],
+              "message": "INSERT 0 1",
+              "statusText": "MongoDB course inserted"
+            }
+          }
+        },
+        {
+          "title": "Verify three inserted rows",
+          "why": "Query course and confirm that three records now exist.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeAndExecuteSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT * FROM course;",
+              "message": "SELECT 3",
+              "statusText": "3 rows returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "course_number",
+                  "name",
+                  "price"
+                ],
+                "rows": [
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ],
+                  [
+                    3,
+                    "MongoDB",
+                    100
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Insert multiple rows in one SQL statement",
+          "why": "Prepare three additional records in one multi-row VALUES INSERT instead of running three separate INSERT statements.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "INSERT INTO course (course_number, name, price)\nVALUES\n    (4, 'PostgreSQL_new', 150),\n    (5, 'MySQL_new', 100),\n    (6, 'MongoDB_new', 100);"
+            }
+          }
+        },
+        {
+          "title": "Execute the multi-row INSERT",
+          "why": "Execute the multi-row INSERT so three additional records are added to course.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "courseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ],
+                [
+                  3,
+                  "MongoDB",
+                  100
+                ],
+                [
+                  4,
+                  "PostgreSQL_new",
+                  150
+                ],
+                [
+                  5,
+                  "MySQL_new",
+                  100
+                ],
+                [
+                  6,
+                  "MongoDB_new",
+                  100
+                ]
+              ],
+              "message": "INSERT 0 3",
+              "statusText": "3 rows inserted"
+            }
+          }
+        },
+        {
+          "title": "Verify six rows in the course table",
+          "why": "Verify the contents after inserting the additional three records. course should now contain six rows.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeAndExecuteSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT * FROM course;",
+              "message": "SELECT 6",
+              "statusText": "6 rows returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "course_number",
+                  "name",
+                  "price"
+                ],
+                "rows": [
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ],
+                  [
+                    3,
+                    "MongoDB",
+                    100
+                  ],
+                  [
+                    4,
+                    "PostgreSQL_new",
+                    150
+                  ],
+                  [
+                    5,
+                    "MySQL_new",
+                    100
+                  ],
+                  [
+                    6,
+                    "MongoDB_new",
+                    100
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Create a new table from an existing table",
+          "why": "CREATE TABLE AS creates a new table from a SELECT result. new_course will copy the six rows currently in course.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "CREATE TABLE new_course AS\nSELECT * FROM course;"
+            }
+          }
+        },
+        {
+          "title": "Execute CREATE TABLE AS SELECT",
+          "why": "Execute the command so new_course is created containing the six rows from course.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "createNewCourse": true,
+              "newCourseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ],
+                [
+                  3,
+                  "MongoDB",
+                  100
+                ],
+                [
+                  4,
+                  "PostgreSQL_new",
+                  150
+                ],
+                [
+                  5,
+                  "MySQL_new",
+                  100
+                ],
+                [
+                  6,
+                  "MongoDB_new",
+                  100
+                ]
+              ],
+              "message": "SELECT 6",
+              "statusText": "new_course created with 6 rows"
+            }
+          }
+        },
+        {
+          "title": "View data from the new table",
+          "why": "Query new_course to confirm that the copied course records are present.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeAndExecuteSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT * FROM new_course;",
+              "message": "SELECT 6",
+              "statusText": "6 rows returned from new_course",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "course_number",
+                  "name",
+                  "price"
+                ],
+                "rows": [
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ],
+                  [
+                    3,
+                    "MongoDB",
+                    100
+                  ],
+                  [
+                    4,
+                    "PostgreSQL_new",
+                    150
+                  ],
+                  [
+                    5,
+                    "MySQL_new",
+                    100
+                  ],
+                  [
+                    6,
+                    "MongoDB_new",
+                    100
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Insert rows from one table into another",
+          "why": "Use INSERT INTO ... SELECT so rows returned from new_course become rows inserted into course instead of supplying literal VALUES.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeSql",
+            "data": {
+              "replace": true,
+              "sql": "INSERT INTO course (course_number, name, price)\nSELECT course_number, name, price\nFROM new_course;"
+            }
+          }
+        },
+        {
+          "title": "Execute INSERT INTO SELECT",
+          "why": "Run the INSERT...SELECT statement. Six rows from new_course are added to the existing six rows in course.",
+          "software": "pgadmin",
+          "action": {
+            "action": "executeQuery",
+            "data": {
+              "courseRowsAfter": [
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ],
+                [
+                  3,
+                  "MongoDB",
+                  100
+                ],
+                [
+                  4,
+                  "PostgreSQL_new",
+                  150
+                ],
+                [
+                  5,
+                  "MySQL_new",
+                  100
+                ],
+                [
+                  6,
+                  "MongoDB_new",
+                  100
+                ],
+                [
+                  1,
+                  "PostgreSQL",
+                  150
+                ],
+                [
+                  2,
+                  "MySQL",
+                  100
+                ],
+                [
+                  3,
+                  "MongoDB",
+                  100
+                ],
+                [
+                  4,
+                  "PostgreSQL_new",
+                  150
+                ],
+                [
+                  5,
+                  "MySQL_new",
+                  100
+                ],
+                [
+                  6,
+                  "MongoDB_new",
+                  100
+                ]
+              ],
+              "message": "INSERT 0 6",
+              "statusText": "6 rows copied into course"
+            }
+          }
+        },
+        {
+          "title": "Verify twelve rows in the original table",
+          "why": "Query course after copying all six rows from new_course back into it. The original six rows remain and another six duplicate rows were inserted.",
+          "software": "pgadmin",
+          "action": {
+            "action": "typeAndExecuteSql",
+            "data": {
+              "replace": true,
+              "sql": "SELECT * FROM course;",
+              "message": "SELECT 12",
+              "statusText": "12 rows returned",
+              "showTab": "data",
+              "result": {
+                "columns": [
+                  "course_number",
+                  "name",
+                  "price"
+                ],
+                "rows": [
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ],
+                  [
+                    3,
+                    "MongoDB",
+                    100
+                  ],
+                  [
+                    4,
+                    "PostgreSQL_new",
+                    150
+                  ],
+                  [
+                    5,
+                    "MySQL_new",
+                    100
+                  ],
+                  [
+                    6,
+                    "MongoDB_new",
+                    100
+                  ],
+                  [
+                    1,
+                    "PostgreSQL",
+                    150
+                  ],
+                  [
+                    2,
+                    "MySQL",
+                    100
+                  ],
+                  [
+                    3,
+                    "MongoDB",
+                    100
+                  ],
+                  [
+                    4,
+                    "PostgreSQL_new",
+                    150
+                  ],
+                  [
+                    5,
+                    "MySQL_new",
+                    100
+                  ],
+                  [
+                    6,
+                    "MongoDB_new",
+                    100
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Explain why INSERT is DML",
+          "why": "INSERT belongs to Data Manipulation Language because it changes the data stored inside a database table. UPDATE and DELETE are also DML.",
+          "software": "pgadmin",
+          "action": {
+            "action": "showSqlConcept",
+            "data": {
+              "message": "DML classification\n\nINSERT — DML\nUPDATE — DML\nDELETE — DML\n\nINSERT changes the data stored in a table.",
+              "statusText": "INSERT is DML"
+            }
+          }
+        },
+        {
+          "title": "Explain PostgreSQL characteristics",
+          "why": "PostgreSQL is a powerful open-source relational database management system. It is SQL compliant and supports Data Manipulation Language.",
+          "software": "pgadmin",
+          "action": {
+            "action": "showSqlConcept",
+            "data": {
+              "message": "PostgreSQL characteristics\n\n• Relational Database Management System\n• Open source\n• SQL compliant\n• Supports DML",
+              "statusText": "PostgreSQL characteristics"
             }
           }
         },

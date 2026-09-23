@@ -203,13 +203,14 @@ function iconSvg(kind,extra=""){
 function syntax(line){
  let e=esc(line);
  if(/^\s*--/.test(line))return '<span class="com">'+e+'</span>';
- e=e.replace(/\b(CREATE|TABLE|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|PRIMARY|KEY|NOT|NULL|BOOLEAN|VARCHAR|INTEGER|REAL|ARRAY)\b/gi,'<span class="kw">$1</span>')
+ e=e.replace(/\b(CREATE|TABLE|AS|SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|DELETE|PRIMARY|KEY|NOT|NULL|BOOLEAN|VARCHAR|INTEGER|REAL|ARRAY|TEXT|NUMERIC)\b/gi,'<span class="kw">$1</span>')
     .replace(/\b(\d+)\b/g,'<span class="num">$1</span>')
     .replace(/('[^']*')/g,'<span class="str">$1</span>');
  return e;
 }
 function makeTree(){
- const db=state?.database||"java_practice", hasStudent=!!state?.studentCreated;
+ const db=state?.database||"java_practice",hasStudent=!!state?.studentCreated,hasCourse=!!state?.courseCreated,hasNewCourse=!!state?.newCourseCreated;
+ const tableCount=[hasStudent,hasCourse,hasNewCourse].filter(Boolean).length;
  const nodes=[
   {d:0,t:"▾",k:"servergroup",n:"Servers",p:"Servers"},
   {d:1,t:"▾",k:"server",n:"Local PostgreSQL",p:"Servers/Local PostgreSQL"},
@@ -217,8 +218,18 @@ function makeTree(){
   {d:3,t:"▾",k:"database",n:db,p:"Servers/Local PostgreSQL/Databases/"+db},
   {d:4,t:"▾",k:"folder",n:"Schemas",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas"},
   {d:5,t:"▾",k:"schema",n:"public",p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public"},
-  {d:6,t:"▾",k:"folder",n:"Tables"+(hasStudent?" (1)":""),p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables"}
+  {d:6,t:"▾",k:"folder",n:"Tables"+(tableCount?" ("+tableCount+")":""),p:"Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables"}
  ];
+ function addCourseTable(name){
+  const base="Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables/"+name;
+  nodes.push({d:7,t:"▾",k:"table",n:name,p:base});
+  nodes.push({d:8,t:"▾",k:"columns",n:"Columns (3)",p:base+"/Columns"});
+  nodes.push({d:9,t:"",k:"column",n:"course_number integer",p:base+"/Columns/course_number"});
+  nodes.push({d:9,t:"",k:"column",n:"name text",p:base+"/Columns/name"});
+  nodes.push({d:9,t:"",k:"column",n:"price numeric",p:base+"/Columns/price"});
+ }
+ if(hasCourse)addCourseTable("course");
+ if(hasNewCourse)addCourseTable("new_course");
  if(hasStudent){
   const base="Servers/Local PostgreSQL/Databases/"+db+"/Schemas/public/Tables/student";
   nodes.push({d:7,t:"▾",k:"table",n:"student",p:base});
@@ -286,6 +297,10 @@ function executeCurrent(d={}){
    else if(!Array.isArray(state.studentRows)||!state.studentRows.length)state.studentRows=[[101,true,"{86.5,91,88.5}","Ravi"],[102,true,"{79,84.5,88}","Anita"]];
  }
  if(/CREATE\s+(?:UNIQUE\s+)?INDEX\s+idx_student_roll_no/i.test(text))state.indexCreated=true;
+ if(d.createCourse||/CREATE\s+TABLE\s+(?:public\.)?course\s*\(/i.test(text))state.courseCreated=true;
+ if(Array.isArray(d.courseRowsAfter))state.courseRows=clone(d.courseRowsAfter);
+ if(d.createNewCourse||/CREATE\s+TABLE\s+(?:public\.)?new_course\s+AS/i.test(text))state.newCourseCreated=true;
+ if(Array.isArray(d.newCourseRowsAfter))state.newCourseRows=clone(d.newCourseRowsAfter);
  if(d.result)state.lastResult=clone(d.result);
  else if(/SELECT[\s\S]+FROM\s+(?:public\.)?student/i.test(text)){
    const all=Array.isArray(state.studentRows)?state.studentRows:[];
@@ -300,7 +315,7 @@ function executeCurrent(d={}){
  makeTree();renderResults();
 }
 function reset(){
- state=clone(baseline||{database:"java_practice"});state.studentRows=Array.isArray(state.studentRows)?state.studentRows:[];state.queryHistory=Array.isArray(state.queryHistory)?state.queryHistory:[];state.lastResult=state.lastResult||null;state.explainPlan=Array.isArray(state.explainPlan)?state.explainPlan:[];state.lastMessage="Ready.";state.lastMessageHtml=esc(state.lastMessage);sqlText=state.initialSql||"";selected=state.initialSelection||"";openQuery=!!state.queryOpen;changedLines=[];activeResultTab="messages";applyTheme(readSavedTheme()||currentTheme()||"dark",false);refs.status.textContent="Ready";refs.connection.textContent=(state.database||"java_practice")+"/postgres@Local PostgreSQL";refs.queryTab.textContent=refs.connection.textContent;makeTree();renderWorkspace();renderSql();renderResults();
+ state=clone(baseline||{database:"java_practice"});state.studentRows=Array.isArray(state.studentRows)?state.studentRows:[];state.courseRows=Array.isArray(state.courseRows)?state.courseRows:[];state.newCourseRows=Array.isArray(state.newCourseRows)?state.newCourseRows:[];state.queryHistory=Array.isArray(state.queryHistory)?state.queryHistory:[];state.lastResult=state.lastResult||null;state.explainPlan=Array.isArray(state.explainPlan)?state.explainPlan:[];state.lastMessage="Ready.";state.lastMessageHtml=esc(state.lastMessage);sqlText=state.initialSql||"";selected=state.initialSelection||"";openQuery=!!state.queryOpen;changedLines=[];activeResultTab="messages";applyTheme(readSavedTheme()||currentTheme()||"dark",false);refs.status.textContent="Ready";refs.connection.textContent=(state.database||"java_practice")+"/postgres@Local PostgreSQL";refs.queryTab.textContent=refs.connection.textContent;makeTree();renderWorkspace();renderSql();renderResults();
 }
 async function typeSql(code,animate,token){
  const start=sqlText.split("\n").length;const add=String(code||"");
@@ -353,6 +368,8 @@ async function apply(st,animate,token){
   case"refreshTree":makeTree();refs.status.textContent=d.statusText||"Object Explorer refreshed";break;
   case"showResultTab":activeResultTab=d.tab||"messages";renderResults();break;
   case"showExplain":state.explainPlan=clone(d.plan||[]);activeResultTab="explain";renderResults();refs.status.textContent=d.statusText||"EXPLAIN plan ready";break;
+  case"showSqlConcept":openQuery=true;renderWorkspace();state.lastMessage=d.message||d.text||"SQL concept";state.lastMessageHtml=esc(state.lastMessage);activeResultTab="messages";renderResults();refs.status.textContent=d.statusText||"SQL concept";break;
+  case"typeAndExecuteSql":{openQuery=true;renderWorkspace();if(d.replace)sqlText="";state._baseSql=sqlText;const before=sqlText.split("\n").length;const code=String(d.sql||d.code||"");await typeSql(code,animate,token);sqlText=state._baseSql+code;changedLines=code.split("\n").map((l,i)=>l.trim()?before+i:null).filter(Boolean);renderSql();delete state._baseSql;refs.run.style.background="var(--blue2)";if(animate)await sleep(180);refs.run.style.background="";executeCurrent(d);break;}
   case"executeQuery":
     refs.run.style.background="var(--blue2)";if(animate)await sleep(180);refs.run.style.background="";
     executeCurrent(d);break;
@@ -402,7 +419,7 @@ document.addEventListener("mouseover",e=>{const i=e.target.closest?.(".pgMenuIte
 document.addEventListener("mouseout",e=>{const i=e.target.closest?.(".pgMenuItem");if(i)i.style.background=""});
 
 applyTheme(readSavedTheme()||"dark",false);renderWorkspace();refs.tree.innerHTML='<div style="padding:12px;color:var(--muted)">Waiting for pgAdmin lesson package…</div>';renderResults();
-parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","clearSql","executeQuery","refreshTree","showResultTab","showExplain","setStatus"]},"*");
+parent.postMessage({type:"ENGINE_READY",app:"pgadmin",actions:["selectTree","openQueryTool","setSql","typeSql","typeAndExecuteSql","showSqlConcept","clearSql","executeQuery","refreshTree","showResultTab","showExplain","setStatus"]},"*");
 })();
 </script>
   <script src="adaptive-ui.js?v=1"></script>
