@@ -46,6 +46,7 @@ jobs:
           cp simulator/intellij/index.html dist/IntelliJ-Simulator-UI/intellij/index.html
           cp simulator/intellij/engine.js dist/IntelliJ-Simulator-UI/intellij/engine.js
           cp simulator/intellij/adaptive-ui.js dist/IntelliJ-Simulator-UI/intellij/adaptive-ui.js
+          cp simulator/intellij/enterprise-ui.js dist/IntelliJ-Simulator-UI/intellij/enterprise-ui.js
           cp simulator/intellij/ide-polish.css dist/IntelliJ-Simulator-UI/intellij/ide-polish.css
           cp -R simulator/shared/. dist/IntelliJ-Simulator-UI/shared/
           cat > dist/IntelliJ-Simulator-UI/README_EDITING.txt <<'EOF'
@@ -56,6 +57,7 @@ jobs:
           intellij/index.html     = product DOM / layout / CSS
           intellij/engine.js      = playback and IDE behavior engine
           intellij/adaptive-ui.js = IntelliJ-owned adaptive UI
+          intellij/enterprise-ui.js = Java enterprise workflow surfaces
           intellij/ide-polish.css = IntelliJ visual polish
           shared/                 = shared mechanics only (highlight/explanation/layout)
 

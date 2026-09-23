@@ -212,6 +212,20 @@ if (contract && manifest && course) {
 
   console.log("Course:", books.length, "books,", (course.stages || []).length, "chapters,", totalSteps, "steps");
   console.log("Lesson software:", [...usedSoftware].sort().join(", "));
+
+  if (exists("simulator/java-enterprise-capabilities.json")) {
+    try {
+      const enterprise = JSON.parse(read("simulator/java-enterprise-capabilities.json"));
+      assert(Number(enterprise.targetPercent) >= 90, "Java enterprise target must remain at least 90%");
+      const intellijSupported = supportedBySoftware.get("intellij") || new Set();
+      for (const [domain, spec] of Object.entries(enterprise.domains || {})) {
+        assert(Number(spec.target) >= 90, "Enterprise domain " + domain + " has target below 90%");
+        for (const action of spec.actions || []) assert(intellijSupported.has(action), "Enterprise domain " + domain + " references unsupported IntelliJ action " + action);
+      }
+      const linuxSupported = supportedBySoftware.get("linux") || new Set();
+      if (enterprise.kubectl) assert(linuxSupported.has(enterprise.kubectl.viaAction), "kubectl workflow references unsupported Linux action " + enterprise.kubectl.viaAction);
+    } catch (error) { fail("Cannot validate simulator/java-enterprise-capabilities.json: " + error.message); }
+  }
 }
 
 const jsFiles = unique([
@@ -240,6 +254,7 @@ if (packageWorkflow) {
     assert(prepareSection.includes(file), "Packaging workflow does not copy " + file + " into the complete trial artifact");
   }
   assert(prepareSection.includes("adaptive-ui.js"), "IntelliJ UI artifact is missing adaptive-ui.js");
+  assert(prepareSection.includes("enterprise-ui.js"), "IntelliJ UI artifact is missing enterprise-ui.js");
   assert(prepareSection.includes("simulator/shared"), "IntelliJ UI artifact is missing shared simulator runtimes");
 }
 

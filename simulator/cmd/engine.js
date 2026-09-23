@@ -52,7 +52,7 @@ function formatPrompt(t){return String(t).replace(/\$P/gi,cwd).replace(/\$G/gi,"
 function reset(){
   if(!data)return;
   cwd=normalizePath(data.cwd||"C:\\Users\\developer\\JavaPractice","C:\\");promptSuffix=data.promptSuffix!==undefined?String(data.promptSuffix):">";
-  env={COMSPEC:"C:\\Windows\\System32\\cmd.exe",USERPROFILE:"C:\\Users\\developer",USERNAME:"developer",OS:"Windows_NT",JAVA_HOME:"C:\\Program Files\\Java\\jdk-21",MAVEN_HOME:"C:\\apache-maven-3.9.9",PATH:"C:\\Windows\\System32;C:\\Program Files\\Java\\jdk-21\\bin;C:\\apache-maven-3.9.9\\bin;C:\\Program Files\\Git\\cmd",...(clone(data.env||{}))};persistentEnv=clone(data.persistentEnv||{});
+  env={COMSPEC:"C:\\Windows\\System32\\cmd.exe",USERPROFILE:"C:\\Users\\developer",USERNAME:"developer",OS:"Windows_NT",JAVA_HOME:"C:\\Program Files\\Java\\jdk-21",MAVEN_HOME:"C:\\apache-maven-3.9.9",GRADLE_HOME:"C:\\gradle-8.14",PATH:"C:\\Windows\\System32;C:\\Program Files\\Java\\jdk-21\\bin;C:\\apache-maven-3.9.9\\bin;C:\\gradle-8.14\\bin;C:\\Program Files\\Git\\cmd",...(clone(data.env||{}))};persistentEnv=clone(data.persistentEnv||{});
   entries=[];history=[];historyIndex=0;errorLevel=0;activeProcess=null;inputDraft="";initFilesystem();
   if(!exists(cwd))ensureDir(cwd);
   if(data.initialOutput)entries.push({type:"output",text:String(data.initialOutput)});
@@ -107,7 +107,12 @@ function knownToolOutput(cmd,args,stdin=""){
   if(cmd==="java"&&args.includes("-version"))return {code:0,out:'openjdk version "21.0.5" 2026-10-15 LTS\nOpenJDK Runtime Environment (build 21.0.5+11-LTS)\nOpenJDK 64-Bit Server VM (build 21.0.5+11-LTS, mixed mode, sharing)'};
   if(cmd==="javac"&&args.includes("-version"))return {code:0,out:"javac 21.0.5"};
   if((cmd==="mvn"||cmd==="mvn.cmd")&&(args.includes("-v")||args.includes("--version")))return {code:0,out:`Apache Maven 3.9.9\nMaven home: ${env.MAVEN_HOME||"C:\\apache-maven-3.9.9"}\nJava version: 21.0.5`};
+  if((cmd==="gradle"||cmd==="gradlew"||cmd==="gradlew.bat")&&(args.includes("-v")||args.includes("--version")))return {code:0,out:"Gradle 8.14\\nJVM: 21.0.5\\nOS: Windows"};
+  if(cmd==="gradle"||cmd==="gradlew"||cmd==="gradlew.bat"){const task=args.find(x=>!x.startsWith("-"))||"build";return {code:0,out:"> Task :compileJava\\n> Task :"+task+"\\nBUILD SUCCESSFUL in 2s"};}
   if(cmd==="mvn"){
+    if(/flyway:migrate/i.test(a))return {code:0,out:"[INFO] Flyway migrate\\nSuccessfully applied 2 migrations\\n[INFO] BUILD SUCCESS"};
+    if(/liquibase:update/i.test(a))return {code:0,out:"[INFO] Liquibase update\\nUpdate command completed successfully\\n[INFO] BUILD SUCCESS"};
+    if(/dependency:tree/i.test(a))return {code:0,out:"[INFO] dependency tree\\n+- spring-boot-starter-web\\n\\\\- junit-jupiter:test"};
     if(/spring-boot:run/i.test(a)){activeProcess={name:"Spring Boot :8080",command:"mvn "+a};return {code:0,out:"[INFO] Scanning for projects...\n[INFO] --- spring-boot:run ---\nStarted JavaPracticeApplication in 2.341 seconds\nTomcat started on port 8080 (http)"}}
     return {code:0,out:`[INFO] Scanning for projects...\n[INFO] --- ${a||"package"} ---\n[INFO] BUILD SUCCESS\n[INFO] Total time:  1.842 s`};
   }
@@ -145,7 +150,7 @@ function executeSingle(raw,stdin=""){
   else if(cmd==="prompt"){data.promptTemplate=args.join(" ")||"$P$G";result={code:0,out:""}}
   else if(cmd==="ver")result={code:0,out:"Microsoft Windows [Version 11.0.26100.6584]"};
   else if(cmd==="whoami")result={code:0,out:`desktop-sim\\${env.USERNAME||"developer"}`};
-  else if(cmd==="where"){const name=args[0]||"";const map={java:(env.JAVA_HOME||"")+"\\bin\\java.exe",javac:(env.JAVA_HOME||"")+"\\bin\\javac.exe",mvn:(env.MAVEN_HOME||"")+"\\bin\\mvn.cmd",git:"C:\\Program Files\\Git\\cmd\\git.exe",cmd:"C:\\Windows\\System32\\cmd.exe"};result=map[name.toLowerCase()]?{code:0,out:map[name.toLowerCase()]}:{code:1,out:`INFO: Could not find files for the given pattern(s).`}}
+  else if(cmd==="where"){const name=args[0]||"";const map={java:(env.JAVA_HOME||"")+"\\bin\\java.exe",javac:(env.JAVA_HOME||"")+"\\bin\\javac.exe",mvn:(env.MAVEN_HOME||"")+"\\bin\\mvn.cmd",gradle:(env.GRADLE_HOME||"")+"\\bin\\gradle.bat",git:"C:\\Program Files\\Git\\cmd\\git.exe",cmd:"C:\\Windows\\System32\\cmd.exe"};result=map[name.toLowerCase()]?{code:0,out:map[name.toLowerCase()]}:{code:1,out:`INFO: Could not find files for the given pattern(s).`}}
   else if(cmd==="find"||cmd==="findstr"){const needle=(args.find(x=>!x.startsWith("/"))||"").replace(/^"|"$/g,"");const source=stdin||"";const lines=source.split(/\r?\n/).filter(x=>cmd==="findstr"?x.toLowerCase().includes(needle.toLowerCase()):x.includes(needle));result={code:lines.length?0:1,out:lines.join("\n")}}
   else if(cmd==="tree"){const root=normalizePath(args[0]||cwd),kids=listChildren(root);result={code:0,out:[baseName(root)||root,...kids.map((n,i)=>(i===kids.length-1?"└── ":"├── ")+baseName(n.path))].join("\n")}}
   else if(cmd==="help")result={code:0,out:"CD CHDIR CLS COPY DEL DIR ECHO ERASE EXIT FIND FINDSTR HELP MD MKDIR MOVE PATH PROMPT RD RMDIR SET SETX TITLE TREE TYPE VER WHERE"};

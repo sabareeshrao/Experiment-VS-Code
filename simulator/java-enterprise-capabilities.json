@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "targetPercent": 90,
+  "definition": "Hands-on Java developer workflow fidelity; not exhaustive framework API coverage.",
+  "domains": {
+    "jdk": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "showSdkTable",
+        "showJvmRuntime",
+        "setJvmArgument",
+        "showClasspath",
+        "showModulePath",
+        "addSdk",
+        "setProjectSdk",
+        "setLanguageLevel",
+        "setModuleSdk",
+        "configureCompiler"
+      ]
+    },
+    "maven": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "showMavenPlugins",
+        "showMavenProfiles",
+        "runMavenWrapper",
+        "runMavenTests",
+        "showDependencyConflict",
+        "resolveMavenDependencyConflict",
+        "openMavenToolWindow",
+        "reloadMavenProject",
+        "runMavenGoal",
+        "showMavenLifecycle",
+        "showMavenDependencies",
+        "showMavenDependencyTree",
+        "showEffectivePom"
+      ]
+    },
+    "gradle": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "openGradleToolWindow",
+        "reloadGradleProject",
+        "showGradleTasks",
+        "runGradleTask",
+        "showGradleDependencies",
+        "setGradleJvm",
+        "setGradleOfflineMode",
+        "runGradleWrapper",
+        "showGradleBuildOutput"
+      ]
+    },
+    "spring": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "showBeanGraph",
+        "showDependencyInjection",
+        "showComponentScan",
+        "showRequestLifecycle",
+        "showControllerAdvice",
+        "openSpringToolWindow",
+        "showSpringBootDashboard",
+        "runSpringBootApp",
+        "setSpringProfile",
+        "showSpringBeans",
+        "showSpringMappings",
+        "showMvcFlow",
+        "showValidationFlow",
+        "showExceptionHandlers"
+      ]
+    },
+    "junit": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "runParameterizedTest",
+        "debugJUnit",
+        "showTestTree",
+        "showAssertionDiff",
+        "setTestFilter",
+        "runJUnit",
+        "runJUnitMethod",
+        "runJUnitClass",
+        "showTestResults",
+        "showFailureTrace",
+        "rerunFailedTests",
+        "runWithCoverage",
+        "showCoverage"
+      ]
+    },
+    "mockito": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "mockitoCreateMock",
+        "mockitoInjectMocks",
+        "mockitoStub",
+        "mockitoCaptureArgument",
+        "mockitoSpy",
+        "mockitoThrow",
+        "mockitoReset",
+        "showMockitoDetails",
+        "mockitoVerifyInteraction"
+      ]
+    },
+    "persistence": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "showJpaRelationships",
+        "setFetchStrategy",
+        "reproduceNPlusOne",
+        "showTransactionBoundary",
+        "showDirtyChecking",
+        "showHibernateCaches",
+        "showOptimisticLocking",
+        "showEntityLifecycle",
+        "showPagination",
+        "runNativeQuery",
+        "showJpaEntities",
+        "showJpaRepositories",
+        "showEntityMapping",
+        "showRepositoryMethods",
+        "generateJpaRepository",
+        "runJpql",
+        "showHibernateSql",
+        "showHibernateStatistics"
+      ]
+    },
+    "security": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "openSecurityToolWindow",
+        "configureSecurityFilterChain",
+        "configureUserDetailsService",
+        "configurePasswordEncoder",
+        "configureJwtFilter",
+        "issueJwt",
+        "validateJwt",
+        "configureMethodSecurity",
+        "setCorsConfig",
+        "setCsrfConfig",
+        "configureOAuth2Client",
+        "showAuthenticationFlow",
+        "showAuthorizationFlow",
+        "showOAuth2LoginFlow"
+      ]
+    },
+    "clients": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "configureRestTemplate",
+        "configureWebClient",
+        "configureFeignClient",
+        "setClientTimeouts",
+        "sendExternalRequest",
+        "showClientRequestResponse",
+        "showClientErrorHandling"
+      ]
+    },
+    "resilience": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "configureCircuitBreaker",
+        "configureRetry",
+        "configureSpringRetry",
+        "configureRateLimiter",
+        "configureTimeLimiter",
+        "configureBulkhead",
+        "setFallbackMethod",
+        "simulateResilienceCall",
+        "simulateSpringRetry",
+        "showResilienceEvents",
+        "showCircuitState"
+      ]
+    },
+    "migrations": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "openMigrationToolWindow",
+        "createFlywayMigration",
+        "runFlywayMigrate",
+        "showFlywayInfo",
+        "repairFlyway",
+        "baselineFlyway",
+        "createLiquibaseChangelog",
+        "runLiquibaseUpdate",
+        "showLiquibaseStatus",
+        "rollbackLiquibase",
+        "showSchemaHistory"
+      ]
+    },
+    "logging": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "openLoggingToolWindow",
+        "configureLogging",
+        "setLogLevel",
+        "addStructuredLogging",
+        "setMdc",
+        "appendApplicationLog",
+        "showApplicationLogs",
+        "showRollingPolicy",
+        "showTraceCorrelation"
+      ]
+    },
+    "tomcat": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "showEmbeddedTomcat",
+        "configureServerPort",
+        "openTomcatRunConfig",
+        "deployWar",
+        "showTomcatLogs",
+        "showServletMappings",
+        "showTomcatThreads"
+      ]
+    },
+    "soap": {
+      "target": 90,
+      "software": "intellij",
+      "actions": [
+        "importWsdl",
+        "generateSoapClient",
+        "createSoapRequest",
+        "sendSoapRequest",
+        "showSoapResponse",
+        "configureSoapFaultHandling"
+      ]
+    }
+  },
+  "kubectl": {
+    "target": 90,
+    "software": "linux",
+    "viaAction": "executeCommand",
+    "commands": [
+      "get pods",
+      "get services",
+      "get deployments",
+      "describe",
+      "logs",
+      "apply",
+      "delete",
+      "exec",
+      "rollout status",
+      "rollout restart",
+      "config current-context",
+      "config use-context",
+      "port-forward"
+    ]
+  }
+}

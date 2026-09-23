@@ -106,3 +106,12 @@ The editable Java Practice reference source is under `project/`. Browser-ready s
 ## GitHub Pages
 
 GitHub Pages serves the static application from the repository. The root library links into `player.html`, which hosts the simulator iframes.
+
+
+## Java enterprise workflow fidelity
+
+Frameworks and libraries without a meaningful standalone desktop application stay inside the software where developers actually use them. The repository targets at least **90% hands-on workflow fidelity** rather than exhaustive API coverage.
+
+`simulator/java-enterprise-capabilities.json` tracks JDK/JVM, Maven, Gradle, Spring, JUnit 5, Mockito, JPA/Hibernate, Spring Security/JWT/OAuth2, RestTemplate/WebClient/OpenFeign, Resilience4j/Spring Retry, Flyway/Liquibase, logging, Tomcat, SOAP, and Linux kubectl workflows.
+
+The repository validator rejects an enterprise domain below the 90% target or an action that its target simulator does not advertise.
