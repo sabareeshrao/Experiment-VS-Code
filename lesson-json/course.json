@@ -37,6 +37,13 @@
       "subtitle": "A populated MySQL project covering SQL editing, schema objects, table design, administration, performance, EER modeling, migration, and preferences.",
       "chapterStart": 12,
       "chapterEnd": 12
+    },
+    {
+      "id": "book-6",
+      "title": "Redis Insight: Data Structures & Developer Workflow",
+      "subtitle": "Redis Insight Browser, Workbench, CLI, Search, Analyze, and Pub/Sub workflow.",
+      "chapterStart": 13,
+      "chapterEnd": 13
     }
   ],
   "package": {
@@ -5028,6 +5035,10 @@
     {
       "id": "chapter-12",
       "path": "chapters/12-mysql-workbench-sql-development-database-engineering.json"
+    },
+    {
+      "id": "chapter-13",
+      "path": "chapters/13-redis-insight-developer-workflow.json"
     }
   ]
 }

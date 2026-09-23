@@ -463,6 +463,30 @@
       if (action === "triggerRun" || action === "openRun") return plan(["#content"]);
       if (action === "openSecrets" || action === "openCaches" || action === "openRunners") return plan(["#content"]);
     }
+    if (software === "redis") {
+      if (action === "setView") return plan([`[data-view="${step.action.data?.view || "browser"}"]`]);
+      if (action === "selectKey") return plan([`[data-key="${String(step.action.data?.key || step.action.data?.name || "").replace(/"/g, '\\"')}"]`, "#keyList"]);
+      if (action === "searchKeys") return plan(["#keySearch"]);
+      if (action === "filterKeyType") return plan(["#typeFilter"]);
+      if (action === "createKey") return plan(["#addKeyBtn"]);
+      if (action === "deleteKey") return plan(["#deleteKeyBtn"]);
+      if (action === "editKey" || action === "setKeyValue" || action === "setHashField" || action === "pushListItem" || action === "addSetMember" || action === "addSortedSetMember") return plan(["#editKeyBtn"]);
+      if (action === "setWorkbenchQuery") return plan(["#wbEditor"]);
+      if (action === "runWorkbench") return plan(["#runWb"]);
+      if (action === "openCli") return plan(["#cliToggle"]);
+      if (action === "runCliCommand") return plan(["#cliInput"]);
+      if (action === "clearCli") return plan(["#clearCli"]);
+      if (action === "openSearchIndex") return plan(['[data-view="search"]']);
+      if (action === "runSearchQuery") return plan(["#runSearch"]);
+      if (action === "showExplain") return plan(["#explainSearch"]);
+      if (action === "showProfile") return plan(["#profileSearch"]);
+      if (action === "openAnalysisTab") return plan([`[data-atab="${step.action.data?.tab || "memory"}"]`, '[data-view="analysis"]']);
+      if (action === "startProfiler" || action === "stopProfiler") return plan(["#profilerBtn"]);
+      if (action === "subscribeChannel") return plan(["#subscribeBtn"]);
+      if (action === "publishMessage") return plan(["#publishBtn"]);
+      if (action === "openSettings") return plan(["#settingsBtn"]);
+      if (action === "openDatabaseDialog") return plan(["#dbSwitcher"]);
+    }
     if (software === "mysqlworkbench") {
       if (action === "showHome") return plan(["#homeOverlay"]);
       if (action === "openConnectionDialog" || action === "openConnectionParameters" || action === "openConnectionSsl" || action === "openConnectionAdvanced") return plan(["#btnManageConnections"]);

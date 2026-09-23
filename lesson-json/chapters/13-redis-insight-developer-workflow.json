@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "id": "chapter-13",
+  "title": "13: Redis Insight Developer Workflow",
+  "subtitle": "15-step Redis Insight UI walkthrough covering Browser, key filtering/editing, Workbench, CLI, Search, Analyze, and Pub/Sub.",
+  "steps": [
+    {
+      "title": "Open the Redis Browser",
+      "why": "Start in Redis Insight Browser to inspect keys and their data types in the connected Local Redis database.",
+      "software": "redis",
+      "action": {
+        "action": "setView",
+        "data": {
+          "view": "browser"
+        }
+      }
+    },
+    {
+      "title": "Select the user:1001 hash key",
+      "why": "Select a real hash key so the detail pane shows its fields, TTL, size, and current values.",
+      "software": "redis",
+      "action": {
+        "action": "selectKey",
+        "data": {
+          "key": "user:1001"
+        }
+      }
+    },
+    {
+      "title": "Search for user keys",
+      "why": "Use the Browser key search field to narrow the key list to names containing the user prefix.",
+      "software": "redis",
+      "action": {
+        "action": "searchKeys",
+        "data": {
+          "query": "user:"
+        }
+      }
+    },
+    {
+      "title": "Filter the Browser to HASH keys",
+      "why": "Use the type filter to show only hash data structures while keeping the user search active.",
+      "software": "redis",
+      "action": {
+        "action": "filterKeyType",
+        "data": {
+          "type": "hash"
+        }
+      }
+    },
+    {
+      "title": "Update a field in the selected hash",
+      "why": "Modify the selected user hash by adding a status field, demonstrating Redis hash editing in the Browser detail workflow.",
+      "software": "redis",
+      "action": {
+        "action": "setHashField",
+        "data": {
+          "key": "user:1001",
+          "field": "status",
+          "value": "active"
+        }
+      }
+    },
+    {
+      "title": "Open Workbench",
+      "why": "Switch to Redis Insight Workbench, the command-oriented workspace used to compose and run Redis commands.",
+      "software": "redis",
+      "action": {
+        "action": "setView",
+        "data": {
+          "view": "workbench"
+        }
+      }
+    },
+    {
+      "title": "Enter a HGETALL command",
+      "why": "Place a Redis command in the Workbench editor so the selected user hash can be inspected from the command layer.",
+      "software": "redis",
+      "action": {
+        "action": "setWorkbenchQuery",
+        "data": {
+          "query": "HGETALL user:1001"
+        }
+      }
+    },
+    {
+      "title": "Run the Workbench command",
+      "why": "Execute the Workbench query and display a command result, testing the Run control and result surface.",
+      "software": "redis",
+      "action": {
+        "action": "runWorkbench",
+        "data": {
+          "result": "1) \"name\"\n2) \"Ava Carter\"\n3) \"email\"\n4) \"ava@example.com\"\n5) \"plan\"\n6) \"pro\"\n7) \"region\"\n8) \"us-east\"\n9) \"status\"\n10) \"active\""
+        }
+      }
+    },
+    {
+      "title": "Open the built-in Redis CLI",
+      "why": "Expand Redis Insight's CLI panel to test the persistent command-line surface inside the same application.",
+      "software": "redis",
+      "action": {
+        "action": "openCli",
+        "data": {}
+      }
+    },
+    {
+      "title": "Run DBSIZE in the CLI",
+      "why": "Execute DBSIZE from the built-in CLI and verify that command history and output remain visible in the CLI panel.",
+      "software": "redis",
+      "action": {
+        "action": "runCliCommand",
+        "data": {
+          "command": "DBSIZE"
+        }
+      }
+    },
+    {
+      "title": "Open the Search workspace",
+      "why": "Switch to the Redis Search workspace and focus the idx:products search index.",
+      "software": "redis",
+      "action": {
+        "action": "openSearchIndex",
+        "data": {
+          "index": "idx:products"
+        }
+      }
+    },
+    {
+      "title": "Run a product search query",
+      "why": "Execute a Redis Search query for keyboard products in a price range and show the result table.",
+      "software": "redis",
+      "action": {
+        "action": "runSearchQuery",
+        "data": {
+          "query": "@name:(keyboard) @price:[50 150]",
+          "result": {
+            "key": "product:4201",
+            "name": "Mechanical Keyboard",
+            "price": 129.99,
+            "inventory": 44
+          }
+        }
+      }
+    },
+    {
+      "title": "Inspect the Slow Log",
+      "why": "Open Analyze and switch to Slow Log so command duration and client activity can be inspected.",
+      "software": "redis",
+      "action": {
+        "action": "openAnalysisTab",
+        "data": {
+          "tab": "slowlog"
+        }
+      }
+    },
+    {
+      "title": "Start the Redis profiler",
+      "why": "Open the Profiler analysis surface and start profiling to demonstrate Redis command monitoring state.",
+      "software": "redis",
+      "action": {
+        "action": "startProfiler",
+        "data": {}
+      }
+    },
+    {
+      "title": "Publish a Pub/Sub test message",
+      "why": "Finish the UI test in Pub/Sub by publishing a message and showing it in the live message stream.",
+      "software": "redis",
+      "action": {
+        "action": "publishMessage",
+        "data": {
+          "channel": "orders:test",
+          "time": "now",
+          "message": "{\"status\":\"chapter13-ok\"}"
+        }
+      }
+    }
+  ]
+}
