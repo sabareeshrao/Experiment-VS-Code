@@ -189,8 +189,8 @@
         // Do not depend on a second readiness handshake here. The document has
         // already finished loading, so replay the cumulative state immediately.
         sendSeekNow(current, name, false);
-        highlightCurrentAction(current, name);
-        scheduleCurrentExplanation(140);
+        if (name !== "kubernetes") highlightCurrentAction(current, name);
+        if (name !== "kubernetes") scheduleCurrentExplanation(140);
         if (name === "mysqlworkbench") {
           setTimeout(() => {
             if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === name) {
@@ -615,7 +615,7 @@
     // Never block navigation on visual guidance. The step state is rebuilt
     // immediately, then the relevant control is highlighted independently.
     sendSeekNow(index, target, animateFinal);
-    highlightCurrentAction(index, target);
+    if (target !== "mysqlworkbench" && target !== "kubernetes") highlightCurrentAction(index, target);
     if (target === "mysqlworkbench") {
       setTimeout(() => {
         if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === target) highlightCurrentAction(index, target);
@@ -833,7 +833,7 @@
 
     renderCurrentStep();
     seekSoftware(current, software, animateFinal);
-    scheduleCurrentExplanation(120);
+    if (software !== "mysqlworkbench" && software !== "kubernetes") scheduleCurrentExplanation(120);
     if (software === "mysqlworkbench") scheduleCurrentExplanation(420);
   }
 
@@ -861,7 +861,7 @@
       if (
         !fullCodeMode &&
         flat.length &&
-        software === "mysqlworkbench" &&
+        (software === "mysqlworkbench" || software === "kubernetes") &&
         normalizeSoftware(flat[current].software) === software
       ) {
         highlightCurrentAction(current, software);
