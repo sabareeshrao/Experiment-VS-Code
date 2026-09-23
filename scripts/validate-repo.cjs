@@ -286,17 +286,6 @@ if (packageWorkflow) {
   assert(prepareSection.includes("simulator/shared"), "IntelliJ UI artifact is missing shared simulator runtimes");
 }
 
-for (const warning of warnings) console.warn("WARNING:", warning);
-
-if (errors.length) {
-  console.error("\nRepository validation failed with " + errors.length + " error(s):");
-  errors.forEach((error, index) => console.error(String(index + 1).padStart(3, " ") + ". " + error));
-  process.exit(1);
-}
-
-console.log("Repository validation passed.");
-
-
 // Regression guard: explanation-only/stale-screen failure.
 // Never reset engineReady to false in the iframe load handler after a child may
 // already have posted ENGINE_READY. That blocks SIM_SEEK while SIM_EXPLAIN keeps working.
@@ -332,3 +321,35 @@ if (contract && contract.layoutPolicy?.requiredForEverySimulator) {
     "Missing global layout runtime: " + contract.layoutPolicy.runtime
   );
 }
+
+
+// Redis runtime smoke contract.
+// Redis must announce readiness from its own engine after the listener/API exists;
+// relying only on shared boot-protocol can race and drop SIM_PACKAGE.
+if (exists("simulator/redis/engine.js") && exists("simulator/redis/index.html")) {
+  const redisEngine = read("simulator/redis/engine.js");
+  const redisIndex = read("simulator/redis/index.html");
+  assert(redisEngine.includes("function announceReady()"), "Redis engine is missing native announceReady()");
+  assert(redisEngine.includes("announceReady();"), "Redis engine does not announce ENGINE_READY at startup");
+  assert(redisEngine.includes("window.SimEngine"), "Redis engine is missing the SimEngine readiness adapter");
+  assert(redisEngine.includes('m.type==="SIM_PING"') || redisEngine.includes("m.type === \"SIM_PING\""), "Redis engine does not respond to SIM_PING");
+  assert(redisIndex.indexOf("engine.js?v=3") >= 0, "Redis index is not loading engine.js?v=3");
+  assert(
+    redisIndex.indexOf("engine.js?v=3") < redisIndex.indexOf("../shared/boot-protocol.js"),
+    "Redis boot-protocol loads before the Redis engine and can race ENGINE_READY"
+  );
+  assert(
+    player.includes('data-src="simulator/redis/index.html?v=3"'),
+    "player.html is not cache-busted to Redis index v3"
+  );
+}
+
+for (const warning of warnings) console.warn("WARNING:", warning);
+
+if (errors.length) {
+  console.error("\nRepository validation failed with " + errors.length + " error(s):");
+  errors.forEach((error, index) => console.error(String(index + 1).padStart(3, " ") + ". " + error));
+  process.exit(1);
+}
+
+console.log("Repository validation passed.");

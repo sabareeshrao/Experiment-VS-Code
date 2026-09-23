@@ -176,20 +176,59 @@ async function seek(steps){
  for(const step of steps||[]){if(step.app&&step.app!==APP_ID)continue;await applyAction(step);}
  render();
 }
+function announceReady(){
+ try{
+   parent.postMessage({
+     type:"ENGINE_READY",
+     app:APP_ID,
+     actions:SUPPORTED_ACTIONS,
+     protocol:"redis-engine-v3"
+   },location.origin==="null"?"*":location.origin);
+ }catch(_){
+   try{parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS,protocol:"redis-engine-v3"},"*");}catch(__){}
+ }
+}
+function loadPackage(pkg){
+ const app=pkg?.apps?.redis||pkg?.apps?.redisinsight;
+ baseline=app?.state?{...initialState(),...clone(app.state)}:initialState();
+ state=clone(baseline);
+ render();
+}
 window.addEventListener("message",e=>{
+ if(location.origin!=="null"&&e.origin!==location.origin)return;
  const m=e.data||{};
- if(m.type==="SIM_PACKAGE"){
-   const pkg=m.package?.apps?.redis||m.package?.apps?.redisinsight;
-   if(pkg?.state){baseline={...initialState(),...clone(pkg.state)};state=clone(baseline);}
-   render();
-   parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
- } else if(m.type==="SIM_SEEK") seek(m.steps||m.actions||[]);
- else if(m.type==="SIM_EXPLAIN"){
+ if(m.type==="SIM_PING"||m.type==="SIM_BOOTSTRAP"){
+   announceReady();
+ } else if(m.type==="SIM_PACKAGE"){
+   loadPackage(m.package||{});
+   announceReady();
+ } else if(m.type==="SIM_SEEK"){
+   seek(m.steps||m.actions||[]);
+ } else if(m.type==="SIM_EXPLAIN"){
    const box=$("assistant");box.classList.remove("hidden");
    box.querySelector("[data-sim-explanation-title]").textContent=m.title||"Redis Insight";
    box.querySelector("[data-sim-explanation-text]").textContent=m.text||"";
  }
 });
-window.REDIS_SIM={getState:()=>clone(state),setState:s=>{state={...state,...clone(s)};render();},applyAction,reset:()=>{state=initialState();render();}};
+window.REDIS_SIM={
+ getState:()=>clone(state),
+ setState:s=>{state={...state,...clone(s)};render();},
+ applyAction,
+ reset:()=>{state=initialState();baseline=initialState();render();},
+ loadPackage,
+ seek
+};
+window.SimEngine={
+ loadPackage,
+ apply:applyAction,
+ seek,
+ getState:()=>clone(state),
+ reset:()=>{state=initialState();baseline=initialState();render();}
+};
 render();
+announceReady();
+window.addEventListener("DOMContentLoaded",announceReady,{once:true});
+window.addEventListener("load",announceReady,{once:true});
+setTimeout(announceReady,80);
+setTimeout(announceReady,300);
 })();

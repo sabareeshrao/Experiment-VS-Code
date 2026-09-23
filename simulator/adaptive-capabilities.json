@@ -759,7 +759,10 @@
         "explanation-box",
         "explanation-minimize-close",
         "persistent-explanation-position",
-        "persistent-explanation-minimize"
+        "persistent-explanation-minimize",
+        "deterministic-startup-handshake",
+        "native-engine-ready",
+        "simengine-adapter"
       ],
       "actions": [
         "setView",
