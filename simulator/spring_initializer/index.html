@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spring Initializr Simulator</title>
+<style>
+:root{--bg:#f4f6f8;--panel:#fff;--line:#d6dce2;--text:#20262d;--muted:#687480;--green:#6db33f;--greenDark:#4f8c2e;--soft:#eef7e9}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}.app{height:100vh;display:grid;grid-template-rows:54px minmax(0,1fr);min-width:0;min-height:0}.top{display:flex;align-items:center;gap:12px;padding:0 18px;background:#20252b;color:#fff;border-bottom:4px solid var(--green)}.logo{font-weight:800}.logo b{color:#a6dc7e}.tag{font-size:11px;color:#b6c0c9}.grow{flex:1}
+.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.8fr);gap:18px;padding:18px;min-width:0;min-height:0;overflow:auto}.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;box-shadow:0 2px 8px rgba(25,35,45,.06)}.config,.side{padding:18px}.side{align-self:start;position:sticky;top:0}
+h2{font-size:16px;margin:0 0 12px}h3{font-size:11px;margin:17px 0 7px;text-transform:uppercase;letter-spacing:.07em;color:#4e5965}.segment{display:flex;flex-wrap:wrap;gap:7px}.seg{border:1px solid var(--line);background:#fff;padding:7px 11px;border-radius:5px;cursor:pointer}.seg.active{border-color:var(--greenDark);background:var(--soft);color:#315c1c;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.full{grid-column:1/-1}.field label{font-size:10px;color:var(--muted);font-weight:650}.field input,.field select{width:100%;height:34px;border:1px solid var(--line);border-radius:5px;background:#fff;padding:0 9px;outline:none}.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 2px rgba(109,179,63,.13)}
+.depHead{display:flex;align-items:center;gap:7px}.depHead h2{margin:0}.addBtn{border:1px solid var(--greenDark);background:#fff;color:#315c1c;border-radius:5px;padding:7px 10px;font-weight:700;cursor:pointer}.depList{display:flex;flex-direction:column;gap:7px;margin-top:12px}.dep{display:flex;align-items:center;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:6px;background:#fbfcfd}.dep span{flex:1;font-size:11px}.dep button{border:0;background:transparent;color:#a13d3d;cursor:pointer}.empty{font-size:11px;color:var(--muted);padding:14px 0}
+.generate{width:100%;margin-top:16px;border:0;background:var(--green);color:#fff;border-radius:6px;padding:11px;font-weight:800;cursor:pointer}.generate:hover{background:var(--greenDark)}.summary{display:none;margin-top:12px;padding:10px;border:1px solid #cfe3c2;border-radius:6px;background:#eef7e9;font:11px/1.5 Consolas,monospace;white-space:pre-wrap}.summary.show{display:block}
+.shade{position:absolute;inset:54px 0 0;background:rgba(0,0,0,.24);display:none;z-index:40}.shade.show{display:block}.drawer{position:absolute;right:0;top:0;bottom:0;width:min(470px,92vw);background:#fff;border-left:1px solid var(--line);box-shadow:-8px 0 28px rgba(0,0,0,.16);display:grid;grid-template-rows:52px 48px minmax(0,1fr)}.drawerHead{display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-weight:750}.drawerHead button{margin-left:auto;border:0;background:transparent;font-size:20px;cursor:pointer}.depSearch{margin:8px 12px;border:1px solid var(--line);border-radius:5px;padding:0 10px}.catalog{overflow:auto;padding:8px 12px}.catRow{padding:10px;border-bottom:1px solid #edf0f2;cursor:pointer}.catRow:hover{background:#f5f8f3}.catRow b{display:block;font-size:12px}.catRow span{font-size:10px;color:var(--muted)}
+.assistant{position:absolute;right:16px;bottom:16px;width:320px;max-width:calc(100vw - 32px);z-index:90;background:#222831;color:#e8edf3;border:1px solid #414954;border-radius:7px;box-shadow:0 10px 28px rgba(0,0,0,.28);overflow:hidden}.assistantHead{display:flex;align-items:center;gap:7px;height:32px;padding:0 8px;background:#1b2027;border-bottom:1px solid #3b424c;cursor:grab}.assistantHead .grow{flex:1}.assistantHead button{width:24px;height:24px;border:0;background:transparent;color:#aeb8c2;border-radius:4px}.assistantBody{padding:10px 11px;font-size:11px;line-height:1.48}.assistant.minimized .assistantBody{display:none}
+@media(max-width:780px){.main{grid-template-columns:1fr}.side{position:static}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body data-sim-app="spring_initializer">
+<div class="app" id="app">
+<header class="top"><div class="logo">SPRING <b>INITIALIZR</b></div><div class="tag">bootstrap your application</div><div class="grow"></div><div class="tag">start.spring.io</div></header>
+<main class="main">
+<section class="card config">
+<h2>Project</h2><div class="segment" id="projectType"></div>
+<h3>Language</h3><div class="segment" id="language"></div>
+<h3>Spring Boot</h3><div class="field"><select id="bootVersion"></select></div>
+<h3>Project Metadata</h3><div class="grid">
+<div class="field"><label>Group</label><input id="group"></div>
+<div class="field"><label>Artifact</label><input id="artifact"></div>
+<div class="field"><label>Name</label><input id="name"></div>
+<div class="field"><label>Package name</label><input id="packageName"></div>
+<div class="field full"><label>Description</label><input id="description"></div>
+</div>
+<h3>Packaging</h3><div class="segment" id="packaging"></div>
+<h3>Java</h3><div class="segment" id="javaVersion"></div>
+<h3>Configuration</h3><div class="segment" id="configFormat"></div>
+</section>
+<aside class="card side">
+<div class="depHead"><h2>Dependencies</h2><div class="grow"></div><button id="addDependencyBtn" class="addBtn">＋ Add Dependencies</button></div>
+<div id="dependencyList" class="depList"></div>
+<button id="generateBtn" class="generate">Generate</button>
+<div id="generatedSummary" class="summary"></div>
+</aside>
+</main>
+<div id="dependencyShade" class="shade"><div class="drawer">
+<div class="drawerHead"><span>Add Dependencies</span><button id="dependencyClose" type="button" title="Close">×</button></div>
+<input id="dependencySearch" class="depSearch" placeholder="Search dependencies">
+<div id="dependencyCatalog" class="catalog"></div>
+</div></div>
+<aside id="assistant" class="assistant" data-sim-explanation data-sim-persist="position">
+<div class="assistantHead" data-sim-explanation-drag><strong>AI</strong><span data-sim-explanation-meta>Spring Initializr</span><span class="grow"></span><button data-sim-explanation-min title="Minimize">−</button><button data-sim-explanation-close title="Close">×</button></div>
+<div class="assistantBody" data-sim-explanation-text>Configure a Spring Boot project and generate it.</div>
+</aside>
+</div>
+<script src="engine.js?v=1"></script>
+<script src="../shared/highlighter.js?v=9"></script>
+<script src="../shared/explanation-controls.js?v=12"></script>
+<script src="../shared/layout-resize.js?v=10"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maven Central Simulator</title>
+<style>
+:root{--bg:#f6f7f8;--panel:#fff;--line:#d8dde3;--text:#222831;--muted:#68727d;--red:#bd3f38;--nav:#20252a;--blue:#2864b8}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}.app{height:100vh;display:grid;grid-template-rows:50px 58px minmax(0,1fr);min-width:0;min-height:0}.top{display:flex;align-items:center;padding:0 16px;background:var(--nav);color:#fff}.brand{font-weight:800}.brand b{color:#ef6b64}.top span{margin-left:10px;color:#aeb7bf;font-size:11px}
+.searchBar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line)}.searchBar input{flex:1;height:36px;border:1px solid #b8c0c9;border-radius:5px;padding:0 11px;outline:none}.searchBar input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(40,100,184,.12)}.searchBar button{height:36px;border:0;background:var(--red);color:#fff;border-radius:5px;padding:0 18px;font-weight:700;cursor:pointer}
+.workspace{display:grid;grid-template-columns:minmax(220px,30%) minmax(0,1fr) minmax(220px,26%);min-height:0;overflow:hidden}.pane{background:#fff;min-width:0;min-height:0;overflow:auto}.results{border-right:1px solid var(--line)}.versions{border-left:1px solid var(--line)}.paneHead{position:sticky;top:0;background:#f3f5f7;border-bottom:1px solid var(--line);padding:9px 11px;font-size:11px;font-weight:700;z-index:2}.result{padding:10px 11px;border-bottom:1px solid #edf0f2;cursor:pointer}.result:hover,.result.active{background:#f4f8fd}.result b{display:block;font-size:12px;color:#244d7e}.coord{font:10px Consolas,monospace;color:var(--muted);margin-top:3px}
+.detail{padding:18px}.detail h1{font-size:19px;margin:0 0 5px}.meta{font-size:11px;color:var(--muted);margin-bottom:16px}.summary{border:1px solid var(--line);border-radius:6px;padding:11px;font-size:11px;line-height:1.5;background:#fbfcfd}.snippetCard{margin-top:16px;border:1px solid var(--line);border-radius:6px;overflow:hidden}.snippetHead{display:flex;align-items:center;padding:7px 9px;background:#f3f5f7;border-bottom:1px solid var(--line);font-size:11px;font-weight:700}.snippetHead button{margin-left:auto;border:1px solid #aab2bb;background:#fff;border-radius:4px;padding:4px 8px;cursor:pointer}.snippet{margin:0;padding:12px;background:#20252a;color:#e6edf3;font:11px/1.55 Consolas,monospace;white-space:pre-wrap;min-height:110px}.versionList{padding:8px}.versionRow{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid #edf0f2;cursor:pointer}.versionRow:hover,.versionRow.active{background:#f4f8fd}.versionRow span{flex:1;font:11px Consolas,monospace}.badge{font-size:9px;background:#edf3fb;color:#305b89;border-radius:10px;padding:2px 6px}
+.toast{position:absolute;right:18px;bottom:18px;background:#242a31;color:#fff;padding:8px 11px;border-radius:5px;box-shadow:0 5px 18px rgba(0,0,0,.25);font-size:11px;display:none;z-index:70}.toast.show{display:block}.assistant{position:absolute;right:16px;bottom:16px;width:320px;max-width:calc(100vw - 32px);z-index:90;background:#222831;color:#e8edf3;border:1px solid #414954;border-radius:7px;box-shadow:0 10px 28px rgba(0,0,0,.28);overflow:hidden}.assistantHead{display:flex;align-items:center;gap:7px;height:32px;padding:0 8px;background:#1b2027;border-bottom:1px solid #3b424c;cursor:grab}.assistantHead .grow{flex:1}.assistantHead button{width:24px;height:24px;border:0;background:transparent;color:#aeb8c2;border-radius:4px}.assistantBody{padding:10px 11px;font-size:11px;line-height:1.48}.assistant.minimized .assistantBody{display:none}
+@media(max-width:800px){.workspace{grid-template-columns:36% 64%}.versions{display:none}}
+</style>
+</head>
+<body data-sim-app="maven_central">
+<div id="app" class="app">
+<header class="top"><div class="brand">MAVEN <b>CENTRAL</b></div><span>Repository dependency search</span></header>
+<div class="searchBar"><input id="searchInput" placeholder="Search group, artifact, dependency"><button id="searchBtn">Search</button></div>
+<main class="workspace">
+<section class="pane results"><div class="paneHead">Search results</div><div id="results"></div></section>
+<section class="pane detail" id="artifactDetail"></section>
+<aside class="pane versions"><div class="paneHead">Versions</div><div id="versions" class="versionList"></div></aside>
+</main>
+<div id="toast" class="toast"></div>
+<aside id="assistant" class="assistant" data-sim-explanation data-sim-persist="position">
+<div class="assistantHead" data-sim-explanation-drag><strong>AI</strong><span data-sim-explanation-meta>Maven Central</span><span class="grow"></span><button data-sim-explanation-min title="Minimize">−</button><button data-sim-explanation-close title="Close">×</button></div>
+<div class="assistantBody" data-sim-explanation-text>Search a dependency, choose a version, then copy its Maven XML.</div>
+</aside>
+</div>
+<script src="engine.js?v=1"></script>
+<script src="../shared/highlighter.js?v=9"></script>
+<script src="../shared/explanation-controls.js?v=12"></script>
+<script src="../shared/layout-resize.js?v=10"></script>
+</body>
+</html>
