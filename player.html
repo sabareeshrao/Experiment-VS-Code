@@ -3,8 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Java Practice Developer Playback</title>
-  <link rel="stylesheet" href="styles.css?v=29">
+  <script>
+    window.__PLAYBACK_BOOT_TOKEN__=Date.now().toString(36);
+    (function(){
+      var l=document.createElement("link");
+      l.rel="stylesheet";
+      l.href="styles.css?boot="+encodeURIComponent(window.__PLAYBACK_BOOT_TOKEN__);
+      document.head.appendChild(l);
+    })();
+  </script>
 </head>
 <body>
   <div class="learning-shell" id="learningShell">
@@ -42,20 +53,20 @@
       </header>
 
       <section class="ide-shell" id="ideShell">
-        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" src="simulator/intellij/index.html?v=20" title="IntelliJ IDEA simulator"></iframe>
-        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" src="simulator/pgadmin/index.html?v=22" title="pgAdmin simulator"></iframe>
-        <iframe id="vscodeFrame" class="sim-frame" data-app="vscode" src="simulator/vscode/index.html?v=28" title="Visual Studio Code simulator"></iframe>
-        <iframe id="postmanFrame" class="sim-frame" data-app="postman" src="simulator/postman/index.html?v=20" title="Postman simulator"></iframe>
-        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" src="simulator/cmd/index.html?v=22" title="Windows Command Prompt simulator"></iframe>
-        <iframe id="linuxFrame" class="sim-frame" data-app="linux" src="simulator/linux/index.html?v=26" title="Linux workstation simulator"></iframe>
-        <iframe id="ssmsFrame" class="sim-frame" data-app="ssms" src="simulator/ssms/index.html?v=24" title="SQL Server Management Studio simulator"></iframe>
-        <iframe id="jiraFrame" class="sim-frame" data-app="jira" src="simulator/jira/index.html?v=17" title="Jira simulator"></iframe>
-        <iframe id="jenkinsFrame" class="sim-frame" data-app="jenkins" src="simulator/jenkins/index.html?v=9" title="Jenkins simulator"></iframe>
-        <iframe id="powerbiFrame" class="sim-frame" data-app="powerbi" src="simulator/powerbi/index.html?v=5" title="Power BI Desktop simulator"></iframe>
-        <iframe id="gitFrame" class="sim-frame" data-app="git" src="simulator/git/index.html?v=2" title="Git simulator"></iframe>
-        <iframe id="githubFrame" class="sim-frame" data-app="github" src="simulator/github/index.html?v=2" title="GitHub simulator"></iframe>
-        <iframe id="githubActionsFrame" class="sim-frame" data-app="github_actions" src="simulator/github_actions/index.html?v=2" title="GitHub Actions simulator"></iframe>
-        <iframe id="mysqlWorkbenchFrame" class="sim-frame" data-app="mysqlworkbench" src="simulator/mysql_workbench/index.html?v=4" title="MySQL Workbench simulator"></iframe>
+        <iframe id="ideFrame" class="sim-frame active" data-app="intellij" data-src="simulator/intellij/index.html?v=20" title="IntelliJ IDEA simulator"></iframe>
+        <iframe id="pgadminFrame" class="sim-frame" data-app="pgadmin" data-src="simulator/pgadmin/index.html?v=22" title="pgAdmin simulator"></iframe>
+        <iframe id="vscodeFrame" class="sim-frame" data-app="vscode" data-src="simulator/vscode/index.html?v=28" title="Visual Studio Code simulator"></iframe>
+        <iframe id="postmanFrame" class="sim-frame" data-app="postman" data-src="simulator/postman/index.html?v=20" title="Postman simulator"></iframe>
+        <iframe id="cmdFrame" class="sim-frame" data-app="cmd" data-src="simulator/cmd/index.html?v=22" title="Windows Command Prompt simulator"></iframe>
+        <iframe id="linuxFrame" class="sim-frame" data-app="linux" data-src="simulator/linux/index.html?v=26" title="Linux workstation simulator"></iframe>
+        <iframe id="ssmsFrame" class="sim-frame" data-app="ssms" data-src="simulator/ssms/index.html?v=24" title="SQL Server Management Studio simulator"></iframe>
+        <iframe id="jiraFrame" class="sim-frame" data-app="jira" data-src="simulator/jira/index.html?v=17" title="Jira simulator"></iframe>
+        <iframe id="jenkinsFrame" class="sim-frame" data-app="jenkins" data-src="simulator/jenkins/index.html?v=9" title="Jenkins simulator"></iframe>
+        <iframe id="powerbiFrame" class="sim-frame" data-app="powerbi" data-src="simulator/powerbi/index.html?v=5" title="Power BI Desktop simulator"></iframe>
+        <iframe id="gitFrame" class="sim-frame" data-app="git" data-src="simulator/git/index.html?v=2" title="Git simulator"></iframe>
+        <iframe id="githubFrame" class="sim-frame" data-app="github" data-src="simulator/github/index.html?v=2" title="GitHub simulator"></iframe>
+        <iframe id="githubActionsFrame" class="sim-frame" data-app="github_actions" data-src="simulator/github_actions/index.html?v=2" title="GitHub Actions simulator"></iframe>
+        <iframe id="mysqlWorkbenchFrame" class="sim-frame" data-app="mysqlworkbench" data-src="simulator/mysql_workbench/index.html?v=4" title="MySQL Workbench simulator"></iframe>
       </section>
 
       <footer class="playback-bar hidden" id="playbackBar">
@@ -67,16 +78,28 @@
     </main>
   </div>
 
-  <script src="project-data/part-01.js?v=1"></script>
-  <script src="project-data/part-02.js?v=1"></script>
-  <script src="project-data/part-03.js?v=1"></script>
-  <script src="project-data/part-04.js?v=1"></script>
-  <script src="project-data/part-05.js?v=1"></script>
-  <script src="project-data/part-06.js?v=1"></script>
-  <script src="project-data/part-07.js?v=1"></script>
-  <script src="project-data/part-08.js?v=1"></script>
-  <script src="project-data/index.js?v=1"></script>
-  <script src="lessons.js?v=34"></script>
-  <script src="app.js?v=40"></script>
+  <script>
+    (function(){
+      var boot=window.__PLAYBACK_BOOT_TOKEN__||Date.now().toString(36);
+      var queue=[
+        "project-data/part-01.js","project-data/part-02.js","project-data/part-03.js","project-data/part-04.js",
+        "project-data/part-05.js","project-data/part-06.js","project-data/part-07.js","project-data/part-08.js",
+        "project-data/index.js","lessons.js","app.js"
+      ];
+      function next(i){
+        if(i>=queue.length)return;
+        var s=document.createElement("script");
+        s.src=queue[i]+"?boot="+encodeURIComponent(boot);
+        s.onload=function(){next(i+1)};
+        s.onerror=function(){
+          console.error("Playback asset failed:",queue[i]);
+          var title=document.getElementById("stepTitle");
+          if(title)title.textContent="Playback failed to load. Reload the page.";
+        };
+        document.body.appendChild(s);
+      }
+      next(0);
+    })();
+  </script>
 </body>
 </html>

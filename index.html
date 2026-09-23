@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Java Developer Journey Library</title>
   <script>
     (() => {
@@ -12,7 +15,15 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="library.css?v=4">
+  <script>
+    window.__LIBRARY_BOOT_TOKEN__=Date.now().toString(36);
+    (function(){
+      var l=document.createElement("link");
+      l.rel="stylesheet";
+      l.href="library.css?boot="+encodeURIComponent(window.__LIBRARY_BOOT_TOKEN__);
+      document.head.appendChild(l);
+    })();
+  </script>
 </head>
 <body>
   <div class="catalog-shell">
@@ -60,7 +71,18 @@
     </main>
   </div>
 
-  <script src="lessons.js?v=34"></script>
-  <script src="library.js?v=3"></script>
+  <script>
+    (function(){
+      var boot=window.__LIBRARY_BOOT_TOKEN__||Date.now().toString(36);
+      function load(path,done){
+        var s=document.createElement("script");
+        s.src=path+"?boot="+encodeURIComponent(boot);
+        s.onload=done;
+        s.onerror=function(){console.error("Library asset failed:",path)};
+        document.body.appendChild(s);
+      }
+      load("lessons.js",function(){load("library.js",function(){})});
+    })();
+  </script>
 </body>
 </html>

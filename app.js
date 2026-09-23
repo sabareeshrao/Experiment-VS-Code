@@ -73,6 +73,29 @@
     mysqlworkbench: false
   };
 
+  const SIM_BOOT_TOKEN =
+    window.__PLAYBACK_BOOT_TOKEN__ ||
+    (Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
+
+  function ensureFrameLoaded(name) {
+    const target = normalizeSoftware(name);
+    const frame = frames[target];
+    if (!frame) return false;
+    if (frame.dataset.simLoaded === "1" || frame.dataset.simLoading === "1") return true;
+
+    const raw = frame.dataset.src || frame.getAttribute("src");
+    if (!raw) return false;
+
+    engineReady[target] = false;
+    frame.dataset.simLoading = "1";
+
+    const url = new URL(raw, location.href);
+    url.searchParams.set("boot", SIM_BOOT_TOKEN);
+    frame.src = url.href;
+    return true;
+  }
+
+
   function ensureGlobalSimulatorRuntime(frame) {
     if (!frame) return;
     try {
@@ -94,8 +117,13 @@
       // Universal rules for every current and future simulator.
       ensureScript(
         "/simulator/shared/explanation-controls.js",
-        "simulator/shared/explanation-controls.js?v=10",
+        "simulator/shared/explanation-controls.js?v=11",
         "globalExplanationRuntime"
+      );
+      ensureScript(
+        "/simulator/shared/boot-protocol.js",
+        "simulator/shared/boot-protocol.js?v=1",
+        "globalBootProtocol"
       );
       ensureScript(
         "/simulator/shared/layout-resize.js",
@@ -141,7 +169,7 @@
   }
 
   function recoverFrameHandshake(name, frame) {
-    if (!frame) return;
+    if (!frame || frame.dataset.simLoaded !== "1") return;
     const attempt = () => {
       try {
         ensureGlobalSimulatorRuntime(frame);
@@ -168,7 +196,7 @@
     };
 
     attempt();
-    [40, 140, 400, 900].forEach(delay => setTimeout(() => {
+    [30, 90, 220, 500, 1000, 2200].forEach(delay => setTimeout(() => {
       if (!engineReady[name]) attempt();
     }, delay));
   }
@@ -176,12 +204,15 @@
   Object.entries(frames).forEach(([name, frame]) => {
     if (!frame) return;
     frame.addEventListener("load", () => {
-      // IMPORTANT: never clear a readiness signal here. Many legacy simulators
-      // post ENGINE_READY before the browser fires iframe load. Clearing it here
-      // caused every later SIM_SEEK to be dropped while SIM_EXPLAIN still worked.
+      // Lazy iframes begin life as about:blank. Only hydrate the real simulator.
+      if (frame.dataset.simLoading !== "1" && frame.dataset.simLoaded !== "1") return;
+      try {
+        if (frame.contentWindow?.location?.href === "about:blank") return;
+      } catch (_) {}
+      frame.dataset.simLoading = "0";
+      frame.dataset.simLoaded = "1";
       recoverFrameHandshake(name, frame);
     });
-    setTimeout(() => recoverFrameHandshake(name, frame), 0);
   });
 
   const stageList = $("stageList");
@@ -246,6 +277,7 @@
 
   function switchWorkspace(software) {
     activeSoftware = normalizeSoftware(software);
+    ensureFrameLoaded(activeSoftware);
 
     Object.entries(frames).forEach(([name, frame]) => {
       if (!frame) return;
@@ -439,6 +471,7 @@
 
   function seekSoftware(index, software, animateFinal) {
     const target = normalizeSoftware(software);
+    ensureFrameLoaded(target);
     if (!engineReady[target] || !flat.length) return;
 
     // Never block navigation on visual guidance. The step state is rebuilt
@@ -580,6 +613,7 @@
   }
 
   function loadFullCode() {
+    ensureFrameLoaded("intellij");
     fullCodeMode = true;
     switchWorkspace("intellij");
 
