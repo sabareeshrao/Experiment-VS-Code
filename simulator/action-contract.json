@@ -7,7 +7,8 @@
     "Every lesson action must be declared by its simulator before the lesson is merged.",
     "SIM_PACKAGE and SIM_SEEK must reconstruct a simulator deterministically from a clean load.",
     "Shared code may provide mechanics such as explanation positioning, highlighting and layout persistence, but not product visuals.",
-    "Visible simulator side panes must be resizable and persistent through the shared layout runtime without sharing product-specific visuals."
+    "Visible simulator side panes must be resizable and persistent through the shared layout runtime without sharing product-specific visuals.",
+    "The main player owns the single visible global explanation card; simulators must not own competing explanation UI when embedded."
   ],
   "protocol": {
     "parentToSimulator": [
@@ -162,6 +163,13 @@
       "packageKey": "powershell",
       "engineSource": "index.html",
       "manifestKey": "powershell"
+    },
+    "kubernetes": {
+      "directory": "kubernetes",
+      "frameId": "kubernetesFrame",
+      "packageKey": "kubernetes",
+      "engineSource": "engine.js",
+      "manifestKey": "kubernetes"
     }
   },
   "layoutPolicy": {

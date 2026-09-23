@@ -122,13 +122,33 @@ assert(!app.includes('searchParams.get("software")'), "Simulator-specific softwa
 assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
 // Software simulators must be activated by lesson steps, not bespoke player navigation.
-assert(app.includes("explanation-controls.js?v=12"), "Universal explanation-controls v12 injection is missing from app.js");
 assert(exists("simulator/shared/explanation-controls.js"), "Missing simulator/shared/explanation-controls.js");
 if (exists("simulator/shared/explanation-controls.js")) {
   const explanationControls = read("simulator/shared/explanation-controls.js");
+  assert(
+    /explanation-controls\.js\?v=\d+/.test(app),
+    "Universal explanation-controls injection is missing from app.js"
+  );
+  assert(player.includes('data-sim-player="1"'), "player.html is missing the global explanation owner marker");
+  assert(
+    player.includes("simulator/shared/explanation-controls.js"),
+    "player.html must load the global explanation runtime before app.js"
+  );
+  assert(
+    explanationControls.includes('STORAGE_KEY="sim.explanation.v3"'),
+    "Global explanation persistence key is missing"
+  );
+  assert(
+    explanationControls.includes("window.SIM_EXPLANATION") &&
+    explanationControls.includes("ResizeObserver"),
+    "Global explanation API / dynamic height observer is missing"
+  );
   assert(explanationControls.includes("data-sim-explanation-min"), "Explanation controls are missing minimize support");
   assert(explanationControls.includes("data-sim-explanation-close"), "Explanation controls are missing close support");
-  assert(explanationControls.includes("minimizedKey"), "Explanation minimize persistence is missing");
+  assert(
+    app.includes("window.SIM_EXPLANATION?.show"),
+    "app.js must render explanations through the parent-owned global runtime"
+  );
 }
 const packageWorkflow = exists(".github/workflows/package-simulator.yml")
   ? read(".github/workflows/package-simulator.yml")
@@ -323,6 +343,22 @@ if (exists("app.js")) {
   );
 }
 
+
+// Kubernetes is a first-class master simulator.
+if (contract && course) {
+  assert(
+    Object.prototype.hasOwnProperty.call(contract.simulators || {}, "kubernetes"),
+    "Kubernetes is missing from simulator/action-contract.json"
+  );
+  assert(
+    Object.prototype.hasOwnProperty.call((course.package && course.package.apps) || {}, "kubernetes"),
+    "Kubernetes package baseline is missing"
+  );
+  assert(
+    player.includes('id="kubernetesFrame"') && player.includes('data-app="kubernetes"'),
+    "Kubernetes lazy iframe is missing from player.html"
+  );
+}
 
 // Global layout runtime rule.
 // Every simulator loads the common resize/persistence mechanics. Product visuals
