@@ -92,6 +92,7 @@
         "run-console-output",
         "settings-dialog",
         "soap",
+        "split-editor",
         "spring-boot",
         "spring-data-jpa",
         "spring-framework",
@@ -119,6 +120,7 @@
         "explanation-minimize-close",
         "explorer-context-menu",
         "extensions",
+        "integrated-terminal",
         "persistent-explanation-minimize",
         "persistent-explanation-position",
         "persistent-layout",
@@ -126,6 +128,7 @@
         "resizable-sidebars",
         "settings-editor",
         "source-control",
+        "split-editor",
         "tool-panel"
       ],
       "indexed_actions": [],
