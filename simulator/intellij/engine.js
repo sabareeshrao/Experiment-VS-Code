@@ -102,6 +102,52 @@ function deleteTreePath(nodes,p){for(let i=nodes.length-1;i>=0;i--){if(nodes[i].
 function addProblem(d){state.problems.push({severity:d.severity||"warning",message:d.message||"Inspection problem",file:d.file||activeFile,line:d.line||1})}
 function resultTable(cols,rows){return '<table class="dataTable"><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join("")+'</tr>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(Array.isArray(r)?r[cols.indexOf(c)]:r[c])+'</td>').join("")+'</tr>').join("")+'</table>'}
 function genericSurface(title,d){showModal("surface",title,'<div class="cards">'+Object.entries(d||{}).slice(0,12).map(([k,v])=>card(k,typeof v==="object"?JSON.stringify(v):v)).join("")+'</div>')}
+function javaStructureEntries(path){
+ const content=String(files[path]?.content||"");
+ const entries=[];
+ content.split("\n").forEach((raw,index)=>{
+  const line=raw.trim();
+  if(!line||line.startsWith("//")||line.startsWith("*")||line.startsWith("@"))return;
+  let m=line.match(/\b(class|interface|enum|record)\s+(\w+)/);
+  if(m){entries.push({kind:"class",icon:"C",name:m[2],detail:m[1],line:index+1});return}
+  m=line.match(/^(?:(?:public|protected|private|static|final|synchronized|abstract|native|default)\s+)*[\w<>, ?\[\].]+\s+(\w+)\s*\(([^)]*)\)\s*(?:\{|throws\b|$)/);
+  if(m){entries.push({kind:"method",icon:"m",name:m[1]+"("+m[2].trim()+")",detail:"method",line:index+1});return}
+  m=line.match(/^(?:(?:public|protected|private|static|final|transient|volatile)\s+)*([\w<>, ?\[\].]+)\s+(\w+)\s*(?:=[^;]*)?;/);
+  if(m){entries.push({kind:"field",icon:"f",name:m[2],detail:m[1].trim(),line:index+1})}
+ });
+ return entries;
+}
+function showFileStructure(path){
+ const file=path&&files[path]?path:activeFile;
+ if(!file||!files[file]){notify("No file selected","error");return}
+ openFile(file);
+ const entries=javaStructureEntries(file);
+ const rows=entries.map(x=>
+  '<div class="structureRow" data-structure-line="'+x.line+'" style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:7px;align-items:center">'+
+   '<span style="width:18px;height:18px;border-radius:4px;display:grid;place-items:center;background:var(--surface3);color:var(--blue);font-weight:700">'+esc(x.icon)+'</span>'+
+   '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(x.name)+'</span>'+
+   '<span style="color:var(--muted);font-size:9px">'+esc(x.detail)+' · line '+x.line+'</span>'+
+  '</div>'
+ ).join("");
+ showModal(
+  "fileStructure",
+  "File Structure — "+file.split("/").pop(),
+  '<div style="margin:-4px -4px 7px;color:var(--muted)">Navigate symbols in '+esc(file)+'</div>'+
+  '<div style="border:1px solid var(--line);border-radius:4px;overflow:hidden">'+
+   (rows||'<div class="structureRow">No symbols found</div>')+
+  '</div>'
+ );
+ refs.modalBody.querySelectorAll("[data-structure-line]").forEach(row=>{
+  row.onclick=()=>{
+   const line=Number(row.dataset.structureLine);
+   closeModal();
+   focusRange={file,lines:[line]};
+   renderEditor();
+   const el=refs.code.querySelector('[data-line="'+line+'"]');
+   window.SIM_FOCUS?.follow(el,{block:"center"});
+  };
+ });
+}
 function findRun(name){return state.runConfigurations.find(x=>x.name===name)||state.runConfigurations[0]}
 function actionStatus(msg){refs.status.textContent=msg}
 function reset(){state=clone(baseline||{});normalize();clearTransient("");trackedBoundary=null;refs.boundary.classList.remove("show");refs.app.classList.remove("distraction");document.body.classList.remove("zen");renderAll()}
@@ -162,7 +208,8 @@ async function applyStep(st,animate,token){
   case"toggleZenMode":document.body.classList.toggle("zen",d.enabled!==false);break;
 
   case"gotoClass":case"gotoFile":case"gotoSymbol":case"searchEverywhere":case"findInFiles":case"recentFiles":genericSurface(st.action,d);break;
-  case"gotoDeclaration":case"gotoImplementation":case"findUsages":case"showCallHierarchy":case"showTypeHierarchy":case"showFileStructure":genericSurface(st.action,d);if(d.file)openFile(d.file);break;
+  case"gotoDeclaration":case"gotoImplementation":case"findUsages":case"showCallHierarchy":case"showTypeHierarchy":genericSurface(st.action,d);if(d.file)openFile(d.file);break;
+  case"showFileStructure":showFileStructure(d.file||activeFile);break;
 
   case"showCompletion":showPopup("completion",d.items||["getLatitude()","getLongitude()","saveSurvey(...)"]);break;
   case"showParameterInfo":showPopup("completion",d.items||["saveSurvey(SurveyRecord survey)"]);break;

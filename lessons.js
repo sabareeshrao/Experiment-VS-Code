@@ -5180,7 +5180,9 @@ window.COURSE = {
           "why": "Structure view lo class motham scan cheyyakunda four fields, getters, setters anni oka sari choodachu. Developer ki class shape fast ga ardham avuthundi.",
           "action": {
             "action": "showFileStructure",
-            "data": {}
+            "data": {
+              "file": "src/Student.java"
+            }
           },
           "software": "intellij"
         }
