@@ -353,6 +353,25 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
     window.SimEngine.setReplayMode(false);
     window.SimEngine.setBoundaryEnabled(false);
   }
+  function showNativeExplanation(m) {
+    const box = document.querySelector("[data-sim-explanation]") || document.getElementById("mysqlWorkbenchAssistant");
+    if (!box) return;
+    const title = box.querySelector("[data-sim-explanation-title]");
+    const text = box.querySelector("[data-sim-explanation-text]");
+    if (title && m?.title) title.textContent = m.title;
+    if (text) text.textContent = m?.text || "";
+    box.classList.remove("hidden","minimized","min");
+    box.classList.add("show");
+    // Minimal fallback placement if the shared controller has not injected yet.
+    if (!box.classList.contains("simExplainUnified")) {
+      Object.assign(box.style,{
+        position:"fixed",right:"18px",bottom:"18px",width:"min(360px,calc(100vw - 36px))",
+        zIndex:"20000",background:"#242424",color:"#e8e8e8",border:"1px solid #4b4b4b",
+        borderRadius:"6px",boxShadow:"0 10px 34px rgba(0,0,0,.42)",overflow:"hidden"
+      });
+    }
+  }
+
   const announceReady = () => parent.postMessage({
     type: "ENGINE_READY",
     app: APP_ID,
@@ -362,8 +381,10 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
 
   window.addEventListener("message", e => {
     const m = e.data || {};
-    if (m.type === "SIM_PING") {
+    if (m.type === "SIM_PING" || m.type === "SIM_BOOTSTRAP") {
       announceReady();
+    } else if (m.type === "SIM_EXPLAIN") {
+      showNativeExplanation(m);
     } else if (m.type === "SIM_PACKAGE") {
       universalPackage = m.package || null;
       window.SimEngine.setAutoType(m.autoType !== false);

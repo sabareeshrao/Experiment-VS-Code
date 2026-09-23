@@ -1,3 +1,7 @@
+# READ THIS FIRST — Simulator Integration Contract
+
+**Before adding or upgrading any software, read the mandatory root-level `SIMULATOR_INTEGRATION_RULES.md`. Do not create a simulator or lesson chapter until those rules are satisfied.**
+
 # Simulator Library
 
 Each simulated desktop application lives in its own folder so the lesson player can switch software without mixing implementation files.
