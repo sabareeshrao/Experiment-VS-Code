@@ -159,6 +159,18 @@ Rules:
 
 A new simulator is **not complete** if it adds a software-specific explanation UI instead of using this global player-level system.
 
+### Question-mode explanation format
+
+For question-driven curricula, use this presentation consistently:
+
+- header: `Q#### - concise question title`
+- body: the complete teaching question/context
+- answer: a separate bordered `ANSWER` section
+- do not put the answer inline with the question
+- do not abbreviate the teaching question merely to make the card smaller; dynamic height handles content
+- non-question lessons keep their ordinary lesson title and explanation body
+- the global explanation component decides the visual treatment; individual simulators must not restyle question cards
+
 ## 10. Never use giant lesson highlight rectangles
 
 The shared highlighter is the only normal lesson guidance system.

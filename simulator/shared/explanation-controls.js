@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var VERSION=21;
+var VERSION=22;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -76,9 +76,9 @@ function ensureStyle(){
     "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar{display:block!important;width:8px!important;height:8px!important}",
     "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar-thumb{background:#656b75;border:2px solid transparent;background-clip:padding-box;border-radius:999px}",
     "#"+HOST_ID+" [data-sim-explanation-text]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}",
-    "#"+HOST_ID+" .simExplainAnswer{display:none;margin-top:9px;padding:8px 9px;border:1px solid #50545c;border-radius:5px;background:#1e2024;white-space:pre-wrap;overflow-wrap:anywhere}",
+    "#"+HOST_ID+" .simExplainAnswer{display:none;margin-top:11px;padding:12px 13px;border:1px solid #555b66;border-radius:6px;background:#23252b;color:#f2f3f5;white-space:pre-wrap;overflow-wrap:anywhere}",
     "#"+HOST_ID+" .simExplainAnswer.show{display:block}",
-    "#"+HOST_ID+" .simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#aeb3bc;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}",
+    "#"+HOST_ID+" .simExplainAnswer:before{content:'ANSWER';display:block;margin-bottom:8px;color:#aeb2bc;font-size:9.5px;font-weight:800;letter-spacing:.045em;text-transform:uppercase}",
     "#"+HOST_ID+".minimized .simExplainGlobalBody{display:none!important}",
     "#"+HOST_ID+".minimized{height:34px!important;max-height:34px!important}",
     "#"+HOST_ID+".minimized .simExplainGlobalHead{border-bottom:0}",
@@ -254,6 +254,7 @@ function show(payload){
   var text=box.querySelector("[data-sim-explanation-text]");
   var answer=box.querySelector(".simExplainAnswer");
   title.textContent=payload.title||"Lesson explanation";
+  box.dataset.explanationMode=payload.mode||((payload.answer||"")?"qa":"explanation");
   text.textContent=payload.text||"";
   if(payload.answer){answer.textContent=String(payload.answer);answer.classList.add("show")}
   else{answer.textContent="";answer.classList.remove("show")}

@@ -629,12 +629,17 @@
     if (!flat.length || fullCodeMode) return;
     const step = flat[current];
     const stage = course.stages[step.stageIndex];
+    const rawTitle = String(step.title || "Lesson explanation");
+    const questionTitle = /^Q\d+/i.test(rawTitle)
+      ? rawTitle.replace(/^(Q\d+)\s*[·•:]\s*/i, "$1 - ")
+      : rawTitle;
     const payload = {
       type: "SIM_EXPLAIN",
-      title: step.title,
+      title: questionTitle,
       text: step.why,
       answer: step.answer || "",
-      stage: stage.title
+      stage: stage.title,
+      mode: step.answer ? "qa" : "explanation"
     };
 
     if (window.SIM_EXPLANATION?.show) {
