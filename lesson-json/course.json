@@ -44,6 +44,13 @@
       "subtitle": "Redis Insight Browser, Workbench, CLI, Search, Analyze, and Pub/Sub workflow.",
       "chapterStart": 13,
       "chapterEnd": 13
+    },
+    {
+      "id": "book-7",
+      "title": "Kubernetes: Headlamp UI & kubectl Operations",
+      "subtitle": "A synchronized Kubernetes cluster workflow covering workloads, networking, storage, configuration, RBAC, observability, YAML, troubleshooting, node operations, and kubectl.",
+      "chapterStart": 14,
+      "chapterEnd": 14
     }
   ],
   "package": {
@@ -4996,6 +5003,990 @@
         "history": [],
         "output": "",
         "exitCode": 0
+      },
+      "kubernetes": {
+        "title": "campus-platform-dev",
+        "version": "v1.34.1",
+        "context": "campus-platform-dev",
+        "cluster": "campus-platform-dev",
+        "namespace": "campus-dev",
+        "view": "overview",
+        "resourceKind": null,
+        "selected": null,
+        "detailTab": "Overview",
+        "theme": "light",
+        "search": "",
+        "logSearch": "",
+        "container": "student-api",
+        "terminalOpen": false,
+        "terminalLines": [
+          {
+            "type": "out",
+            "text": "kubectl terminal ready — context campus-platform-dev"
+          }
+        ],
+        "execLines": [],
+        "eventFilter": "All",
+        "clusters": [
+          {
+            "name": "campus-platform-dev",
+            "status": "Healthy",
+            "version": "v1.34.1",
+            "server": "https://10.0.0.10:6443"
+          },
+          {
+            "name": "staging-cluster",
+            "status": "Healthy",
+            "version": "v1.34.1",
+            "server": "https://10.20.0.10:6443"
+          }
+        ],
+        "namespaces": [
+          {
+            "name": "campus-dev",
+            "status": "Active"
+          },
+          {
+            "name": "monitoring",
+            "status": "Active"
+          },
+          {
+            "name": "ingress-nginx",
+            "status": "Active"
+          },
+          {
+            "name": "kube-system",
+            "status": "Active"
+          }
+        ],
+        "resources": {
+          "deployments": [
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 2,
+              "available": 2,
+              "updated": 2,
+              "ready": "2/2",
+              "status": "Available",
+              "age": "12d",
+              "image": "ghcr.io/campus/student-api:1.8.4",
+              "revision": 7,
+              "labels": {
+                "app": "student-api",
+                "tier": "backend"
+              },
+              "yaml": "apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: student-api\\n  namespace: campus-dev\\nspec:\\n  replicas: 2\\n  selector:\\n    matchLabels:\\n      app: student-api\\n  template:\\n    metadata:\\n      labels:\\n        app: student-api\\n    spec:\\n      containers:\\n      - name: student-api\\n        image: ghcr.io/campus/student-api:1.8.4\\n        ports:\\n        - containerPort: 8080\\n"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 2,
+              "available": 1,
+              "updated": 2,
+              "ready": "1/2",
+              "status": "Progressing",
+              "age": "12d",
+              "image": "ghcr.io/campus/course-api:2.2.1",
+              "revision": 11,
+              "labels": {
+                "app": "course-api",
+                "tier": "backend"
+              }
+            },
+            {
+              "name": "frontend",
+              "namespace": "campus-dev",
+              "kind": "Deployment",
+              "replicas": 3,
+              "available": 3,
+              "updated": 3,
+              "ready": "3/3",
+              "status": "Available",
+              "age": "20d",
+              "image": "ghcr.io/campus/frontend:4.6.0",
+              "revision": 18,
+              "labels": {
+                "app": "frontend",
+                "tier": "web"
+              }
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "kind": "Deployment",
+              "replicas": 1,
+              "available": 1,
+              "updated": 1,
+              "ready": "1/1",
+              "status": "Available",
+              "age": "30d",
+              "image": "quay.io/prometheus/prometheus:v3.5.0",
+              "revision": 4,
+              "labels": {
+                "app": "prometheus"
+              }
+            }
+          ],
+          "replicasets": [
+            {
+              "name": "student-api-7d8c7b8b9f",
+              "namespace": "campus-dev",
+              "desired": 2,
+              "current": 2,
+              "ready": 2,
+              "age": "2h",
+              "status": "Ready"
+            },
+            {
+              "name": "course-api-86dbf4d6c8",
+              "namespace": "campus-dev",
+              "desired": 2,
+              "current": 2,
+              "ready": 1,
+              "age": "1h",
+              "status": "Progressing"
+            },
+            {
+              "name": "frontend-5bc9d7f8cd",
+              "namespace": "campus-dev",
+              "desired": 3,
+              "current": 3,
+              "ready": 3,
+              "age": "3h",
+              "status": "Ready"
+            }
+          ],
+          "pods": [
+            {
+              "name": "student-api-7d8c7b8b9f-9x2lm",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "student-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "2h",
+              "ip": "10.244.1.21",
+              "node": "worker-a",
+              "labels": {
+                "app": "student-api",
+                "version": "1.8.4"
+              },
+              "containers": [
+                {
+                  "name": "student-api",
+                  "image": "ghcr.io/campus/student-api:1.8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "2026-09-23T12:10:01Z INFO Started StudentApplication",
+                "2026-09-23T12:10:03Z INFO Connected to mysql:3306",
+                "2026-09-23T12:15:44Z INFO GET /api/students 200 18ms"
+              ]
+            },
+            {
+              "name": "student-api-7d8c7b8b9f-kq8tp",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "student-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "2h",
+              "ip": "10.244.2.18",
+              "node": "worker-b",
+              "labels": {
+                "app": "student-api",
+                "version": "1.8.4"
+              },
+              "containers": [
+                {
+                  "name": "student-api",
+                  "image": "ghcr.io/campus/student-api:1.8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "2026-09-23T12:10:02Z INFO Started StudentApplication",
+                "2026-09-23T12:10:04Z INFO Health endpoint UP"
+              ]
+            },
+            {
+              "name": "course-api-86dbf4d6c8-vm2jk",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "course-api",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "1h",
+              "ip": "10.244.1.25",
+              "node": "worker-a",
+              "labels": {
+                "app": "course-api",
+                "version": "2.2.1"
+              },
+              "containers": [
+                {
+                  "name": "course-api",
+                  "image": "ghcr.io/campus/course-api:2.2.1",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "INFO Course API started",
+                "INFO cache warmed with 42 courses"
+              ]
+            },
+            {
+              "name": "course-api-86dbf4d6c8-zr7qp",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "course-api",
+              "ready": "0/1",
+              "status": "CrashLoopBackOff",
+              "restarts": 6,
+              "age": "38m",
+              "ip": "10.244.2.27",
+              "node": "worker-b",
+              "labels": {
+                "app": "course-api",
+                "version": "2.2.1"
+              },
+              "containers": [
+                {
+                  "name": "course-api",
+                  "image": "ghcr.io/campus/course-api:2.2.1",
+                  "ready": false,
+                  "restarts": 6
+                }
+              ],
+              "logs": [
+                "ERROR Failed to connect to redis:6379",
+                "WARN Back-off restarting failed container course-api",
+                "ERROR java.net.ConnectException: Connection refused"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-2plm4",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.1.31",
+              "node": "worker-a",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx entered RUNNING state",
+                "GET / 200"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-j7tzn",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.2.30",
+              "node": "worker-b",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx ready",
+                "GET /assets/app.js 200"
+              ]
+            },
+            {
+              "name": "frontend-5bc9d7f8cd-rp9ds",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "frontend",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "3h",
+              "ip": "10.244.3.16",
+              "node": "worker-c",
+              "labels": {
+                "app": "frontend",
+                "version": "4.6.0"
+              },
+              "containers": [
+                {
+                  "name": "frontend",
+                  "image": "ghcr.io/campus/frontend:4.6.0",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "nginx ready"
+              ]
+            },
+            {
+              "name": "mysql-0",
+              "namespace": "campus-dev",
+              "kind": "Pod",
+              "owner": "mysql",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "5d",
+              "ip": "10.244.3.9",
+              "node": "worker-c",
+              "labels": {
+                "app": "mysql"
+              },
+              "containers": [
+                {
+                  "name": "mysql",
+                  "image": "mysql:8.4",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "mysqld: ready for connections",
+                "InnoDB initialization completed"
+              ]
+            },
+            {
+              "name": "node-exporter-9ts2k",
+              "namespace": "monitoring",
+              "kind": "Pod",
+              "owner": "node-exporter",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 0,
+              "age": "5d",
+              "ip": "10.244.1.7",
+              "node": "worker-a",
+              "labels": {
+                "app": "node-exporter"
+              },
+              "containers": [
+                {
+                  "name": "node-exporter",
+                  "image": "quay.io/prometheus/node-exporter:v1.9.1",
+                  "ready": true,
+                  "restarts": 0
+                }
+              ],
+              "logs": [
+                "Listening on :9100"
+              ]
+            },
+            {
+              "name": "ingress-nginx-controller-6bd8f",
+              "namespace": "ingress-nginx",
+              "kind": "Pod",
+              "owner": "ingress-nginx-controller",
+              "ready": "1/1",
+              "status": "Running",
+              "restarts": 1,
+              "age": "5d",
+              "ip": "10.244.2.4",
+              "node": "worker-b",
+              "labels": {
+                "app": "ingress-nginx"
+              },
+              "containers": [
+                {
+                  "name": "controller",
+                  "image": "registry.k8s.io/ingress-nginx/controller:v1.13.0",
+                  "ready": true,
+                  "restarts": 1
+                }
+              ],
+              "logs": [
+                "NGINX Ingress controller started"
+              ]
+            }
+          ],
+          "statefulsets": [
+            {
+              "name": "mysql",
+              "namespace": "campus-dev",
+              "ready": "1/1",
+              "status": "Ready",
+              "age": "5d",
+              "service": "mysql",
+              "labels": {
+                "app": "mysql"
+              },
+              "yaml": "apiVersion: apps/v1\\nkind: StatefulSet\\nmetadata:\\n  name: mysql\\n  namespace: campus-dev\\nspec:\\n  serviceName: mysql\\n  replicas: 1\\n"
+            }
+          ],
+          "daemonsets": [
+            {
+              "name": "node-exporter",
+              "namespace": "monitoring",
+              "desired": 3,
+              "current": 3,
+              "ready": 3,
+              "status": "Ready",
+              "age": "30d",
+              "labels": {
+                "app": "node-exporter"
+              }
+            }
+          ],
+          "jobs": [
+            {
+              "name": "db-migration-20260923",
+              "namespace": "campus-dev",
+              "completions": "1/1",
+              "duration": "18s",
+              "age": "2h",
+              "status": "Complete",
+              "labels": {
+                "job": "db-migration"
+              }
+            }
+          ],
+          "cronjobs": [
+            {
+              "name": "nightly-report",
+              "namespace": "campus-dev",
+              "schedule": "0 2 * * *",
+              "suspend": false,
+              "active": 0,
+              "lastSchedule": "10h",
+              "status": "Active",
+              "age": "21d",
+              "labels": {
+                "app": "reporting"
+              }
+            }
+          ],
+          "services": [
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.14.21",
+              "ports": "8080/TCP",
+              "age": "12d",
+              "selector": {
+                "app": "student-api"
+              },
+              "endpoints": [
+                "10.244.1.21:8080",
+                "10.244.2.18:8080"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.28.44",
+              "ports": "8081/TCP",
+              "age": "12d",
+              "selector": {
+                "app": "course-api"
+              },
+              "endpoints": [
+                "10.244.1.25:8081"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "frontend",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.38.72",
+              "ports": "80/TCP",
+              "age": "20d",
+              "selector": {
+                "app": "frontend"
+              },
+              "endpoints": [
+                "10.244.1.31:80",
+                "10.244.2.30:80",
+                "10.244.3.16:80"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "mysql",
+              "namespace": "campus-dev",
+              "type": "ClusterIP",
+              "clusterIP": "None",
+              "ports": "3306/TCP",
+              "age": "30d",
+              "selector": {
+                "app": "mysql"
+              },
+              "endpoints": [
+                "10.244.3.9:3306"
+              ],
+              "status": "Active"
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "type": "ClusterIP",
+              "clusterIP": "10.96.50.10",
+              "ports": "9090/TCP",
+              "age": "30d",
+              "selector": {
+                "app": "prometheus"
+              },
+              "endpoints": [
+                "10.244.3.20:9090"
+              ],
+              "status": "Active"
+            }
+          ],
+          "ingresses": [
+            {
+              "name": "campus-ingress",
+              "namespace": "campus-dev",
+              "class": "nginx",
+              "hosts": "campus.local",
+              "address": "10.0.0.50",
+              "ports": "80, 443",
+              "age": "20d",
+              "backend": "frontend:80",
+              "tls": "campus-tls",
+              "status": "Active",
+              "labels": {
+                "app": "frontend"
+              }
+            }
+          ],
+          "networkpolicies": [
+            {
+              "name": "default-deny",
+              "namespace": "campus-dev",
+              "selector": "<all pods>",
+              "policyTypes": "Ingress,Egress",
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "allow-ingress-to-frontend",
+              "namespace": "campus-dev",
+              "selector": "app=frontend",
+              "policyTypes": "Ingress",
+              "age": "20d",
+              "status": "Active"
+            }
+          ],
+          "persistentvolumeclaims": [
+            {
+              "name": "mysql-data-mysql-0",
+              "namespace": "campus-dev",
+              "status": "Bound",
+              "volume": "pvc-a1b2c3",
+              "capacity": "20Gi",
+              "accessModes": "RWO",
+              "storageClass": "fast-ssd",
+              "age": "30d",
+              "labels": {
+                "app": "mysql"
+              }
+            },
+            {
+              "name": "student-uploads",
+              "namespace": "campus-dev",
+              "status": "Bound",
+              "volume": "pvc-d4e5f6",
+              "capacity": "10Gi",
+              "accessModes": "RWO",
+              "storageClass": "standard",
+              "age": "12d",
+              "labels": {
+                "app": "student-api"
+              }
+            }
+          ],
+          "persistentvolumes": [
+            {
+              "name": "pvc-a1b2c3",
+              "status": "Bound",
+              "capacity": "20Gi",
+              "accessModes": "RWO",
+              "reclaimPolicy": "Delete",
+              "claim": "campus-dev/mysql-data-mysql-0",
+              "storageClass": "fast-ssd",
+              "age": "30d"
+            },
+            {
+              "name": "pvc-d4e5f6",
+              "status": "Bound",
+              "capacity": "10Gi",
+              "accessModes": "RWO",
+              "reclaimPolicy": "Delete",
+              "claim": "campus-dev/student-uploads",
+              "storageClass": "standard",
+              "age": "12d"
+            }
+          ],
+          "storageclasses": [
+            {
+              "name": "standard",
+              "provisioner": "rancher.io/local-path",
+              "reclaimPolicy": "Delete",
+              "volumeBindingMode": "WaitForFirstConsumer",
+              "allowExpansion": true,
+              "age": "90d"
+            },
+            {
+              "name": "fast-ssd",
+              "provisioner": "csi.example.io",
+              "reclaimPolicy": "Delete",
+              "volumeBindingMode": "WaitForFirstConsumer",
+              "allowExpansion": true,
+              "age": "60d"
+            }
+          ],
+          "configmaps": [
+            {
+              "name": "student-api-config",
+              "namespace": "campus-dev",
+              "age": "12d",
+              "status": "Active",
+              "data": {
+                "SPRING_PROFILES_ACTIVE": "dev",
+                "COURSE_API_URL": "http://course-api:8081",
+                "UPLOAD_PATH": "/data/uploads"
+              },
+              "labels": {
+                "app": "student-api"
+              }
+            },
+            {
+              "name": "frontend-config",
+              "namespace": "campus-dev",
+              "age": "20d",
+              "status": "Active",
+              "data": {
+                "API_BASE_URL": "/api",
+                "FEATURE_ANALYTICS": "true"
+              },
+              "labels": {
+                "app": "frontend"
+              }
+            },
+            {
+              "name": "cluster-info",
+              "namespace": "kube-system",
+              "age": "90d",
+              "status": "Active",
+              "data": {
+                "cluster": "campus-platform-dev"
+              }
+            }
+          ],
+          "secrets": [
+            {
+              "name": "db-credentials",
+              "namespace": "campus-dev",
+              "type": "Opaque",
+              "age": "30d",
+              "status": "Active",
+              "data": {
+                "username": "cm9vdA==",
+                "password": "••••"
+              },
+              "labels": {
+                "app": "mysql"
+              }
+            },
+            {
+              "name": "jwt-secret",
+              "namespace": "campus-dev",
+              "type": "Opaque",
+              "age": "30d",
+              "status": "Active",
+              "data": {
+                "JWT_SECRET": "••••"
+              },
+              "labels": {
+                "app": "student-api"
+              }
+            },
+            {
+              "name": "campus-tls",
+              "namespace": "campus-dev",
+              "type": "kubernetes.io/tls",
+              "age": "20d",
+              "status": "Active",
+              "data": {
+                "tls.crt": "••••",
+                "tls.key": "••••"
+              },
+              "labels": {
+                "app": "frontend"
+              }
+            }
+          ],
+          "serviceaccounts": [
+            {
+              "name": "default",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "90d",
+              "status": "Active"
+            },
+            {
+              "name": "student-api",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "12d",
+              "status": "Active"
+            },
+            {
+              "name": "course-api",
+              "namespace": "campus-dev",
+              "secrets": 0,
+              "age": "12d",
+              "status": "Active"
+            },
+            {
+              "name": "prometheus",
+              "namespace": "monitoring",
+              "secrets": 0,
+              "age": "30d",
+              "status": "Active"
+            }
+          ],
+          "roles": [
+            {
+              "name": "campus-reader",
+              "namespace": "campus-dev",
+              "rules": 4,
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "job-runner",
+              "namespace": "campus-dev",
+              "rules": 2,
+              "age": "21d",
+              "status": "Active"
+            }
+          ],
+          "clusterroles": [
+            {
+              "name": "cluster-viewer",
+              "rules": 8,
+              "age": "90d",
+              "status": "Active"
+            },
+            {
+              "name": "node-reader",
+              "rules": 3,
+              "age": "60d",
+              "status": "Active"
+            }
+          ],
+          "rolebindings": [
+            {
+              "name": "campus-reader-binding",
+              "namespace": "campus-dev",
+              "role": "Role/campus-reader",
+              "subjects": 2,
+              "age": "30d",
+              "status": "Active"
+            },
+            {
+              "name": "student-api-binding",
+              "namespace": "campus-dev",
+              "role": "Role/campus-reader",
+              "subjects": 1,
+              "age": "12d",
+              "status": "Active"
+            }
+          ],
+          "nodes": [
+            {
+              "name": "worker-a",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.21",
+              "cpu": 34,
+              "memory": 48,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-a",
+                "topology.kubernetes.io/zone": "lab-a"
+              }
+            },
+            {
+              "name": "worker-b",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.22",
+              "cpu": 51,
+              "memory": 63,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-b",
+                "topology.kubernetes.io/zone": "lab-b"
+              }
+            },
+            {
+              "name": "worker-c",
+              "status": "Ready",
+              "roles": "worker",
+              "age": "90d",
+              "version": "v1.34.1",
+              "internalIP": "10.0.0.23",
+              "cpu": 29,
+              "memory": 44,
+              "unschedulable": false,
+              "labels": {
+                "kubernetes.io/hostname": "worker-c",
+                "topology.kubernetes.io/zone": "lab-c"
+              }
+            }
+          ],
+          "events": [
+            {
+              "namespace": "campus-dev",
+              "type": "Warning",
+              "reason": "BackOff",
+              "object": "pod/course-api-86dbf4d6c8-zr7qp",
+              "message": "Back-off restarting failed container course-api",
+              "age": "42s"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Warning",
+              "reason": "Unhealthy",
+              "object": "pod/course-api-86dbf4d6c8-zr7qp",
+              "message": "Readiness probe failed: connection refused",
+              "age": "55s"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "ScalingReplicaSet",
+              "object": "deployment/student-api",
+              "message": "Scaled up replica set student-api-7d8c7b8b9f to 2",
+              "age": "2h"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "Pulled",
+              "object": "pod/student-api-7d8c7b8b9f-9x2lm",
+              "message": "Container image already present on machine",
+              "age": "2h"
+            },
+            {
+              "namespace": "campus-dev",
+              "type": "Normal",
+              "reason": "Completed",
+              "object": "job/db-migration-20260923",
+              "message": "Job completed successfully",
+              "age": "2h"
+            },
+            {
+              "namespace": "monitoring",
+              "type": "Normal",
+              "reason": "Started",
+              "object": "pod/node-exporter-9ts2k",
+              "message": "Started container node-exporter",
+              "age": "5d"
+            }
+          ],
+          "customresourcedefinitions": [
+            {
+              "name": "servicemonitors.monitoring.coreos.com",
+              "group": "monitoring.coreos.com",
+              "scope": "Namespaced",
+              "versions": "v1",
+              "age": "30d",
+              "status": "Established"
+            },
+            {
+              "name": "prometheusrules.monitoring.coreos.com",
+              "group": "monitoring.coreos.com",
+              "scope": "Namespaced",
+              "versions": "v1",
+              "age": "30d",
+              "status": "Established"
+            }
+          ]
+        },
+        "projects": [
+          {
+            "name": "Campus Platform",
+            "description": "Student, course and frontend application stack",
+            "namespaces": [
+              "campus-dev"
+            ],
+            "workloads": 5,
+            "services": 4,
+            "pods": 8
+          },
+          {
+            "name": "Observability",
+            "description": "Cluster monitoring and metrics workloads",
+            "namespaces": [
+              "monitoring"
+            ],
+            "workloads": 2,
+            "services": 1,
+            "pods": 4
+          }
+        ],
+        "plugins": [
+          {
+            "name": "Prometheus Metrics",
+            "description": "CPU and memory metrics integration"
+          },
+          {
+            "name": "Map View",
+            "description": "Resource relationship graph"
+          },
+          {
+            "name": "Projects",
+            "description": "Application-centric resource grouping"
+          }
+        ]
       }
     }
   },
@@ -5051,6 +6042,10 @@
     {
       "id": "chapter-13",
       "path": "chapters/13-redis-insight-developer-workflow.json"
+    },
+    {
+      "id": "chapter-14",
+      "path": "chapters/14-kubernetes-headlamp-kubectl-operations.json"
     }
   ]
 }
