@@ -2,6 +2,7 @@
   "use strict";
 
   const course = window.COURSE || { stages: [] };
+  const SIM_TARGET_ORIGIN = location.origin === "null" ? "*" : location.origin;
   const $ = id => document.getElementById(id);
 
   const frames = {
@@ -134,7 +135,7 @@
         }
 
         // Engines using only the universal protocol can answer a ping.
-        child.postMessage({ type: "SIM_PING" }, "*");
+        child.postMessage({ type: "SIM_PING" }, SIM_TARGET_ORIGIN);
       } catch (_) {}
       return false;
     };
@@ -277,7 +278,7 @@
       package: packageForApp,
       theme: "dark",
       autoType: true
-    }, "*");
+    }, SIM_TARGET_ORIGIN);
   }
 
   function sendCoursePackageToAll() {
@@ -389,18 +390,18 @@
       steps: stepsThrough(index, target),
       animateFinal: !!animateFinal,
       autoType: true
-    }, "*");
+    }, SIM_TARGET_ORIGIN);
   }
 
   function highlightCurrentAction(index, target) {
     const plan = highlightPlanForStep(flat[index]);
-    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR" }, "*");
+    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR" }, SIM_TARGET_ORIGIN);
     if (!plan) return;
     setTimeout(() => {
       frames[target].contentWindow.postMessage({
         type: "SIM_HIGHLIGHT",
         plan
-      }, "*");
+      }, SIM_TARGET_ORIGIN);
     }, 90);
   }
 
@@ -428,7 +429,7 @@
       title: step.title,
       text: step.why,
       stage: stage.title
-    }, "*");
+    }, SIM_TARGET_ORIGIN);
   }
 
   function scheduleCurrentExplanation(delay = 120) {
@@ -566,14 +567,14 @@
       package: fullProjectPackage,
       theme: "dark",
       autoType: false
-    }, "*");
+    }, SIM_TARGET_ORIGIN);
 
     frames.intellij.contentWindow.postMessage({
       type: "SIM_SEEK",
       steps: [],
       animateFinal: false,
       autoType: false
-    }, "*");
+    }, SIM_TARGET_ORIGIN);
   }
 
   function renderCurrentStep() {
@@ -627,6 +628,7 @@
   }
 
   window.addEventListener("message", event => {
+    if (location.origin !== "null" && event.origin !== location.origin) return;
     let software = null;
 
     for (const [name, frame] of Object.entries(frames)) {

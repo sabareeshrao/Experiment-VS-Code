@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "policy": [
+    "app.js orchestrates playback and must not implement product-specific UI.",
+    "Each simulator owns its DOM, CSS, menus, dialogs and product behavior.",
+    "Lessons depend on simulator actions, not arbitrary cross-simulator DOM manipulation.",
+    "Every lesson action must be declared by its simulator before the lesson is merged.",
+    "SIM_PACKAGE and SIM_SEEK must reconstruct a simulator deterministically from a clean load.",
+    "Shared code may provide mechanics such as explanation positioning, highlighting and layout persistence, but not product visuals."
+  ],
+  "protocol": {
+    "parentToSimulator": [
+      "SIM_PACKAGE",
+      "SIM_SEEK",
+      "SIM_EXPLAIN",
+      "SIM_HIGHLIGHT",
+      "SIM_HIGHLIGHT_CLEAR",
+      "SIM_SETTING",
+      "SIM_PING"
+    ],
+    "simulatorToParent": [
+      "ENGINE_READY",
+      "SIM_NAVIGATE"
+    ],
+    "requiredEngineMarkers": [
+      "ENGINE_READY",
+      "SIM_PACKAGE",
+      "SIM_SEEK"
+    ]
+  },
+  "simulators": {
+    "intellij": {
+      "directory": "intellij",
+      "frameId": "ideFrame",
+      "packageKey": "intellij_idea",
+      "engineSource": "engine.js",
+      "manifestKey": "intellij"
+    },
+    "vscode": {
+      "directory": "vscode",
+      "frameId": "vscodeFrame",
+      "packageKey": "vscode",
+      "engineSource": "engine.js",
+      "manifestKey": "vscode"
+    },
+    "pgadmin": {
+      "directory": "pgadmin",
+      "frameId": "pgadminFrame",
+      "packageKey": "pgadmin",
+      "engineSource": "index.html",
+      "manifestKey": "pgadmin"
+    },
+    "postman": {
+      "directory": "postman",
+      "frameId": "postmanFrame",
+      "packageKey": "postman",
+      "engineSource": "engine.js",
+      "manifestKey": "postman"
+    },
+    "cmd": {
+      "directory": "cmd",
+      "frameId": "cmdFrame",
+      "packageKey": "cmd",
+      "engineSource": "engine.js",
+      "manifestKey": "cmd"
+    },
+    "linux": {
+      "directory": "linux",
+      "frameId": "linuxFrame",
+      "packageKey": "linux",
+      "engineSource": "engine.js",
+      "manifestKey": "linux"
+    },
+    "ssms": {
+      "directory": "ssms",
+      "frameId": "ssmsFrame",
+      "packageKey": "sql_server_management_studio",
+      "engineSource": "engine.js",
+      "manifestKey": "ssms"
+    },
+    "jira": {
+      "directory": "jira",
+      "frameId": "jiraFrame",
+      "packageKey": "jira",
+      "engineSource": "engine.js",
+      "manifestKey": "jira"
+    },
+    "jenkins": {
+      "directory": "jenkins",
+      "frameId": "jenkinsFrame",
+      "packageKey": "jenkins",
+      "engineSource": "engine.js",
+      "manifestKey": "jenkins"
+    },
+    "powerbi": {
+      "directory": "powerbi",
+      "frameId": "powerbiFrame",
+      "packageKey": "power_bi",
+      "engineSource": "engine.js",
+      "manifestKey": "powerbi"
+    },
+    "git": {
+      "directory": "git",
+      "frameId": "gitFrame",
+      "packageKey": "git",
+      "engineSource": "engine.js",
+      "manifestKey": "git"
+    },
+    "github": {
+      "directory": "github",
+      "frameId": "githubFrame",
+      "packageKey": "github",
+      "engineSource": "engine.js",
+      "manifestKey": "github"
+    },
+    "github_actions": {
+      "directory": "github_actions",
+      "frameId": "githubActionsFrame",
+      "packageKey": "github_actions",
+      "engineSource": "engine.js",
+      "manifestKey": "github_actions"
+    },
+    "mysqlworkbench": {
+      "directory": "mysql_workbench",
+      "frameId": "mysqlWorkbenchFrame",
+      "packageKey": "mysql_workbench",
+      "engineSource": "engine.js",
+      "manifestKey": "mysql_workbench"
+    }
+  }
+}

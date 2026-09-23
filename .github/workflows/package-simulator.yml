@@ -1,18 +1,23 @@
-name: Package IntelliJ Simulator
+name: Package Simulator Repository
 
 on:
   push:
     branches: [main]
     paths:
       - "index.html"
+      - "player.html"
       - "styles.css"
+      - "library.js"
+      - "library.css"
       - "app.js"
       - "lessons.js"
       - "README.md"
       - "project/**"
       - "project-data/**"
       - "simulator/**"
+      - "scripts/**"
       - ".github/workflows/package-simulator.yml"
+      - ".github/workflows/validate-repo.yml"
 
 permissions:
   contents: read
@@ -24,29 +29,46 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate repository before packaging
+        run: node scripts/validate-repo.cjs
+
       - name: Prepare packages
         run: |
           rm -rf dist
 
-          mkdir -p dist/IntelliJ-Simulator-UI
-          cp simulator/intellij/index.html dist/IntelliJ-Simulator-UI/index.html
-          cp simulator/intellij/engine.js dist/IntelliJ-Simulator-UI/engine.js
-          cp simulator/intellij/ide-polish.css dist/IntelliJ-Simulator-UI/ide-polish.css
+          mkdir -p dist/IntelliJ-Simulator-UI/intellij
+          mkdir -p dist/IntelliJ-Simulator-UI/shared
+          cp simulator/intellij/index.html dist/IntelliJ-Simulator-UI/intellij/index.html
+          cp simulator/intellij/engine.js dist/IntelliJ-Simulator-UI/intellij/engine.js
+          cp simulator/intellij/adaptive-ui.js dist/IntelliJ-Simulator-UI/intellij/adaptive-ui.js
+          cp simulator/intellij/ide-polish.css dist/IntelliJ-Simulator-UI/intellij/ide-polish.css
+          cp -R simulator/shared/. dist/IntelliJ-Simulator-UI/shared/
           cat > dist/IntelliJ-Simulator-UI/README_EDITING.txt <<'EOF'
           IntelliJ Simulator UI
           =====================
-          index.html    = visual shell / CSS / layout
-          engine.js     = playback and IDE behavior engine
-          ide-polish.css = IntelliJ visual polish layer
+          Open intellij/index.html.
 
-          Preserve the existing element IDs used by engine.js when redesigning.
+          intellij/index.html     = product DOM / layout / CSS
+          intellij/engine.js      = playback and IDE behavior engine
+          intellij/adaptive-ui.js = IntelliJ-owned adaptive UI
+          intellij/ide-polish.css = IntelliJ visual polish
+          shared/                 = shared mechanics only (highlight/explanation/layout)
+
+          Preserve element IDs and the SIM_PACKAGE / SIM_SEEK / ENGINE_READY contract.
+          Product-specific UI must remain inside the IntelliJ folder.
           EOF
 
           mkdir -p dist/Experiment-VS-Code-Trial
-          cp index.html styles.css app.js lessons.js README.md dist/Experiment-VS-Code-Trial/
+          cp index.html player.html styles.css library.js library.css app.js lessons.js README.md dist/Experiment-VS-Code-Trial/
           cp -R simulator dist/Experiment-VS-Code-Trial/
           cp -R project dist/Experiment-VS-Code-Trial/
           cp -R project-data dist/Experiment-VS-Code-Trial/
+          cp -R scripts dist/Experiment-VS-Code-Trial/
 
       - name: Upload IntelliJ UI ZIP artifact
         uses: actions/upload-artifact@v4

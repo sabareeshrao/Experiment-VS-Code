@@ -1,74 +1,108 @@
-# Experiment VS Code / IntelliJ Developer Playback
+# Developer Playback Simulator
 
-This repository is an experimental **software-development playback simulator**.
+This repository is a browser-based software-development playback platform built with static HTML, CSS and JavaScript. It is not a Java application build, React application, or npm project.
 
-## Current phase: UI first
+## Current course
 
-The project is intentionally **not starting any learning stages yet**.
+The current `lessons.js` timeline contains five books and twelve chapters covering Java development and a growing set of developer tools. Books are navigation/grouping only; the global lesson timeline remains canonical and simulator state is reconstructed cumulatively.
 
-The left progress area currently contains:
+The player is `player.html`. The library/bookshelf is `index.html`.
 
-- Search
-- **View Full Code**
+## Simulator architecture
 
-Selecting **View Full Code** opens the complete uploaded **Java Practice** project inside the IntelliJ-style simulator. This gives us a stable finished-project reference so the IDE UI can keep being improved before we author the development timeline.
+`app.js` is the playback orchestrator. It switches software, reconstructs state, routes lesson actions, handles navigation, and communicates with same-page simulator iframes.
 
-## Java Practice baseline
+Each simulator owns its product UI:
 
-The uploaded baseline contains a broad Java practice project covering threads, collections, generics, files, Java 8/21 features, RMI, reflection, inheritance, polymorphism, exceptions, inner classes, interfaces, garbage collection, and more.
+- IntelliJ IDEA
+- VS Code
+- pgAdmin
+- Postman
+- Command Prompt
+- Linux
+- SQL Server Management Studio
+- Jira
+- Jenkins
+- Power BI Desktop
+- Git
+- GitHub
+- GitHub Actions
+- MySQL Workbench
 
-- Editable source copy: `/project/`
-- Browser-ready complete project snapshot: `/project-data/`
-- Software simulators: `/simulator/<software>/`
-  - IntelliJ IDEA: `/simulator/intellij/`
-  - VS Code: `/simulator/vscode/`
-  - pgAdmin: `/simulator/pgadmin/`
-  - Postman: `/simulator/postman/`
-  - Command Prompt: `/simulator/cmd/`
-- Default preview file: `src/Threads/TwoThreads/MyThread.java`
+Product-specific DOM, CSS, menus, dialogs, trees, grids and behavior must remain inside that simulator's folder. Shared code under `simulator/shared/` may provide mechanics such as highlighting, explanation positioning, focus-follow and layout persistence, but must not implement a generic cross-product visual UI.
 
-The original archive also contained compiled `.class` files. Those entries are represented in the simulator tree for visual fidelity; the editable `project/` folder focuses on Java source.
+The core message protocol is:
 
-## Playback architecture
+```text
+lessons.js
+    ↓
+app.js
+    ├─ SIM_PACKAGE
+    ├─ SIM_SEEK
+    ├─ SIM_EXPLAIN
+    └─ SIM_HIGHLIGHT
+        ↓
+simulator iframe
+        ├─ ENGINE_READY
+        └─ SIM_NAVIGATE
+```
 
-Later, stages will be added gradually. Each stage will contain developer micro-steps such as creating a file, typing a line, running a command, seeing an error, fixing it, and explaining why that exact action was taken.
+The machine-readable simulator contract is `simulator/action-contract.json`. Capability metadata lives in `simulator/adaptive-capabilities.json`.
 
-When stages are eventually added:
+## Deterministic playback rule
 
-- Step N will reconstruct the repository exactly through Step N.
-- Previous/Next will move through developer micro-steps.
-- View Full Code will remain available as the finished-project reference.
-- IDE features will continue to appear only when the workflow reaches the stage that needs them.
+Step N must be reproducible from a clean page load. The player sends each active simulator all of that simulator's applicable actions through the current global step. Books never reset software state.
 
-## IntelliJ UI
+`View Full Code` is a separate finished-project/reference view and must not contaminate timeline state.
 
-The simulator uses a dark IntelliJ IDEA New UI-style shell and is being improved iteratively. Current goals include realistic Project structure, editor/gutter behavior, syntax colors, terminal/tool windows, responsive sizing, and a non-blocking explanation assistant.
+## Validation
+
+No npm install is required. Run:
+
+```bash
+node scripts/validate-repo.cjs
+```
+
+The validator checks:
+
+- required runtime files
+- JavaScript syntax
+- book/chapter coverage
+- lesson structure
+- registered software routes
+- player iframe registration
+- package baseline registration
+- adaptive capability registration
+- required simulator protocol markers
+- every lesson action against the target simulator's supported actions
+- packaging workflow completeness
+
+GitHub Actions runs the same validation on pushes to `main` and on pull requests.
+
+## Packaging
+
+`.github/workflows/package-simulator.yml` validates before packaging and produces:
+
+- `IntelliJ-Simulator-UI` — IntelliJ product files plus the shared mechanics it requires
+- `Experiment-VS-Code-Trial` — complete runnable library/player/simulator/project package
+
+The complete trial package includes `player.html`, `library.js`, and `library.css`.
+
+## Adding or upgrading a simulator
+
+1. Modify only that product's simulator folder for product UI behavior.
+2. Register new supported actions in that simulator before lessons use them.
+3. Update `simulator/action-contract.json` only when adding a new software application or changing its integration identity.
+4. Update `simulator/adaptive-capabilities.json` when capability metadata changes.
+5. Run `node scripts/validate-repo.cjs`.
+6. Prefer a feature branch and pull request for large or externally generated upgrades.
+
+Do not create a shared generic menu/dialog/tree/grid implementation across products.
+
+## Project source
+
+The editable Java Practice reference source is under `project/`. Browser-ready serialized project state is under `project-data/`.
 
 ## GitHub Pages
 
-Publish `main / (root)` from **Settings → Pages**.
-
-
-## Multi-software experiment
-
-Lesson 2 is a seven-step proof that one development timeline can move across applications:
-
-```text
-IntelliJ IDEA
-  → pgAdmin 4
-  → PostgreSQL Query Tool
-  → IntelliJ IDEA
-```
-
-Each step declares its active software. The outer player keeps the lesson/stage navigation constant while it switches the center simulator. Direct step URLs reconstruct only the actions belonging to the active application through that point, so returning to IntelliJ restores the Java project state instead of starting a new lesson.
-
-
-## Bookshelf / book navigation
-
-The repository root is the journey library. The playback simulator lives at `player.html`.
-
-Books are an organizational layer only. They must never create a separate lesson timeline or reset simulator state. A chapter always maps to its existing stage, and opening that chapter uses the first global step of the stage. The player then reconstructs all applicable earlier actions through that global step.
-
-Book ranges are declared in `window.COURSE.books` inside `lessons.js` using `chapterStart` and `chapterEnd`. Future books can therefore group hundreds of stages without changing the cumulative playback engine.
-
-The player stores the last visited global step under `developerJourney.lastStep.v1`, allowing the landing page to offer a Continue action.
+GitHub Pages serves the static application from the repository. The root library links into `player.html`, which hosts the simulator iframes.

@@ -1,0 +1,49 @@
+name: Validate Simulator Repository
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "player.html"
+      - "styles.css"
+      - "library.js"
+      - "library.css"
+      - "app.js"
+      - "lessons.js"
+      - "project-data/**"
+      - "simulator/**"
+      - "scripts/**"
+      - ".github/workflows/validate-repo.yml"
+      - ".github/workflows/package-simulator.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "player.html"
+      - "styles.css"
+      - "library.js"
+      - "library.css"
+      - "app.js"
+      - "lessons.js"
+      - "project-data/**"
+      - "simulator/**"
+      - "scripts/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate simulator repository
+        run: node scripts/validate-repo.cjs
