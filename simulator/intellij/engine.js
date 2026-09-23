@@ -313,6 +313,35 @@ async function applyStep(st,animate,token){
   case"appendTerminal":state.terminal+=(state.terminal?"\n":"")+String(d.text||"");activeBottom="terminal";renderBottom();break;
   case"clearTerminal":state.terminal="";activeBottom="terminal";renderBottom();break;
 
+  case"showExternalLibraries":state.externalLibrariesOpen=true;renderTree();break;
+  case"openImportProjectWizard":showModal("importProject","New Project from Existing Sources",'<div class="kv"><span>Project folder</span><input value="'+esc(d.path||"C:/projects/demo")+'"><span>Detected build</span><span>Maven pom.xml</span><span>Open in</span><span>Current window</span></div>');break;
+  case"importExistingProject":{
+    state.project={...state.project,name:d.name||d.artifact||"Imported Spring Project",sdk:d.sdk||state.project.sdk};
+    if(d.files){files=clone(d.files);state.files=clone(files)}
+    if(d.tree)state.tree=clone(d.tree);
+    if(!Object.keys(files).length){
+      files["pom.xml"]={language:"xml",content:"<project>\n</project>"};
+      files["src/main/java/Application.java"]={language:"java",content:"public class Application {\n    public static void main(String[] args) {}\n}"};
+      files["src/main/resources/application.properties"]={language:"properties",content:"spring.application.name="+(d.name||"demo")};
+      state.files=clone(files);state.tree=[];Object.entries(files).forEach(entry=>addTreePath(entry[0],entry[1].language||"text"));
+    }
+    openFile(d.openFile||"pom.xml");renderAll();break
+  }
+  case"openNewMavenProjectWizard":showModal("newMavenProject","New Project",'<div class="kv"><span>Generator</span><span>Maven Archetype</span><span>Project name</span><input value="'+esc(d.name||"demo")+'"><span>JDK</span><span>'+esc(d.sdk||state.project.sdk||"Java 17")+'</span></div>');break;
+  case"createMavenProject":{
+    const name=d.name||"demo";
+    state.project={name:name,sdk:d.sdk||"Java 17",languageLevel:String(d.languageLevel||17)};
+    files={};state.tree=[];
+    files["pom.xml"]={language:"xml",content:"<project>\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>"+(d.groupId||"com.example")+"</groupId>\n    <artifactId>"+(d.artifactId||name)+"</artifactId>\n</project>"};
+    files["src/main/java/App.java"]={language:"java",content:"public class App {\n    public static void main(String[] args) {}\n}"};
+    files["src/test/java/AppTest.java"]={language:"java",content:"class AppTest {\n}"};
+    files["src/main/resources/application.properties"]={language:"properties",content:""};
+    state.files=clone(files);Object.entries(files).forEach(entry=>addTreePath(entry[0],entry[1].language));openTabs=[];openFile("pom.xml");renderAll();break
+  }
+  case"showDesktopAppPreview":
+    showModal("desktopPreview",d.title||"Java Desktop Application",'<div class="awtPreview"><div class="awtTitle">'+esc(d.windowTitle||"AWT Demo")+'</div><div class="awtBody"><button class="awtButton" id="awtPreviewButton">'+esc(d.buttonLabel||"Hover me")+'</button></div><div class="awtStatus" id="awtPreviewStatus">Mouse outside button</div></div>');
+    setTimeout(()=>{const b=$("awtPreviewButton"),out=$("awtPreviewStatus");if(b&&out){b.onmouseenter=()=>out.textContent=d.enterText||"Mouse entered button";b.onmouseleave=()=>out.textContent=d.exitText||"Mouse exited button";b.onclick=()=>out.textContent=d.clickText||"Button clicked"}},0);break;
+  case"refreshProjectTree":renderTree();actionStatus("Project tree refreshed");break;
   case"openSettings":showModal("settings","Settings",'<div class="kv"><span>Editor</span><span>Code Style, Inspections, File Types</span><span>Build Tools</span><span>Maven, Compiler</span><span>Plugins</span><span>Installed Plugins</span></div>');break;
   case"showProjectStructure":showModal("settings","Project Structure",'<div class="kv"><span>Project SDK</span><input value="'+esc(state.project.sdk||"")+'"><span>Language level</span><input value="'+esc(state.project.languageLevel||"")+'"><span>Modules</span><span>'+esc((state.modules||["main"]).join(", "))+'</span></div>');break;
   case"addSdk":state.sdks=state.sdks||[];state.sdks.push({name:d.name||d.sdk,path:d.path||"",version:d.version||""});showProjectStructureModal();break;
