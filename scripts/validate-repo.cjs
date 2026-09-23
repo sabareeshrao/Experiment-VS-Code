@@ -408,6 +408,30 @@ if (exists("simulator/powerbi/index.html") && exists("simulator/powerbi/engine.j
   );
 }
 
+
+
+
+// Layout regression guards for IntelliJ / Power BI / MySQL Workbench.
+if (exists("simulator/mysql_workbench/index.html")) {
+  const mwb = read("simulator/mysql_workbench/index.html");
+  const attrs = mwb.match(/data-sim-app=/g) || [];
+  assert(attrs.length === 1 && mwb.includes('data-sim-app="mysql_workbench"'), "MySQL Workbench must have exactly one canonical data-sim-app");
+  assert(mwb.includes("layout-resize.js?v=14"), "MySQL Workbench is not loading the current layout-resize runtime");
+  assert(mwb.includes("engine.js?v=8"), "MySQL Workbench cache version is stale");
+}
+if (exists("simulator/intellij/index.html")) {
+  const ij = read("simulator/intellij/index.html");
+  assert(ij.includes("layout-resize.js?v=14"), "IntelliJ is not loading the current layout-resize runtime");
+  assert(ij.includes("#splitL{cursor:col-resize"), "IntelliJ Project splitter drag guard is missing");
+}
+if (exists("simulator/powerbi/index.html")) {
+  const pbi = read("simulator/powerbi/index.html");
+  const mainClose = pbi.indexOf("</main>");
+  assert(pbi.indexOf('id="onObjectMenu"') > mainClose, "Power BI transient menu must live outside mainArea");
+  assert(pbi.indexOf('id="modalShade"') > mainClose, "Power BI modal must live outside mainArea");
+  assert(pbi.includes("layout-resize.js?v=14"), "Power BI is not loading the current layout-resize runtime");
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

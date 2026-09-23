@@ -217,6 +217,9 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
   .toolbar #searchBtn,.toolbar #gitBtn{display:none}
   .toolbar{padding-left:32px}
 }
+/* splitter reliability: Project tool window must remain directly draggable */
+#splitL{cursor:col-resize!important;z-index:45!important}
+#splitL::before{content:"";position:absolute;inset:0 -9px;cursor:col-resize}
 </style>
 <link rel="stylesheet" href="ide-polish.css?v=1">
 </head>
@@ -255,6 +258,8 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 <script src="enterprise-ui.js?v=1"></script>
 <script src="engine.js?v=15"></script>
 <script src="adaptive-ui.js?v=1"></script>
-  <script src="../shared/highlighter.js?v=7"></script>\n  <script src="../shared/explanation-controls.js?v=9"></script>  <script src="../shared/layout-resize.js?v=13"></script>
+  <script src="../shared/highlighter.js?v=7"></script>
+<script src="../shared/explanation-controls.js?v=9"></script>
+<script src="../shared/layout-resize.js?v=14"></script>
 </body>
 </html>

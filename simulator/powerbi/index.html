@@ -243,9 +243,6 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
         <div class="status"><span id="pqFooter">Power Query</span></div>
       </div>
 
-      <div class="onObjectMenu" id="onObjectMenu"><div class="onObjectHead"><div class="onObjectTitle">Build a visual</div><button class="onObjectClose" id="onObjectClose" type="button" title="Close">×</button></div><div class="onObjectItem">Add data</div><div class="onObjectItem">Change visual type</div><div class="onObjectItem">Format your visual</div><div class="onObjectItem">More options</div></div>
-      <div class="modalShade" id="modalShade"><div class="modal"><div class="modalHead" id="modalTitle"></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
-      <div class="toast" id="toast"></div>
       <div class="boundary" id="boundary"></div>
     </main>
 
@@ -259,6 +256,10 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
       </div>
     </aside>
   </div>
+  <!-- Transient UI is deliberately outside mainArea/workspace so panes cannot cover it. -->
+  <div class="onObjectMenu" id="onObjectMenu"><div class="onObjectHead"><div class="onObjectTitle">Build a visual</div><button class="onObjectClose" id="onObjectClose" type="button" title="Close">×</button></div><div class="onObjectItem">Add data</div><div class="onObjectItem">Change visual type</div><div class="onObjectItem">Format your visual</div><div class="onObjectItem">More options</div></div>
+  <div class="modalShade" id="modalShade"><div class="modal"><div class="modalHead" id="modalTitle"></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
+  <div class="toast" id="toast"></div>
   <div class="pageTabs" id="pageTabs"></div>
   <div class="status"><span id="statusMessage" class="statusText">Ready</span><span class="grow"></span><span id="zoomText">100%</span><span id="storageText">Import mode</span></div>
 </div>
@@ -267,6 +268,6 @@ body.theme-dark .resizeHandle{background:#1f1f1f}
 <script src="engine.js?v=7"></script>
 <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=10"></script>
-<script src="../shared/layout-resize.js?v=13"></script>
+<script src="../shared/layout-resize.js?v=14"></script>
 </body>
 </html>

@@ -24,7 +24,7 @@ const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 
 const nextId=prefix=>`${prefix}-${++deterministicCounter}`;
 const deterministicTime=()=>`00:00:${String((outputs?.length||0)+1).padStart(2,'0')}`;
-function showSurface(mode,title,html){surfaceMode=mode||'generic';refs.surfaceTitle.textContent=title||'MySQL Workbench';refs.surfaceBody.innerHTML=html||'';refs.surface.classList.add('show')}
+function showSurface(mode,title,html){hideHome();surfaceMode=mode||'generic';refs.surfaceTitle.textContent=title||'MySQL Workbench';refs.surfaceBody.innerHTML=html||'';refs.surface.classList.add('show')}
 function closeSurface(){surfaceMode='';refs.surface.classList.remove('show');refs.surfaceBody.innerHTML=''}
 function surfaceContinuation(action){const groups={
  explain:['explainQuery','showVisualExplain','showQueryStatistics','showQueryProfiler'],
