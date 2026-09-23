@@ -430,6 +430,14 @@ if (exists("simulator/mysql_workbench/index.html")) {
   assert((mwb.match(/data-sim-app=/g)||[]).length === 1, "MySQL Workbench contains duplicate data-sim-app attributes");
 }
 
+if (exists("simulator/intellij/ide-polish.css")) {
+  const ijPolish = read("simulator/intellij/ide-polish.css");
+  assert(
+    !/body\.theme-dark\{[^}]*--(?:leftW|rightW|bottomH)/.test(ijPolish),
+    "IntelliJ body.theme-dark must not override root layout variables; doing so makes splitter drag visually inert"
+  );
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

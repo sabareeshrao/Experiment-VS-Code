@@ -1,5 +1,5 @@
 /* Original, dependency-free IntelliJ New UI equivalents. */
-body.theme-dark{--surface:#27292d;--surface2:#2b2d30;--surface3:#35373b;--line:#393b40;--muted:#92969f;--leftW:248px;--rightW:258px;--bottomH:220px}
+body.theme-dark{--surface:#27292d;--surface2:#2b2d30;--surface3:#35373b;--line:#393b40;--muted:#92969f}
 .app{grid-template-rows:40px 25px 34px minmax(0,1fr) 24px}
 .titlebar{height:40px;background:#2b2d30;padding:0 12px;font-size:12px;gap:5px}
 .ideaLogo{background:#161719;border-radius:3px;width:22px;height:22px;border-bottom:3px solid #8e6ac8}
@@ -36,6 +36,6 @@ body.theme-dark{--surface:#27292d;--surface2:#2b2d30;--surface3:#35373b;--line:#
 .ideAssistant{width:288px;max-width:calc(100% - 16px);max-height:calc(100% - 16px);border-radius:5px;overflow:auto}.ideAssistantHead{height:33px}.ideAssistantIcon{background:#35465c;color:#98bafa;border-radius:3px;font-size:9px}.ideAssistantBody{font-size:11px;line-height:1.55;padding:10px 12px}.ideAssistantTitles strong{font-size:11px;font-weight:500}.ideAssistantTitles span{font-size:10px}
 .work.projectHidden{grid-template-columns:0 0 minmax(0,1fr) 0 0}.work.projectHidden .left,.work.projectHidden .splitL{display:none}.work.projectHidden.hasRightTools{grid-template-columns:0 0 minmax(0,1fr) 3px var(--rightW)}
 .assistantDocked .work{margin-right:292px}.assistantDocked .ideAssistant{left:auto!important;top:99px!important;right:0!important;bottom:24px!important;width:292px;height:auto;max-height:none;border-radius:0;box-shadow:none;cursor:default}.assistantDocked .ideAssistantBody,.assistantDocked .ideAssistantHead{cursor:default}
-@media(max-width:1100px){body.theme-dark{--leftW:210px;--rightW:220px}.treeRoot,.treeRow,.treeAux{font-size:11px}.nodeMeta{display:none}}
+@media(max-width:1100px){:root{--leftW:210px;--rightW:220px}.treeRoot,.treeRow,.treeAux{font-size:11px}.nodeMeta{display:none}}
 @media(max-width:950px){.work,.work.hasRightTools,.work.projectHidden.hasRightTools{padding-right:0;grid-template-columns:var(--leftW) 3px minmax(0,1fr)}.work.projectHidden{grid-template-columns:0 0 minmax(0,1fr)}.sdkChip{display:none}}
 @media(max-width:650px){.work,.work.hasRightTools,.work.projectHidden,.work.projectHidden.hasRightTools{padding:0;grid-template-columns:minmax(0,1fr)}.menu{padding-left:0;font-size:10px}.menuItem{padding:4px}.toolbar{padding-left:5px}.titlebar{padding:0 7px}.windowGlyphs{display:none}.debugGrid{grid-template-columns:1fr 1fr}.debugPane:last-child{grid-column:1/-1}.status{padding-left:0;font-size:10px}.status #statusText{max-width:30%}}
