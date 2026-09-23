@@ -365,6 +365,49 @@ if (exists("simulator/redis/engine.js") && exists("simulator/redis/index.html"))
   );
 }
 
+
+// Layout regression guards for the three high-interaction desktop simulators.
+if (exists("simulator/shared/layout-resize.js")) {
+  const layoutSource = read("simulator/shared/layout-resize.js");
+  assert(
+    layoutSource.includes("intellij:setupIntelliJ"),
+    "IntelliJ must use the shared stable splitter/persistence runtime"
+  );
+  assert(
+    layoutSource.includes("mysql_workbench:setupMySQLWorkbench"),
+    "MySQL Workbench must use the shared stable splitter/persistence runtime"
+  );
+}
+if (exists("simulator/intellij/engine.js")) {
+  const intellijEngine = read("simulator/intellij/engine.js");
+  assert(
+    !intellijEngine.includes("developerJourney.intellij.nativeLayout.v1"),
+    "IntelliJ has a competing native layout owner; shared layout must be the only splitter owner"
+  );
+}
+if (exists("simulator/mysql_workbench/engine.js")) {
+  const mysqlEngine = read("simulator/mysql_workbench/engine.js");
+  assert(
+    !mysqlEngine.includes("developerJourney.mysqlworkbench.nativeLayout.v1"),
+    "MySQL Workbench has a competing native layout owner; shared layout must be the only splitter owner"
+  );
+}
+if (exists("simulator/powerbi/index.html") && exists("simulator/powerbi/engine.js")) {
+  const pbiHtml = read("simulator/powerbi/index.html");
+  const pbiEngine = read("simulator/powerbi/engine.js");
+  assert(
+    pbiHtml.includes("UI stacking regression guard") &&
+    pbiHtml.includes(".onObjectMenu{position:fixed!important") &&
+    pbiHtml.includes(".modalShade{position:fixed!important"),
+    "Power BI transient overlays are not protected from pane clipping/stacking"
+  );
+  assert(
+    pbiEngine.includes("document.documentElement.clientWidth") &&
+    pbiEngine.includes('classList.remove("show","minimized")'),
+    "Power BI overlay positioning/dismissal regression detected"
+  );
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

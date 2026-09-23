@@ -23,7 +23,7 @@ body.theme-dark{
 html,body{height:100%;margin:0;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;background:var(--surface2);color:var(--text)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{color:var(--text)}
-.app{height:100%;display:grid;grid-template-rows:31px 27px 38px 1fr 23px;position:relative;background:var(--surface)}
+.app{height:100%;display:grid;grid-template-rows:31px 27px 38px minmax(0,1fr) 23px;position:relative;background:var(--surface);min-width:0;min-height:0;overflow:hidden}
 .titlebar{display:flex;align-items:center;padding:0 8px;background:var(--top);border-bottom:1px solid var(--line);font-size:11px;user-select:none}
 .mysqlMark{display:flex;align-items:center;gap:5px;font-weight:600}.dolphin{color:#2b719c;font-size:16px}.grow{flex:1}.windowBtns{display:flex;margin-left:8px}.windowBtns span{width:42px;text-align:center;padding:7px 0}.windowBtns span:last-child:hover{background:#e81123;color:#fff}
 .menuBar{display:flex;align-items:center;gap:0;background:var(--surface2);border-bottom:1px solid var(--line);font-size:10px;position:relative;padding-left:3px;user-select:none}
@@ -35,8 +35,8 @@ button{color:var(--text)}
 .toolBtn.orange{color:var(--orange);font-weight:700}.toolBtn.green{color:var(--green)}.sep{height:23px;width:1px;background:var(--line);margin:0 3px}
 .connPill{max-width:240px;height:25px;border:1px solid var(--line);background:var(--surface);border-radius:2px;padding:5px 8px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.panelToggles{margin-left:auto;display:flex;gap:3px}.panelToggles button{font-size:9px}
 .workspace{min-height:0;display:grid;grid-template-columns:var(--leftTrack) 5px minmax(0,1fr) 5px var(--rightTrack);grid-template-rows:minmax(0,1fr) 5px var(--bottomTrack);background:var(--surface3)}
-.left{grid-column:1;grid-row:1/4;min-width:0;background:var(--surface);display:grid;grid-template-rows:28px 1fr;overflow:hidden}.splitV{background:var(--surface3);cursor:col-resize}.splitL{grid-column:2;grid-row:1/4}.splitR{grid-column:4;grid-row:1/4}.splitH{grid-column:3;grid-row:2;background:var(--surface3);cursor:row-resize}
-.center{grid-column:3;grid-row:1;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:30px 34px 1fr;position:relative}.right{grid-column:5;grid-row:1/4;min-width:0;background:var(--surface);display:grid;grid-template-rows:28px 1fr;overflow:hidden}.bottom{grid-column:3;grid-row:3;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:28px 1fr}
+.left{grid-column:1;grid-row:1/4;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:28px minmax(0,1fr);overflow:hidden}.splitV{background:var(--surface3);cursor:col-resize;touch-action:none}.splitL{grid-column:2;grid-row:1/4}.splitR{grid-column:4;grid-row:1/4}.splitH{grid-column:3;grid-row:2;background:var(--surface3);cursor:row-resize;touch-action:none}
+.center{grid-column:3;grid-row:1;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:30px 34px minmax(0,1fr);position:relative;overflow:hidden}.right{grid-column:5;grid-row:1/4;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:28px minmax(0,1fr);overflow:hidden}.bottom{grid-column:3;grid-row:3;min-width:0;min-height:0;background:var(--surface);display:grid;grid-template-rows:28px minmax(0,1fr);overflow:hidden}
 .paneTabs{display:flex;align-items:end;background:var(--surface2);border-bottom:1px solid var(--line);overflow:auto;white-space:nowrap}.paneTab{padding:7px 10px 6px;font-size:9px;border-right:1px solid var(--line);cursor:default}.paneTab.active{background:var(--surface);border-top:2px solid var(--blue);padding-top:5px;font-weight:600}.paneHead{height:28px;display:flex;align-items:center;padding:0 7px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:10px;font-weight:600;user-select:none}.paneHead .mini{margin-left:auto;font-size:9px;color:var(--muted)}
 .navigator{display:grid;grid-template-rows:26px 1fr 112px;min-height:0}.navTabs{display:flex;border-bottom:1px solid var(--line);background:var(--surface2)}.navTab{padding:6px 10px;font-size:9px}.navTab.active{background:var(--surface);border-bottom:2px solid var(--blue)}
 .tree{overflow:auto;padding:4px 0;font-size:10px}.treeRow{height:22px;display:flex;align-items:center;white-space:nowrap;padding-right:5px;cursor:default}.treeRow:hover{background:var(--hover)}.treeRow.active{background:var(--sel);font-weight:600}.tw{width:15px;text-align:center;color:var(--muted)}.ico{width:18px;text-align:center}.treeText{overflow:hidden;text-overflow:ellipsis}.activeSchema .treeText{font-weight:700}.objFilter{height:24px;margin:4px 6px;border:1px solid var(--line);background:var(--surface);padding:3px 6px;border-radius:2px;color:var(--text)}
@@ -149,10 +149,10 @@ body.theme-dark .homeOverlay{background:#202020}body.theme-dark .homeTop,body.th
 </div>
 <script src="icons.js?v=1"></script>
 <script src="capabilities.js?v=2"></script>
-<script src="engine.js?v=6"></script>
+<script src="engine.js?v=7"></script>
 <script src="../shared/highlighter.js?v=8"></script>
 <script src="../shared/explanation-controls.js?v=11"></script>
-<script src="../shared/layout-resize.js?v=12"></script>
+<script src="../shared/layout-resize.js?v=13"></script>
 <aside id="mysqlWorkbenchAssistant" data-sim-explanation class="hidden">
   <div data-sim-explanation-drag>
     <strong data-sim-explanation-title>Lesson explanation</strong>

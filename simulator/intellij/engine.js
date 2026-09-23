@@ -365,47 +365,7 @@ refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStat
 refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
 refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom()};refs.restartBtn.onclick=()=>{state.console="Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started";activeBottom="run";renderBottom()};refs.clearConsoleBtn.onclick=()=>{state.console="";activeBottom="run";renderBottom()};
 refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
-const IJ_LAYOUT_KEY="developerJourney.intellij.nativeLayout.v1";
-let ijLayout={};
-try{ijLayout=JSON.parse(localStorage.getItem(IJ_LAYOUT_KEY)||"{}")||{}}catch(_){ijLayout={}}
-const ijRoot=document.documentElement,ijLeft=document.getElementById("leftPanel"),ijProjectToggle=document.querySelector('.leftRail .rail[title="Project"]');
-const ijNum=(name,fallback)=>{const n=parseFloat(getComputedStyle(ijRoot).getPropertyValue(name));return Number.isFinite(n)?n:fallback};
-const ijClamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-const ijSave=patch=>{ijLayout={...ijLayout,...patch};try{localStorage.setItem(IJ_LAYOUT_KEY,JSON.stringify(ijLayout))}catch(_){}};
-const ijMaxLeft=()=>{const w=refs.work?.clientWidth||innerWidth;const right=refs.work?.classList.contains("hasRightTools")&&innerWidth>=950?ijNum("--rightW",255)+3:0;return Math.max(170,Math.min(520,w-right-430))};
-let ijExpandedLeft=ijClamp(Number(ijLayout.leftW)||250,110,ijMaxLeft());
-function ijSetProjectCollapsed(collapsed,persist=true){
- if(collapsed){
-   const now=ijNum("--leftW",ijExpandedLeft);if(now>=110)ijExpandedLeft=ijClamp(now,110,ijMaxLeft());
-   ijRoot.style.setProperty("--leftW","0px");ijLeft?.classList.add("hidden");refs.splitL.style.display="none";ijProjectToggle?.classList.remove("active");
- }else{
-   ijExpandedLeft=ijClamp(Number(ijLayout.leftW)||ijExpandedLeft||250,110,ijMaxLeft());
-   ijRoot.style.setProperty("--leftW",ijExpandedLeft+"px");ijLeft?.classList.remove("hidden");refs.splitL.style.display="";ijProjectToggle?.classList.add("active");
- }
- if(persist)ijSave({leftCollapsed:!!collapsed,leftW:ijExpandedLeft});
-}
-if(Number.isFinite(Number(ijLayout.rightW)))ijRoot.style.setProperty("--rightW",ijClamp(Number(ijLayout.rightW),170,420)+"px");
-if(Number.isFinite(Number(ijLayout.bottomH)))ijRoot.style.setProperty("--bottomH",ijClamp(Number(ijLayout.bottomH),90,400)+"px");
-ijSetProjectCollapsed(ijLayout.leftCollapsed===true,false);
-if(ijProjectToggle){
- ijProjectToggle.style.cursor="pointer";
- ijProjectToggle.onclick=e=>{ijSetProjectCollapsed(!ijLeft?.classList.contains("hidden"),true);e.preventDefault();e.stopPropagation()}
-}
-let dl=false,dr=false,dh=false;
-refs.splitL.onpointerdown=e=>{if(e.button!==0)return;dl=true;refs.splitL.setPointerCapture(e.pointerId);e.preventDefault();e.stopPropagation()};
-refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=ijClamp(e.clientX-r.left-30,110,ijMaxLeft());ijExpandedLeft=w;ijRoot.style.setProperty("--leftW",w+"px");e.preventDefault()};
-refs.splitL.onpointerup=e=>{if(!dl)return;dl=false;ijExpandedLeft=ijClamp(ijNum("--leftW",ijExpandedLeft),110,ijMaxLeft());ijSave({leftCollapsed:false,leftW:ijExpandedLeft});try{refs.splitL.releasePointerCapture(e.pointerId)}catch(_){}};
-refs.splitL.onpointercancel=()=>{dl=false};
-refs.splitL.ondblclick=()=>{ijExpandedLeft=ijClamp(250,110,ijMaxLeft());ijRoot.style.setProperty("--leftW",ijExpandedLeft+"px");ijSave({leftCollapsed:false,leftW:ijExpandedLeft})};
-refs.splitR.onpointerdown=e=>{if(e.button!==0)return;dr=true;refs.splitR.setPointerCapture(e.pointerId);e.preventDefault();e.stopPropagation()};
-refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=ijClamp(r.right-e.clientX-30,170,420);ijRoot.style.setProperty("--rightW",w+"px");e.preventDefault()};
-refs.splitR.onpointerup=e=>{if(!dr)return;dr=false;ijSave({rightW:ijNum("--rightW",255)});try{refs.splitR.releasePointerCapture(e.pointerId)}catch(_){}};
-refs.splitR.onpointercancel=()=>{dr=false};
-refs.splitH.onpointerdown=e=>{if(e.button!==0)return;dh=true;refs.splitH.setPointerCapture(e.pointerId);e.preventDefault();e.stopPropagation()};
-refs.splitH.onpointermove=e=>{if(!dh)return;const r=refs.work.getBoundingClientRect(),h=ijClamp(r.bottom-e.clientY,90,400);ijRoot.style.setProperty("--bottomH",h+"px");e.preventDefault()};
-refs.splitH.onpointerup=e=>{if(!dh)return;dh=false;ijSave({bottomH:ijNum("--bottomH",165)});try{refs.splitH.releasePointerCapture(e.pointerId)}catch(_){}};
-refs.splitH.onpointercancel=()=>{dh=false};
-window.addEventListener("resize",()=>{if(ijLayout.leftCollapsed===true)return;ijExpandedLeft=ijClamp(ijNum("--leftW",ijExpandedLeft),110,ijMaxLeft());ijRoot.style.setProperty("--leftW",ijExpandedLeft+"px")});
+// Project/right/bottom splitters are owned by shared/layout-resize.js.
 document.addEventListener("pointerdown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("keydown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("scroll",syncBoundary,true);window.addEventListener("resize",syncBoundary);
 function showAssistant(m){
  refs.assistantTitle.textContent=m.title||"Step explanation";

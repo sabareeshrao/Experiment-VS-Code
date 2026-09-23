@@ -144,6 +144,14 @@
   }
 
   function setupIntelliJ(){
+    try{
+      const native=JSON.parse(localStorage.getItem("developerJourney.intellij.nativeLayout.v1")||"{}")||{};
+      const patch={};
+      for(const key of ["leftW","rightW","bottomH","leftCollapsed"]){
+        if(saved[key]==null && native[key]!=null) patch[key]=native[key];
+      }
+      if(Object.keys(patch).length) commit(patch);
+    }catch(_){}
     if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
     if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
     if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
@@ -498,15 +506,63 @@
   }
 
   function setupMySQLWorkbench(){
+    try{
+      const native=JSON.parse(localStorage.getItem("developerJourney.mysqlworkbench.nativeLayout.v1")||"{}")||{};
+      const patch={};
+      for(const key of ["leftW","rightW","bottomH"]){
+        if(saved[key]==null && native[key]!=null) patch[key]=native[key];
+      }
+      if(Object.keys(patch).length) commit(patch);
+    }catch(_){}
+
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
     const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
-    const setLeft=v=>{root.style.setProperty("--leftW",px(v));if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(v))};
-    const setRight=v=>{root.style.setProperty("--rightW",px(v));if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(v))};
-    const setBottom=v=>{root.style.setProperty("--bottomH",px(v));if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(v))};
-    if(saved.leftW)setLeft(get("leftW",255));if(saved.rightW)setRight(get("rightW",235));if(saved.bottomH)setBottom(get("bottomH",185));
-    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",255),setLeft,{min:120,max:560,sign:1,key:"leftW"});
-    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",235),setRight,{min:140,max:560,sign:-1,key:"rightW"});
-    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",185),setBottom,{min:80,max:460,sign:-1,key:"bottomH"});
+    const workspace=document.querySelector(".workspace");
+    const responsive=()=>innerWidth<=880;
+    const rightVisible=()=>!responsive() && right && !right.classList.contains("hiddenPanel");
+    const maxLeft=()=>{
+      const w=workspace?.clientWidth||innerWidth;
+      const rightUsed=rightVisible()?readCssNumber(root,"--rightW",235)+5:0;
+      return Math.max(160,Math.min(420,w-rightUsed-340));
+    };
+    const maxRight=()=>{
+      const w=workspace?.clientWidth||innerWidth;
+      const leftUsed=left&&!left.classList.contains("hiddenPanel")?readCssNumber(root,"--leftW",255)+5:0;
+      return Math.max(160,Math.min(420,w-leftUsed-340));
+    };
+    const maxBottom=()=>Math.max(110,Math.min(380,(workspace?.clientHeight||innerHeight)-150));
+    const setLeft=v=>{
+      v=clamp(v,140,maxLeft());
+      root.style.setProperty("--leftW",px(v));
+      if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(v));
+      return v;
+    };
+    const setRight=v=>{
+      v=clamp(v,150,maxRight());
+      root.style.setProperty("--rightW",px(v));
+      if(right&&!right.classList.contains("hiddenPanel")&&!responsive())root.style.setProperty("--rightTrack",px(v));
+      return v;
+    };
+    const setBottom=v=>{
+      v=clamp(v,90,maxBottom());
+      root.style.setProperty("--bottomH",px(v));
+      if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(v));
+      return v;
+    };
+    const applyResponsive=()=>{
+      setLeft(get("leftW",readCssNumber(root,"--leftW",255)));
+      if(responsive()){
+        root.style.setProperty("--rightTrack","0px");
+      }else if(right&&!right.classList.contains("hiddenPanel")){
+        setRight(get("rightW",readCssNumber(root,"--rightW",235)));
+      }
+      setBottom(get("bottomH",readCssNumber(root,"--bottomH",185)));
+    };
+    applyResponsive();
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",255),setLeft,{min:140,max:maxLeft,sign:1,key:"leftW"});
+    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",235),setRight,{min:150,max:maxRight,sign:-1,key:"rightW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",185),setBottom,{min:90,max:maxBottom,sign:-1,key:"bottomH"});
+    window.addEventListener("resize",applyResponsive);
   }
 
   function setupJenkins(){
@@ -709,6 +765,32 @@
   function reapplyKnownLayout(){
     if(root.classList.contains("sim-layout-dragging")) return;
 
+    if(app==="intellij"){
+      const left=document.getElementById("leftPanel");
+      const work=document.getElementById("work");
+      const split=document.getElementById("splitL");
+      const projectToggle=document.querySelector(".leftRail .rail[title='Project']");
+      const workW=work?.clientWidth||innerWidth;
+      const rightUsed=work?.classList.contains("hasRightTools")
+        ? readCssNumber(root,"--rightW",270)+3
+        : 0;
+      const maxLeft=Math.max(140,Math.min(560,workW-rightUsed-430));
+      if(saved.leftCollapsed===true){
+        root.style.setProperty("--leftW","0px");
+        left?.classList.add("hidden");
+        if(split)split.style.display="none";
+        projectToggle?.classList.remove("active");
+      }else{
+        const width=clamp(get("leftExpandedW",get("leftW",250)),100,maxLeft);
+        root.style.setProperty("--leftW",px(width));
+        left?.classList.remove("hidden");
+        if(split)split.style.display="";
+        projectToggle?.classList.add("active");
+      }
+      if(saved.rightW) root.style.setProperty("--rightW",px(get("rightW",270)));
+      if(saved.bottomH) root.style.setProperty("--bottomH",px(get("bottomH",190)));
+    }
+
     if(app==="postman"){
       const main=document.querySelector(".main");
       if(main&&saved.sideW) main.style.setProperty("--sideW",px(get("sideW",255)));
@@ -811,6 +893,25 @@
         const tabs=document.querySelector(".pageTabs");if(tabs)tabs.style.right=px(width);
       }
     }
+    if(app==="mysql_workbench"){
+      const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
+      const workspace=document.querySelector(".workspace");
+      const responsive=innerWidth<=880;
+      const total=workspace?.clientWidth||innerWidth;
+      const rightDesired=clamp(get("rightW",235),150,420);
+      const rightW=responsive?0:Math.min(rightDesired,Math.max(150,total-500));
+      const leftDesired=clamp(get("leftW",255),140,420);
+      const leftW=Math.min(leftDesired,Math.max(140,total-rightW-345));
+      const bottomH=clamp(get("bottomH",185),90,Math.max(110,Math.min(380,(workspace?.clientHeight||innerHeight)-150)));
+      root.style.setProperty("--leftW",px(leftW));
+      if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(leftW));
+      root.style.setProperty("--rightW",px(rightDesired));
+      if(responsive())root.style.setProperty("--rightTrack","0px");
+      else if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(rightW));
+      root.style.setProperty("--bottomH",px(bottomH));
+      if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(bottomH));
+    }
+
     if(app==="linux"){
       const workspace=document.querySelector(".workspace"),winState=saved.windows||{};
       if(workspace){
@@ -830,7 +931,7 @@
     for(const delay of [0,40,160,600,1250]) setTimeout(()=>requestAnimationFrame(reapplyKnownLayout),delay);
   }
 
-  const setups={vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,jenkins:setupJenkins,git:setupGit,github:setupGithubLike,github_actions:setupGithubLike,powerbi:setupPowerBI,cmd:()=>{}};
+  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,jenkins:setupJenkins,git:setupGit,github:setupGithubLike,github_actions:setupGithubLike,powerbi:setupPowerBI,mysql_workbench:setupMySQLWorkbench,cmd:()=>{}};
   requestAnimationFrame(()=>{
     try{
       setups[app]?.();

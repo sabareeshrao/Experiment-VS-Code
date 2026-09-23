@@ -124,27 +124,32 @@ function hideOnObjectMenu(){if(refs.onObjectMenu){refs.onObjectMenu.classList.re
 function positionOnObjectMenu(visualId){
  requestAnimationFrame(()=>{
   const menu=refs.onObjectMenu,visual=refs.reportCanvas?.querySelector(`[data-visual-id="${CSS.escape(visualId||"")}"]`);
-  if(!menu||!visual||!refs.mainArea)return;
-  const host=refs.mainArea.getBoundingClientRect(),vr=visual.getBoundingClientRect();
+  if(!menu||!visual)return;
+  const vr=visual.getBoundingClientRect();
+  const vw=document.documentElement.clientWidth||innerWidth,vh=document.documentElement.clientHeight||innerHeight;
   const mw=menu.offsetWidth||205,mh=menu.offsetHeight||170,pad=8;
-  let left=vr.right-host.left+pad;
-  if(left+mw>host.width-pad)left=Math.max(pad,vr.left-host.left-mw-pad);
-  const top=Math.max(pad,Math.min(host.height-mh-pad,vr.top-host.top));
+  let left=vr.right+pad;
+  if(left+mw>vw-pad)left=Math.max(pad,vr.left-mw-pad);
+  const top=Math.max(pad,Math.min(vh-mh-pad,vr.top));
   menu.style.left=Math.round(left)+"px";menu.style.top=Math.round(top)+"px";
  });
 }
 function showOnObjectMenu(visualId){if(!refs.onObjectMenu)return;refs.onObjectMenu.classList.add("show");positionOnObjectMenu(visualId);}
 function clearTransient(){
- clearTimeout(transientTimer);refs.toast.classList.remove("show");refs.modalShade.classList.remove("show");refs.modalShade.querySelector(".modal")?.classList.remove("minimized");refs.boundary.classList.remove("show");hideOnObjectMenu();
+ clearTimeout(transientTimer);refs.toast.classList.remove("show");refs.modalShade.classList.remove("show","minimized");refs.modalShade.querySelector(".modal")?.classList.remove("minimized");refs.boundary.classList.remove("show");hideOnObjectMenu();
 }
 function showToast(text){refs.toast.textContent=text||"Done";refs.toast.classList.add("show");}
 function showModal(title,body,buttons=[{label:"Cancel"},{label:"OK",primary:true}]){
  const modal=refs.modalShade.querySelector(".modal");if(modal)modal.classList.remove("minimized");
  refs.modalTitle.innerHTML='<span>'+esc(title)+'</span><span class="grow"></span><button type="button" data-pbi-modal-min title="Minimize">−</button><button type="button" data-pbi-modal-close title="Close">×</button>';
  refs.modalBody.innerHTML=body;refs.modalFoot.innerHTML="";
- refs.modalTitle.querySelector("[data-pbi-modal-min]")?.addEventListener("click",()=>modal?.classList.toggle("minimized"));
- refs.modalTitle.querySelector("[data-pbi-modal-close]")?.addEventListener("click",()=>refs.modalShade.classList.remove("show"));
- buttons.forEach(b=>{const bt=document.createElement("button");bt.className="btn"+(b.primary?" primary":"");bt.textContent=b.label;bt.onclick=()=>refs.modalShade.classList.remove("show");refs.modalFoot.appendChild(bt);});
+ refs.modalShade.classList.remove("minimized");
+ refs.modalTitle.querySelector("[data-pbi-modal-min]")?.addEventListener("click",()=>{
+  const minimized=!!modal?.classList.toggle("minimized");
+  refs.modalShade.classList.toggle("minimized",minimized);
+ });
+ refs.modalTitle.querySelector("[data-pbi-modal-close]")?.addEventListener("click",()=>refs.modalShade.classList.remove("show","minimized"));
+ buttons.forEach(b=>{const bt=document.createElement("button");bt.className="btn"+(b.primary?" primary":"");bt.textContent=b.label;bt.onclick=()=>refs.modalShade.classList.remove("show","minimized");refs.modalFoot.appendChild(bt);});
  refs.modalShade.classList.add("show");
 }
 function resolveTarget(target){
@@ -592,10 +597,10 @@ $("runDaxBtn")?.addEventListener("click",()=>{runDaxQueryState();renderAll()});$
 $("scriptTmdlBtn")?.addEventListener("click",()=>{scriptTmdlState({table:state.selectedTable});renderAll()});$("previewTmdlBtn")?.addEventListener("click",()=>{const s=state.tmdlScripts.find(x=>x.id===state.activeTmdlScriptId)||state.tmdlScripts[0];if(s)s.preview="Preview ready. No validation errors.";renderAll()});$("applyTmdlBtn")?.addEventListener("click",()=>showToast("TMDL changes applied"));
 refs.pbiSearch?.addEventListener("input",e=>{state.ribbonSearch=e.target.value;state.statusText=e.target.value?"Search: "+e.target.value:"Ready";refs.statusMessage.textContent=state.statusText});
 refs.paneSwitcher?.addEventListener("click",e=>{const b=e.target.closest("[data-pane-switch]");if(!b)return;const p=b.dataset.paneSwitch;if(["filters","visualizations","data"].includes(p)){state.paneTab=p;renderSidePanes()}else if(p==="format"){state.paneTab="visualizations";renderSidePanes()}else if(p==="selection"){showModal("Selection",currentPage().visuals.map(v=>'<div class="filterCard">'+esc(v.title||prettyType(v.type))+'</div>').join("")||"No visuals")}else if(p==="bookmarks"){showModal("Bookmarks",state.bookmarks.map(b=>'<div class="filterCard">'+esc(b.name)+'</div>').join("")||"No bookmarks")}else if(p==="add"){showModal("Customize the pane switcher",'<div class="filterCard">Build a visual</div><div class="filterCard">Format</div><div class="filterCard">Selection</div><div class="filterCard">Bookmarks</div><div class="filterCard">Sync slicers</div>')}});
-refs.modalShade.addEventListener("click",e=>{if(e.target===refs.modalShade)refs.modalShade.classList.remove("show");});
+refs.modalShade.addEventListener("click",e=>{if(e.target===refs.modalShade)refs.modalShade.classList.remove("show","minimized");});
  document.getElementById("onObjectClose")?.addEventListener("click",e=>{e.stopPropagation();hideOnObjectMenu();});
  document.addEventListener("pointerdown",e=>{if(!e.target.closest(".boundary"))refs.boundary.classList.remove("show");if(refs.onObjectMenu?.classList.contains("show")&&!e.target.closest("#onObjectMenu"))hideOnObjectMenu();},true);
- document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;hideOnObjectMenu();refs.modalShade.classList.remove("show");refs.modalShade.querySelector(".modal")?.classList.remove("minimized");},true);
+ document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;hideOnObjectMenu();refs.modalShade.classList.remove("show","minimized");refs.modalShade.querySelector(".modal")?.classList.remove("minimized");},true);
 
 window.addEventListener("message",e=>{
  const m=e.data||{};
