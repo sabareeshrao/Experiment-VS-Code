@@ -24,7 +24,8 @@
     mysqlworkbench: $("mysqlWorkbenchFrame"),
     redis: $("redisFrame"),
     spring_initializer: $("springInitializerFrame"),
-    maven_central: $("mavenCentralFrame")
+    maven_central: $("mavenCentralFrame"),
+    kubernetes: $("kubernetesFrame")
   };
 
   const appIds = {
@@ -46,7 +47,8 @@
     mysqlworkbench: "mysql_workbench",
     redis: "redis",
     spring_initializer: "spring_initializer",
-    maven_central: "maven_central"
+    maven_central: "maven_central",
+    kubernetes: "kubernetes"
   };
 
   const appLabels = {
@@ -68,7 +70,8 @@
     mysqlworkbench: "MySQL Workbench",
     redis: "Redis Insight",
     spring_initializer: "Spring Initializr",
-    maven_central: "Maven Central"
+    maven_central: "Maven Central",
+    kubernetes: "Kubernetes / Headlamp"
   };
 
   const engineReady = {
@@ -90,7 +93,8 @@
     mysqlworkbench: false,
     redis: false,
     spring_initializer: false,
-    maven_central: false
+    maven_central: false,
+    kubernetes: false
   };
 
   const SIM_BOOT_TOKEN =
@@ -309,6 +313,7 @@
     if (value === "redis" || value === "redisinsight" || value === "redis_insight" || value === "redis-insight") return "redis";
     if (value === "spring_initializer" || value === "spring-initializer" || value === "springinitializr" || value === "initializr") return "spring_initializer";
     if (value === "maven_central" || value === "maven-central" || value === "mavencentral" || value === "maven_repository") return "maven_central";
+    if (value === "kubernetes" || value === "k8s" || value === "headlamp" || value === "kubectl") return "kubernetes";
     return "intellij";
   }
 
@@ -341,6 +346,7 @@
     softwareBadge.classList.toggle("redis", activeSoftware === "redis");
     softwareBadge.classList.toggle("spring-initializer", activeSoftware === "spring_initializer");
     softwareBadge.classList.toggle("maven-central", activeSoftware === "maven_central");
+    softwareBadge.classList.toggle("kubernetes", activeSoftware === "kubernetes");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -510,6 +516,29 @@
       if (action === "publishMessage") return plan(["#publishBtn"]);
       if (action === "openSettings") return plan(["#settingsBtn"]);
       if (action === "openDatabaseDialog") return plan(["#dbSwitcher"]);
+    }
+    if (software === "kubernetes") {
+      if (action === "selectCluster") return plan(["#clusterSelect"]);
+      if (action === "selectNamespace") return plan(["#namespaceSelect"]);
+      if (action === "openOverview") return plan(['[data-nav="overview"]']);
+      if (action === "openResourceList") return plan([`[data-nav="${step.action.data?.kind || "pods"}"]`]);
+      if (action === "selectResource") return plan([`[data-row="${step.action.data?.name || ""}"]`, ".pageHead h1"]);
+      if (action === "openResourceTab") return plan([`[data-tab="${step.action.data?.tab || "Overview"}"]`]);
+      if (action === "openLogs") return plan(['[data-tab="Logs"]', ".logToolbar"]);
+      if (action === "openExec") return plan(['[data-tab="Exec"]', "#execInput"]);
+      if (action === "openTerminal") return plan(["#terminalToggle"]);
+      if (action === "runKubectl" || action === "clearTerminal") return plan(["#termInput"]);
+      if (action === "openYaml" || action === "editYaml" || action === "applyYaml") return plan(['[data-tab="YAML"]', "#yamlView"]);
+      if (action === "scaleDeployment") return plan(["[data-scale]", ".pageHead h1"]);
+      if (action === "restartDeployment") return plan(["[data-restart]", ".pageHead h1"]);
+      if (action === "openMapView") return plan(['[data-nav="map"]']);
+      if (action === "openProjects" || action === "openProject") return plan(['[data-nav="projects"]', ".projectGrid"]);
+      if (action === "openMetrics") return plan(['[data-nav="metrics"]']);
+      if (action === "openEvents" || action === "filterEvents") return plan(['[data-nav="events"]', "#eventFilter"]);
+      if (action === "openSettings" || action === "openPlugins") return plan(['[data-nav="settings"]']);
+      if (action === "searchResources") return plan(["#globalSearch"]);
+      if (action === "toggleTheme") return plan(["#themeToggle"]);
+      if (action === "openCommandPalette") return plan(["#modalShade .modalHead"]);
     }
     if (software === "mysqlworkbench") {
       if (action === "showHome") return plan(["#homeOverlay"]);
