@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var VERSION=21;
+var VERSION=23;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -32,31 +32,6 @@ function save(){
     }));
   }catch(_){}
 }
-function suppressLegacyAssistants(){
-  if(!IS_EMBEDDED)return;
-  var nodes=document.querySelectorAll('[data-sim-explanation]:not(#'+HOST_ID+'),#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant,#mysqlWorkbenchAssistant,#k8sAssistant');
-  nodes.forEach(function(el){
-    try{
-      el.classList.add("hidden");
-      el.classList.remove("show");
-      el.setAttribute("aria-hidden","true");
-      el.style.setProperty("display","none","important");
-      el.style.setProperty("visibility","hidden","important");
-      el.style.setProperty("pointer-events","none","important");
-      el.style.setProperty("height","0","important");
-      el.style.setProperty("max-height","0","important");
-      el.style.setProperty("overflow","hidden","important");
-    }catch(_){}
-  });
-}
-var legacyObserver=null;
-function watchLegacyAssistants(){
-  if(!IS_EMBEDDED||legacyObserver||typeof MutationObserver!=="function")return;
-  suppressLegacyAssistants();
-  legacyObserver=new MutationObserver(function(){suppressLegacyAssistants()});
-  try{legacyObserver.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["class","style","hidden"]})}catch(_){}
-}
-
 function ensureStyle(){
   if(document.getElementById("sim-global-explanation-style-v3"))return;
   var s=document.createElement("style");
@@ -72,8 +47,8 @@ function ensureStyle(){
     "#"+HOST_ID+" button{width:25px;height:25px;min-width:25px;border:0;border-radius:4px;background:transparent;color:#d7dae0;display:grid;place-items:center;padding:0;cursor:pointer;font:600 14px/25px 'Segoe UI',Arial,sans-serif}",
     "#"+HOST_ID+" button:hover{background:#3a3d43;color:#fff}",
     "#"+HOST_ID+" button:focus-visible{outline:2px solid #7aa2ff;outline-offset:1px}",
-    "#"+HOST_ID+" .simExplainGlobalBody{padding:10px 11px;background:#24262a;color:#e7e9ed;font-size:10.5px;line-height:1.55;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;user-select:text;scrollbar-width:thin!important;scrollbar-color:#656b75 transparent!important}",
-    "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar{display:block!important;width:8px!important;height:8px!important}",
+    "#"+HOST_ID+" .simExplainGlobalBody{padding:10px 11px;background:#24262a;color:#e7e9ed;font-size:10.5px;line-height:1.55;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;user-select:text;scrollbar-width:thin;scrollbar-color:#656b75 transparent}",
+    "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar{width:8px}",
     "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar-thumb{background:#656b75;border:2px solid transparent;background-clip:padding-box;border-radius:999px}",
     "#"+HOST_ID+" [data-sim-explanation-text]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}",
     "#"+HOST_ID+" .simExplainAnswer{display:none;margin-top:9px;padding:8px 9px;border:1px solid #50545c;border-radius:5px;background:#1e2024;white-space:pre-wrap;overflow-wrap:anywhere}",
@@ -153,44 +128,13 @@ function fitHeight(box){
   if(!box||box.classList.contains("hidden")||box.classList.contains("minimized"))return;
   var body=bodyOf(box),head=headOf(box);
   if(!body||!head)return;
-
-  var pad=8;
-  var headH=head.getBoundingClientRect().height||34;
-
-  // Always measure the content at its natural height first. A previous fit
-  // must never become the next lesson's artificial height.
-  box.style.height="auto";
-  box.style.maxHeight="none";
-  body.style.maxHeight="none";
-  body.style.overflowY="visible";
-
-  var naturalBody=Math.max(0,body.scrollHeight);
-  var viewportBodyMax=Math.max(64,innerHeight-headH-(pad*2));
-  var desiredBody=Math.min(naturalBody,viewportBodyMax);
-  var desiredTotal=headH+desiredBody+2;
-
-  // If the complete card can fit in the viewport but the user's saved top
-  // position leaves too little room below, move the card upward once instead
-  // of crushing the body to the old 64px floor.
   var top=box.getBoundingClientRect().top;
-  var maxTop=Math.max(pad,innerHeight-desiredTotal-pad);
-  if(top>maxTop){
-    top=maxTop;
-    pref.top=top;
-    box.style.top=Math.round(top)+"px";
-    save();
-  }
-
-  var availableBody=Math.max(64,innerHeight-top-headH-pad);
-  var finalMax=Math.min(viewportBodyMax,availableBody);
-
-  if(naturalBody>finalMax+1){
-    body.style.maxHeight=Math.floor(finalMax)+"px";
-    body.style.overflowY="auto";
-  }else{
-    body.style.maxHeight="none";
-    body.style.overflowY="visible";
-  }
+  var headH=head.getBoundingClientRect().height||34;
+  // Keep the top edge fixed. Content grows downward; only the body scrolls
+  // after it reaches the available viewport height.
+  var maxBody=Math.max(64,innerHeight-top-headH-10);
+  body.style.maxHeight=Math.floor(maxBody)+"px";
+  body.style.overflowY=body.scrollHeight>maxBody+1?"auto":"hidden";
 }
 function scheduleFit(box){
   cancelAnimationFrame(raf);
@@ -294,6 +238,5 @@ document.addEventListener("keydown",function(e){
 // In embedded simulators this runtime only suppresses legacy/native assistants.
 // The player owns the one visible global card.
 ensureStyle();
-if(IS_EMBEDDED)watchLegacyAssistants();
 if(IS_PLAYER)ensureHost();
 })();
