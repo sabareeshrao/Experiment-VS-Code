@@ -33,6 +33,9 @@
     .sim-layout-handle-v::after{top:0;bottom:0;left:3px;width:3px}
     .sim-layout-handle-h{left:0;right:0;height:9px;cursor:row-resize;transform:translateY(-4px)}
     .sim-layout-handle-h::after{left:0;right:0;top:3px;height:3px}
+    .splitV,.splitH,.split,[id^="split"],[id$="Split"]{touch-action:none;position:relative;z-index:24}
+    .splitV::before,.split::before,[id^="splitL"]::before,[id^="splitR"]::before,[id$="Split"]::before{content:"";position:absolute;top:0;bottom:0;left:-5px;right:-5px}
+    .splitH::before,[id^="splitH"]::before{content:"";position:absolute;left:0;right:0;top:-5px;bottom:-5px}
     .sim-window-resizer{position:absolute;z-index:250;touch-action:none}
     .sim-window-resizer.n,.sim-window-resizer.s{left:7px;right:7px;height:7px;cursor:ns-resize}
     .sim-window-resizer.n{top:-2px}.sim-window-resizer.s{bottom:-2px}
@@ -90,6 +93,43 @@
     return h;
   }
 
+
+  function readCssNumber(target,name,fallback){
+    const value=parseFloat(getComputedStyle(target).getPropertyValue(name));
+    return Number.isFinite(value)?value:fallback;
+  }
+
+  function wirePersistentSplitter(el,axis,read,write,{min=80,max=640,sign=1,key}={}){
+    if(!el || el.dataset.simGlobalResizeWired==="1") return;
+    el.dataset.simGlobalResizeWired="1";
+    el.style.touchAction="none";
+    let drag=null;
+    el.addEventListener("pointerdown",e=>{
+      if(e.button!==0)return;
+      drag={pointerId:e.pointerId,start:axis==="x"?e.clientX:e.clientY,value:Number(read())||0};
+      root.classList.add("sim-layout-dragging");
+      try{el.setPointerCapture(e.pointerId)}catch(_){}
+      e.preventDefault();
+    },true);
+    el.addEventListener("pointermove",e=>{
+      if(!drag||e.pointerId!==drag.pointerId)return;
+      const now=axis==="x"?e.clientX:e.clientY;
+      const limit=typeof max==="function"?max():max;
+      write(clamp(drag.value+(now-drag.start)*sign,min,limit));
+      e.preventDefault();
+    },true);
+    const end=e=>{
+      if(!drag||e.pointerId!==drag.pointerId)return;
+      drag=null;
+      root.classList.remove("sim-layout-dragging");
+      try{if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId)}catch(_){}
+      if(key)commit({[key]:Number(read())||0});
+      e.preventDefault();
+    };
+    el.addEventListener("pointerup",end,true);
+    el.addEventListener("pointercancel",end,true);
+  }
+
   function rememberExisting(handle, read){
     if(!handle) return;
     const persist = () => commit(read());
@@ -107,22 +147,31 @@
     if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
     if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
     if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
-    rememberExisting(document.getElementById("splitL"), () => ({leftW:parseFloat(getComputedStyle(root).getPropertyValue("--leftW"))||250}));
-    rememberExisting(document.getElementById("splitR"), () => ({rightW:parseFloat(getComputedStyle(root).getPropertyValue("--rightW"))||270}));
-    rememberExisting(document.getElementById("splitH"), () => ({bottomH:parseFloat(getComputedStyle(root).getPropertyValue("--bottomH"))||190}));
+    const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",250),v=>root.style.setProperty("--leftW",px(v)),{min:120,max:560,sign:1,key:"leftW"});
+    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",270),v=>root.style.setProperty("--rightW",px(v)),{min:150,max:560,sign:-1,key:"rightW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",190),v=>root.style.setProperty("--bottomH",px(v)),{min:80,max:460,sign:-1,key:"bottomH"});
+    rememberExisting(l,()=>({leftW:readCssNumber(root,"--leftW",250)}));
+    rememberExisting(r,()=>({rightW:readCssNumber(root,"--rightW",270)}));
+    rememberExisting(h,()=>({bottomH:readCssNumber(root,"--bottomH",190)}));
   }
 
   function setupPostman(){
-    const main=document.querySelector(".main"), request=document.getElementById("requestArea");
+    const main=document.querySelector(".main");
     if(saved.sideW && main) main.style.setProperty("--sideW",px(get("sideW",255)));
     if(saved.respH) root.style.setProperty("--respH",px(get("respH",270)));
-    rememberExisting(document.getElementById("splitV"),()=>({sideW:parseFloat(getComputedStyle(main).getPropertyValue("--sideW"))||255}));
-    rememberExisting(document.getElementById("splitH"),()=>({respH:parseFloat(getComputedStyle(root).getPropertyValue("--respH"))||270}));
+    const v=document.getElementById("splitV"),h=document.getElementById("splitH");
+    if(main)wirePersistentSplitter(v,"x",()=>readCssNumber(main,"--sideW",255),x=>main.style.setProperty("--sideW",px(x)),{min:130,max:520,sign:1,key:"sideW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--respH",270),x=>root.style.setProperty("--respH",px(x)),{min:90,max:500,sign:-1,key:"respH"});
+    rememberExisting(v,()=>({sideW:readCssNumber(main,"--sideW",255)}));
+    rememberExisting(h,()=>({respH:readCssNumber(root,"--respH",270)}));
   }
 
   function setupJira(){
     if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",220)));
-    rememberExisting(document.getElementById("splitV"),()=>({leftW:parseFloat(getComputedStyle(root).getPropertyValue("--leftW"))||220}));
+    const split=document.getElementById("splitV");
+    wirePersistentSplitter(split,"x",()=>readCssNumber(root,"--leftW",220),v=>root.style.setProperty("--leftW",px(v)),{min:120,max:520,sign:1,key:"leftW"});
+    rememberExisting(split,()=>({leftW:readCssNumber(root,"--leftW",220)}));
 
     const main=document.getElementById("main");
     const panel=document.getElementById("issuePanel");
@@ -345,6 +394,56 @@
     }
   }
 
+
+  function setupGit(){
+    if(saved.sideW)root.style.setProperty("--sideW",px(get("sideW",218)));
+    if(saved.detailsW)root.style.setProperty("--detailsW",px(get("detailsW",310)));
+    if(saved.termH)root.style.setProperty("--termH",px(get("termH",164)));
+    const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--sideW",218),v=>root.style.setProperty("--sideW",px(v)),{min:120,max:560,sign:1,key:"sideW"});
+    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--detailsW",310),v=>root.style.setProperty("--detailsW",px(v)),{min:180,max:620,sign:-1,key:"detailsW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--termH",164),v=>root.style.setProperty("--termH",px(v)),{min:70,max:460,sign:-1,key:"termH"});
+  }
+
+  function setupGithubLike(){
+    const main=document.querySelector(".main"),split=document.getElementById("sideSplit"),side=document.querySelector(".side");
+    if(!main||!split||!side)return;
+    if(saved.sideW)root.style.setProperty("--sideW",px(get("sideW",side.getBoundingClientRect().width||250)));
+    wirePersistentSplitter(split,"x",()=>readCssNumber(root,"--sideW",side.getBoundingClientRect().width||250),v=>root.style.setProperty("--sideW",px(v)),{min:140,max:()=>Math.max(180,main.clientWidth-320),sign:1,key:"sideW"});
+  }
+
+  function setupPowerBI(){
+    const work=document.querySelector(".workspace"),rail=document.querySelector(".leftRail"),panes=document.querySelector(".sidePanes");
+    if(!work||!rail||!panes)return;
+    work.style.position="relative";
+    const apply=w=>{
+      if(innerWidth<=520){const h=document.getElementById("pbiSideResize");if(h)h.style.display="none";return}
+      const rw=rail.getBoundingClientRect().width||48;
+      const width=clamp(w,170,Math.max(190,work.clientWidth-rw-260));
+      work.style.gridTemplateColumns=px(rw)+" minmax(0,1fr) "+px(width);
+      const h=document.getElementById("pbiSideResize");if(h){h.style.display="block";h.style.left=px(work.clientWidth-width)}
+      const tabs=document.querySelector(".pageTabs");if(tabs)tabs.style.right=px(width);
+    };
+    apply(get("sideW",panes.getBoundingClientRect().width||330));
+    const h=makeHandle(work,"sim-layout-handle-v","pbiSideResize");
+    if(h){
+      dragHandle(h,"x",e=>{const r=work.getBoundingClientRect();apply(r.right-e.clientX)},()=>commit({sideW:panes.getBoundingClientRect().width}));
+    }
+    window.addEventListener("resize",()=>apply(get("sideW",panes.getBoundingClientRect().width||330)));
+  }
+
+  function setupMySQLWorkbench(){
+    const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
+    const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
+    const setLeft=v=>{root.style.setProperty("--leftW",px(v));if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(v))};
+    const setRight=v=>{root.style.setProperty("--rightW",px(v));if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(v))};
+    const setBottom=v=>{root.style.setProperty("--bottomH",px(v));if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(v))};
+    if(saved.leftW)setLeft(get("leftW",255));if(saved.rightW)setRight(get("rightW",235));if(saved.bottomH)setBottom(get("bottomH",185));
+    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",255),setLeft,{min:120,max:560,sign:1,key:"leftW"});
+    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",235),setRight,{min:140,max:560,sign:-1,key:"rightW"});
+    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",185),setBottom,{min:80,max:460,sign:-1,key:"bottomH"});
+  }
+
   function setupJenkins(){
     const layout=document.getElementById("layout"), left=layout?.querySelector(".left"), history=document.getElementById("history");
     const splitL=document.getElementById("splitL"), splitR=document.getElementById("splitR");
@@ -356,6 +455,8 @@
       layout.style.gridTemplateColumns=px(lw)+" 5px minmax(0,1fr) 5px "+px(hw);
     };
     apply();
+    wirePersistentSplitter(splitL,"x",()=>left.getBoundingClientRect().width,v=>{layout.style.gridTemplateColumns=px(v)+" 5px minmax(0,1fr) 5px "+px(history.getBoundingClientRect().width)},{min:110,max:520,sign:1,key:"leftW"});
+    wirePersistentSplitter(splitR,"x",()=>history.getBoundingClientRect().width,v=>{layout.style.gridTemplateColumns=px(left.getBoundingClientRect().width)+" 5px minmax(0,1fr) 5px "+px(v)},{min:115,max:520,sign:-1,key:"historyW"});
     rememberExisting(splitL,()=>({leftW:left.getBoundingClientRect().width,historyW:history.getBoundingClientRect().width}));
     rememberExisting(splitR,()=>({leftW:left.getBoundingClientRect().width,historyW:history.getBoundingClientRect().width}));
     window.addEventListener("resize",apply);
@@ -632,6 +733,32 @@
       }
     }
 
+
+    if(app==="git"){
+      if(saved.sideW)root.style.setProperty("--sideW",px(get("sideW",218)));
+      if(saved.detailsW)root.style.setProperty("--detailsW",px(get("detailsW",310)));
+      if(saved.termH)root.style.setProperty("--termH",px(get("termH",164)));
+    }
+    if(app==="github"||app==="github_actions"){
+      if(saved.sideW)root.style.setProperty("--sideW",px(get("sideW",app==="github"?248:260)));
+    }
+    if(app==="powerbi"){
+      const work=document.querySelector(".workspace"),rail=document.querySelector(".leftRail"),panes=document.querySelector(".sidePanes");
+      if(work&&rail&&panes&&innerWidth>520&&saved.sideW){
+        const rw=rail.getBoundingClientRect().width||48;
+        const width=clamp(get("sideW",330),170,Math.max(190,work.clientWidth-rw-260));
+        work.style.gridTemplateColumns=px(rw)+" minmax(0,1fr) "+px(width);
+        const h=document.getElementById("pbiSideResize");if(h){h.style.display="block";h.style.left=px(work.clientWidth-width)}
+        const tabs=document.querySelector(".pageTabs");if(tabs)tabs.style.right=px(width);
+      }
+    }
+    if(app==="mysql_workbench"){
+      const left=document.getElementById("leftPanel"),right=document.getElementById("rightPanel"),bottom=document.getElementById("bottomPanel");
+      if(saved.leftW){root.style.setProperty("--leftW",px(get("leftW",255)));if(left&&!left.classList.contains("hiddenPanel"))root.style.setProperty("--leftTrack",px(get("leftW",255)))}
+      if(saved.rightW){root.style.setProperty("--rightW",px(get("rightW",235)));if(right&&!right.classList.contains("hiddenPanel"))root.style.setProperty("--rightTrack",px(get("rightW",235)))}
+      if(saved.bottomH){root.style.setProperty("--bottomH",px(get("bottomH",185)));if(bottom&&!bottom.classList.contains("hiddenPanel"))root.style.setProperty("--bottomTrack",px(get("bottomH",185)))}
+    }
+
     if(app==="linux"){
       const workspace=document.querySelector(".workspace"),winState=saved.windows||{};
       if(workspace){
@@ -651,7 +778,7 @@
     for(const delay of [0,40,160,600,1250]) setTimeout(()=>requestAnimationFrame(reapplyKnownLayout),delay);
   }
 
-  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,jenkins:setupJenkins,cmd:()=>{}};
+  const setups={intellij:setupIntelliJ,vscode:setupVSCode,pgadmin:setupPgAdmin,postman:setupPostman,ssms:setupSSMS,linux:setupLinux,jira:setupJira,jenkins:setupJenkins,git:setupGit,github:setupGithubLike,github_actions:setupGithubLike,powerbi:setupPowerBI,mysql_workbench:setupMySQLWorkbench,cmd:()=>{}};
   requestAnimationFrame(()=>{
     try{
       setups[app]?.();
