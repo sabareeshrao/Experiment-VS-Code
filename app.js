@@ -140,8 +140,8 @@
 
       // Universal rules for every current and future simulator.
       ensureScript(
-        "/simulator/shared/explanation-controls.js?v=17",
-        "simulator/shared/explanation-controls.js?v=17",
+        "/simulator/shared/explanation-controls.js?v=20",
+        "simulator/shared/explanation-controls.js?v=20",
         "globalExplanationRuntime"
       );
       ensureScript(
@@ -628,26 +628,25 @@
   function explainCurrentStep() {
     if (!flat.length || fullCodeMode) return;
     const step = flat[current];
-    const target = normalizeSoftware(step.software);
-    const frame = frames[target];
-    if (!frame?.contentWindow) return;
-
     const stage = course.stages[step.stageIndex];
-
-    frames[target].contentWindow.postMessage({
+    const payload = {
       type: "SIM_EXPLAIN",
       title: step.title,
       text: step.why,
       answer: step.answer || "",
       stage: stage.title
-    }, SIM_TARGET_ORIGIN);
+    };
+
+    if (window.SIM_EXPLANATION?.show) {
+      window.SIM_EXPLANATION.show(payload);
+    } else {
+      window.postMessage(payload, location.origin === "null" ? "*" : location.origin);
+    }
   }
 
-  function scheduleCurrentExplanation(delay = 120) {
-    const expected = current;
-    setTimeout(() => {
-      if (!fullCodeMode && current === expected) explainCurrentStep();
-    }, delay);
+  function scheduleCurrentExplanation() {
+    // Kept for old call sites. The parent-level explanation is rendered by
+    // renderCurrentStep() and deduplicated by the global explanation runtime.
   }
 
   function updateUrlForFullCode() {
@@ -771,6 +770,7 @@
   }
 
   function loadFullCode() {
+    window.SIM_EXPLANATION?.hide?.();
     ensureFrameLoaded("intellij");
     fullCodeMode = true;
     switchWorkspace("intellij");
@@ -830,6 +830,7 @@
     renderSidebar();
     updateUrlForStep();
     try { localStorage.setItem("developerJourney.lastStep.v1", String(current + 1)); } catch (_) {}
+    explainCurrentStep();
   }
 
   function goToStep(index, animateFinal) {

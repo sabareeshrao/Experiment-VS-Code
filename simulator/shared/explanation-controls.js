@@ -1,500 +1,242 @@
 (function(){
 "use strict";
-var CONTROLS_VERSION=17;
-if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
-window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
+var VERSION=20;
+if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
+window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
 
-// Additive only: answer styling lives inside the existing explanation body.
-// It does not change the assistant's width, position, scale controls, header or drag behavior.
-var ANSWER_STYLE_ID="sim-explanation-answer-style";
-var answerStyle=document.getElementById(ANSWER_STYLE_ID);
-if(!answerStyle){
-  answerStyle=document.createElement("style");
-  answerStyle.id=ANSWER_STYLE_ID;
-  document.head.appendChild(answerStyle);
-}
-answerStyle.textContent=".simExplainAnswer{margin-top:10px;padding:8px 9px;border:1px solid rgba(140,146,156,.48);border-radius:5px;background:rgba(0,0,0,.16);color:inherit;white-space:pre-wrap}.simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#9aa0aa;font:700 9px/1.2 'Segoe UI',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase}";
+var IS_EMBEDDED=window.self!==window.top;
+var IS_PLAYER=document.body&&document.body.dataset&&document.body.dataset.simPlayer==="1";
+var STORAGE_KEY="sim.explanation.v3";
+var HOST_ID="globalSimAssistant";
+var raf=0,drag=null,resizeObserver=null,lastSignature="";
 
-var STYLE_ID="sim-explanation-controls-style";
-var style=document.getElementById(STYLE_ID);
-if(!style){
-  style=document.createElement("style");
-  style.id=STYLE_ID;
-  document.head.appendChild(style);
-}
-style.textContent=[
-    /* One explanation-card UI for every simulator.  Postman's compact card is
-       the visual reference: neutral surface, quiet header, clear controls. */
-    "[data-sim-explanation].simExplainUnified{position:fixed!important;z-index:20000!important;max-width:calc(100vw - 18px)!important;background:#242424!important;color:#e8e8e8!important;border:1px solid #4b4b4b!important;border-radius:6px!important;box-shadow:0 10px 34px rgba(0,0,0,.42)!important;overflow:hidden!important;user-select:none!important;touch-action:none!important}",
-    "body.theme-light [data-sim-explanation].simExplainUnified,body[data-sim-app='postman']:not(.theme-dark) [data-sim-explanation].simExplainUnified{background:#fff!important;color:#222!important;border-color:#888!important;box-shadow:0 10px 34px rgba(0,0,0,.25)!important}",
-    "[data-sim-explanation].simExplainUnified.hidden{display:none!important}",
-    "[data-sim-explanation].simExplainUnified.show{display:block!important}",
-    "[data-sim-explanation].simExplainUnified.minimized,[data-sim-explanation].simExplainUnified.min{height:auto!important;max-height:none!important}",
-    "[data-sim-explanation].simExplainUnified.minimized .simExplainGlobalBody,[data-sim-explanation].simExplainUnified.min .simExplainGlobalBody{display:none!important}",
-
-    ".simExplainGlobalHead{height:34px!important;min-height:34px!important;display:flex!important;align-items:center!important;gap:6px!important;padding:0 7px 0 9px!important;background:#2b2b2b!important;color:#f1f1f1!important;border:0!important;border-bottom:1px solid #444!important;font:700 10px/1 'Segoe UI',Arial,sans-serif!important;cursor:grab!important;touch-action:none!important;user-select:none!important}",
-    "body.theme-light .simExplainGlobalHead,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead{background:#f5f5f5!important;color:#222!important;border-bottom-color:#ddd!important}",
-    ".simExplainDragging .simExplainGlobalHead{cursor:grabbing!important}",
-    ".simExplainGlobalHead .grow{flex:1!important;min-width:6px!important}",
-    ".simExplainGlobalHead strong,.simExplainGlobalHead #assistantTitle,.simExplainGlobalHead #pgAssistantTitle,.simExplainGlobalHead #ideAssistantTitle,.simExplainGlobalHead #ssmsAssistantTitle,.simExplainGlobalHead #jenkinsAssistantTitle{font:700 10px/1.2 'Segoe UI',Arial,sans-serif!important;color:inherit!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}",
-    /* Remove simulator-specific decoration so every card looks like Postman. */
-    ".simExplainGlobalHead .ideAssistantIcon,.simExplainGlobalHead .assistantIcon,.simExplainGlobalHead .pgAssistantIcon{display:none!important}",
-    ".simExplainGlobalHead .ideAssistantTitles span,.simExplainGlobalHead .assistantTitles span,.simExplainGlobalHead .pgAssistantTitles span,.simExplainGlobalHead #ssmsAssistantStage{display:none!important}",
-    ".simExplainGlobalHead .ideAssistantTitles,.simExplainGlobalHead .assistantTitles,.simExplainGlobalHead .pgAssistantTitles{min-width:0!important;flex:1!important}",
-    ".simExplainGlobalHead>strong{min-width:0!important;flex:1!important}",
-    "#linuxAssistant .simExplainGlobalHead>span:first-child{display:none!important}",
-
-    ".simExplainGlobalHead button,.simExplainSizeBtn{box-sizing:border-box!important;width:25px!important;min-width:25px!important;height:25px!important;min-height:25px!important;padding:0!important;margin:0!important;border:0!important;border-radius:4px!important;background:transparent!important;color:#ddd!important;box-shadow:none!important;outline:0!important;display:grid!important;place-items:center!important;font:600 15px/25px 'Segoe UI',Arial,sans-serif!important;text-align:center!important;opacity:1!important;visibility:visible!important;cursor:pointer!important}",
-    "body.theme-light .simExplainGlobalHead button,body.theme-light .simExplainSizeBtn,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead button,body[data-sim-app='postman']:not(.theme-dark) .simExplainSizeBtn{color:#555!important}",
-    ".simExplainGlobalHead button:hover,.simExplainSizeBtn:hover{background:#3a3a3a!important;color:#fff!important}",
-    "body.theme-light .simExplainGlobalHead button:hover,body.theme-light .simExplainSizeBtn:hover,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalHead button:hover,body[data-sim-app='postman']:not(.theme-dark) .simExplainSizeBtn:hover{background:#e7e7e7!important;color:#111!important}",
-    ".simExplainGlobalHead button:focus-visible,.simExplainSizeBtn:focus-visible{outline:2px solid #ff6c37!important;outline-offset:1px!important}",
-    ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
-    ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
-
-    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;height:auto!important;max-height:none!important;overflow:visible!important;user-select:text!important}",
-    "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
-    ".simExplainGlobalBody .jenkinsAssistantBody{padding:0!important;font:inherit!important;line-height:inherit!important;color:inherit!important}",
-    ".simExplainGlobalBody p{margin:0!important}",
-    ".simExplainGlobalBody [data-sim-explain-actions],.simExplainGlobalBody .simExplainActions,.simExplainGlobalBody .assistantMeta,.simExplainGlobalBody .jenkinsAssistantMeta,.simExplainGlobalBody .stepTag,.simExplainGlobalBody .assistantTag,.simExplainGlobalBody .pgAssistantTag,.assistantLang,.pgAssistantLanguage{display:none!important}",
-
-    /* Explanation-card scrollbars follow Postman's unobtrusive treatment. */
-    ".simExplainGlobalBody{scrollbar-width:thin!important;scrollbar-color:rgba(128,134,142,.62) transparent!important}",
-    ".simExplainGlobalBody::-webkit-scrollbar{width:8px!important;height:8px!important}",
-    ".simExplainGlobalBody::-webkit-scrollbar-track{background:transparent!important}",
-    ".simExplainGlobalBody::-webkit-scrollbar-thumb{background:rgba(128,134,142,.55)!important;border:2px solid transparent!important;background-clip:padding-box!important;border-radius:999px!important}",
-    ".simExplainGlobalBody::-webkit-scrollbar-thumb:hover{background:rgba(154,160,168,.76)!important;background-clip:padding-box!important}",
-
-    /* Legacy selectors remain drag-compatible while the canonical classes are
-       applied at runtime. */
-    "[data-sim-explanation-drag],#ideAssistantDrag,#assistantHead,#pgAssistantHead,#ssmsAssistantDrag,#jiraAssistantHead,#jenkinsAssistantHead,.ideAssistantHead,.assistantHead,.pgAssistantHead{cursor:grab!important;touch-action:none!important;user-select:none!important}"
-  ].join("");
-
-var assistantSelectors=["[data-sim-explanation]","#ideAssistant","#assistant","#pgAssistant","#postmanAssistant","#cmdAssistant","#linuxAssistant","#ssmsAssistant","#jiraAssistant","#jenkinsAssistant"];
-var metaSelectors=["#ideAssistantStep","#assistantStep","#pgAssistantStep","#assistantMeta","#ssmsAssistantMeta","#jenkinsAssistantMeta"];
-var textSelectors=["[data-sim-explanation-text]","#ideAssistantText","#assistantText","#pgAssistantText","#ssmsAssistantText","#jiraAssistantBody","#jenkinsAssistantBody"];
-var pathParts=location.pathname.split("/").filter(Boolean);
-var appKey=(document.body&&document.body.dataset&&document.body.dataset.simApp)||pathParts[pathParts.length-2]||"global";
-var scaleKey="sim.explanationScale.v2."+appKey;
-var positionKey="sim.explanationPosition.v2."+appKey;
-var minimizedKey="sim.explanationMinimized.v1."+appKey;
-var dragPending=false;
-var universalDrag=null;
-
-function firstWithin(root,selectors){
-  for(var i=0;i<selectors.length;i++){
-    var el=root.querySelector(selectors[i]);
-    if(el)return el;
-  }
-  return null;
-}
-function getAssistant(){
-  for(var i=0;i<assistantSelectors.length;i++){
-    var el=document.querySelector(assistantSelectors[i]);
-    if(el)return el;
-  }
-  return null;
-}
-function captureNativeMetrics(box){
-  if(!box||box.dataset.simNativeMetrics==="1")return;
-  var body=getBody(box);
-  var r=box.getBoundingClientRect();
-  var cs=body?getComputedStyle(body):null;
-  if(r.width>0)box.dataset.simExplainBaseWidth=String(Math.round(r.width*100)/100);
-  if(cs){
-    var fs=parseFloat(cs.fontSize);
-    if(Number.isFinite(fs)&&fs>0)box.dataset.simExplainBaseFont=String(fs);
-  }
-  box.dataset.simNativeMetrics="1";
-}
-function ensureFallbackAssistant(){
-  var existing=getAssistant();
-  if(existing)return existing;
-  if(!document.body)return null;
-  var box=document.createElement("aside");
-  box.id="globalSimAssistant";
-  box.className="hidden";
-  box.setAttribute("data-sim-explanation","1");
-  box.innerHTML='<div data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><span class="grow"></span><button type="button" data-sim-explanation-min title="Minimize">−</button><button type="button" data-sim-explanation-close title="Close">×</button></div><div data-sim-explanation-body><p data-sim-explanation-text></p></div>';
-  document.body.appendChild(box);
-  applyUnifiedClasses(box);
-  bindBasicExplanationControls(box);
-  return box;
-}
-function getHead(box){
-  return firstWithin(box,["[data-sim-explanation-drag]","#ideAssistantDrag","#assistantHead","#pgAssistantHead","#ssmsAssistantDrag","#jiraAssistantHead","#jenkinsAssistantHead",".ideAssistantHead",".assistantHead",".pgAssistantHead"]);
-}
-function getBody(box){
-  return firstWithin(box,["[data-sim-explanation-body]",".ideAssistantBody",".assistantBody",".pgAssistantBody",".jenkinsAssistantContent"]);
-}
-function applyUnifiedClasses(box){
-  if(!box)return;
-  box.classList.add("simExplainUnified");
-  box.setAttribute("data-sim-explanation","1");
-  var head=getHead(box),body=getBody(box);
-  if(head)head.classList.add("simExplainGlobalHead");
-  if(body)body.classList.add("simExplainGlobalBody");
-  /* Jenkins keeps its text body one level deeper; the content wrapper is the
-     shared body, so normalize its padding while preserving the actual text. */
-  var jenkinsButtons=head&&head.querySelector(".jenkinsAssistantButtons");
-  if(jenkinsButtons)jenkinsButtons.classList.add("simExplainHeaderButtons");
-}
-function getMeta(box){
-  var meta=firstWithin(box,metaSelectors);
-  if(meta)return meta;
-  var body=getBody(box);
-  if(!body)return null;
-  meta=document.createElement("div");
-  meta.className="simExplainActions";
-  meta.setAttribute("data-sim-explain-actions","1");
-  body.insertBefore(meta,body.firstChild);
-  return meta;
-}
-function getText(box){
-  return firstWithin(box,textSelectors);
-}
-function getScale(){
-  var n=parseInt(localStorage.getItem(scaleKey)||"0",10);
-  return Number.isFinite(n)?Math.max(-2,Math.min(4,n)):0;
-}
-function explanationMinimizedPreference(){
-  try{return localStorage.getItem(minimizedKey)==="1";}catch(_){return false;}
-}
-function saveExplanationMinimized(value){
-  try{localStorage.setItem(minimizedKey,value?"1":"0");}catch(_){}
-}
-function readPosition(){
+function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
+function readState(){
+  var fallback={left:null,top:null,viewportWidth:0,viewportHeight:0,scale:0,minimized:false};
   try{
-    var raw=localStorage.getItem(positionKey);
-    if(!raw)return null;
-    var p=JSON.parse(raw);
-    if(!Number.isFinite(p.left)||!Number.isFinite(p.top))return null;
-    return p;
-  }catch(_){return null;}
+    var x=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")||{};
+    return Object.assign(fallback,x);
+  }catch(_){return fallback}
 }
-function savePosition(){
-  var box=getAssistant();
-  if(!box)return;
-  var r=box.getBoundingClientRect();
-  if(!r.width||!r.height)return;
-  var maxLeft=Math.max(0,innerWidth-r.width);
-  var maxTop=Math.max(0,innerHeight-r.height);
-  var left=Math.max(0,Math.min(maxLeft,r.left));
-  var top=Math.max(0,Math.min(maxTop,r.top));
+var pref=readState();
+function save(){
   try{
-    localStorage.setItem(positionKey,JSON.stringify({
-      left:left,
-      top:top,
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      left:Number.isFinite(pref.left)?pref.left:null,
+      top:Number.isFinite(pref.top)?pref.top:null,
       viewportWidth:innerWidth,
-      viewportHeight:innerHeight
+      viewportHeight:innerHeight,
+      scale:clamp(Number(pref.scale)||0,-2,4),
+      minimized:!!pref.minimized
     }));
   }catch(_){}
 }
-function defaultPosition(box){
-  box.style.left="auto";
-  box.style.top="auto";
-  box.style.right="16px";
-  box.style.bottom="38px";
+function ensureStyle(){
+  if(document.getElementById("sim-global-explanation-style-v3"))return;
+  var s=document.createElement("style");
+  s.id="sim-global-explanation-style-v3";
+  s.textContent=[
+    "#"+HOST_ID+"{position:fixed;z-index:2147480000;display:none;width:360px;max-width:calc(100vw - 20px);background:#24262a;color:#eceef2;border:1px solid #50545c;border-radius:7px;box-shadow:0 12px 34px rgba(0,0,0,.42);overflow:hidden;font-family:'Segoe UI',Arial,sans-serif;box-sizing:border-box}",
+    "#"+HOST_ID+".show{display:block}",
+    "#"+HOST_ID+".hidden{display:none!important}",
+    "#"+HOST_ID+" .simExplainGlobalHead{height:34px;min-height:34px;display:flex;align-items:center;gap:5px;padding:0 7px 0 10px;background:#2e3035;border-bottom:1px solid #454850;cursor:grab;user-select:none;touch-action:none;box-sizing:border-box}",
+    "#"+HOST_ID+".dragging .simExplainGlobalHead{cursor:grabbing}",
+    "#"+HOST_ID+" [data-sim-explanation-title]{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;line-height:1.2;font-weight:700;color:#f3f4f6}",
+    "#"+HOST_ID+" .simExplainControls{display:flex;align-items:center;gap:1px;flex:none}",
+    "#"+HOST_ID+" button{width:25px;height:25px;min-width:25px;border:0;border-radius:4px;background:transparent;color:#d7dae0;display:grid;place-items:center;padding:0;cursor:pointer;font:600 14px/25px 'Segoe UI',Arial,sans-serif}",
+    "#"+HOST_ID+" button:hover{background:#3a3d43;color:#fff}",
+    "#"+HOST_ID+" button:focus-visible{outline:2px solid #7aa2ff;outline-offset:1px}",
+    "#"+HOST_ID+" .simExplainGlobalBody{padding:10px 11px;background:#24262a;color:#e7e9ed;font-size:10.5px;line-height:1.55;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;user-select:text;scrollbar-width:thin;scrollbar-color:#656b75 transparent}",
+    "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar{width:8px}",
+    "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar-thumb{background:#656b75;border:2px solid transparent;background-clip:padding-box;border-radius:999px}",
+    "#"+HOST_ID+" [data-sim-explanation-text]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}",
+    "#"+HOST_ID+" .simExplainAnswer{display:none;margin-top:9px;padding:8px 9px;border:1px solid #50545c;border-radius:5px;background:#1e2024;white-space:pre-wrap;overflow-wrap:anywhere}",
+    "#"+HOST_ID+" .simExplainAnswer.show{display:block}",
+    "#"+HOST_ID+" .simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#aeb3bc;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}",
+    "#"+HOST_ID+".minimized .simExplainGlobalBody{display:none!important}",
+    "#"+HOST_ID+".minimized{height:34px!important;max-height:34px!important}",
+    "#"+HOST_ID+".minimized .simExplainGlobalHead{border-bottom:0}",
+    IS_EMBEDDED?"[data-sim-explanation]:not(#"+HOST_ID+"),#ideAssistant,#assistant,#pgAssistant,#postmanAssistant,#cmdAssistant,#linuxAssistant,#ssmsAssistant,#jiraAssistant,#jenkinsAssistant{display:none!important;visibility:hidden!important;pointer-events:none!important}":""
+  ].join("\n");
+  document.head.appendChild(s);
 }
-function restorePosition(){
-  var box=getAssistant();
-  if(!box)return;
-  var p=readPosition();
-  if(!p){
-    defaultPosition(box);
-    return;
-  }
-
-  var r=box.getBoundingClientRect();
-  var left=p.left;
-  var top=p.top;
-
-  if(p.viewportWidth&&Math.abs(innerWidth-p.viewportWidth)>24){
-    left=left*(innerWidth/p.viewportWidth);
-  }
-  if(p.viewportHeight&&Math.abs(innerHeight-p.viewportHeight)>24){
-    top=top*(innerHeight/p.viewportHeight);
-  }
-
-  left=Math.max(4,Math.min(Math.max(4,innerWidth-r.width-4),left));
-  top=Math.max(4,Math.min(Math.max(4,innerHeight-r.height-4),top));
-
-  box.style.right="auto";
-  box.style.bottom="auto";
-  box.style.left=Math.round(left)+"px";
-  box.style.top=Math.round(top)+"px";
+function ensureHost(){
+  ensureStyle();
+  var box=document.getElementById(HOST_ID);
+  if(box)return box;
+  box=document.createElement("aside");
+  box.id=HOST_ID;
+  box.className="hidden";
+  box.setAttribute("data-sim-explanation","global");
+  box.innerHTML='<div class="simExplainGlobalHead" data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><div class="simExplainControls"><button type="button" data-sim-explanation-smaller title="Smaller">−</button><button type="button" data-sim-explanation-larger title="Larger">+</button><button type="button" data-sim-explanation-min title="Minimize">▁</button><button type="button" data-sim-explanation-close title="Close">×</button></div></div><div class="simExplainGlobalBody" data-sim-explanation-body><p data-sim-explanation-text></p><div class="simExplainAnswer"></div></div>';
+  document.body.appendChild(box);
+  bind(box);
+  applyScale(box,false);
+  restorePosition(box);
+  observe(box);
+  return box;
 }
-function bindPositionPersistence(){
-  var box=getAssistant();
-  if(!box||box.dataset.simPositionBound==="1")return;
-  var head=getHead(box);
-  if(!head)return;
-  box.dataset.simPositionBound="1";
-  box.setAttribute("data-sim-explanation","1");
-  head.setAttribute("data-sim-explanation-drag","1");
-
-  // One universal drag implementation for every simulator. We intercept in
-  // document capture phase so legacy per-simulator drag handlers cannot fight
-  // with this shared behavior.
-  document.addEventListener("pointerdown",function(e){
-    var targetHead=e.target.closest("[data-sim-explanation-drag]");
-    if(!targetHead||!box.contains(targetHead)||e.target.closest("button"))return;
-    var r=box.getBoundingClientRect();
-    universalDrag={
-      pointerId:e.pointerId,
-      dx:e.clientX-r.left,
-      dy:e.clientY-r.top
-    };
-    dragPending=true;
-    box.classList.add("simExplainDragging");
-    box.style.right="auto";
-    box.style.bottom="auto";
-    box.style.left=Math.round(r.left)+"px";
-    box.style.top=Math.round(r.top)+"px";
-    try{targetHead.setPointerCapture?.(e.pointerId)}catch(_){}
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  },true);
-
-  document.addEventListener("pointermove",function(e){
-    if(!universalDrag||e.pointerId!==universalDrag.pointerId)return;
-    var r=box.getBoundingClientRect(),pad=4;
-    var left=Math.max(pad,Math.min(innerWidth-r.width-pad,e.clientX-universalDrag.dx));
-    var top=Math.max(pad,Math.min(innerHeight-r.height-pad,e.clientY-universalDrag.dy));
-    box.style.left=Math.round(left)+"px";
-    box.style.top=Math.round(top)+"px";
-    box.style.right="auto";
-    box.style.bottom="auto";
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  },true);
-
-  function finishDrag(e){
-    if(!universalDrag||e.pointerId!==universalDrag.pointerId)return;
-    universalDrag=null;
-    dragPending=false;
-    box.classList.remove("simExplainDragging");
-    savePosition();
-    restorePosition();
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-
-  document.addEventListener("pointerup",finishDrag,true);
-  document.addEventListener("pointercancel",finishDrag,true);
+function bodyOf(box){return box.querySelector(".simExplainGlobalBody")}
+function headOf(box){return box.querySelector(".simExplainGlobalHead")}
+function widthForScale(){
+  return clamp(360+(clamp(Number(pref.scale)||0,-2,4)*54),252,576);
 }
-function rememberBase(box,body,text){
-  if(!box.dataset.simExplainBaseWidth)box.dataset.simExplainBaseWidth=String(Math.max(240,Math.round(box.getBoundingClientRect().width||360)));
-  if(!box.dataset.simExplainBaseFont){
-    var fs=body?parseFloat(getComputedStyle(body).fontSize):NaN;
-    box.dataset.simExplainBaseFont=String(Number.isFinite(fs)&&fs>0?fs:10.5);
-  }
-}
-function fitExplanationToViewport(box){
-  if(!box)return;
-  var body=getBody(box);
-  if(!body)return;
-  body.style.maxHeight="none";
-  body.style.overflowY="visible";
-  requestAnimationFrame(function(){
-    var head=getHead(box);
-    var natural=box.getBoundingClientRect();
-    var available=Math.max(96,innerHeight-8);
-    if(natural.height>available){
-      var headH=head?head.getBoundingClientRect().height:0;
-      var bodyMax=Math.max(56,available-headH-2);
-      body.style.maxHeight=Math.floor(bodyMax)+"px";
-      body.style.overflowY="auto";
-    }
-    restorePosition();
-  });
-}
-function applyScale(){
-  var box=getAssistant();
-  if(!box)return;
-  var body=getBody(box),text=getText(box),level=getScale();
-  rememberBase(box,body,text);
-  var baseWidth=parseFloat(box.dataset.simExplainBaseWidth)||340;
-  var baseFont=parseFloat(box.dataset.simExplainBaseFont)||11;
-  if(level===0){
-    box.style.width="";
-    if(body){
-      body.style.fontSize="";
-      body.style.lineHeight="";
-    }
-    if(text){
-      text.style.fontSize="";
-      text.style.lineHeight="";
-    }
-  }else{
-    var width=Math.max(240,baseWidth+(level*58));
-    var font=Math.max(9,baseFont+(level*1.45));
-    box.style.width="min("+Math.round(width)+"px, calc(100vw - 18px))";
-    if(body){
-      body.style.fontSize=font.toFixed(1)+"px";
-      body.style.lineHeight="1.58";
-    }
-    if(text){
-      text.style.fontSize="inherit";
-      text.style.lineHeight="inherit";
-    }
-  }
-  box.style.maxWidth="calc(100vw - 18px)";
-  fitExplanationToViewport(box);
-}
-function changeScale(delta){
-  var next=Math.max(-2,Math.min(4,getScale()+delta));
-  localStorage.setItem(scaleKey,String(next));
-  applyScale();
-}
-function ensureBasicHeaderButtons(box){
-  if(!box)return;
-  var head=getHead(box);
-  if(!head)return;
-  if(!head.querySelector(".grow")){var grow=document.createElement("span");grow.className="grow";head.appendChild(grow);}
-  if(!box.querySelector("[data-sim-explanation-min]")){var min=document.createElement("button");min.type="button";min.setAttribute("data-sim-explanation-min","1");min.title="Minimize";min.textContent="−";head.appendChild(min);}
-  if(!box.querySelector("[data-sim-explanation-close]")){var close=document.createElement("button");close.type="button";close.setAttribute("data-sim-explanation-close","1");close.title="Close";close.textContent="×";head.appendChild(close);}
-}
-
-function bindBasicExplanationControls(box){
-  if(!box||box.dataset.simBasicControlsBound==="1")return;
-  box.dataset.simBasicControlsBound="1";
-  var min=box.querySelector("[data-sim-explanation-min]");
-  var close=box.querySelector("[data-sim-explanation-close]");
-  if(min)min.addEventListener("click",function(e){
-    e.preventDefault();e.stopPropagation();
-    box.classList.toggle("minimized");
-    box.classList.remove("min");
-    saveExplanationMinimized(box.classList.contains("minimized"));
-    savePosition();
-  });
-  if(close)close.addEventListener("click",function(e){
-    e.preventDefault();e.stopPropagation();
-    box.classList.add("hidden");
-    box.classList.remove("show");
-  });
-}
-function ensureControls(){
-  var box=getAssistant();
-  if(!box)return;
-  captureNativeMetrics(box);
-  applyUnifiedClasses(box);
-  ensureBasicHeaderButtons(box);
-  bindBasicExplanationControls(box);
-  bindPositionPersistence();
-  var head=getHead(box);
-  if(!head||head.querySelector(".simExplainSizeControls")){applyScale();return;}
-
-  var wrap=document.createElement("span");
-  wrap.className="simExplainSizeControls";
-
-  var minus=document.createElement("button");
-  minus.type="button";
-  minus.className="simExplainSizeBtn";
-  minus.textContent="−";
-  minus.title="Decrease explanation box and font size";
-
-  var plus=document.createElement("button");
-  plus.type="button";
-  plus.className="simExplainSizeBtn";
-  plus.textContent="+";
-  plus.title="Increase explanation box and font size";
-
-  minus.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();changeScale(-1);});
-  plus.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();changeScale(1);});
-
-  wrap.appendChild(minus);wrap.appendChild(plus);
-
-  var anchor=head.querySelector('[id$="Min"],[id$="Close"],button');
-  if(anchor&&anchor.parentNode){
-    anchor.parentNode.insertBefore(wrap,anchor);
-    if(anchor.parentNode!==head)anchor.parentNode.classList.add("simExplainHeaderButtons");
-  }else head.appendChild(wrap);
-
-  applyScale();
-}
-function hideExplanationMeta(box){
-  var selectors=metaSelectors.concat(["[data-sim-explain-actions]"]);
-  selectors.forEach(function(selector){
-    Array.prototype.forEach.call(box.querySelectorAll(selector),function(el){
-      el.style.display="none";
-      el.setAttribute("aria-hidden","true");
-    });
-  });
-}
-function hideLanguageLabels(box){
-  Array.prototype.forEach.call(box.querySelectorAll(".assistantLang,.pgAssistantLanguage"),function(el){el.style.display="none";});
-}
-function refresh(m){
-  var box=getAssistant()||ensureFallbackAssistant();
-  if(!box)return;
-  captureNativeMetrics(box);
-  applyUnifiedClasses(box);
-  var title=firstWithin(box,["[data-sim-explanation-title]","#ideAssistantTitle","#assistantTitle","#pgAssistantTitle","#ssmsAssistantTitle","#jenkinsAssistantTitle"]);
-  var text=getText(box);
-  var body=getBody(box);
-  if(body&&text===body){
-    var question=body.querySelector(".simExplainQuestion");
-    if(!question){
-      question=document.createElement("div");
-      question.className="simExplainQuestion";
-      question.setAttribute("data-sim-explanation-text","1");
-      body.textContent="";
-      body.appendChild(question);
-    }
-    text=question;
-  }
-  if(title&&m&&m.title)title.textContent=m.title;
-  if(text&&m&&m.text!==undefined)text.textContent=m.text||"";
+function applyScale(box,saveAfter){
+  var width=Math.min(widthForScale(),Math.max(252,innerWidth-20));
+  box.style.width=Math.round(width)+"px";
+  var body=bodyOf(box);
   if(body){
-    var answer=body.querySelector(".simExplainAnswer");
-    if(m&&m.answer){
-      if(!answer){answer=document.createElement("div");answer.className="simExplainAnswer";body.appendChild(answer);}
-      answer.textContent=String(m.answer);
-      answer.style.display="";
-    }else if(answer){answer.style.display="none";}
+    var font=clamp(10.5+(Number(pref.scale)||0)*1.15,9,15.1);
+    body.style.fontSize=font.toFixed(1)+"px";
   }
-  box.classList.remove("hidden","minimized","min");
-  box.classList.add("show");
-  box.style.display="";
-  ensureControls();
-  if(explanationMinimizedPreference())box.classList.add("minimized");
-  hideLanguageLabels(box);
-  hideExplanationMeta(box);
-  applyScale();
-  fitExplanationToViewport(box);
+  clampPosition(box,false);
+  scheduleFit(box);
+  if(saveAfter)save();
 }
-
+function initialPosition(box){
+  var r=box.getBoundingClientRect();
+  var left=Math.max(10,innerWidth-r.width-18);
+  var top=Math.min(Math.max(12,68),Math.max(12,innerHeight-60));
+  pref.left=left;pref.top=top;pref.viewportWidth=innerWidth;pref.viewportHeight=innerHeight;
+}
+function restorePosition(box){
+  if(!Number.isFinite(pref.left)||!Number.isFinite(pref.top)){
+    initialPosition(box);
+  }else{
+    var left=pref.left,top=pref.top;
+    if(pref.viewportWidth&&Math.abs(innerWidth-pref.viewportWidth)>24)left*=innerWidth/pref.viewportWidth;
+    if(pref.viewportHeight&&Math.abs(innerHeight-pref.viewportHeight)>24)top*=innerHeight/pref.viewportHeight;
+    pref.left=left;pref.top=top;
+  }
+  box.style.right="auto";box.style.bottom="auto";
+  box.style.left=Math.round(pref.left)+"px";
+  box.style.top=Math.round(pref.top)+"px";
+  clampPosition(box,true);
+}
+function clampPosition(box,saveAfter){
+  var r=box.getBoundingClientRect(),pad=8;
+  var maxLeft=Math.max(pad,innerWidth-r.width-pad);
+  var maxTop=Math.max(pad,innerHeight-Math.min(r.height,innerHeight-pad*2)-pad);
+  var left=clamp(Number(pref.left)||pad,pad,maxLeft);
+  var top=clamp(Number(pref.top)||pad,pad,maxTop);
+  pref.left=left;pref.top=top;
+  box.style.left=Math.round(left)+"px";box.style.top=Math.round(top)+"px";
+  if(saveAfter)save();
+}
+function fitHeight(box){
+  if(!box||box.classList.contains("hidden")||box.classList.contains("minimized"))return;
+  var body=bodyOf(box),head=headOf(box);
+  if(!body||!head)return;
+  var top=box.getBoundingClientRect().top;
+  var headH=head.getBoundingClientRect().height||34;
+  // Keep the top edge fixed. Content grows downward; only the body scrolls
+  // after it reaches the available viewport height.
+  var maxBody=Math.max(64,innerHeight-top-headH-10);
+  body.style.maxHeight=Math.floor(maxBody)+"px";
+  body.style.overflowY=body.scrollHeight>maxBody+1?"auto":"hidden";
+}
+function scheduleFit(box){
+  cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(function(){fitHeight(box)});
+}
+function observe(box){
+  if(typeof ResizeObserver!=="function")return;
+  try{
+    if(resizeObserver)resizeObserver.disconnect();
+    resizeObserver=new ResizeObserver(function(){scheduleFit(box)});
+    var text=box.querySelector("[data-sim-explanation-text]");
+    var answer=box.querySelector(".simExplainAnswer");
+    if(text)resizeObserver.observe(text);
+    if(answer)resizeObserver.observe(answer);
+  }catch(_){}
+}
+function bind(box){
+  if(box.dataset.bound==="1")return;
+  box.dataset.bound="1";
+  var head=headOf(box);
+  box.querySelector("[data-sim-explanation-smaller]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)-1,-2,4);applyScale(box,true)};
+  box.querySelector("[data-sim-explanation-larger]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)+1,-2,4);applyScale(box,true)};
+  box.querySelector("[data-sim-explanation-min]").onclick=function(e){e.stopPropagation();pref.minimized=!pref.minimized;box.classList.toggle("minimized",pref.minimized);save();scheduleFit(box)};
+  box.querySelector("[data-sim-explanation-close]").onclick=function(e){e.stopPropagation();box.classList.add("hidden");box.classList.remove("show")};
+  head.addEventListener("pointerdown",function(e){
+    if(e.button!==0||e.target.closest("button"))return;
+    var r=box.getBoundingClientRect();
+    drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
+    box.classList.add("dragging");
+    try{head.setPointerCapture(e.pointerId)}catch(_){}
+    e.preventDefault();
+  });
+  head.addEventListener("pointermove",function(e){
+    if(!drag||e.pointerId!==drag.id)return;
+    var r=box.getBoundingClientRect(),pad=8;
+    pref.left=clamp(e.clientX-drag.dx,pad,Math.max(pad,innerWidth-r.width-pad));
+    pref.top=clamp(e.clientY-drag.dy,pad,Math.max(pad,innerHeight-r.height-pad));
+    box.style.left=Math.round(pref.left)+"px";box.style.top=Math.round(pref.top)+"px";
+    scheduleFit(box);
+    e.preventDefault();
+  });
+  function end(e){
+    if(!drag||e.pointerId!==drag.id)return;
+    drag=null;box.classList.remove("dragging");save();scheduleFit(box);
+    try{head.releasePointerCapture(e.pointerId)}catch(_){}
+  }
+  head.addEventListener("pointerup",end);
+  head.addEventListener("pointercancel",end);
+}
+function show(payload){
+  payload=payload||{};
+  var signature=[payload.title||"",payload.text||"",payload.answer||"",payload.stage||""].join("\u0001");
+  var box=ensureHost();
+  if(signature===lastSignature&&!box.classList.contains("hidden")){
+    // Same lesson may be requested again after iframe hydration/seek completion.
+    // Do not rebuild/re-measure the card; that is what caused visible shaking.
+    return box;
+  }
+  lastSignature=signature;
+  var title=box.querySelector("[data-sim-explanation-title]");
+  var text=box.querySelector("[data-sim-explanation-text]");
+  var answer=box.querySelector(".simExplainAnswer");
+  title.textContent=payload.title||"Lesson explanation";
+  text.textContent=payload.text||"";
+  if(payload.answer){answer.textContent=String(payload.answer);answer.classList.add("show")}
+  else{answer.textContent="";answer.classList.remove("show")}
+  box.classList.remove("hidden");
+  box.classList.add("show");
+  box.classList.toggle("minimized",!!pref.minimized);
+  applyScale(box,false);
+  if(!Number.isFinite(pref.left)||!Number.isFinite(pref.top))initialPosition(box);
+  restorePosition(box);
+  scheduleFit(box);
+  return box;
+}
+function hide(){
+  var box=document.getElementById(HOST_ID);
+  if(box){box.classList.add("hidden");box.classList.remove("show")}
+}
+function resetPosition(){
+  var box=ensureHost();pref.left=null;pref.top=null;initialPosition(box);restorePosition(box);save();scheduleFit(box);
+}
+window.SIM_EXPLANATION={show:show,hide:hide,resetPosition:resetPosition,getElement:function(){return ensureHost()},fit:function(){scheduleFit(ensureHost())},version:VERSION};
 window.addEventListener("message",function(e){
   var m=e.data||{};
-  if(m.type==="SIM_EXPLAIN"){
-    // Create a shared fallback explanation panel for simulators that do not
-    // ship their own assistant, then apply the same global controls/styles.
-    setTimeout(function(){ensureFallbackAssistant();refresh(m);},0);
-  }
+  if(m.type==="SIM_EXPLAIN")show(m);
 });
-
-if(document.readyState==="loading"){
-  document.addEventListener("DOMContentLoaded",function(){
-    ensureControls();
-    requestAnimationFrame(restorePosition);
-  });
-}else{
-  ensureControls();
-  requestAnimationFrame(restorePosition);
-}
-
+window.addEventListener("resize",function(){
+  var box=document.getElementById(HOST_ID);
+  if(!box)return;
+  applyScale(box,false);
+  clampPosition(box,true);
+  scheduleFit(box);
+});
 document.addEventListener("keydown",function(e){
   if(e.key!=="Escape")return;
-  var box=getAssistant();
-  if(!box||box.classList.contains("hidden"))return;
-  // Escape closes only the current explanation. Minimized preference remains.
-  box.classList.add("hidden");
-  box.classList.remove("show");
+  var box=document.getElementById(HOST_ID);
+  if(box&&!box.classList.contains("hidden"))hide();
 },true);
 
-window.addEventListener("resize",function(){
-  applyScale();
-});
+// In embedded simulators this runtime only suppresses legacy/native assistants.
+// The player owns the one visible global card.
+ensureStyle();
+if(IS_PLAYER)ensureHost();
 })();

@@ -131,36 +131,33 @@ For engines with async rendering, send:
 
 after the final rendered state exists. The parent can then apply final guidance/explanation.
 
-## 9. Explanation box is mandatory for every software
+## 9. Explanation box is global and owned by the player
 
-Every simulator must support `SIM_EXPLAIN`.
+The lesson explanation UI is **not software UI**.
 
-Preferred markup:
+There must be exactly one visible explanation card, owned by the parent player through:
 
-```html
-<aside data-sim-explanation class="hidden">
-  <div data-sim-explanation-drag>
-    <strong data-sim-explanation-title>Lesson explanation</strong>
-    <button data-sim-explanation-min>−</button>
-    <button data-sim-explanation-close>×</button>
-  </div>
-  <div data-sim-explanation-body>
-    <p data-sim-explanation-text></p>
-  </div>
-</aside>
-```
+`simulator/shared/explanation-controls.js`
 
-The shared controller owns:
+Rules:
 
-- drag behavior
-- saved position
-- viewport clamping
-- minimize/close behavior
-- common explanation styling
+- new simulators must **not** create their own explanation box, explanation CSS, drag logic, sizing logic or persistence
+- the player calls the global explanation runtime directly from lesson state
+- simulator readiness must never control whether the explanation is visible
+- all software uses the same card, same position, same width scale, same minimized state and same controls
+- position/scale/minimized state use one global storage record, not per-software keys
+- explanation height is content-driven
+- short explanations shrink automatically
+- longer explanations grow downward without changing the saved top-left position
+- when content exceeds the available viewport, only the explanation body scrolls
+- a `ResizeObserver` must re-fit the body when text/answer height changes
+- content changes must not repeatedly restore/re-clamp position and must not cause visible shaking
+- switching IntelliJ → SSMS → Kubernetes → any future software must leave the same explanation card in the same place
+- future software gets explanations automatically without adding explanation markup
+- legacy/native simulator assistants may remain in old simulator source for compatibility, but the shared runtime must suppress them when embedded in the player
+- direct standalone simulator pages may still respond to `SIM_EXPLAIN` through the shared runtime, but the main player always owns the visible canonical card
 
-But a simulator should also have a small native `SIM_EXPLAIN` fallback when practical so explanation text still appears if shared-runtime injection is delayed.
-
-A new simulator is **not complete** if lessons work but explanations do not appear.
+A new simulator is **not complete** if it adds a software-specific explanation UI instead of using this global player-level system.
 
 ## 10. Never use giant lesson highlight rectangles
 
