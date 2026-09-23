@@ -90,3 +90,19 @@ The Git, GitHub and GitHub Actions simulators are independent software modules.
 - GitHub Actions owns workflow automation state: YAML workflows, dispatch inputs, runs/jobs/steps/logs, artifacts, annotations, caches, environments/approvals, secrets/variables and runners.
 
 Future lesson UI additions must stay inside the corresponding software folder.
+
+## Global resize and layout rule
+
+Every simulator must load `simulator/shared/layout-resize.js`.
+
+For every current and future software simulator:
+
+- visible left/right side panes must be draggable whenever viewport space allows
+- resize hit areas must be easy to grab; do not require one-pixel pointer accuracy
+- pane sizes must have sane minimum and maximum bounds so the main workspace cannot disappear
+- user-adjusted sizes persist independently for that software
+- saved pane sizes restore after page reload, `SIM_PACKAGE`, `SIM_SEEK`, and responsive resize
+- product-specific DOM/CSS stays inside the simulator; only resize/persistence mechanics are shared
+- software with no side pane still loads the runtime for common layout/focus behavior
+
+When a new simulator uses a unique layout, extend `layout-resize.js` with a product-specific setup function instead of putting resizing logic in `app.js`.

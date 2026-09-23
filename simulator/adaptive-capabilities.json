@@ -46,7 +46,9 @@
         "embedded-tomcat",
         "soap",
         "git",
-        "database"
+        "database",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "editor",
@@ -84,7 +86,9 @@
         "tool-panel",
         "source-control",
         "debug",
-        "extensions"
+        "extensions",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "editor",
@@ -116,7 +120,9 @@
         "dashboard",
         "query-history",
         "erd",
-        "schema-diff"
+        "schema-diff",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "browser",
@@ -144,7 +150,9 @@
         "environment-dialog",
         "mock-monitor",
         "code-snippet",
-        "variables"
+        "variables",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "request",
@@ -175,7 +183,9 @@
         "find-dialog",
         "history-panel",
         "environment-panel",
-        "selection-mode"
+        "selection-mode",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "terminal"
@@ -200,7 +210,9 @@
         "properties-dialog",
         "system-monitor-details",
         "service-details",
-        "network-details"
+        "network-details",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "terminal",
@@ -229,7 +241,9 @@
         "activity-panel",
         "development-panel",
         "release-panel",
-        "dashboard-gadget"
+        "dashboard-gadget",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "issue",
@@ -258,7 +272,9 @@
         "credential-dialog",
         "manage-panel",
         "plugin-panel",
-        "node-panel"
+        "node-panel",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "job",
@@ -308,7 +324,9 @@
         "registered-servers",
         "properties-window",
         "standard-reports",
-        "connection-color"
+        "connection-color",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "menus": [
         "queryEditor",
@@ -350,7 +368,9 @@
         "model-explorer",
         "visual-formatting",
         "performance-analyzer",
-        "publish"
+        "publish",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "actions": [
         "openDaxQueryView",
@@ -419,7 +439,8 @@
         "worktrees",
         "context-menu",
         "adaptive-dialog",
-        "persistent-layout"
+        "persistent-layout",
+        "resizable-sidebars"
       ],
       "menus": [
         "file",
@@ -474,7 +495,8 @@
         "stars-watch-forks",
         "context-menu",
         "adaptive-dialog",
-        "persistent-layout"
+        "persistent-layout",
+        "resizable-sidebars"
       ],
       "menus": [
         "file",
@@ -525,7 +547,8 @@
         "marketplace",
         "context-menu",
         "adaptive-dialog",
-        "persistent-layout"
+        "persistent-layout",
+        "resizable-sidebars"
       ],
       "menus": [
         "workflow",
@@ -571,7 +594,9 @@
         "preferences",
         "import-export",
         "context-menus",
-        "adaptive-dialogs"
+        "adaptive-dialogs",
+        "resizable-sidebars",
+        "persistent-layout"
       ],
       "actions": [
         "openPreferences",

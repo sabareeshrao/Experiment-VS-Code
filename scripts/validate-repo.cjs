@@ -284,3 +284,23 @@ if (exists("app.js")) {
     "app.js is missing the legacy iframe load-complete readiness fallback"
   );
 }
+
+
+// Global layout runtime rule.
+// Every simulator loads the common resize/persistence mechanics. Product visuals
+// remain isolated in the simulator itself.
+if (contract && contract.layoutPolicy?.requiredForEverySimulator) {
+  for (const [software, spec] of Object.entries(contract.simulators || {})) {
+    const indexPath = "simulator/" + spec.directory + "/index.html";
+    if (!exists(indexPath)) continue;
+    const html = read(indexPath);
+    assert(
+      html.includes("../shared/layout-resize.js"),
+      software + ": index.html must load ../shared/layout-resize.js"
+    );
+  }
+  assert(
+    exists(contract.layoutPolicy.runtime),
+    "Missing global layout runtime: " + contract.layoutPolicy.runtime
+  );
+}

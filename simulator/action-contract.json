@@ -1,12 +1,13 @@
 {
-  "version": 1,
+  "version": 2,
   "policy": [
     "app.js orchestrates playback and must not implement product-specific UI.",
     "Each simulator owns its DOM, CSS, menus, dialogs and product behavior.",
     "Lessons depend on simulator actions, not arbitrary cross-simulator DOM manipulation.",
     "Every lesson action must be declared by its simulator before the lesson is merged.",
     "SIM_PACKAGE and SIM_SEEK must reconstruct a simulator deterministically from a clean load.",
-    "Shared code may provide mechanics such as explanation positioning, highlighting and layout persistence, but not product visuals."
+    "Shared code may provide mechanics such as explanation positioning, highlighting and layout persistence, but not product visuals.",
+    "Visible simulator side panes must be resizable and persistent through the shared layout runtime without sharing product-specific visuals."
   ],
   "protocol": {
     "parentToSimulator": [
@@ -127,5 +128,18 @@
       "engineSource": "engine.js",
       "manifestKey": "mysql_workbench"
     }
+  },
+  "layoutPolicy": {
+    "runtime": "simulator/shared/layout-resize.js",
+    "requiredForEverySimulator": true,
+    "rules": [
+      "Every simulator must load the shared layout-resize runtime.",
+      "Every visible left or right side pane must be drag-resizable when viewport space allows.",
+      "Resize hit targets must be easy to grab; users must not need pixel-perfect pointer placement.",
+      "Pane sizes must be clamped so the primary workspace remains usable.",
+      "User-adjusted pane sizes must persist per software and restore after reload, SIM_PACKAGE, SIM_SEEK, and responsive resize.",
+      "Shared layout code provides resize/persistence mechanics only; each simulator continues to own its product-specific DOM and visual design.",
+      "A simulator with no side pane is exempt from exposing a side-pane handle but still loads the shared runtime."
+    ]
   }
 }

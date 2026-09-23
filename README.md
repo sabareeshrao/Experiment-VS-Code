@@ -115,3 +115,19 @@ Frameworks and libraries without a meaningful standalone desktop application sta
 `simulator/java-enterprise-capabilities.json` tracks JDK/JVM, Maven, Gradle, Spring, JUnit 5, Mockito, JPA/Hibernate, Spring Security/JWT/OAuth2, RestTemplate/WebClient/OpenFeign, Resilience4j/Spring Retry, Flyway/Liquibase, logging, Tomcat, SOAP, and Linux kubectl workflows.
 
 The repository validator rejects an enterprise domain below the 90% target or an action that its target simulator does not advertise.
+
+## Global resize and layout rule
+
+Every simulator must load `simulator/shared/layout-resize.js`.
+
+For every current and future software simulator:
+
+- visible left/right side panes must be draggable whenever viewport space allows
+- resize hit areas must be easy to grab; do not require one-pixel pointer accuracy
+- pane sizes must have sane minimum and maximum bounds so the main workspace cannot disappear
+- user-adjusted sizes persist independently for that software
+- saved pane sizes restore after page reload, `SIM_PACKAGE`, `SIM_SEEK`, and responsive resize
+- product-specific DOM/CSS stays inside the simulator; only resize/persistence mechanics are shared
+- software with no side pane still loads the runtime for common layout/focus behavior
+
+When a new simulator uses a unique layout, extend `layout-resize.js` with a product-specific setup function instead of putting resizing logic in `app.js`.
