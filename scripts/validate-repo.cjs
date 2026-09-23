@@ -396,14 +396,15 @@ if (exists("simulator/powerbi/index.html") && exists("simulator/powerbi/engine.j
   const pbiHtml = read("simulator/powerbi/index.html");
   const pbiEngine = read("simulator/powerbi/engine.js");
   assert(
-    pbiHtml.includes("UI stacking regression guard") &&
-    pbiHtml.includes(".onObjectMenu{position:fixed!important") &&
-    pbiHtml.includes(".modalShade{position:fixed!important"),
-    "Power BI transient overlays are not protected from pane clipping/stacking"
+    pbiHtml.includes('id="onObjectClose"') &&
+    pbiHtml.includes(".onObjectMenu{position:absolute") &&
+    pbiHtml.includes(".modal.minimized .modalBody"),
+    "Power BI contained transient UI / close-minimize controls regressed"
   );
   assert(
-    pbiEngine.includes("document.documentElement.clientWidth") &&
-    pbiEngine.includes('classList.remove("show","minimized")'),
+    pbiEngine.includes("refs.mainArea.getBoundingClientRect()") &&
+    pbiEngine.includes("hideOnObjectMenu") &&
+    pbiEngine.includes("data-pbi-modal-close"),
     "Power BI overlay positioning/dismissal regression detected"
   );
 }
