@@ -5,9 +5,9 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{outline:2px solid #4da3ff!important;outline-offset:2px!important;box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)!important;border-radius:4px!important;transition:box-shadow .12s ease,outline-color .12s ease!important}",
-".simActionHighlight.simActionPulse{animation:simActionPulse .75s ease-out 1}",
-"@keyframes simActionPulse{0%{box-shadow:0 0 0 0 rgba(77,163,255,.55),0 0 10px rgba(77,163,255,.35)}65%{box-shadow:0 0 0 7px rgba(77,163,255,.10),0 0 20px rgba(77,163,255,.42)}100%{box-shadow:0 0 0 4px rgba(77,163,255,.18),0 0 18px rgba(77,163,255,.42)}}",
+".simActionHighlight{outline:1px solid rgba(77,163,255,.95)!important;outline-offset:1px!important;box-shadow:0 0 0 2px rgba(77,163,255,.12)!important;border-radius:3px!important;transition:none!important}",
+".simActionHighlight.simActionPulse{animation:none!important}",
+"@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
 "body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important}",
@@ -96,12 +96,15 @@ function highlight(plan){
  clean();
  var el=find(plan||{});
  if(!el)return;
+ var r=el.getBoundingClientRect();
+ var vw=Math.max(1,innerWidth),vh=Math.max(1,innerHeight);
+ // Never draw guidance around an entire editor, pane, modal, canvas or page.
+ // Those huge rectangles look like bugs and obscure the actual software UI.
+ if((r.width>vw*.68&&r.height>72)||(r.height>vh*.48&&r.width>180)||(r.width*r.height>vw*vh*.34))return;
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- void active.offsetWidth;
- active.classList.add("simActionPulse");
- var ms=Math.max(550,Math.min(2200,Number(plan&&plan.duration)||1100));
+ var ms=Math.max(350,Math.min(1100,Number(plan&&plan.duration)||650));
  timer=setTimeout(clean,ms);
 }
 window.addEventListener("message",function(e){

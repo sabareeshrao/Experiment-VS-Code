@@ -364,12 +364,12 @@
       if (action === "connect") return plan(["#connectionPill"]);
       if (action === "openSQLTab") return plan(["#btnNewSql"]);
       if (action === "executeCurrent" || action === "executeAll" || action === "executeSelection") return plan(["#qExecCurrent"]);
-      if (action === "showResult" || action === "showTableData") return plan(["#bottomPanel"]);
-      if (action === "openTableEditor" || action === "openTableEditorTab") return plan(["#workbenchSurface"]);
-      if (action === "openServerStatus" || action === "openPerformanceDashboard" || action === "openUsersPrivileges") return plan(["#workbenchSurface"]);
-      if (action === "openModel" || action === "createEERDiagram" || action === "reverseEngineer") return plan(["#workbenchSurface"]);
-      if (action === "openMigrationWizard") return plan(["#workbenchSurface"]);
-      if (action === "openPreferences") return plan(["#workbenchSurface"]);
+      if (action === "showResult" || action === "showTableData") return plan(['[data-bottom="results"]']);
+      if (action === "openTableEditor" || action === "openTableEditorTab") return plan(["#workbenchSurfaceTitle"]);
+      if (action === "openServerStatus" || action === "openClientConnections" || action === "openPerformanceDashboard" || action === "openPerformanceReports" || action === "openUsersPrivileges" || action === "openOptionsFile" || action === "openServiceControl") return plan(["#workbenchSurfaceTitle"]);
+      if (action === "openModel" || action === "createEERDiagram" || action === "reverseEngineer" || action === "forwardEngineer" || action === "synchronizeModel" || action === "compareSchemas") return plan(["#workbenchSurfaceTitle"]);
+      if (action === "openMigrationWizard" || action === "configureMigrationSource" || action === "configureMigrationTarget" || action === "runMigration") return plan(["#workbenchSurfaceTitle"]);
+      if (action === "openPreferences") return plan(["#workbenchSurfaceTitle"]);
     }
     if (software === "jenkins") {
       if (action === "typeSearch") return plan(["#search"]);
@@ -412,7 +412,7 @@
     // Never block navigation on visual guidance. The step state is rebuilt
     // immediately, then the relevant control is highlighted independently.
     sendSeekNow(index, target, animateFinal);
-    highlightCurrentAction(index, target);
+    if (target !== "mysqlworkbench") highlightCurrentAction(index, target);
   }
 
   function explainCurrentStep() {
@@ -644,6 +644,19 @@
       if (fullCodeMode || !flat.length) return;
       if (event.data.direction === "next" && current < flat.length - 1) goToStep(current + 1, true);
       if (event.data.direction === "prev" && current > 0) goToStep(current - 1, false);
+      return;
+    }
+
+    if (event.data?.type === "SIM_SEEK_DONE") {
+      if (
+        !fullCodeMode &&
+        flat.length &&
+        software === "mysqlworkbench" &&
+        normalizeSoftware(flat[current].software) === software
+      ) {
+        highlightCurrentAction(current, software);
+        scheduleCurrentExplanation(20);
+      }
       return;
     }
 

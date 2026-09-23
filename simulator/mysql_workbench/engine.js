@@ -13,7 +13,7 @@ const refs={
  home:$('homeOverlay'),homeVersion:$('homeVersion'),connectionCards:$('connectionCards'),homeAddConnection:$('homeAddConnection'),homeManageConnections:$('homeManageConnections'),
  modalLayer:$('modalLayer'),modalTitle:$('modalTitle'),modalBody:$('modalBody'),modalFoot:$('modalFoot'),modalClose:$('modalClose'),contextMenu:$('contextMenu'),toast:$('toast'),boundary:$('targetBoundary'),surface:$('workbenchSurface'),surfaceTitle:$('workbenchSurfaceTitle'),surfaceBody:$('workbenchSurfaceBody'),surfaceClose:$('workbenchSurfaceClose')
 };
-let pkg=null,appData=null,seekToken=0,autoType=true,allowBoundary=true;
+let pkg=null,appData=null,seekToken=0,autoType=true,allowBoundary=false,replayMode=false;
 let connections=[],activeConnectionId=null,connected=false,tree=[],treeOpen=new Map(),treeNodeMap=new Map(),selectedPath=null,activeSchema=null,queryTabs=[],activeQueryId=null,outputs=[],results=[],activeResultId=null,snippets=[],rightMode='help',bottomMode='output',leftMode='schemas',selectedCell=null;
 let dirtyCells=new Map(),readOnlyResult=false,autoCommit=false,stagedTransaction=false,currentSqlRange=null,__trackedBoundaryElement=null;
 let deterministicCounter=0,toastTimer=0,surfaceMode='',sqlMode='STRICT_TRANS_TABLES',isolationLevel='REPEATABLE READ',savepoints=[],safeUpdates=true,rowLimit=1000,resultFilter='',resultSort=null,users=[],serverRunning=true,serverConnections=[],modelState={name:'',tables:[],relationships:[],zoom:100},migrationState={},schemaTransferState={},tableEditorTab='Columns',connectionDialogTab='Parameters',preferencesPage='SQL Editor';
@@ -42,7 +42,7 @@ function clearTransientBeforeAction(action){clearTimeout(toastTimer);refs.toast.
 function card(title,body){return `<div class="eduCard"><h3>${esc(title)}</h3>${body}</div>`}
 
 function status(t){refs.statusText.textContent=t||'Ready'}
-function notify(message,type='success',ms=1800){clearTimeout(toastTimer);refs.toast.textContent=message;refs.toast.className='toast show'+(type==='error'?' error':type==='warning'?' warning':'');toastTimer=setTimeout(()=>refs.toast.classList.remove('show'),ms)}
+function notify(message,type='success',ms=1800){if(replayMode)return;clearTimeout(toastTimer);refs.toast.textContent=message;refs.toast.className='toast show'+(type==='error'?' error':type==='warning'?' warning':'');toastTimer=setTimeout(()=>refs.toast.classList.remove('show'),ms)}
 function currentQuery(){return queryTabs.find(q=>q.id===activeQueryId)||null}
 function activeConnection(){return connections.find(c=>c.id===activeConnectionId)||null}
 function tabTitle(q){return q?.title||'SQL File'}
@@ -251,7 +251,13 @@ function hideAutocomplete(){refs.autocomplete.classList.remove('show')}
 function targetElement(spec){if(!spec)return null;if(typeof spec==='string'){const map={home:refs.btnHome,newConnection:refs.btnNewConnection,manageConnections:refs.btnManageConnections,newSql:refs.btnNewSql,openSql:refs.btnOpenSql,saveSql:refs.btnSaveSql,createSchema:refs.btnCreateSchema,refresh:refs.btnRefresh,executeAll:refs.qExecAll,executeCurrent:refs.qExecCurrent,stop:refs.qStop,commit:refs.qCommit,rollback:refs.qRollback,beautify:refs.qBeautify,snippet:refs.qSnippet,editor:refs.sqlEditor,output:refs.bottom,right:refs.right,left:refs.left};if(map[spec])return map[spec];if(treeNodeMap.has(spec))return treeNodeMap.get(spec)}if(spec.type==='tree')return treeNodeMap.get(spec.path);if(spec.type==='button')return targetElement(spec.target);if(spec.type==='connection')return refs.connectionCards.querySelector('[data-connection="'+safeCssEscape(spec.id)+'"]');if(spec.type==='queryTab')return refs.queryTabs.querySelector('[data-id="'+safeCssEscape(spec.id)+'"]');if(spec.type==='sqlLine'){const line=refs.sqlEditor.querySelector('.sqlLine[data-line="'+Number(spec.line)+'"]');return line}if(spec.type==='sqlRange')return makeSqlRangeTarget(spec.startLine,spec.endLine);if(spec.type==='panel')return spec.target==='left'?refs.left:spec.target==='right'?refs.right:refs.bottom;return null}
 function makeSqlRangeTarget(startLine,endLine){refs.editorWrap.querySelectorAll('.simRangeTarget').forEach(e=>e.remove());const first=refs.sqlEditor.querySelector('.sqlLine[data-line="'+Number(startLine)+'"]'),last=refs.sqlEditor.querySelector('.sqlLine[data-line="'+Number(endLine)+'"]');if(!first||!last)return first||last;const cr=refs.editorWrap.getBoundingClientRect(),a=first.getBoundingClientRect(),b=last.getBoundingClientRect();const el=document.createElement('div');el.className='simRangeTarget';el.style.left=(a.left-cr.left+refs.editorWrap.scrollLeft)+'px';el.style.top=(a.top-cr.top+refs.editorWrap.scrollTop)+'px';el.style.width=Math.max(a.width,b.width,refs.sqlEditor.clientWidth-10)+'px';el.style.height=(b.bottom-a.top)+'px';refs.editorWrap.appendChild(el);return el}
 function clearBoundary(){refs.boundary.classList.remove('show');__trackedBoundaryElement=null;refs.editorWrap.querySelectorAll('.simRangeTarget').forEach(e=>e.remove())}
-async function highlightTarget(spec,click=false,token=seekToken){if(!allowBoundary)return;const el=targetElement(spec);if(!el)return;__trackedBoundaryElement=el;el.scrollIntoView?.({behavior:'smooth',block:'nearest'});await sleep(40);if(token!==seekToken)return;const ar=refs.app.getBoundingClientRect(),r=el.getBoundingClientRect(),pad=4;refs.boundary.classList.add('show');refs.boundary.style.left=(r.left-ar.left-pad)+'px';refs.boundary.style.top=(r.top-ar.top-pad)+'px';refs.boundary.style.width=(r.width+pad*2)+'px';refs.boundary.style.height=(r.height+pad*2)+'px';if(click){el.style.filter='brightness(1.2)';await sleep(110);el.style.filter=''}}
+async function highlightTarget(spec,click=false,token=seekToken){
+ // The parent player owns visible lesson guidance. Workbench only ensures the
+ // exact target is in view; it never draws a second yellow rectangle.
+ if(!allowBoundary)return;
+ const el=targetElement(spec);if(!el)return;
+ try{el.scrollIntoView?.({behavior:'auto',block:'nearest',inline:'nearest'})}catch(_){}
+}
 function syncBoundary(){if(!refs.boundary.classList.contains('show')||!__trackedBoundaryElement?.isConnected)return;const ar=refs.app.getBoundingClientRect(),r=__trackedBoundaryElement.getBoundingClientRect(),pad=4;refs.boundary.style.left=(r.left-ar.left-pad)+'px';refs.boundary.style.top=(r.top-ar.top-pad)+'px';refs.boundary.style.width=(r.width+pad*2)+'px';refs.boundary.style.height=(r.height+pad*2)+'px'}
 window.addEventListener('resize',syncBoundary);refs.workspace.addEventListener('scroll',syncBoundary,true);
 
@@ -318,7 +324,8 @@ window.SimEngine={
  loadPackage,reset:()=>{seekToken++;clearBoundary();resetFromPackage()},
  async apply(step,animate=false){seekToken++;const token=seekToken;await applyAction(step,animate,token)},
  setAutoType:v=>autoType=!!v,
- setBoundaryEnabled:v=>{allowBoundary=v!==false;if(!allowBoundary)clearBoundary()},
+ setBoundaryEnabled:v=>{allowBoundary=!!v;if(!allowBoundary)clearBoundary()},
+ setReplayMode:v=>{replayMode=!!v;if(replayMode){clearBoundary();clearTimeout(toastTimer);refs.toast.classList.remove('show')}},
  getState:()=>({connections:deepClone(connections),activeConnectionId,connected,activeSchema,queryTabs:deepClone(queryTabs),activeQueryId,outputs:deepClone(outputs),results:deepClone(results),snippets:deepClone(snippets),leftMode,rightMode,bottomMode,autoCommit})
 };
 window.addEventListener('message',e=>{const m=e.data||{};if(m.type==='SIM_LOAD_PACKAGE'||m.type==='LOAD_PACKAGE')loadPackage(m.package||m.payload||m.data);if(m.type==='SIM_APPLY_STEP')window.SimEngine.apply(m.step,!!m.animate);if(m.type==='SIM_RESET')window.SimEngine.reset();if(m.type==='SIM_SETTING'){if(m.key==='theme'||m.name==='theme'){document.body.classList.toggle('theme-dark',(m.value||'dark')==='dark')}if(m.key==='autoType'||m.name==='autoType')autoType=!!m.value;if(m.key==='boundary'||m.name==='boundary')allowBoundary=m.value!==false}});
@@ -332,9 +339,14 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
   async function seek(steps, animateFinal) {
     if (universalPackage) window.SimEngine.loadPackage(universalPackage);
     const list = Array.isArray(steps) ? steps : [];
+    window.SimEngine.setBoundaryEnabled(false);
     for (let i = 0; i < list.length; i++) {
-      await window.SimEngine.apply(list[i], !!animateFinal && i === list.length - 1);
+      const isFinal = i === list.length - 1;
+      window.SimEngine.setReplayMode(!isFinal);
+      await window.SimEngine.apply(list[i], !!animateFinal && isFinal);
     }
+    window.SimEngine.setReplayMode(false);
+    window.SimEngine.setBoundaryEnabled(false);
   }
   const announceReady = () => parent.postMessage({
     type: "ENGINE_READY",
@@ -354,7 +366,9 @@ installUi();loadPackage({apps:{mysql_workbench:{title:'MySQL Workbench',version:
       if (m.theme) document.body.classList.toggle("theme-dark", m.theme === "dark");
     } else if (m.type === "SIM_SEEK") {
       window.SimEngine.setAutoType(m.autoType !== false);
-      seek(m.steps, !!m.animateFinal);
+      seek(m.steps, !!m.animateFinal).then(() => {
+        parent.postMessage({ type: "SIM_SEEK_DONE", app: APP_ID }, "*");
+      });
     }
   });
 
