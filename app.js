@@ -20,7 +20,9 @@
     github: $("githubFrame"),
     github_actions: $("githubActionsFrame"),
     mysqlworkbench: $("mysqlWorkbenchFrame"),
-    redis: $("redisFrame")
+    redis: $("redisFrame"),
+    spring_initializer: $("springInitializerFrame"),
+    maven_central: $("mavenCentralFrame")
   };
 
   const appIds = {
@@ -38,7 +40,9 @@
     github: "github",
     github_actions: "github_actions",
     mysqlworkbench: "mysql_workbench",
-    redis: "redis"
+    redis: "redis",
+    spring_initializer: "spring_initializer",
+    maven_central: "maven_central"
   };
 
   const appLabels = {
@@ -56,7 +60,9 @@
     github: "GitHub",
     github_actions: "GitHub Actions",
     mysqlworkbench: "MySQL Workbench",
-    redis: "Redis Insight"
+    redis: "Redis Insight",
+    spring_initializer: "Spring Initializr",
+    maven_central: "Maven Central"
   };
 
   const engineReady = {
@@ -74,7 +80,9 @@
     github: false,
     github_actions: false,
     mysqlworkbench: false,
-    redis: false
+    redis: false,
+    spring_initializer: false,
+    maven_central: false
   };
 
   const SIM_BOOT_TOKEN =
@@ -297,6 +305,8 @@
     if (value === "github_actions" || value === "github-actions" || value === "githubactions") return "github_actions";
     if (value === "mysqlworkbench" || value === "mysql_workbench" || value === "mysql-workbench" || value === "mysql") return "mysqlworkbench";
     if (value === "redis" || value === "redisinsight" || value === "redis_insight" || value === "redis-insight") return "redis";
+    if (value === "spring_initializer" || value === "spring-initializer" || value === "springinitializr" || value === "initializr") return "spring_initializer";
+    if (value === "maven_central" || value === "maven-central" || value === "mavencentral" || value === "maven_repository") return "maven_central";
     return "intellij";
   }
 
@@ -325,6 +335,8 @@
     softwareBadge.classList.toggle("github-actions", activeSoftware === "github_actions");
     softwareBadge.classList.toggle("mysqlworkbench", activeSoftware === "mysqlworkbench");
     softwareBadge.classList.toggle("redis", activeSoftware === "redis");
+    softwareBadge.classList.toggle("spring-initializer", activeSoftware === "spring_initializer");
+    softwareBadge.classList.toggle("maven-central", activeSoftware === "maven_central");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 
@@ -390,7 +402,12 @@
     // Blue guidance is only for controls the developer clicks.
     // Editors/terminals use their own native changed-line emphasis.
     if (software === "intellij") {
-      if (action === "newProject" || action === "createPackage" || action === "createFile") return plan(["#newBtn"]);
+      if (action === "newProject" || action === "openNewMavenProjectWizard" || action === "createMavenProject" || action === "createPackage" || action === "createFile") return plan(["#newBtn"]);
+      if (action === "runJavaMain" || action === "runConfiguration") return plan(["#runBtn"]);
+      if (action === "restartApplication" || action === "restartSpringBootApp") return plan(["#restartBtn"]);
+      if (action === "clearRunConsole") return plan(["#clearConsoleBtn"]);
+      if (action === "openIntegratedTerminal" || action === "openTerminal") return plan(["#terminalBtn"]);
+      if (action === "showExternalLibraries") return plan(['[data-external-libraries="1"]']);
     }
     if (software === "vscode") {
       if (action === "createFile") return plan(["#newFileBtn"]);
@@ -459,13 +476,33 @@
       if (action === "openConnectionDialog" || action === "openConnectionParameters" || action === "openConnectionSsl" || action === "openConnectionAdvanced") return plan(["#btnManageConnections"]);
       if (action === "connect") return plan(["#connectionPill"]);
       if (action === "openSQLTab") return plan(["#btnNewSql"]);
-      if (action === "executeCurrent" || action === "executeAll" || action === "executeSelection") return plan(["#qExecCurrent"]);
+      if (action === "executeQuery" || action === "executeCurrent" || action === "executeAll" || action === "executeSelection") return plan(["#qExecCurrent"]);
+      if (action === "schemaRefresh" || action === "refreshSchemas") return plan(["#btnRefresh"]);
       if (action === "showResult" || action === "showTableData") return plan(['[data-bottom="results"]']);
       if (action === "openTableEditor" || action === "openTableEditorTab") return plan(["#workbenchSurfaceTitle"]);
       if (action === "openServerStatus" || action === "openClientConnections" || action === "openPerformanceDashboard" || action === "openPerformanceReports" || action === "openUsersPrivileges" || action === "openOptionsFile" || action === "openServiceControl") return plan(["#workbenchSurfaceTitle"]);
       if (action === "openModel" || action === "createEERDiagram" || action === "reverseEngineer" || action === "forwardEngineer" || action === "synchronizeModel" || action === "compareSchemas") return plan(["#workbenchSurfaceTitle"]);
       if (action === "openMigrationWizard" || action === "configureMigrationSource" || action === "configureMigrationTarget" || action === "runMigration") return plan(["#workbenchSurfaceTitle"]);
       if (action === "openPreferences") return plan(["#workbenchSurfaceTitle"]);
+    }
+    if (software === "spring_initializer") {
+      if (action === "setProjectType") return plan(["#projectType"]);
+      if (action === "setLanguage") return plan(["#language"]);
+      if (action === "setBootVersion") return plan(["#bootVersion"]);
+      if (action === "setGroup") return plan(["#group"]);
+      if (action === "setArtifact") return plan(["#artifact"]);
+      if (action === "setPackaging") return plan(["#packaging"]);
+      if (action === "setJavaVersion") return plan(["#javaVersion"]);
+      if (action === "setConfigFormat") return plan(["#configFormat"]);
+      if (action === "openDependencies" || action === "searchDependencies" || action === "addDependency") return plan(["#addDependencyBtn"]);
+      if (action === "generateProject") return plan(["#generateBtn"]);
+    }
+    if (software === "maven_central") {
+      if (action === "searchDependency" || action === "setSearch") return plan(["#searchBtn"]);
+      if (action === "openArtifact") return plan(["#artifactDetail"]);
+      if (action === "selectVersion") return plan(["#versions"]);
+      if (action === "showMavenSnippet") return plan(["#snippetCard"]);
+      if (action === "copyMavenSnippet") return plan(["#copySnippetBtn"]);
     }
     if (software === "jenkins") {
       if (action === "typeSearch") return plan(["#search"]);

@@ -126,3 +126,6 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .software-badge.mysqlworkbench{border-color:#2f6f9f;background:#142839;color:#7fc0ee}
 
 .software-badge.redis{border-color:#b7352a;background:#321917;color:#ff8075}
+
+.software-badge.spring-initializer{border-color:#5b9d37;background:#1d3218;color:#a6dc7e}
+.software-badge.maven-central{border-color:#a94d47;background:#321b1a;color:#ef8e88}

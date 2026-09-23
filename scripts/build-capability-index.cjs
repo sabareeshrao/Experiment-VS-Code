@@ -1,6 +1,6 @@
 "use strict";
 const fs=require("fs"),path=require("path");
-const names={"intellij":"IntelliJ IDEA","vscode":"Visual Studio Code","pgadmin":"pgAdmin 4","postman":"Postman","cmd":"Windows Command Prompt","linux":"Linux","ssms":"SQL Server Management Studio","jira":"Jira","jenkins":"Jenkins","powerbi":"Power BI Desktop","git":"Git","github":"GitHub","github_actions":"GitHub Actions","mysqlworkbench":"MySQL Workbench","redis":"Redis Insight"};
+const names={"intellij":"IntelliJ IDEA","vscode":"Visual Studio Code","pgadmin":"pgAdmin 4","postman":"Postman","cmd":"Windows Command Prompt","linux":"Linux","ssms":"SQL Server Management Studio","jira":"Jira","jenkins":"Jenkins","powerbi":"Power BI Desktop","git":"Git","github":"GitHub","github_actions":"GitHub Actions","mysqlworkbench":"MySQL Workbench","redis":"Redis Insight","spring_initializer":"Spring Initializr","maven_central":"Maven Central"};
 function build(root=path.resolve(__dirname,"..")){
  const contract=JSON.parse(fs.readFileSync(path.join(root,"simulator/action-contract.json"),"utf8"));
  const manifest=JSON.parse(fs.readFileSync(path.join(root,"simulator/adaptive-capabilities.json"),"utf8"));

@@ -53,7 +53,24 @@
         "explanation-box",
         "explanation-minimize-close",
         "persistent-explanation-position",
-        "persistent-explanation-minimize"
+        "persistent-explanation-minimize",
+        "code-editor",
+        "project-file-navigation",
+        "go-to-definition",
+        "editor-diagnostics",
+        "code-completion-popup",
+        "quick-fix-intention-actions",
+        "run-application-control",
+        "java-main-run",
+        "run-console-output",
+        "run-console-controls",
+        "external-libraries-view",
+        "java-documentation-view",
+        "import-existing-project",
+        "new-maven-project-wizard",
+        "maven-lifecycle-tool-window",
+        "integrated-terminal",
+        "java-desktop-app-preview"
       ],
       "menus": [
         "editor",
@@ -181,7 +198,14 @@
         "explanation-box",
         "explanation-minimize-close",
         "persistent-explanation-position",
-        "persistent-explanation-minimize"
+        "persistent-explanation-minimize",
+        "http-method-selector",
+        "request-url-editor",
+        "query-params-editor",
+        "request-body-editor",
+        "send-request",
+        "response-body-viewer",
+        "response-status-display"
       ],
       "menus": [
         "request",
@@ -679,7 +703,9 @@
         "explanation-minimize-close",
         "persistent-explanation-position",
         "persistent-explanation-minimize",
-        "seek-highlight-fallback"
+        "seek-highlight-fallback",
+        "execute-query",
+        "schema-refresh"
       ],
       "actions": [
         "openPreferences",
@@ -696,7 +722,9 @@
         "openHomeMigration",
         "openEERPalette",
         "setModelZoom",
-        "openModelNavigator"
+        "openModelNavigator",
+        "executeQuery",
+        "schemaRefresh"
       ],
       "sampleProject": "Campus Analytics / java_practice",
       "lessonFeatureTourSteps": 74,
@@ -815,6 +843,76 @@
         "database",
         "settings",
         "key-editor"
+      ]
+    },
+    "spring_initializer": {
+      "registry": "SPRING_INITIALIZER_CAPABILITIES",
+      "targetFidelity": 94,
+      "features": [
+        "spring-initializr-generator",
+        "language-selector",
+        "build-tool-selector",
+        "spring-boot-version-selector",
+        "project-metadata",
+        "packaging-selector",
+        "java-version-selector",
+        "config-format-selector",
+        "dependency-selector",
+        "generate-project",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
+      ],
+      "actions": [
+        "resetGenerator",
+        "setProjectType",
+        "setLanguage",
+        "setBootVersion",
+        "setMetadata",
+        "setGroup",
+        "setArtifact",
+        "setName",
+        "setPackageName",
+        "setDescription",
+        "setPackaging",
+        "setJavaVersion",
+        "setConfigFormat",
+        "openDependencies",
+        "closeDependencies",
+        "searchDependencies",
+        "addDependency",
+        "removeDependency",
+        "generateProject",
+        "highlightTarget"
+      ]
+    },
+    "maven_central": {
+      "registry": "MAVEN_CENTRAL_CAPABILITIES",
+      "targetFidelity": 92,
+      "features": [
+        "dependency-search",
+        "search-results",
+        "artifact-page",
+        "version-list",
+        "maven-dependency-snippet",
+        "copy-dependency-xml",
+        "action-highlight",
+        "explanation-box",
+        "explanation-minimize-close",
+        "persistent-explanation-position",
+        "persistent-explanation-minimize"
+      ],
+      "actions": [
+        "resetSearch",
+        "searchDependency",
+        "setSearch",
+        "openArtifact",
+        "selectVersion",
+        "showMavenSnippet",
+        "copyMavenSnippet",
+        "highlightTarget"
       ]
     }
   }

@@ -4950,6 +4950,32 @@ window.COURSE = {
       },
       "redis": {
         "state": {}
+      },
+      "spring_initializer": {
+        "projectType": "Maven",
+        "language": "Java",
+        "bootVersion": "3.5.6",
+        "group": "com.example",
+        "artifact": "demo",
+        "name": "demo",
+        "packageName": "com.example.demo",
+        "description": "Demo project for Spring Boot",
+        "packaging": "Jar",
+        "javaVersion": "17",
+        "configFormat": "Properties",
+        "dependencies": []
+      },
+      "maven_central": {
+        "query": "",
+        "results": [
+          "spring-data-jpa",
+          "liquibase",
+          "mysql",
+          "web",
+          "junit"
+        ],
+        "selectedArtifact": "spring-data-jpa",
+        "selectedVersion": "3.5.6"
       }
     }
   },

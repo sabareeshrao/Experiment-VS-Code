@@ -134,6 +134,20 @@
       "packageKey": "redis",
       "engineSource": "engine.js",
       "manifestKey": "redis"
+    },
+    "spring_initializer": {
+      "directory": "spring_initializer",
+      "frameId": "springInitializerFrame",
+      "packageKey": "spring_initializer",
+      "engineSource": "engine.js",
+      "manifestKey": "spring_initializer"
+    },
+    "maven_central": {
+      "directory": "maven_central",
+      "frameId": "mavenCentralFrame",
+      "packageKey": "maven_central",
+      "engineSource": "engine.js",
+      "manifestKey": "maven_central"
     }
   },
   "layoutPolicy": {
