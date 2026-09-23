@@ -413,8 +413,9 @@ if (exists("simulator/powerbi/index.html") && exists("simulator/powerbi/engine.j
 if (exists("simulator/intellij/engine.js") && exists("simulator/shared/layout-resize.js")) {
   const ijEngine = read("simulator/intellij/engine.js");
   const layoutRuntime = read("simulator/shared/layout-resize.js");
-  assert(ijEngine.includes("refs.splitL.onpointerdown"), "IntelliJ native Project splitter handler is missing");
-  assert(ijEngine.includes('style.setProperty("--leftW"'), "IntelliJ Project splitter no longer changes --leftW");
+  assert(ijEngine.includes('id="intellijProjectResizeHit"') || ijEngine.includes('projectResizeHit.id="intellijProjectResizeHit"'), "IntelliJ Project splitter wide hit target is missing");
+  assert(ijEngine.includes('left:"-10px"') && ijEngine.includes('right:"-10px"'), "IntelliJ Project splitter hit target is not wide enough");
+  assert(ijEngine.includes('document.addEventListener("pointermove"') && ijEngine.includes('style.setProperty("--leftW"'), "IntelliJ Project splitter document-level drag tracking is missing");
   const ijSetupStart = layoutRuntime.indexOf("function setupIntelliJ()");
   const ijSetupEnd = layoutRuntime.indexOf("function setupPostman()", ijSetupStart);
   const ijSetup = ijSetupStart >= 0 && ijSetupEnd > ijSetupStart ? layoutRuntime.slice(ijSetupStart, ijSetupEnd) : "";

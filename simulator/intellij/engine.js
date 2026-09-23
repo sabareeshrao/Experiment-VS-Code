@@ -367,9 +367,53 @@ refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger atta
 refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
 // IntelliJ owns its native splitters. Shared layout-resize only restores/persists their sizes.
 let dl=false,dr=false,dh=false;
-refs.splitL.onpointerdown=e=>{if(e.button!==0)return;dl=true;refs.splitL.setPointerCapture?.(e.pointerId);e.preventDefault()};
-refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=Math.max(150,Math.min(420,e.clientX-r.left-30));document.documentElement.style.setProperty("--leftW",w+"px");e.preventDefault()};
-refs.splitL.onpointerup=refs.splitL.onpointercancel=()=>{dl=false};
+const projectResizeHit=document.createElement("div");
+projectResizeHit.id="intellijProjectResizeHit";
+projectResizeHit.setAttribute("aria-hidden","true");
+Object.assign(projectResizeHit.style,{
+  position:"absolute",
+  top:"0",
+  bottom:"0",
+  left:"-10px",
+  right:"-10px",
+  zIndex:"80",
+  cursor:"col-resize",
+  touchAction:"none",
+  background:"transparent"
+});
+refs.splitL.appendChild(projectResizeHit);
+let projectResizePointer=null;
+let projectResizeWidth=null;
+projectResizeHit.addEventListener("pointerdown",e=>{
+  if(e.button!==0)return;
+  projectResizePointer=e.pointerId;
+  dl=true;
+  document.documentElement.classList.add("sim-layout-dragging");
+  try{projectResizeHit.setPointerCapture(e.pointerId)}catch(_){}
+  e.preventDefault();
+  e.stopPropagation();
+},{capture:true});
+document.addEventListener("pointermove",e=>{
+  if(!dl||e.pointerId!==projectResizePointer)return;
+  const r=refs.work.getBoundingClientRect();
+  const max=Math.max(220,Math.min(560,r.width-260));
+  projectResizeWidth=Math.max(120,Math.min(max,e.clientX-r.left-30));
+  document.documentElement.style.setProperty("--leftW",projectResizeWidth+"px");
+  e.preventDefault();
+},{capture:true,passive:false});
+const finishProjectResize=e=>{
+  if(!dl||e.pointerId!==projectResizePointer)return;
+  dl=false;
+  projectResizePointer=null;
+  document.documentElement.classList.remove("sim-layout-dragging");
+  if(Number.isFinite(projectResizeWidth)){
+    window.SIM_UI_STATE?.set?.("leftW",projectResizeWidth);
+  }
+  try{if(projectResizeHit.hasPointerCapture?.(e.pointerId))projectResizeHit.releasePointerCapture(e.pointerId)}catch(_){}
+  e.preventDefault();
+};
+document.addEventListener("pointerup",finishProjectResize,{capture:true,passive:false});
+document.addEventListener("pointercancel",finishProjectResize,{capture:true,passive:false});
 refs.splitR.onpointerdown=e=>{if(e.button!==0)return;dr=true;refs.splitR.setPointerCapture?.(e.pointerId);e.preventDefault()};
 refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=Math.max(170,Math.min(420,r.right-e.clientX-30));document.documentElement.style.setProperty("--rightW",w+"px");e.preventDefault()};
 refs.splitR.onpointerup=refs.splitR.onpointercancel=()=>{dr=false};
