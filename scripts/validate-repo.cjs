@@ -253,3 +253,19 @@ if (errors.length) {
 
 console.log("Repository validation passed.");
 
+
+// Regression guard: explanation-only/stale-screen failure.
+// Never reset engineReady to false in the iframe load handler after a child may
+// already have posted ENGINE_READY. That blocks SIM_SEEK while SIM_EXPLAIN keeps working.
+if (exists("app.js")) {
+  const appSource = read("app.js");
+  assert(
+    !/frame\.addEventListener\(["']load["'][\s\S]{0,220}?engineReady\[name\]\s*=\s*false/.test(appSource),
+    "app.js clears engineReady inside iframe load handler; this causes stale simulator playback"
+  );
+  assert(
+    appSource.includes("doc?.readyState === \"complete\"") &&
+    appSource.includes("hydrateReadyFrame"),
+    "app.js is missing the legacy iframe load-complete readiness fallback"
+  );
+}

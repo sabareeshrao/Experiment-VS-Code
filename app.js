@@ -109,32 +109,59 @@
   // universal explanation dragging, UI persistence and focus-follow scrolling.
   // A simulator may finish loading before this parent script installs its message
   // listener, so frame-load probing also recovers a missed ENGINE_READY handshake.
+  function hydrateReadyFrame(name) {
+    if (!frames[name]?.contentWindow) return;
+
+    // Loading the baseline before seeking is essential: SIM_SEEK replays lesson
+    // actions from that baseline. This helper is deliberately safe to call after
+    // either ENGINE_READY or an iframe load-complete fallback.
+    engineReady[name] = true;
+    sendCoursePackage(name);
+
+    if (fullCodeMode && name === "intellij") {
+      loadFullCode();
+      return;
+    }
+
+    if (
+      !fullCodeMode &&
+      flat.length &&
+      normalizeSoftware(flat[current].software) === name
+    ) {
+      setTimeout(() => {
+        // Do not depend on a second readiness handshake here. The document has
+        // already finished loading, so replay the cumulative state immediately.
+        sendSeekNow(current, name, false);
+        if (name !== "mysqlworkbench") {
+          highlightCurrentAction(current, name);
+          scheduleCurrentExplanation(140);
+        }
+      }, 0);
+    }
+  }
+
   function recoverFrameHandshake(name, frame) {
     if (!frame) return;
     const attempt = () => {
       try {
         ensureGlobalSimulatorRuntime(frame);
         const child = frame.contentWindow;
+        const doc = frame.contentDocument;
         if (!child) return false;
 
-        // New/adaptive engines expose SimEngine. Mark them ready even if their
-        // one-time ENGINE_READY postMessage raced ahead of the parent listener.
-        if (child.SimEngine) {
-          engineReady[name] = true;
-          sendCoursePackage(name);
-
-          if (
-            !fullCodeMode &&
-            flat.length &&
-            normalizeSoftware(flat[current].software) === name
-          ) {
-            seekSoftware(current, name, false);
-            if (name !== "mysqlworkbench") scheduleCurrentExplanation(140);
-          }
+        // New/adaptive engines expose SimEngine. Legacy engines may only emit a
+        // one-shot ENGINE_READY. If that message races ahead of the parent
+        // listener, a fully loaded same-origin iframe is still safe to hydrate.
+        if (
+          child.SimEngine ||
+          doc?.readyState === "complete" ||
+          doc?.readyState === "interactive"
+        ) {
+          if (!engineReady[name]) hydrateReadyFrame(name);
           return true;
         }
 
-        // Engines using only the universal protocol can answer a ping.
+        // Engines implementing the optional recovery ping can announce readiness.
         child.postMessage({ type: "SIM_PING" }, SIM_TARGET_ORIGIN);
       } catch (_) {}
       return false;
@@ -149,7 +176,9 @@
   Object.entries(frames).forEach(([name, frame]) => {
     if (!frame) return;
     frame.addEventListener("load", () => {
-      engineReady[name] = false;
+      // IMPORTANT: never clear a readiness signal here. Many legacy simulators
+      // post ENGINE_READY before the browser fires iframe load. Clearing it here
+      // caused every later SIM_SEEK to be dropped while SIM_EXPLAIN still worked.
       recoverFrameHandshake(name, frame);
     });
     setTimeout(() => recoverFrameHandshake(name, frame), 0);
@@ -669,21 +698,10 @@
     // Once this exact iframe document is ready, repeated announcements must not
     // trigger another package reset/replay.
     if (engineReady[software]) return;
-    engineReady[software] = true;
-
-    if (fullCodeMode && software === "intellij") {
-      loadFullCode();
-      return;
-    }
-
-    sendCoursePackage(software);
+    hydrateReadyFrame(software);
 
     if (!fullCodeMode && flat.length && normalizeSoftware(flat[current].software) === software) {
-      setTimeout(() => {
-        seekSoftware(current, software, false);
-        renderCurrentStep();
-        if (software !== "mysqlworkbench") scheduleCurrentExplanation(120);
-      }, 0);
+      renderCurrentStep();
     }
   });
 
