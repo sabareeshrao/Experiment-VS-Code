@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Redis Insight Simulator</title>
+  <link rel="stylesheet" href="redis.css?v=1">
+</head>
+<body>
+  <div id="app" class="ri-app">
+    <header class="topbar">
+      <div class="brand"><span class="redis-mark">◆</span><span>Redis Insight</span></div>
+      <div class="db-switcher" id="dbSwitcher">
+        <span class="status-dot"></span>
+        <span class="db-title">Local Redis</span>
+        <small>127.0.0.1:6379</small>
+        <button class="icon-btn" title="Database menu">⌄</button>
+      </div>
+      <nav class="topnav" id="topnav" aria-label="Redis Insight navigation">
+        <button data-view="browser" class="active">Browser</button>
+        <button data-view="workbench">Workbench</button>
+        <button data-view="search">Search</button>
+        <button data-view="analysis">Analyze</button>
+        <button data-view="pubsub">Pub/Sub</button>
+      </nav>
+      <div class="top-actions">
+        <button class="icon-btn" id="notifications" title="Notifications">♧</button>
+        <button class="icon-btn" id="helpBtn" title="Help">?</button>
+        <button class="icon-btn" id="settingsBtn" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <main class="main-shell">
+      <section id="viewHost" class="view-host"></section>
+    </main>
+
+    <section id="cliPanel" class="cli-panel">
+      <button id="cliToggle" class="cli-toggle"><span>&gt;_</span> CLI <small>Ctrl+K</small></button>
+      <div class="cli-body">
+        <div class="cli-toolbar">
+          <span class="terminal-title">Redis CLI</span>
+          <span class="grow"></span>
+          <button class="ghost-btn" id="clearCli">Clear</button>
+          <button class="icon-btn" id="closeCli">×</button>
+        </div>
+        <div id="cliOutput" class="cli-output"></div>
+        <div class="cli-input-row">
+          <span class="prompt">127.0.0.1:6379&gt;</span>
+          <input id="cliInput" autocomplete="off" spellcheck="false" placeholder="Type a Redis command">
+        </div>
+      </div>
+    </section>
+
+    <div id="modalShade" class="modal-shade">
+      <div id="modal" class="modal" role="dialog" aria-modal="true"></div>
+    </div>
+
+    <aside id="assistant" class="assistant hidden" data-sim-explanation>
+      <div class="assistant-head" data-sim-explanation-drag>
+        <strong data-sim-explanation-title>Redis Insight</strong>
+        <span class="grow"></span>
+        <button class="icon-btn" data-sim-explanation-close>×</button>
+      </div>
+      <div class="assistant-body" data-sim-explanation-body>
+        <p data-sim-explanation-text></p>
+      </div>
+    </aside>
+
+    <div id="toastHost" class="toast-host"></div>
+  </div>
+
+  <script src="capabilities.js?v=1"></script>
+  <script src="engine.js?v=1"></script>
+</body>
+</html>
