@@ -365,7 +365,17 @@ refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStat
 refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
 refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom()};refs.restartBtn.onclick=()=>{state.console="Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started";activeBottom="run";renderBottom()};refs.clearConsoleBtn.onclick=()=>{state.console="";activeBottom="run";renderBottom()};
 refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
-// Project/right/bottom splitters are owned by shared/layout-resize.js.
+// IntelliJ owns its native splitters. Shared layout-resize only restores/persists their sizes.
+let dl=false,dr=false,dh=false;
+refs.splitL.onpointerdown=e=>{if(e.button!==0)return;dl=true;refs.splitL.setPointerCapture?.(e.pointerId);e.preventDefault()};
+refs.splitL.onpointermove=e=>{if(!dl||innerWidth<650)return;const r=refs.work.getBoundingClientRect(),w=Math.max(150,Math.min(420,e.clientX-r.left-30));document.documentElement.style.setProperty("--leftW",w+"px");e.preventDefault()};
+refs.splitL.onpointerup=refs.splitL.onpointercancel=()=>{dl=false};
+refs.splitR.onpointerdown=e=>{if(e.button!==0)return;dr=true;refs.splitR.setPointerCapture?.(e.pointerId);e.preventDefault()};
+refs.splitR.onpointermove=e=>{if(!dr||innerWidth<950)return;const r=refs.work.getBoundingClientRect(),w=Math.max(170,Math.min(420,r.right-e.clientX-30));document.documentElement.style.setProperty("--rightW",w+"px");e.preventDefault()};
+refs.splitR.onpointerup=refs.splitR.onpointercancel=()=>{dr=false};
+refs.splitH.onpointerdown=e=>{if(e.button!==0)return;dh=true;refs.splitH.setPointerCapture?.(e.pointerId);e.preventDefault()};
+refs.splitH.onpointermove=e=>{if(!dh)return;const r=refs.work.getBoundingClientRect(),h=Math.max(90,Math.min(400,r.bottom-e.clientY));document.documentElement.style.setProperty("--bottomH",h+"px");e.preventDefault()};
+refs.splitH.onpointerup=refs.splitH.onpointercancel=()=>{dh=false};
 document.addEventListener("pointerdown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("keydown",e=>{if(e.isTrusted)clearBoundary()},true);document.addEventListener("scroll",syncBoundary,true);window.addEventListener("resize",syncBoundary);
 function showAssistant(m){
  refs.assistantTitle.textContent=m.title||"Step explanation";

@@ -409,6 +409,26 @@ if (exists("simulator/powerbi/index.html") && exists("simulator/powerbi/engine.j
   );
 }
 
+/* Screenshot-derived UI regression guards. */
+if (exists("simulator/intellij/engine.js") && exists("simulator/shared/layout-resize.js")) {
+  const ijEngine = read("simulator/intellij/engine.js");
+  const layoutRuntime = read("simulator/shared/layout-resize.js");
+  assert(ijEngine.includes("refs.splitL.onpointerdown"), "IntelliJ native Project splitter handler is missing");
+  assert(ijEngine.includes('style.setProperty("--leftW"'), "IntelliJ Project splitter no longer changes --leftW");
+  const ijSetupStart = layoutRuntime.indexOf("function setupIntelliJ()");
+  const ijSetupEnd = layoutRuntime.indexOf("function setupPostman()", ijSetupStart);
+  const ijSetup = ijSetupStart >= 0 && ijSetupEnd > ijSetupStart ? layoutRuntime.slice(ijSetupStart, ijSetupEnd) : "";
+  assert(ijSetup.includes("rememberExisting") && !ijSetup.includes("wirePersistentSplitter"), "Shared runtime is competing with IntelliJ native splitter ownership");
+}
+if (exists("simulator/mysql_workbench/index.html")) {
+  const mwb = read("simulator/mysql_workbench/index.html");
+  assert(
+    mwb.includes("grid-template-rows:26px 32px minmax(0,1fr) 112px"),
+    "MySQL Workbench Navigator must allocate rows for tabs, filter, tree, and object info"
+  );
+  assert((mwb.match(/data-sim-app=/g)||[]).length === 1, "MySQL Workbench contains duplicate data-sim-app attributes");
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

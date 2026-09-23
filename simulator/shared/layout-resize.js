@@ -148,9 +148,7 @@
     if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
     if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
-    wirePersistentSplitter(l,"x",()=>readCssNumber(root,"--leftW",250),v=>root.style.setProperty("--leftW",px(v)),{min:120,max:560,sign:1,key:"leftW"});
-    wirePersistentSplitter(r,"x",()=>readCssNumber(root,"--rightW",270),v=>root.style.setProperty("--rightW",px(v)),{min:150,max:560,sign:-1,key:"rightW"});
-    wirePersistentSplitter(h,"y",()=>readCssNumber(root,"--bottomH",190),v=>root.style.setProperty("--bottomH",px(v)),{min:80,max:460,sign:-1,key:"bottomH"});
+    // IntelliJ engine owns pointer interaction. This layer only persists it.
     rememberExisting(l,()=>({leftW:readCssNumber(root,"--leftW",250)}));
     rememberExisting(r,()=>({rightW:readCssNumber(root,"--rightW",270)}));
     rememberExisting(h,()=>({bottomH:readCssNumber(root,"--bottomH",190)}));
