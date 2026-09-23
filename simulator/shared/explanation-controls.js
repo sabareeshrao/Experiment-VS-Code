@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var CONTROLS_VERSION=15;
+var CONTROLS_VERSION=16;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=CONTROLS_VERSION) return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=CONTROLS_VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -49,7 +49,7 @@ if(!document.getElementById(STYLE_ID)){
     ".simExplainSizeControls{display:flex!important;align-items:center!important;gap:1px!important;margin-left:auto!important;flex:0 0 auto!important}",
     ".simExplainHeaderButtons,.jenkinsAssistantButtons{display:flex!important;align-items:center!important;gap:1px!important;flex:0 0 auto!important}",
 
-    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;max-height:210px!important;overflow:auto!important;user-select:text!important}",
+    ".simExplainGlobalBody{padding:10px!important;background:#242424!important;color:#e6e6e6!important;font:10.5px/16px 'Segoe UI',Arial,sans-serif;line-height:1.55;height:auto!important;max-height:calc(100vh - 96px)!important;overflow:auto!important;user-select:text!important}",
     "body.theme-light .simExplainGlobalBody,body[data-sim-app='postman']:not(.theme-dark) .simExplainGlobalBody{background:#fff!important;color:#222!important}",
     ".simExplainGlobalBody .jenkinsAssistantBody{padding:0!important;font:inherit!important;line-height:inherit!important;color:inherit!important}",
     ".simExplainGlobalBody p{margin:0!important}",
