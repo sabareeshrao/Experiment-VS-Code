@@ -109,17 +109,9 @@ body.theme-dark .homeOverlay{background:#202020}body.theme-dark .homeTop,body.th
 #mysqlWorkbenchAssistant>[data-sim-explanation-body] p{margin:0}
 #mysqlWorkbenchAssistant.minimized>[data-sim-explanation-body],#mysqlWorkbenchAssistant.min>[data-sim-explanation-body]{display:none}
 
-/* v10 layout stabilization */
-.workbenchSurface{z-index:140!important;max-width:calc(100vw - 18px);max-height:calc(100vh - 118px)}
-.homeOverlay{z-index:80}
-.workspace{min-width:0;min-height:0;overflow:hidden}
-@media(max-width:880px){
-  .workspace{grid-template-columns:var(--leftTrack) 5px minmax(0,1fr)!important}
-  .right,.splitR{display:none!important}
-}
 </style>
 </head>
-<body class="theme-dark" data-sim-app="mysql_workbench">
+<body class="theme-dark" data-sim-app="mysql_workbench" data-sim-app="mysqlworkbench">
 <div class="app" id="app">
   <div class="titlebar"><div class="mysqlMark"><span class="dolphin">◒</span><span id="windowTitle">MySQL Workbench</span></div><div class="grow"></div><span id="titleConnection"></span><div class="windowBtns"><span>—</span><span>□</span><span>×</span></div></div>
   <div class="menuBar" id="menuBar">
@@ -157,10 +149,10 @@ body.theme-dark .homeOverlay{background:#202020}body.theme-dark .homeTop,body.th
 </div>
 <script src="icons.js?v=1"></script>
 <script src="capabilities.js?v=2"></script>
-<script src="engine.js?v=8"></script>
+<script src="engine.js?v=7"></script>
 <script src="../shared/highlighter.js?v=8"></script>
 <script src="../shared/explanation-controls.js?v=11"></script>
-<script src="../shared/layout-resize.js?v=14"></script>
+<script src="../shared/layout-resize.js?v=13"></script>
 <aside id="mysqlWorkbenchAssistant" data-sim-explanation class="hidden">
   <div data-sim-explanation-drag>
     <strong data-sim-explanation-title>Lesson explanation</strong>

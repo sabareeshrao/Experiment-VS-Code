@@ -33,11 +33,9 @@
     .sim-layout-handle-v::after{top:0;bottom:0;left:3px;width:3px}
     .sim-layout-handle-h{left:0;right:0;height:9px;cursor:row-resize;transform:translateY(-4px)}
     .sim-layout-handle-h::after{left:0;right:0;top:3px;height:3px}
-    .splitV,.splitH,.split,[id^="split"],[id$="Split"]{touch-action:none;position:relative;z-index:40}
-    .splitV,.split,[id^="splitL"],[id^="splitR"],[id$="Split"]{cursor:col-resize!important}
-    .splitH,[id^="splitH"]{cursor:row-resize!important}
-    .splitV::before,.split::before,[id^="splitL"]::before,[id^="splitR"]::before,[id$="Split"]::before{content:"";position:absolute;top:0;bottom:0;left:-8px;right:-8px;z-index:1}
-    .splitH::before,[id^="splitH"]::before{content:"";position:absolute;left:0;right:0;top:-7px;bottom:-7px;z-index:1}
+    .splitV,.splitH,.split,[id^="split"],[id$="Split"]{touch-action:none;position:relative;z-index:24}
+    .splitV::before,.split::before,[id^="splitL"]::before,[id^="splitR"]::before,[id$="Split"]::before{content:"";position:absolute;top:0;bottom:0;left:-5px;right:-5px}
+    .splitH::before,[id^="splitH"]::before{content:"";position:absolute;left:0;right:0;top:-5px;bottom:-5px}
     .sim-window-resizer{position:absolute;z-index:250;touch-action:none}
     .sim-window-resizer.n,.sim-window-resizer.s{left:7px;right:7px;height:7px;cursor:ns-resize}
     .sim-window-resizer.n{top:-2px}.sim-window-resizer.s{bottom:-2px}
