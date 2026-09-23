@@ -23,9 +23,9 @@ window.REDIS_CAPABILITIES = {
     "showDialog","showToast"
   ],
   integration: {
-    status: "standalone-only",
-    note: "Do not add to player.html, app.js or lessons.js until explicitly requested.",
+    status: "integrated",
+    note: "Integrated into the central player, AI capability index and validation contract.",
     appId: "redis",
-    futureMessageProtocol: ["SIM_PACKAGE","SIM_SEEK","SIM_EXPLAIN","SIM_READY"]
+    futureMessageProtocol: ["SIM_PACKAGE","SIM_SEEK","SIM_EXPLAIN","ENGINE_READY"]
   }
 };

@@ -4947,6 +4947,9 @@ window.COURSE = {
             }
           ]
         }
+      },
+      "redis": {
+        "state": {}
       }
     }
   },

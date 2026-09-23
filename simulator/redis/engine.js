@@ -3,6 +3,7 @@
 const $=id=>document.getElementById(id);
 const host=$("viewHost"),nav=$("topnav"),cliPanel=$("cliPanel"),cliOutput=$("cliOutput"),cliInput=$("cliInput"),modalShade=$("modalShade"),modal=$("modal"),toastHost=$("toastHost");
 const APP_ID="redis";
+const SUPPORTED_ACTIONS=["setView","selectKey","searchKeys","filterKeyType","createKey","deleteKey","editKey","setKeyValue","setHashField","pushListItem","addSetMember","addSortedSetMember","runWorkbench","setWorkbenchQuery","openCli","runCliCommand","clearCli","openSearchIndex","runSearchQuery","showExplain","showProfile","openAnalysisTab","loadSlowLog","startProfiler","stopProfiler","subscribeChannel","publishMessage","openSettings","openDatabaseDialog","showDialog","showToast"];
 
 const seedKeys=[
  {name:"user:1001",type:"hash",ttl:-1,size:"248 B",value:{name:"Ava Carter",email:"ava@example.com",plan:"pro",region:"us-east"}},
@@ -136,21 +137,36 @@ $("dbSwitcher").onclick=e=>{if(e.target.closest("button")||e.currentTarget===e.t
 
 async function applyAction(step){
  const a=step?.action||step?.type,d=step?.data||{};
+ modalShade.classList.remove("show");
  if(a==="setView")state.view=d.view||d.name||"browser";
  else if(a==="selectKey")state.selectedKey=d.key||d.name;
  else if(a==="searchKeys")state.keyQuery=d.query||"";
  else if(a==="filterKeyType")state.typeFilter=d.type||"all";
+ else if(a==="createKey"){const name=d.key||d.name||"app:new-key",type=d.type||"string";state.keys=state.keys.filter(k=>k.name!==name);state.keys.push({name,type,ttl:d.ttl??-1,size:d.size||"64 B",value:clone(d.value??(type==="hash"?{}:type==="list"||type==="set"||type==="zset"?[]:""))});state.selectedKey=name;state.view="browser";}
  else if(a==="deleteKey"){state.keys=state.keys.filter(k=>k.name!==(d.key||state.selectedKey));state.selectedKey=state.keys[0]?.name;}
+ else if(a==="editKey"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k){if(d.newName){k.name=d.newName;state.selectedKey=d.newName}if("value"in d)k.value=clone(d.value);if("ttl"in d)k.ttl=d.ttl;}state.view="browser";}
+ else if(a==="setKeyValue"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k)k.value=clone(d.value);state.view="browser";}
+ else if(a==="setHashField"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k){k.type="hash";if(!k.value||Array.isArray(k.value)||typeof k.value!=="object")k.value={};k.value[d.field||"field"]=d.value??"";}state.view="browser";}
+ else if(a==="pushListItem"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k){k.type="list";if(!Array.isArray(k.value))k.value=[];if(d.side==="left")k.value.unshift(d.value??"item");else k.value.push(d.value??"item");}state.view="browser";}
+ else if(a==="addSetMember"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k){k.type="set";if(!Array.isArray(k.value))k.value=[];if(!k.value.includes(d.value))k.value.push(d.value);}state.view="browser";}
+ else if(a==="addSortedSetMember"){const k=state.keys.find(k=>k.name===(d.key||state.selectedKey));if(k){k.type="zset";if(!Array.isArray(k.value))k.value=[];k.value=k.value.filter(x=>x[0]!==d.member);k.value.push([d.member||"member",Number(d.score||0)]);k.value.sort((x,y)=>y[1]-x[1]);}state.view="browser";}
  else if(a==="setWorkbenchQuery")state.workbenchQuery=d.query||d.text||"";
  else if(a==="runWorkbench"){state.workbenchResult=d.result||"OK";state.view="workbench";}
  else if(a==="openCli")state.cliOpen=true;
  else if(a==="runCliCommand")runCli(d.command||"PING");
  else if(a==="clearCli")state.cliHistory=[];
+ else if(a==="openSearchIndex"){state.view="search";state.searchIndex=d.index||"idx:products";}
+ else if(a==="runSearchQuery"){state.view="search";state.searchQuery=d.query||state.searchQuery;state.searchResult=clone(d.result||{});}
+ else if(a==="showExplain"){state.view="search";showModal("Query plan",'<pre class="result-body">'+esc(d.plan||"INTERSECT\n  TEXT @name:keyboard\n  NUMERIC @price:[50 150]")+'</pre>');}
+ else if(a==="showProfile"){state.view="search";showModal("Query profile",'<pre class="result-body">'+esc(d.profile||"Total profile time: 0.442 ms\nIterator: INTERSECT\nResult processors: 0.081 ms")+'</pre>');}
  else if(a==="openAnalysisTab"){state.view="analysis";state.analysisTab=d.tab||"memory";}
+ else if(a==="loadSlowLog"){state.view="analysis";state.analysisTab="slowlog";}
  else if(a==="startProfiler"){state.view="analysis";state.analysisTab="profiler";state.profiler=true;}
  else if(a==="stopProfiler"){state.profiler=false;}
  else if(a==="subscribeChannel"){if(d.channel&&!state.subscribed.includes(d.channel))state.subscribed.push(d.channel);state.view="pubsub";}
  else if(a==="publishMessage"){state.messages.unshift({channel:d.channel||"events",time:d.time||"now",payload:d.message||""});state.view="pubsub";}
+ else if(a==="openSettings")showModal("Settings",'<div class="form-field"><label>Theme</label><div class="selectlike">'+esc(d.theme||"Dark")+'</div></div>');
+ else if(a==="openDatabaseDialog")showModal("Databases",'<div class="panel-card"><div class="panel-title"><span class="status-dot" style="margin-right:8px"></span>'+esc(d.name||"Local Redis")+'<span class="grow"></span><span class="badge">Connected</span></div><div class="panel-body">'+esc(d.host||"127.0.0.1")+':'+esc(d.port||6379)+' · '+esc(d.mode||"Standalone")+'</div></div>');
  else if(a==="showToast")notify(d.message||step.text||"Done");
  else if(a==="showDialog")showModal(d.title||"Redis Insight",'<p>'+esc(d.text||"")+'</p>');
  render();
@@ -166,7 +182,7 @@ window.addEventListener("message",e=>{
    const pkg=m.package?.apps?.redis||m.package?.apps?.redisinsight;
    if(pkg?.state){baseline={...initialState(),...clone(pkg.state)};state=clone(baseline);}
    render();
-   parent.postMessage({type:"SIM_READY",app:APP_ID},"*");
+   parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
  } else if(m.type==="SIM_SEEK") seek(m.steps||m.actions||[]);
  else if(m.type==="SIM_EXPLAIN"){
    const box=$("assistant");box.classList.remove("hidden");

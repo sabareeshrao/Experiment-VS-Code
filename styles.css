@@ -124,3 +124,5 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .software-badge.github-actions{border-color:#1f6feb;background:#14243d;color:#79b8ff}
 
 .software-badge.mysqlworkbench{border-color:#2f6f9f;background:#142839;color:#7fc0ee}
+
+.software-badge.redis{border-color:#b7352a;background:#321917;color:#ff8075}

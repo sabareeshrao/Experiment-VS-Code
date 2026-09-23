@@ -131,3 +131,14 @@ For every current and future software simulator:
 - software with no side pane still loads the runtime for common layout/focus behavior
 
 When a new simulator uses a unique layout, extend `layout-resize.js` with a product-specific setup function instead of putting resizing logic in `app.js`.
+
+
+## AI first-read capability index
+
+Every AI/chat that converts transcripts into lesson JSON must read `AI_CAPABILITY_INDEX.json` first. The file is generated from the central simulator contract and capability manifest by `node scripts/build-capability-index.cjs`.
+
+Set `feature_available: true` only when the required feature exists under the target software entry. If it is absent, write `feature_available: false` and include `missing_feature_request` describing the product-owned UI and behavior that must be built. When `action_lookup_required` is true, read the listed `action_source` before choosing a canonical action name.
+
+Do not hand-edit the generated index. Repository validation fails when it becomes stale.
+
+Redis Insight is integrated as the canonical `redis` simulator using the same `SIM_PACKAGE`, `SIM_SEEK`, `SIM_EXPLAIN`, and `ENGINE_READY` contract.

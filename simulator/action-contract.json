@@ -127,6 +127,13 @@
       "packageKey": "mysql_workbench",
       "engineSource": "engine.js",
       "manifestKey": "mysql_workbench"
+    },
+    "redis": {
+      "directory": "redis",
+      "frameId": "redisFrame",
+      "packageKey": "redis",
+      "engineSource": "engine.js",
+      "manifestKey": "redis"
     }
   },
   "layoutPolicy": {

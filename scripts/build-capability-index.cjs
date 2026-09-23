@@ -1,0 +1,16 @@
+"use strict";
+const fs=require("fs"),path=require("path");
+const names={"intellij":"IntelliJ IDEA","vscode":"Visual Studio Code","pgadmin":"pgAdmin 4","postman":"Postman","cmd":"Windows Command Prompt","linux":"Linux","ssms":"SQL Server Management Studio","jira":"Jira","jenkins":"Jenkins","powerbi":"Power BI Desktop","git":"Git","github":"GitHub","github_actions":"GitHub Actions","mysqlworkbench":"MySQL Workbench","redis":"Redis Insight"};
+function build(root=path.resolve(__dirname,"..")){
+ const contract=JSON.parse(fs.readFileSync(path.join(root,"simulator/action-contract.json"),"utf8"));
+ const manifest=JSON.parse(fs.readFileSync(path.join(root,"simulator/adaptive-capabilities.json"),"utf8"));
+ const software={};
+ for(const [id,spec] of Object.entries(contract.simulators||{})){
+  const meta=manifest.simulators?.[spec.manifestKey]||{};
+  software[id]={display_name:names[id]||id,directory:spec.directory,package_key:spec.packageKey,action_source:"simulator/"+spec.directory+"/"+spec.engineSource,capability_source:"simulator/adaptive-capabilities.json#simulators."+spec.manifestKey,target_fidelity:meta.targetFidelity??null,features:[...new Set(meta.features||[])].sort(),indexed_actions:[...new Set(meta.actions||[])].sort(),action_lookup_required:!(Array.isArray(meta.actions)&&meta.actions.length)};
+ }
+ return {schema_version:1,file_purpose:"AI FIRST READ — capability map for transcript-to-lesson JSON generation.",generated_by:"scripts/build-capability-index.cjs",rules:["Read this file before generating lesson JSON.","Use the canonical software id and existing product feature names.","Set feature_available=true only when the required feature appears in software.<id>.features. If it is absent, set feature_available=false.","When indexed_actions is non-empty, reuse those canonical action names. When action_lookup_required=true, read action_source before choosing an action name.","Never invent a new action if an existing canonical action already represents the transcript interaction.","For feature_available=false, include missing_feature_request with the software-owned UI surface, interaction, expected UI and expected behavior.","Product-specific UI belongs only inside that simulator."],lesson_json_contract:{software:"Canonical key from software.",required_capability:"Feature needed by this transcript step.",feature_available:"Boolean determined from this index, never memory.",canonical_action:"Existing simulator action name when available.",missing_feature_request:{surface:"Missing product-owned surface.",interaction:"Required interaction.",expected_ui:["Visible controls/results."],expected_behavior:"Required state/result."}},software};
+}
+function json(v){return JSON.stringify(v,null,2)+"\n"}
+if(require.main===module){const root=path.resolve(__dirname,".."),target=path.join(root,"AI_CAPABILITY_INDEX.json");fs.writeFileSync(target,json(build(root)));console.log("Wrote AI_CAPABILITY_INDEX.json")}
+module.exports={build,json};

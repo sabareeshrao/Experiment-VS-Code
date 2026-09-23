@@ -67,7 +67,8 @@ const requiredRootFiles = [
   "library.css",
   "app.js",
   "lessons.js",
-  "README.md"
+  "README.md",
+  "AI_CAPABILITY_INDEX.json"
 ];
 for (const file of requiredRootFiles) {
   assert(exists(file), "Missing required root file: " + file);
@@ -75,6 +76,7 @@ for (const file of requiredRootFiles) {
 
 assert(exists("simulator/action-contract.json"), "Missing simulator/action-contract.json");
 assert(exists("simulator/adaptive-capabilities.json"), "Missing simulator/adaptive-capabilities.json");
+assert(exists("scripts/build-capability-index.cjs"), "Missing scripts/build-capability-index.cjs");
 
 let contract;
 let manifest;
@@ -98,6 +100,8 @@ try {
 } catch (error) {
   fail("Cannot parse lessons.js course data: " + error.message);
 }
+
+try { const {build,json}=require("./build-capability-index.cjs"); assert(read("AI_CAPABILITY_INDEX.json")===json(build(ROOT)),"AI_CAPABILITY_INDEX.json is stale. Run: node scripts/build-capability-index.cjs"); } catch(error) { fail("Cannot validate AI capability index: "+error.message); }
 
 const player = exists("player.html") ? read("player.html") : "";
 const app = exists("app.js") ? read("app.js") : "";

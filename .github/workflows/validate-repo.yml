@@ -10,6 +10,7 @@ on:
       - "library.js"
       - "library.css"
       - "app.js"
+      - "AI_CAPABILITY_INDEX.json"
       - "lessons.js"
       - "project-data/**"
       - "simulator/**"

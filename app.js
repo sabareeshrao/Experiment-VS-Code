@@ -19,7 +19,8 @@
     git: $("gitFrame"),
     github: $("githubFrame"),
     github_actions: $("githubActionsFrame"),
-    mysqlworkbench: $("mysqlWorkbenchFrame")
+    mysqlworkbench: $("mysqlWorkbenchFrame"),
+    redis: $("redisFrame")
   };
 
   const appIds = {
@@ -36,7 +37,8 @@
     git: "git",
     github: "github",
     github_actions: "github_actions",
-    mysqlworkbench: "mysql_workbench"
+    mysqlworkbench: "mysql_workbench",
+    redis: "redis"
   };
 
   const appLabels = {
@@ -53,7 +55,8 @@
     git: "Git",
     github: "GitHub",
     github_actions: "GitHub Actions",
-    mysqlworkbench: "MySQL Workbench"
+    mysqlworkbench: "MySQL Workbench",
+    redis: "Redis Insight"
   };
 
   const engineReady = {
@@ -70,7 +73,8 @@
     git: false,
     github: false,
     github_actions: false,
-    mysqlworkbench: false
+    mysqlworkbench: false,
+    redis: false
   };
 
   const SIM_BOOT_TOKEN =
@@ -272,6 +276,7 @@
     if (value === "github") return "github";
     if (value === "github_actions" || value === "github-actions" || value === "githubactions") return "github_actions";
     if (value === "mysqlworkbench" || value === "mysql_workbench" || value === "mysql-workbench" || value === "mysql") return "mysqlworkbench";
+    if (value === "redis" || value === "redisinsight" || value === "redis_insight" || value === "redis-insight") return "redis";
     return "intellij";
   }
 
@@ -299,6 +304,7 @@
     softwareBadge.classList.toggle("github", activeSoftware === "github");
     softwareBadge.classList.toggle("github-actions", activeSoftware === "github_actions");
     softwareBadge.classList.toggle("mysqlworkbench", activeSoftware === "mysqlworkbench");
+    softwareBadge.classList.toggle("redis", activeSoftware === "redis");
     softwareBadge.classList.toggle("intellij", activeSoftware === "intellij");
   }
 

@@ -10,6 +10,7 @@ on:
       - "library.js"
       - "library.css"
       - "app.js"
+      - "AI_CAPABILITY_INDEX.json"
       - "lessons.js"
       - "README.md"
       - "project/**"
@@ -66,7 +67,7 @@ jobs:
           EOF
 
           mkdir -p dist/Experiment-VS-Code-Trial
-          cp index.html player.html styles.css library.js library.css app.js lessons.js README.md dist/Experiment-VS-Code-Trial/
+          cp index.html player.html styles.css library.js library.css app.js lessons.js README.md AI_CAPABILITY_INDEX.json dist/Experiment-VS-Code-Trial/
           cp -R simulator dist/Experiment-VS-Code-Trial/
           cp -R project dist/Experiment-VS-Code-Trial/
           cp -R project-data dist/Experiment-VS-Code-Trial/
