@@ -33,6 +33,7 @@ body.sidebar-hidden .ide-shell{width:100%;min-width:0}
 .steps-wrap{display:none;margin-left:9px;border-left:1px solid #3a342b;padding:3px 0 4px 9px}.stage-block.open .steps-wrap{display:block}
 .step-link{width:100%;border:1px solid transparent;background:transparent;color:#bfc1c8;text-align:left;border-radius:6px;padding:6px 8px;font-size:10.5px;line-height:1.35;cursor:pointer}
 .step-link:hover{background:#202125;color:#fff}.step-link.active{background:#2b2115;border-color:#9f6a27;color:#ffd08a}.step-link.done{color:#9599a2}
+.lesson-heading{padding:8px 8px 4px;color:#858994;font-size:9px;font-weight:750;letter-spacing:.035em;text-transform:none}
 .step-number{display:inline-block;min-width:22px;color:#71757e}.step-link.active .step-number{color:#eba94f}
 
 .workspace-head{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:45px}

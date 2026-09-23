@@ -687,6 +687,7 @@
         const label = appLabels[normalizeSoftware(step.software || "intellij")].toLowerCase();
         return (
           step.title.toLowerCase().includes(q) ||
+          String(step.lesson || "").toLowerCase().includes(q) ||
           label.includes(q) ||
           (numericQuery !== null && indices[i] + 1 === numericQuery)
         );
@@ -709,7 +710,7 @@
       head.className = "stage-head";
       head.innerHTML =
         "<span>" + stage.title + "</span>" +
-        '<span class="stage-count">' + (stage.steps || []).length + " steps</span>" +
+        '<span class="stage-count">' + (stage.steps || []).length + " " + (stage.stepLabel || course.stepLabel || "steps") + "</span>" +
         '<span class="stage-chevron">' + (isOpen ? "⌃" : "⌄") + "</span>";
 
       head.onclick = () => {
@@ -723,6 +724,7 @@
       const wrap = document.createElement("div");
       wrap.className = "steps-wrap";
 
+      let previousLesson = null;
       (stage.steps || []).forEach((step, localIndex) => {
         const gi = indices[localIndex];
         const software = normalizeSoftware(step.software || "intellij");
@@ -731,10 +733,20 @@
         const numberMatch = numericQuery !== null && gi + 1 === numericQuery;
         const textMatch =
           step.title.toLowerCase().includes(q) ||
+          String(step.lesson || "").toLowerCase().includes(q) ||
           stage.title.toLowerCase().includes(q) ||
           softwareLabel.toLowerCase().includes(q);
 
         if (q && !numberMatch && !textMatch) return;
+
+        const lessonName = String(step.lesson || "").trim();
+        if (lessonName && lessonName !== previousLesson) {
+          const lessonHeading = document.createElement("div");
+          lessonHeading.className = "lesson-heading";
+          lessonHeading.textContent = lessonName;
+          wrap.appendChild(lessonHeading);
+          previousLesson = lessonName;
+        }
 
         const button = document.createElement("button");
         button.className =
