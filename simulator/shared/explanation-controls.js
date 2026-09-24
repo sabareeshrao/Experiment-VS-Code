@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var VERSION=23;
+var VERSION=24;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -90,15 +90,24 @@ function applyScale(box,saveAfter){
     var font=clamp(10.5+(Number(pref.scale)||0)*1.15,9,15.1);
     body.style.fontSize=font.toFixed(1)+"px";
   }
-  clampPosition(box,false);
+  // Width/font changes may alter content height, but they must never move the
+  // saved top-left position. Position is clamped only for explicit user
+  // geometry changes or a real viewport resize.
   scheduleFit(box);
   if(saveAfter)save();
 }
 function initialPosition(box){
-  var r=box.getBoundingClientRect();
-  var left=Math.max(10,innerWidth-r.width-18);
-  var top=Math.min(Math.max(12,68),Math.max(12,innerHeight-60));
+  // Do not measure the hidden card here. Use the configured width so first
+  // render starts at a deterministic location and does not jump after show().
+  var width=Math.min(widthForScale(),Math.max(252,innerWidth-20));
+  var left=Math.max(10,innerWidth-width-18);
+  var top=Math.min(Math.max(12,68),Math.max(12,innerHeight-42));
   pref.left=left;pref.top=top;pref.viewportWidth=innerWidth;pref.viewportHeight=innerHeight;
+}
+function writePosition(box){
+  box.style.right="auto";box.style.bottom="auto";
+  box.style.left=Math.round(pref.left)+"px";
+  box.style.top=Math.round(pref.top)+"px";
 }
 function restorePosition(box){
   if(!Number.isFinite(pref.left)||!Number.isFinite(pref.top)){
@@ -109,19 +118,20 @@ function restorePosition(box){
     if(pref.viewportHeight&&Math.abs(innerHeight-pref.viewportHeight)>24)top*=innerHeight/pref.viewportHeight;
     pref.left=left;pref.top=top;
   }
-  box.style.right="auto";box.style.bottom="auto";
-  box.style.left=Math.round(pref.left)+"px";
-  box.style.top=Math.round(pref.top)+"px";
+  // Restore/clamp only against the viewport and card width. Never use the
+  // current content height to change top; question length must not move card.
   clampPosition(box,true);
 }
 function clampPosition(box,saveAfter){
-  var r=box.getBoundingClientRect(),pad=8;
-  var maxLeft=Math.max(pad,innerWidth-r.width-pad);
-  var maxTop=Math.max(pad,innerHeight-Math.min(r.height,innerHeight-pad*2)-pad);
+  var pad=8;
+  var width=parseFloat(box.style.width)||Math.min(widthForScale(),Math.max(252,innerWidth-20));
+  var headH=headOf(box)?.getBoundingClientRect().height||34;
+  var maxLeft=Math.max(pad,innerWidth-width-pad);
+  var maxTop=Math.max(pad,innerHeight-headH-pad);
   var left=clamp(Number(pref.left)||pad,pad,maxLeft);
   var top=clamp(Number(pref.top)||pad,pad,maxTop);
   pref.left=left;pref.top=top;
-  box.style.left=Math.round(left)+"px";box.style.top=Math.round(top)+"px";
+  writePosition(box);
   if(saveAfter)save();
 }
 function fitHeight(box){
@@ -155,8 +165,8 @@ function bind(box){
   if(box.dataset.bound==="1")return;
   box.dataset.bound="1";
   var head=headOf(box);
-  box.querySelector("[data-sim-explanation-smaller]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)-1,-2,4);applyScale(box,true)};
-  box.querySelector("[data-sim-explanation-larger]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)+1,-2,4);applyScale(box,true)};
+  box.querySelector("[data-sim-explanation-smaller]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)-1,-2,4);applyScale(box,false);clampPosition(box,true)};
+  box.querySelector("[data-sim-explanation-larger]").onclick=function(e){e.stopPropagation();pref.scale=clamp((Number(pref.scale)||0)+1,-2,4);applyScale(box,false);clampPosition(box,true)};
   box.querySelector("[data-sim-explanation-min]").onclick=function(e){e.stopPropagation();pref.minimized=!pref.minimized;box.classList.toggle("minimized",pref.minimized);save();scheduleFit(box)};
   box.querySelector("[data-sim-explanation-close]").onclick=function(e){e.stopPropagation();box.classList.add("hidden");box.classList.remove("show")};
   head.addEventListener("pointerdown",function(e){
@@ -170,9 +180,10 @@ function bind(box){
   head.addEventListener("pointermove",function(e){
     if(!drag||e.pointerId!==drag.id)return;
     var r=box.getBoundingClientRect(),pad=8;
+    var headH=headOf(box)?.getBoundingClientRect().height||34;
     pref.left=clamp(e.clientX-drag.dx,pad,Math.max(pad,innerWidth-r.width-pad));
-    pref.top=clamp(e.clientY-drag.dy,pad,Math.max(pad,innerHeight-r.height-pad));
-    box.style.left=Math.round(pref.left)+"px";box.style.top=Math.round(pref.top)+"px";
+    pref.top=clamp(e.clientY-drag.dy,pad,Math.max(pad,innerHeight-headH-pad));
+    writePosition(box);
     scheduleFit(box);
     e.preventDefault();
   });
@@ -205,8 +216,13 @@ function show(payload){
   box.classList.add("show");
   box.classList.toggle("minimized",!!pref.minimized);
   applyScale(box,false);
-  if(!Number.isFinite(pref.left)||!Number.isFinite(pref.top))initialPosition(box);
-  restorePosition(box);
+  if(!Number.isFinite(pref.left)||!Number.isFinite(pref.top)){
+    initialPosition(box);
+    save();
+  }
+  // Content updates are not geometry events. Keep the exact saved left/top
+  // while only recalculating body height below that anchor.
+  writePosition(box);
   scheduleFit(box);
   return box;
 }
@@ -215,7 +231,7 @@ function hide(){
   if(box){box.classList.add("hidden");box.classList.remove("show")}
 }
 function resetPosition(){
-  var box=ensureHost();pref.left=null;pref.top=null;initialPosition(box);restorePosition(box);save();scheduleFit(box);
+  var box=ensureHost();pref.left=null;pref.top=null;initialPosition(box);writePosition(box);save();scheduleFit(box);
 }
 window.SIM_EXPLANATION={show:show,hide:hide,resetPosition:resetPosition,getElement:function(){return ensureHost()},fit:function(){scheduleFit(ensureHost())},version:VERSION};
 window.addEventListener("message",function(e){
