@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "software": {
+    "id": "powerbi",
+    "display_name": "Power BI Desktop",
+    "directory": "powerbi",
+    "package_key": "power_bi",
+    "target_fidelity": 92
+  },
+  "feature": {
+    "id": "toggle-ribbon-collapsed",
+    "display_name": "Toggle Ribbon Collapsed",
+    "area": "settings_layout",
+    "interaction_kind": "toggle",
+    "implementation_status": "engine_action_exposed",
+    "source_kinds": [
+      "engine_supported_action"
+    ],
+    "manifest_declared": false,
+    "canonical_actions": [
+      "toggleRibbonCollapsed"
+    ],
+    "candidate_related_actions": [
+      {
+        "action": "searchRibbon",
+        "score": 0.5,
+        "overlap": [
+          "ribbon"
+        ]
+      }
+    ],
+    "action_mapping_note": "Canonical action is advertised by the simulator."
+  },
+  "intent": {
+    "user_goal": "Use Toggle Ribbon Collapsed in a realistic Power BI Desktop workflow.",
+    "transcript_requirement": "Match only when the video/transcript requires this visible interaction or result.",
+    "when_to_use": "Use when observed UI behavior corresponds to Toggle Ribbon Collapsed.",
+    "when_not_to_use": "Do not substitute a related feature without matching visible behavior."
+  },
+  "ui_contract": {
+    "owner": "simulator/powerbi",
+    "primary_area": "settings_layout",
+    "required_visibility": "Lesson use must produce a visible software-owned state.",
+    "before_state": "Package baseline plus prior cumulative actions.",
+    "interaction": "Invoke a canonical action using parameters confirmed in the engine handler.",
+    "after_state": "The named surface/control/result must visibly reflect the interaction.",
+    "focus_and_scroll": "Keep active control/result visible without shaking.",
+    "highlight_rule": "Highlight only the precise target.",
+    "explanation_rule": "Use the single parent-owned global explanation card."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard when applicable"
+    ],
+    "parameters": "Inspect the exact engine handler before writing action.data; never invent parameters.",
+    "destructive": false
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.power_bi",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent",
+    "final_step_animation": "current step only",
+    "user_preferences": "Persistent user layout/theme settings survive replay unless explicitly changed."
+  },
+  "transcript_matching": {
+    "canonical_feature_id": "toggle-ribbon-collapsed",
+    "normalized_terms": [
+      "toggle-ribbon-collapsed",
+      "Toggle Ribbon Collapsed",
+      "toggle",
+      "ribbon",
+      "collapsed"
+    ],
+    "exact_engine_actions": [
+      "toggleRibbonCollapsed"
+    ],
+    "candidate_engine_actions": [
+      "searchRibbon"
+    ],
+    "decision_rule": "Match visible interaction + expected result, then verify canonical action."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "toggle-ribbon-collapsed",
+    "feature_available": true,
+    "preferred_actions": [
+      "toggleRibbonCollapsed"
+    ],
+    "action_lookup_required": false,
+    "authoring_steps": [
+      "Confirm transcript use.",
+      "Read this feature file.",
+      "Inspect action handler parameters.",
+      "Do not invent actions.",
+      "Require visible UI result.",
+      "Test direct-jump replay."
+    ],
+    "missing_feature_rule": "If behavior is absent, upgrade the master simulator before creating the lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/powerbi/engine.js",
+    "ui_source": "simulator/powerbi/index.html",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.powerbi",
+    "action_contract_source": "simulator/action-contract.json#simulators.powerbi",
+    "implementation_search_terms": [
+      "toggle-ribbon-collapsed",
+      "toggleRibbonCollapsed"
+    ],
+    "source_review_required": false
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "visual_fidelity_note": "Catalog coverage does not prove pixel-perfect fidelity."
+  },
+  "validation": {
+    "manifest_feature_present": false,
+    "engine_action_present": true,
+    "exact_action_names": [
+      "toggleRibbonCollapsed"
+    ],
+    "visual_browser_verification": "not implied"
+  },
+  "maintenance": {
+    "canonical_file": "simulator/powerbi/features/toggle-ribbon-collapsed.json",
+    "update_when": [
+      "feature UI changes",
+      "action changes",
+      "lesson parameters change",
+      "transcript audit discovers missing state"
+    ],
+    "generated_baseline_note": "Detailed baseline from current manifest and engine action surfaces; manual enrichment is allowed."
+  }
+}
