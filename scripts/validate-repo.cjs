@@ -580,6 +580,21 @@ if (contract && manifest) {
   }
 }
 
+
+// IntelliJ enterprise microscopic evidence contract.
+assert(exists("simulator/intellij/features/enterprise-action-evidence.json"), "Missing IntelliJ enterprise microscopic evidence");
+if (exists("simulator/intellij/features/enterprise-action-evidence.json")) {
+  const ent = JSON.parse(read("simulator/intellij/features/enterprise-action-evidence.json"));
+  assert(ent.software === "intellij", "IntelliJ enterprise evidence software id mismatch");
+  assert(ent.domain_count === Object.keys(ent.domains || {}).length, "IntelliJ enterprise evidence domain_count mismatch");
+  let enterpriseActionCount = 0;
+  for (const domain of Object.values(ent.domains || {})) {
+    assert(domain.shared_handler?.handler_excerpt, "IntelliJ enterprise domain is missing handler evidence");
+    enterpriseActionCount += Object.keys(domain.actions || {}).length;
+  }
+  assert(ent.action_count === enterpriseActionCount, "IntelliJ enterprise evidence action_count mismatch");
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

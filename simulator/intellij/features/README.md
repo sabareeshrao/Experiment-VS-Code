@@ -20,3 +20,7 @@ Not implemented yet: `projectImpact: build|temporary|inspect`, checkpoints/snaps
 - Layout: user-resized panes persist; replay must not shake/reset them.
 
 Regenerate with `node scripts/build-intellij-microscopic-features.cjs` after IntelliJ engine/action changes.
+
+## Enterprise action evidence
+
+Advanced Java/Spring actions implemented in `enterprise-ui.js` are documented in `enterprise-action-evidence.json`. If a feature's main-engine handler excerpt is null, read that supplemental evidence before authoring `action.data`.
