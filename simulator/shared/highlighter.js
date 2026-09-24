@@ -10,11 +10,11 @@ style.textContent=[
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
-"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:2px solid #53a9ff!important;outline-offset:-2px!important;background-color:rgba(33,115,205,.28)!important}",
-"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:1px;bottom:1px;width:5px;border-radius:2px;background:#7ac7ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(37,123,230,.42)!important}",
+"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:''position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#7dcbff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
-"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:2px solid #53a9ff!important;outline-offset:-2px!important;background-color:rgba(33,115,205,.28)!important}",
-"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:1px;bottom:1px;width:5px;border-radius:2px;background:#7ac7ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(37,123,230,.42)!important}",
+"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:''position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#7dcbff;box-shadow:none;pointer-events:none;z-index:2}",
 ".sim-line-text{position:relative;z-index:3}",
 /* Global overflow + scrollbar safety.  Every simulator can expose long tree
    paths, filenames, SQL/code lines, table rows, console output, etc.  Never

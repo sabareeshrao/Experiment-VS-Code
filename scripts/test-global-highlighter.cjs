@@ -68,26 +68,32 @@ const server=http.createServer((req,res)=>{
       assert.equal(result.boxShadow,"none",software+": blue guidance must be boundary-only, not a glow");
       assert.equal(result.filter,"none",software+": blue guidance must not brighten/pulse the control");
       assert(/rgb\(83, 169, 255\)|rgba\(83, 169, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
+      const lineStyle=await child.evaluate(()=>{
+        const line=document.createElement("div");
+        line.id="globalLineHighlightProbe";
+        line.className="codeLine sim-emphasis";
+        line.textContent="boolean isPresent;";
+        line.style.cssText="position:fixed;left:36px;top:100px;width:420px;height:28px;line-height:28px";
+        document.body.appendChild(line);
+        const cs=getComputedStyle(line);
+        const before=getComputedStyle(line,"::before");
+        const out={
+          outlineStyle:cs.outlineStyle,
+          outlineWidth:parseFloat(cs.outlineWidth)||0,
+          backgroundColor:cs.backgroundColor,
+          markerWidth:parseFloat(before.width)||0,
+          markerColor:before.backgroundColor,
+          markerShadow:before.boxShadow
+        };
+        line.remove();
+        return out;
+      });
+      assert(lineStyle.outlineStyle==="none"||lineStyle.outlineWidth===0,software+": code-line highlight became a rectangle: "+JSON.stringify(lineStyle));
+      assert(/rgba?\(37, 123, 230/.test(lineStyle.backgroundColor),software+": stronger flat code-line lighting is missing: "+JSON.stringify(lineStyle));
+      assert(lineStyle.markerWidth>=6,software+": code-line left marker is too weak: "+JSON.stringify(lineStyle));
+      assert(/rgb\(125, 203, 255\)/.test(lineStyle.markerColor),software+": code-line left marker is not bright enough: "+JSON.stringify(lineStyle));
+      assert(lineStyle.markerShadow==="none",software+": code-line marker must not glow");
       if(checked.length===0){
-        const lineStyle=await child.evaluate(()=>{
-          const line=document.createElement("div");
-          line.id="globalLineHighlightProbe";
-          line.className="codeLine sim-emphasis";
-          line.textContent="boolean isPresent;";
-          line.style.cssText="position:fixed;left:36px;top:100px;width:420px;height:28px;line-height:28px";
-          document.body.appendChild(line);
-          const cs=getComputedStyle(line);
-          const out={
-            outlineWidth:parseFloat(cs.outlineWidth)||0,
-            outlineColor:cs.outlineColor,
-            backgroundColor:cs.backgroundColor
-          };
-          line.remove();
-          return out;
-        });
-        assert(lineStyle.outlineWidth>=2,"editor-line emphasis rectangle is too weak: "+JSON.stringify(lineStyle));
-        assert(/rgb\(83, 169, 255\)/.test(lineStyle.outlineColor),"editor-line emphasis boundary is not bright blue");
-        assert(lineStyle.backgroundColor!=="transparent"&&!/rgba?\(0, 0, 0, 0\)/.test(lineStyle.backgroundColor),"editor-line emphasis fill is missing");
         await child.waitForTimeout(5300);
         assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
       }
