@@ -242,7 +242,16 @@ function writeCatalog(root,software,spec,manifest,{force=false}={}){
   const files=[];
   for(const record of records){
     const file=path.join(dir,record.feature.id+".json");
-    if(software==="intellij"&&fs.existsSync(file)){try{const existing=JSON.parse(fs.readFileSync(file,"utf8"));if(existing.schema_version>=2&&existing.microscopic_contract){files.push(record.feature.id+".json");continue}}catch{}}\n    if(force||!fs.existsSync(file))fs.writeFileSync(file,JSON.stringify(record,null,2)+"\\n");
+    if(software==="intellij"&&fs.existsSync(file)){
+      try{
+        const existing=JSON.parse(fs.readFileSync(file,"utf8"));
+        if(existing.schema_version>=2&&existing.microscopic_contract){
+          files.push(record.feature.id+".json");
+          continue;
+        }
+      }catch{}
+    }
+    if(force||!fs.existsSync(file))fs.writeFileSync(file,JSON.stringify(record,null,2)+"\n");
     files.push(record.feature.id+".json");
   }
   const index={
