@@ -50,3 +50,19 @@ jobs:
 
       - name: Validate simulator repository
         run: node scripts/validate-repo.cjs
+
+
+  intellij-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save --package-lock=false playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Exercise the IntelliJ player in Chromium
+        run: node scripts/test-intellij-ui.cjs

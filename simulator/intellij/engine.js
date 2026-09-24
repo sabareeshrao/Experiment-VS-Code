@@ -6,6 +6,12 @@ const $=id=>document.getElementById(id),clone=v=>JSON.parse(JSON.stringify(v??nu
 const refs={editorPane:$("editorPane"),editorSplitWrap:$("editorSplitWrap"),editorSplitTitle:$("editorSplitTitle"),editorSplitCode:$("editorSplitCode"),editorSplitClose:$("editorSplitClose"),app:$("app"),bottomPanel:$("bottomPanel"),project:$("projectTitle"),branch:$("branchPill"),sdk:$("sdkTitle"),tree:$("tree"),tabs:$("tabs"),gutter:$("gutter"),code:$("code"),completion:$("completion"),intentions:$("intentions"),right:$("rightBody"),bottom:$("bottomBody"),bottomTabs:$("bottomTabs"),menu:$("menu"),menuPopup:$("menuPopup"),runConfig:$("runConfig"),status:$("statusText"),lang:$("languageLevel"),line:$("lineStatus"),notification:$("notification"),boundary:$("targetBoundary"),assistant:$("ideAssistant"),assistantDrag:$("ideAssistantDrag"),assistantTitle:$("ideAssistantTitle"),assistantStage:$("ideAssistantStage"),assistantStep:$("ideAssistantStep"),assistantText:$("ideAssistantText"),assistantMin:$("ideAssistantMin"),assistantClose:$("ideAssistantClose"),modalLayer:$("modalLayer"),modalTitle:$("modalTitle"),modalBody:$("modalBody"),modalFoot:$("modalFoot"),modalClose:$("modalClose"),work:$("work"),splitL:$("splitL"),splitR:$("splitR"),splitH:$("splitH"),newBtn:$("newBtn"),saveBtn:$("saveBtn"),runBtn:$("runBtn"),debugBtn:$("debugBtn"),stopBtn:$("stopBtn"),restartBtn:$("restartBtn"),clearConsoleBtn:$("clearConsoleBtn"),searchBtn:$("searchBtn"),gitBtn:$("gitBtn"),terminalBtn:$("terminalBtn"),fidelity:$("intellijFidelityLayer")};
 let baseline=null,state=null,files={},activeFile=null,openTabs=[],activeBottom="run",activeRight="structure",autoType=true,seekToken=0,allowBoundary=true,treeMap=new Map(),focusRange=null,popupKind="",modalKind="",notificationTimer=0,trackedBoundary=null;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let replayingHistory=false;
+function focusFidelityInput(id,select=false){
+ if(replayingHistory)return;
+ const input=$(id),token=seekToken;
+ setTimeout(()=>{if(token!==seekToken||!input?.isConnected)return;input.focus({preventScroll:true});if(select)input.select()},0);
+}
 function theme(v){document.body.classList.toggle("theme-dark",v!=="light")}
 function normalize(){
  state=state||{};state.project=state.project||{name:"Project",sdk:"Java 17",languageLevel:"17"};state.tree=state.tree||[];files=clone(state.files||{});
@@ -119,6 +125,9 @@ function resetScreenshotWorkspace(d={}){
  state.runConfigurations=[];
  state.activeRunConfiguration="";
  state.bottomCache={};
+ state.editorSplit=false;
+ state.splitFile=null;
+ state.externalLibrariesOpen=false;
  state.terminal="";
  state.console="";
  state.maven={};
@@ -132,6 +141,7 @@ function resetScreenshotWorkspace(d={}){
  activeBottom="run";
  activeRight="structure";
  focusRange=null;
+ actionStatus("Ready");
  renderAll();
 }
 function applyScreenshotProject(d={}){resetScreenshotWorkspace(d)}
@@ -239,7 +249,7 @@ function showSimpleCreatePopup(kind){
  refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><form class="ij-mini-create" id="ijMiniCreate"><strong>New '+esc(kind)+'</strong><input id="ijMiniCreateName" class="ij-field" value="'+(kind==="Package"?"com.example":"NewFile")+'" autofocus><div><button type="submit" class="ij-btn primary">Create</button><button type="button" class="ij-btn" id="ijMiniCancel">Cancel</button></div></form></div>';
  $("ijMiniCreate")?.addEventListener("submit",e=>{e.preventDefault();const name=$("ijMiniCreateName")?.value.trim();if(!name)return;if(kind==="Package"){const p=name.replace(/\./g,"/");addTreePath("src/"+p+"/.package","java");deleteTreePath(state.tree,"src/"+p+"/.package");renderTree()}else{const path="src/"+(name.includes(".")?name:name+".txt");files[path]={language:"text",content:""};state.files=clone(files);addTreePath(path,"text");openFile(path)}hideFidelity();fidelityNotice(kind+" created")});
  $("ijMiniCancel")?.addEventListener("click",hideFidelity);
- setTimeout(()=>$("ijMiniCreateName")?.focus(),0);
+ focusFidelityInput("ijMiniCreateName");
 }
 function showProjectContextSurface(){
  refs.fidelity.className="ijFidelityLayer show transparent";
@@ -269,7 +279,7 @@ function showNewJavaClassSurface(name="Test",selectedType="Class"){
  refs.fidelity.querySelectorAll("[data-class-type]").forEach(btn=>btn.addEventListener("click",()=>showNewJavaClassSurface($("ijClassName")?.value||name,btn.dataset.classType)));
  $("ijClassForm")?.addEventListener("submit",e=>{e.preventDefault();create()});
  $("ijClassName")?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();create()}if(e.key==="Escape"){e.preventDefault();hideFidelity()}});
- setTimeout(()=>{$("ijClassName")?.focus();$("ijClassName")?.select()},0);
+ focusFidelityInput("ijClassName",true);
 }
 function projectStructureBody(page,draft){
  if(page==="Modules")return '<h2>Modules</h2><div class="desc">Configure module sources, dependencies, and SDK inheritance.</div><div class="ij-ps-card"><strong>'+esc(state.project.name||"App_1")+'</strong><span>Sources · Paths · Dependencies</span></div>';
@@ -370,7 +380,7 @@ function showNewPackageSurface(d={}){
  const create=()=>{const name=$("ijPackageName")?.value.trim();if(!name)return;const p="src/"+name.replace(/\./g,"/");addTreePath(p+"/.package","java");deleteTreePath(state.tree,p+"/.package");renderTree();hideFidelity();fidelityNotice("Package "+name+" created")};
  $("ijPackageForm")?.addEventListener("submit",e=>{e.preventDefault();create()});
  $("ijPackageName")?.addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();hideFidelity()}});
- setTimeout(()=>{$("ijPackageName")?.focus();$("ijPackageName")?.select()},0);
+ focusFidelityInput("ijPackageName",true);
 }
 function moveOneFile(file,targetPackage){
  if(!files[file])return null;
@@ -691,7 +701,23 @@ async function applyStep(st,animate,token){
  }
 }
 function showProjectStructureModal(){showProjectStructureSurface({sdk:state.project.sdk,jdkOpen:false})}
-async function seek(steps,animateFinal){const token=++seekToken;reset();for(let i=0;i<steps.length;i++){allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return}allowBoundary=true}
+async function seek(steps,animateFinal){
+ const token=++seekToken;
+ try{
+  replayingHistory=true;
+  reset();
+  for(let i=0;i<steps.length;i++){
+   allowBoundary=i===steps.length-1;
+   replayingHistory=!allowBoundary;
+   await applyStep(steps[i],animateFinal&&allowBoundary,token);
+   if(token!==seekToken)return;
+  }
+  await new Promise(requestAnimationFrame);
+  if(token===seekToken)parent.postMessage({type:"SIM_SEEK_DONE",app:APP_ID},location.origin==="null"?"*":location.origin);
+ }finally{
+  if(token===seekToken){replayingHistory=false;allowBoundary=true}
+ }
+}
 function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});assistantUserPlaced=false;reset()}
 refs.modalClose.onclick=closeModal;refs.modalLayer.onclick=e=>{if(e.target===refs.modalLayer)closeModal()};
 document.querySelectorAll(".menuItem").forEach(m=>m.onclick=()=>openMenu(m.dataset.menu));

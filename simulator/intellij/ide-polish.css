@@ -52,19 +52,14 @@ body.theme-dark{--surface:#27292d;--surface2:#2b2d30;--surface3:#35373b;--line:#
 .editorSplitCode{min-width:0;min-height:0;overflow:auto;padding:8px 0 30px;font:12px/22px "JetBrains Mono","Cascadia Code",Consolas,monospace}.splitCodeLine{display:grid;grid-template-columns:44px minmax(max-content,1fr);min-height:22px}.splitLineNo{text-align:right;padding-right:9px;color:#6f737a;user-select:none}.splitCodeText{padding:0 12px;white-space:pre}
 
 
-/* v12: responsive screenshot-fidelity workspace + second batch */
-html,body,.app{height:100%!important;min-height:0!important}
-body.ijScreenshotMode{--leftW:clamp(190px,26vw,310px);--rightW:0px;--bottomH:0px}
-body.ijScreenshotMode .app{height:100%!important;min-height:0!important;grid-template-rows:42px 0 42px minmax(0,1fr) 23px!important}
-body.ijScreenshotMode .work{height:100%!important;min-height:0!important;overflow:hidden;grid-template-rows:minmax(0,1fr) 0 0!important}
-body.ijScreenshotMode .left{grid-row:1!important;height:100%!important;min-height:0!important}
-body.ijScreenshotMode .editorPane{grid-row:1!important;height:100%!important;min-height:0!important}
-body.ijScreenshotMode .splitL{grid-row:1!important}
-body.ijScreenshotMode .right,body.ijScreenshotMode .splitR{display:none!important}
-body.ijScreenshotMode .tree{height:100%!important;min-height:0!important;overflow:auto!important}
-body.ijScreenshotMode .editorWrap{height:100%!important;min-height:0!important}
-.ij-completion-shot{left:24%;top:66px;width:min(690px,72%);max-height:330px;border-radius:6px;overflow:hidden}
-.ij-completion-shot .popupRow{width:100%;display:grid;grid-template-columns:minmax(90px,1fr) minmax(180px,2fr);align-items:center;border:0;background:transparent;color:#d8dbe1;text-align:left;padding:7px 12px;gap:20px}
+/* Screenshot mode has four in-flow children: the menu is display:none.
+   Keep pane dimensions on the shared root variables so dragging and restore agree. */
+body.ijScreenshotMode .app{grid-template-rows:42px 42px minmax(0,1fr) 24px;min-height:0}
+body.ijScreenshotMode .work{min-height:0;overflow:hidden;grid-template-rows:minmax(0,1fr) 3px min(var(--bottomH),45%)}
+body.ijScreenshotMode .work.noBottom{grid-template-rows:minmax(0,1fr) 0 0}
+body.ijScreenshotMode .left,body.ijScreenshotMode .tree,body.ijScreenshotMode .editorWrap{min-height:0;min-width:0}
+.ij-completion-shot{left:24%;top:66px;width:min(690px,72%);min-width:0;max-height:min(330px,calc(100% - 78px));border-radius:6px;overflow:auto}
+.ij-completion-shot .popupRow{width:100%;display:grid;grid-template-columns:minmax(50px,1fr) minmax(0,2fr);align-items:center;border:0;background:transparent;color:#d8dbe1;text-align:left;padding:7px 12px;gap:20px}
 .ij-completion-shot .popupRow strong{color:#a8c7ff}.ij-completion-shot .popupRow span{color:#858a94;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ij-completion-shot .popupRow.active,.ij-completion-shot .popupRow:hover{background:#3b3e44}.ij-completion-tip{border-top:1px solid #3b3d42;padding:7px 12px;color:#80848c;font-size:11px}.ij-completion-tip span{color:#6f8acb}
 .ij-console-selection{background:#315a9c;color:#e9edf5;padding:1px 2px}
 .ij-package-pop{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:min(450px,82%);background:#292a2e;border:1px solid #3b3d43;border-radius:7px;box-shadow:0 18px 42px rgba(0,0,0,.55);padding:17px}.ij-package-pop strong{display:block;text-align:center;margin-bottom:16px;font-size:14px}.ij-package-pop input{background:transparent;border:0;border-bottom:1px solid #55585f;border-radius:0;font-size:15px}
@@ -73,13 +68,8 @@ body.ijScreenshotMode .editorWrap{height:100%!important;min-height:0!important}
 .ij-tab-context{pointer-events:auto;position:absolute;left:40%;top:34px;width:min(470px,58%);max-height:calc(100% - 45px);overflow:auto;background:#292a2e;border:1px solid #3b3d43;border-radius:6px;box-shadow:0 16px 36px rgba(0,0,0,.56);padding:5px 0}.ij-tab-context button{width:100%;height:36px;border:0;background:transparent;color:#d7d9dd;display:flex;align-items:center;justify-content:space-between;padding:0 16px;text-align:left}.ij-tab-context button small{color:#81858d}.ij-tab-context button:hover,.ij-tab-context button.active{background:#34578f}
 .ij-symbol-card{pointer-events:auto;position:absolute;left:40%;top:28%;width:min(430px,52%);background:#2a2b2f;border:1px solid #3c3f45;border-radius:7px;box-shadow:0 14px 32px rgba(0,0,0,.45);padding:18px;color:#d9dbe0}.ij-symbol-card a{color:#7fa6e8;text-decoration:none}.ij-symbol-decl{margin:18px 0;font:14px "JetBrains Mono",Consolas,monospace;color:#d0a383}.ij-symbol-project{display:flex;align-items:center;gap:8px}.ij-symbol-project button:first-of-type{margin-left:auto}.ij-symbol-project button{background:transparent;border:0;color:#c7cad0;font-size:17px}
 @media(max-width:760px){
- body.ijScreenshotMode{--leftW:clamp(150px,38vw,220px)}
- body.ijScreenshotMode .work{padding-left:34px!important;padding-right:0!important}
- body.ijScreenshotMode .toolRail{width:34px!important}
  .ij-completion-shot{left:12%;width:84%}.ij-tab-context{left:24%;width:72%}.ij-symbol-card{left:27%;width:68%}.ij-refactor-grid{grid-template-columns:1fr}.ij-refactor-code{display:none}.ij-move-row{grid-template-columns:90px minmax(0,1fr)}.ij-move-hint{margin-left:102px}
 }
 @media(max-width:520px){
- body.ijScreenshotMode{--leftW:145px}
  .ij-completion-shot{left:6%;width:90%}.ij-tab-context{left:16%;width:80%}.ij-symbol-card{left:18%;width:78%}.ij-move-dialog{width:96vw}.ij-move-main{padding:18px 14px 82px}.ij-move-row{grid-template-columns:1fr;gap:6px}.ij-move-hint{margin-left:0}.ij-move-main .ij-check{font-size:12px}.ij-dialog-actions{flex-wrap:wrap}
 }
-
