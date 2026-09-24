@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var VERSION=25;
+var VERSION=26;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -58,7 +58,7 @@ function ensureStyle(){
     "#"+HOST_ID+" .simExplainOriginal{display:none;margin-top:9px;padding:8px 9px;border-top:1px solid #454850;background:#202226;color:#d7dae0}",
     "#"+HOST_ID+" .simExplainOriginal.show{display:block}",
     "#"+HOST_ID+" .simExplainOriginal:before{content:'Original action transcript';display:block;margin-bottom:6px;color:#aeb3bc;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}",
-    "#"+HOST_ID+" .simExplainOriginal pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:9px/1.45 Consolas,'SFMono-Regular',monospace;color:#d7dae0}",
+    "#"+HOST_ID+" .simExplainOriginalText{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;color:#d7dae0}",
     "#"+HOST_ID+".minimized .simExplainGlobalBody{display:none!important}",
     "#"+HOST_ID+".minimized{height:34px!important;max-height:34px!important}",
     "#"+HOST_ID+".minimized .simExplainGlobalHead{border-bottom:0}",
@@ -74,7 +74,7 @@ function ensureHost(){
   box.id=HOST_ID;
   box.className="hidden";
   box.setAttribute("data-sim-explanation","global");
-  box.innerHTML='<div class="simExplainGlobalHead" data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><div class="simExplainControls"><button type="button" data-sim-explanation-smaller title="Smaller">−</button><button type="button" data-sim-explanation-larger title="Larger">+</button><button type="button" data-sim-explanation-min title="Minimize">▁</button><button type="button" data-sim-explanation-close title="Close">×</button></div></div><div class="simExplainGlobalBody" data-sim-explanation-body><p data-sim-explanation-text></p><div class="simExplainAnswer"></div><div class="simExplainOriginal"><pre></pre></div></div>';
+  box.innerHTML='<div class="simExplainGlobalHead" data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><div class="simExplainControls"><button type="button" data-sim-explanation-smaller title="Smaller">−</button><button type="button" data-sim-explanation-larger title="Larger">+</button><button type="button" data-sim-explanation-min title="Minimize">▁</button><button type="button" data-sim-explanation-close title="Close">×</button></div></div><div class="simExplainGlobalBody" data-sim-explanation-body><p data-sim-explanation-text></p><div class="simExplainAnswer"></div><div class="simExplainOriginal"><div class="simExplainOriginalText"></div></div></div>';
   document.body.appendChild(box);
   bind(box);
   applyScale(box,false);
@@ -232,16 +232,16 @@ function show(payload){
   var text=box.querySelector("[data-sim-explanation-text]");
   var answer=box.querySelector(".simExplainAnswer");
   var original=box.querySelector(".simExplainOriginal");
-  var originalPre=original&&original.querySelector("pre");
+  var originalText=original&&original.querySelector(".simExplainOriginalText");
   title.textContent=payload.title||"Lesson explanation";
   renderRichText(text,payload.text||"");
   if(payload.answer){renderRichText(answer,String(payload.answer));answer.classList.add("show")}
   else{answer.textContent="";answer.classList.remove("show")}
-  if(payload.originalActionTranscript&&original&&originalPre){
-    originalPre.textContent=String(payload.originalActionTranscript);
+  if(payload.originalActionTranscript&&original&&originalText){
+    renderRichText(originalText,String(payload.originalActionTranscript));
     original.classList.add("show");
-  }else if(original&&originalPre){
-    originalPre.textContent="";
+  }else if(original&&originalText){
+    originalText.textContent="";
     original.classList.remove("show");
   }
   box.classList.remove("hidden");
