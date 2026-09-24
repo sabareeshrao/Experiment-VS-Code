@@ -5,7 +5,7 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:3px solid #65b8ff!important;outline-offset:3px!important;box-shadow:none!important;border-radius:5px!important;transition:none!important}",
+".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:3px solid #65b8ff!important;outline-offset:3px!important;box-shadow:0 0 0 3px rgba(101,184,255,.32),0 0 18px 7px rgba(77,163,255,.52)!important;border-radius:5px!important;transition:none!important}",
 ".simActionHighlight.simActionPulse{animation:none!important;filter:none!important}",
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
@@ -47,7 +47,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null;
+var active=null,timer=0,visibleUntil=0;
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -56,7 +56,14 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(){
+function clean(force){
+ if(!force&&active&&Date.now()<visibleUntil){
+   clearTimeout(timer);
+   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
+   return;
+ }
+ clearTimeout(timer);
+ visibleUntil=0;
  if(active){
    active.classList.remove("simActionHighlight","simActionPulse");
    active=null;
@@ -92,7 +99,7 @@ function find(plan){
  return null;
 }
 function highlight(plan){
- clean();
+ clean(true);
  var el=find(plan||{});
  if(!el)return;
  var r=el.getBoundingClientRect();
@@ -103,12 +110,13 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- // Global guidance contract: keep the precise blue boundary until the player explicitly clears/replaces it.
+ visibleUntil=Date.now()+5000;
+ timer=setTimeout(function(){clean(true)},5000);
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};
  if(m.type==="SIM_HIGHLIGHT")highlight(m.plan||{});
- if(m.type==="SIM_HIGHLIGHT_CLEAR")clean();
+ if(m.type==="SIM_HIGHLIGHT_CLEAR")clean(!!m.force);
 });
 try{parent.postMessage({type:"SIM_HIGHLIGHT_READY"},"*");}catch(_){}
 })();
