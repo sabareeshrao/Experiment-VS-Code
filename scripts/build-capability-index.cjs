@@ -29,7 +29,10 @@ function build(root=path.resolve(__dirname,"..")){
        checkpoints:false,
        semantic_anchors:false,
        textual_marker_for_typeCode:true
-     }
+     },
+     enterprise_action_source:"simulator/intellij/enterprise-ui.js",
+     enterprise_microscopic_evidence:"simulator/intellij/features/enterprise-action-evidence.json",
+     enterprise_microscopic_read_required:true
    }:{})
   };
  }
