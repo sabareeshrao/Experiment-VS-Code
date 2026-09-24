@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var VERSION=24;
+var VERSION=25;
 if(Number(window.__SIM_EXPLANATION_CONTROLS_VERSION__||0)>=VERSION)return;
 window.__SIM_EXPLANATION_CONTROLS_VERSION__=VERSION;
 window.__SIM_EXPLANATION_CONTROLS__=true;
@@ -51,9 +51,14 @@ function ensureStyle(){
     "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar{width:8px}",
     "#"+HOST_ID+" .simExplainGlobalBody::-webkit-scrollbar-thumb{background:#656b75;border:2px solid transparent;background-clip:padding-box;border-radius:999px}",
     "#"+HOST_ID+" [data-sim-explanation-text]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}",
+    "#"+HOST_ID+" .simExplainInlineCode{font-family:Consolas,'SFMono-Regular',monospace;font-weight:800;color:#f7f8fb;background:#34373d;border:1px solid #4b5059;border-radius:3px;padding:0 3px}",
     "#"+HOST_ID+" .simExplainAnswer{display:none;margin-top:9px;padding:8px 9px;border:1px solid #50545c;border-radius:5px;background:#1e2024;white-space:pre-wrap;overflow-wrap:anywhere}",
     "#"+HOST_ID+" .simExplainAnswer.show{display:block}",
     "#"+HOST_ID+" .simExplainAnswer:before{content:'Answer';display:block;margin-bottom:4px;color:#aeb3bc;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}",
+    "#"+HOST_ID+" .simExplainOriginal{display:none;margin-top:9px;padding:8px 9px;border-top:1px solid #454850;background:#202226;color:#d7dae0}",
+    "#"+HOST_ID+" .simExplainOriginal.show{display:block}",
+    "#"+HOST_ID+" .simExplainOriginal:before{content:'Original action transcript';display:block;margin-bottom:6px;color:#aeb3bc;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}",
+    "#"+HOST_ID+" .simExplainOriginal pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:9px/1.45 Consolas,'SFMono-Regular',monospace;color:#d7dae0}",
     "#"+HOST_ID+".minimized .simExplainGlobalBody{display:none!important}",
     "#"+HOST_ID+".minimized{height:34px!important;max-height:34px!important}",
     "#"+HOST_ID+".minimized .simExplainGlobalHead{border-bottom:0}",
@@ -69,13 +74,29 @@ function ensureHost(){
   box.id=HOST_ID;
   box.className="hidden";
   box.setAttribute("data-sim-explanation","global");
-  box.innerHTML='<div class="simExplainGlobalHead" data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><div class="simExplainControls"><button type="button" data-sim-explanation-smaller title="Smaller">−</button><button type="button" data-sim-explanation-larger title="Larger">+</button><button type="button" data-sim-explanation-min title="Minimize">▁</button><button type="button" data-sim-explanation-close title="Close">×</button></div></div><div class="simExplainGlobalBody" data-sim-explanation-body><p data-sim-explanation-text></p><div class="simExplainAnswer"></div></div>';
+  box.innerHTML='<div class="simExplainGlobalHead" data-sim-explanation-drag><strong data-sim-explanation-title>Lesson explanation</strong><div class="simExplainControls"><button type="button" data-sim-explanation-smaller title="Smaller">−</button><button type="button" data-sim-explanation-larger title="Larger">+</button><button type="button" data-sim-explanation-min title="Minimize">▁</button><button type="button" data-sim-explanation-close title="Close">×</button></div></div><div class="simExplainGlobalBody" data-sim-explanation-body><p data-sim-explanation-text></p><div class="simExplainAnswer"></div><div class="simExplainOriginal"><pre></pre></div></div>';
   document.body.appendChild(box);
   bind(box);
   applyScale(box,false);
   restorePosition(box);
   observe(box);
   return box;
+}
+function renderRichText(el,value){
+  if(!el)return;
+  el.textContent="";
+  var parts=String(value??"").split("`");
+  parts.forEach(function(part,index){
+    if(!part)return;
+    if(index%2===1){
+      var strong=document.createElement("strong");
+      strong.className="simExplainInlineCode";
+      strong.textContent=part;
+      el.appendChild(strong);
+    }else{
+      el.appendChild(document.createTextNode(part));
+    }
+  });
 }
 function bodyOf(box){return box.querySelector(".simExplainGlobalBody")}
 function headOf(box){return box.querySelector(".simExplainGlobalHead")}
@@ -157,8 +178,10 @@ function observe(box){
     resizeObserver=new ResizeObserver(function(){scheduleFit(box)});
     var text=box.querySelector("[data-sim-explanation-text]");
     var answer=box.querySelector(".simExplainAnswer");
+    var original=box.querySelector(".simExplainOriginal");
     if(text)resizeObserver.observe(text);
     if(answer)resizeObserver.observe(answer);
+    if(original)resizeObserver.observe(original);
   }catch(_){}
 }
 function bind(box){
@@ -197,7 +220,7 @@ function bind(box){
 }
 function show(payload){
   payload=payload||{};
-  var signature=[payload.title||"",payload.text||"",payload.answer||"",payload.stage||""].join("\u0001");
+  var signature=[payload.title||"",payload.text||"",payload.answer||"",payload.originalActionTranscript||"",payload.stage||""].join("\u0001");
   var box=ensureHost();
   if(signature===lastSignature&&!box.classList.contains("hidden")){
     // Same lesson may be requested again after iframe hydration/seek completion.
@@ -208,10 +231,19 @@ function show(payload){
   var title=box.querySelector("[data-sim-explanation-title]");
   var text=box.querySelector("[data-sim-explanation-text]");
   var answer=box.querySelector(".simExplainAnswer");
+  var original=box.querySelector(".simExplainOriginal");
+  var originalPre=original&&original.querySelector("pre");
   title.textContent=payload.title||"Lesson explanation";
-  text.textContent=payload.text||"";
-  if(payload.answer){answer.textContent=String(payload.answer);answer.classList.add("show")}
+  renderRichText(text,payload.text||"");
+  if(payload.answer){renderRichText(answer,String(payload.answer));answer.classList.add("show")}
   else{answer.textContent="";answer.classList.remove("show")}
+  if(payload.originalActionTranscript&&original&&originalPre){
+    originalPre.textContent=String(payload.originalActionTranscript);
+    original.classList.add("show");
+  }else if(original&&originalPre){
+    originalPre.textContent="";
+    original.classList.remove("show");
+  }
   box.classList.remove("hidden");
   box.classList.add("show");
   box.classList.toggle("minimized",!!pref.minimized);

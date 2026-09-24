@@ -140,8 +140,8 @@
 
       // Universal rules for every current and future simulator.
       ensureScript(
-        "/simulator/shared/explanation-controls.js?v=24",
-        "simulator/shared/explanation-controls.js?v=24",
+        "/simulator/shared/explanation-controls.js?v=25",
+        "simulator/shared/explanation-controls.js?v=25",
         "globalExplanationRuntime"
       );
       ensureScript(
@@ -634,6 +634,7 @@
       title: step.title,
       text: step.why,
       answer: step.answer || "",
+      originalActionTranscript: step.originalActionTranscript || "",
       stage: stage.title
     };
 
