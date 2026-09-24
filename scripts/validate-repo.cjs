@@ -480,9 +480,10 @@ if (exists("simulator/intellij/ide-polish.css")) {
 assert(exists("scripts/build-feature-catalog.cjs"), "Missing scripts/build-feature-catalog.cjs");
 function featureCatalogSlug(value){
   return String(value||"")
-    .replace(/([a-z0-9])([A-Z])/g,"$1 $2")
-    .replace(/[_.\\/-]+/g," ")
-    .trim().toLowerCase().split(/\\s+/).filter(Boolean).join("-");
+    .replace(/([a-z0-9])([A-Z])/g,"$1-$2")
+    .replace(/[^a-zA-Z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"")
+    .toLowerCase();
 }
 if (contract && manifest) {
   for (const [software, spec] of Object.entries(contract.simulators || {})) {
@@ -521,7 +522,7 @@ if (contract && manifest) {
       catch (error) { fail(software + ": cannot parse feature file " + full + ": " + error.message); continue; }
       assert(detail.schema_version === 1, software + ": unsupported feature schema in " + file);
       assert(detail.software?.id === software, software + ": feature file software id mismatch in " + file);
-      assert(detail.feature?.id === file.replace(/\\.json$/,""), software + ": feature id/file mismatch in " + file);
+      assert(detail.feature?.id === file.slice(0,-5), software + ": feature id/file mismatch in " + file);
       for (const key of ["intent","ui_contract","input_contract","state_contract","transcript_matching","lesson_authoring","implementation","replay_and_quality","validation","maintenance"]) {
         assert(detail[key] && typeof detail[key] === "object", software + ": " + file + " missing detailed section " + key);
       }
