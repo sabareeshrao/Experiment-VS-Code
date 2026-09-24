@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "lesson_source": {
     "root": "lesson-json",
     "course_manifest": "lesson-json/course.json",
@@ -7,25 +7,27 @@
     "generated_output": "lessons.js",
     "compiler": "scripts/build-lessons.cjs"
   },
-  "file_purpose": "AI FIRST READ — capability map for transcript-to-lesson JSON generation.",
+  "file_purpose": "AI ROUTING INDEX — not a complete capability list. Use it to locate each software's detailed feature catalog, then read the relevant individual feature JSON files before deciding transcript support.",
   "generated_by": "scripts/build-capability-index.cjs",
+  "detailed_catalog_generator": "scripts/build-feature-catalog.cjs",
   "rules": [
-    "Read this file before generating lesson JSON.",
+    "This file is a router/summary only. Do NOT decide that a feature is present or missing from this file alone.",
+    "For the target software, open detailed_feature_catalog and then read the relevant individual JSON files under detailed_feature_directory.",
+    "Each detailed file describes source evidence, canonical actions, candidate mappings, visible UI contract, replay rules, transcript matching and lesson-authoring guidance.",
+    "Every advertised engine action must have an action-level feature file even when the old summary manifest omitted it.",
+    "Candidate related actions are heuristic; inspect action_source before writing action.data.",
     "Create or edit chapters under lesson-json/; do not hand-edit lessons.js.",
     "After lesson JSON changes run node scripts/build-lessons.cjs, then validate.",
-    "Use the canonical software id and existing product feature names.",
-    "Set feature_available=true only when the required feature appears in software.<id>.features. If it is absent, set feature_available=false.",
-    "When indexed_actions is non-empty, reuse those canonical action names. When action_lookup_required=true, read action_source before choosing an action name.",
     "Never invent a new action if an existing canonical action already represents the transcript interaction.",
-    "For feature_available=false, include missing_feature_request with the software-owned UI surface, interaction, expected UI and expected behavior.",
+    "If the transcript requires behavior not represented by the detailed catalog and engine UI, mark it missing and upgrade the master simulator first.",
     "Product-specific UI belongs only inside that simulator.",
     "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."
   ],
   "lesson_json_contract": {
     "software": "Canonical key from software.",
-    "required_capability": "Feature needed by this transcript step.",
-    "feature_available": "Boolean determined from this index, never memory.",
-    "canonical_action": "Existing simulator action name when available.",
+    "required_capability": "Exact detailed feature id from the target software features/ directory.",
+    "feature_available": "Boolean determined after reading the relevant detailed feature file and confirming the visible behavior.",
+    "canonical_action": "Existing simulator action confirmed from the feature file and action source.",
     "missing_feature_request": {
       "surface": "Missing product-owned surface.",
       "interaction": "Required interaction.",
@@ -41,9 +43,12 @@
       "directory": "intellij",
       "package_key": "intellij_idea",
       "action_source": "simulator/intellij/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.intellij",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.intellij",
+      "detailed_feature_catalog": "simulator/intellij/features/index.json",
+      "detailed_feature_directory": "simulator/intellij/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 90,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "code-completion-popup",
         "code-editor",
@@ -110,9 +115,12 @@
       "directory": "vscode",
       "package_key": "vscode",
       "action_source": "simulator/vscode/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.vscode",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.vscode",
+      "detailed_feature_catalog": "simulator/vscode/features/index.json",
+      "detailed_feature_directory": "simulator/vscode/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "debug",
         "editor-context-menu",
@@ -139,9 +147,12 @@
       "directory": "pgadmin",
       "package_key": "pgadmin",
       "action_source": "simulator/pgadmin/index.html",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.pgadmin",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.pgadmin",
+      "detailed_feature_catalog": "simulator/pgadmin/features/index.json",
+      "detailed_feature_directory": "simulator/pgadmin/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "backup-restore",
         "browser-context-menu",
@@ -176,9 +187,12 @@
       "directory": "postman",
       "package_key": "postman",
       "action_source": "simulator/postman/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.postman",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.postman",
+      "detailed_feature_catalog": "simulator/postman/features/index.json",
+      "detailed_feature_directory": "simulator/postman/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "code-snippet",
         "collection-context-menu",
@@ -210,9 +224,12 @@
       "directory": "cmd",
       "package_key": "cmd",
       "action_source": "simulator/cmd/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.cmd",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.cmd",
+      "detailed_feature_catalog": "simulator/cmd/features/index.json",
+      "detailed_feature_directory": "simulator/cmd/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "defaults-dialog",
         "environment-panel",
@@ -236,9 +253,12 @@
       "directory": "linux",
       "package_key": "linux",
       "action_source": "simulator/linux/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.linux",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.linux",
+      "detailed_feature_catalog": "simulator/linux/features/index.json",
+      "detailed_feature_directory": "simulator/linux/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "explanation-box",
         "explanation-minimize-close",
@@ -263,9 +283,12 @@
       "directory": "ssms",
       "package_key": "sql_server_management_studio",
       "action_source": "simulator/ssms/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.ssms",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.ssms",
+      "detailed_feature_catalog": "simulator/ssms/features/index.json",
+      "detailed_feature_directory": "simulator/ssms/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "adaptive-dialog",
         "checkbox-options",
@@ -309,9 +332,12 @@
       "directory": "jira",
       "package_key": "jira",
       "action_source": "simulator/jira/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.jira",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.jira",
+      "detailed_feature_catalog": "simulator/jira/features/index.json",
+      "detailed_feature_directory": "simulator/jira/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "activity-panel",
         "automation-dialog",
@@ -336,9 +362,12 @@
       "directory": "jenkins",
       "package_key": "jenkins",
       "action_source": "simulator/jenkins/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.jenkins",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.jenkins",
+      "detailed_feature_catalog": "simulator/jenkins/features/index.json",
+      "detailed_feature_directory": "simulator/jenkins/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "build-context-menu",
         "configuration-dialog",
@@ -364,9 +393,12 @@
       "directory": "powerbi",
       "package_key": "power_bi",
       "action_source": "simulator/powerbi/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.powerbi",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.powerbi",
+      "detailed_feature_catalog": "simulator/powerbi/features/index.json",
+      "detailed_feature_directory": "simulator/powerbi/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 92,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "dax-query-view",
         "dismissable-modal",
@@ -424,9 +456,12 @@
       "directory": "git",
       "package_key": "git",
       "action_source": "simulator/git/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.git",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.git",
+      "detailed_feature_catalog": "simulator/git/features/index.json",
+      "detailed_feature_directory": "simulator/git/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "adaptive-dialog",
         "bisect",
@@ -467,9 +502,12 @@
       "directory": "github",
       "package_key": "github",
       "action_source": "simulator/github/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.github",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.github",
+      "detailed_feature_catalog": "simulator/github/features/index.json",
+      "detailed_feature_directory": "simulator/github/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "adaptive-dialog",
         "blame",
@@ -521,9 +559,12 @@
       "directory": "github_actions",
       "package_key": "github_actions",
       "action_source": "simulator/github_actions/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.github_actions",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.github_actions",
+      "detailed_feature_catalog": "simulator/github_actions/features/index.json",
+      "detailed_feature_directory": "simulator/github_actions/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "adaptive-dialog",
         "annotations",
@@ -571,9 +612,12 @@
       "directory": "mysql_workbench",
       "package_key": "mysql_workbench",
       "action_source": "simulator/mysql_workbench/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.mysql_workbench",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.mysql_workbench",
+      "detailed_feature_catalog": "simulator/mysql_workbench/features/index.json",
+      "detailed_feature_directory": "simulator/mysql_workbench/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 92,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "adaptive-dialogs",
         "connections",
@@ -631,9 +675,12 @@
       "directory": "redis",
       "package_key": "redis",
       "action_source": "simulator/redis/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.redis",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.redis",
+      "detailed_feature_catalog": "simulator/redis/features/index.json",
+      "detailed_feature_directory": "simulator/redis/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 90,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "analysis",
         "array-view",
@@ -721,9 +768,12 @@
       "directory": "spring_initializer",
       "package_key": "spring_initializer",
       "action_source": "simulator/spring_initializer/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.spring_initializer",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.spring_initializer",
+      "detailed_feature_catalog": "simulator/spring_initializer/features/index.json",
+      "detailed_feature_directory": "simulator/spring_initializer/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 94,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "build-tool-selector",
         "config-format-selector",
@@ -769,9 +819,12 @@
       "directory": "maven_central",
       "package_key": "maven_central",
       "action_source": "simulator/maven_central/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.maven_central",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.maven_central",
+      "detailed_feature_catalog": "simulator/maven_central/features/index.json",
+      "detailed_feature_directory": "simulator/maven_central/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 92,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "artifact-page",
         "copy-dependency-xml",
@@ -801,9 +854,12 @@
       "directory": "eclipse",
       "package_key": "eclipse",
       "action_source": "simulator/eclipse/index.html",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.eclipse",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.eclipse",
+      "detailed_feature_catalog": "simulator/eclipse/features/index.json",
+      "detailed_feature_directory": "simulator/eclipse/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "bytecode-inspection",
         "console-view",
@@ -843,9 +899,12 @@
       "directory": "powershell",
       "package_key": "powershell",
       "action_source": "simulator/powershell/index.html",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.powershell",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.powershell",
+      "detailed_feature_catalog": "simulator/powershell/features/index.json",
+      "detailed_feature_directory": "simulator/powershell/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": null,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "command-history",
         "environment-variables",
@@ -878,9 +937,12 @@
       "directory": "kubernetes",
       "package_key": "kubernetes",
       "action_source": "simulator/kubernetes/engine.js",
-      "capability_source": "simulator/adaptive-capabilities.json#simulators.kubernetes",
+      "capability_summary_source": "simulator/adaptive-capabilities.json#simulators.kubernetes",
+      "detailed_feature_catalog": "simulator/kubernetes/features/index.json",
+      "detailed_feature_directory": "simulator/kubernetes/features/",
+      "detailed_feature_read_required": true,
       "target_fidelity": 91,
-      "features": [
+      "summary_features": [
         "action-highlight",
         "cluster-overview",
         "cluster-selector",

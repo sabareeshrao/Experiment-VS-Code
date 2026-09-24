@@ -351,3 +351,34 @@ A new software integration is complete only when all of these are true:
 - no other simulator UI is altered
 - exact final commit is pushed
 - exact final Pages deployment succeeds
+
+
+## 22. Detailed feature catalog is mandatory
+
+Every simulator must contain:
+
+```text
+simulator/<software>/features/
+  README.md
+  index.json
+  <one-feature>.json
+  <another-feature>.json
+  ...
+```
+
+The feature directory is the detailed AI-facing capability source.
+
+Rules:
+
+- one JSON file represents one feature/action-level capability
+- every feature listed in `simulator/adaptive-capabilities.json` must have a detailed file
+- every action advertised by the simulator engine must also have a detailed action-level feature file, even when the old manifest summary omitted it
+- `features/index.json` is navigation only
+- AI must read relevant individual feature files before deciding transcript support
+- detailed files must identify canonical actions, candidate mappings, visible UI expectations, state/replay rules, implementation sources, transcript matching, lesson-authoring guidance, validation expectations and missing-feature handling
+- candidate action mappings are heuristic and never authorize invented `action.data`
+- inspect the engine handler before writing parameters
+- feature catalog presence proves catalog/action coverage, not pixel-perfect visual fidelity
+- when new simulator actions/features are added, update this folder in the same master change
+
+Use `node scripts/build-feature-catalog.cjs` to bootstrap missing catalogs. Manual enrichment of individual files is allowed and encouraged.

@@ -7,9 +7,50 @@ function build(root=path.resolve(__dirname,"..")){
  const software={};
  for(const [id,spec] of Object.entries(contract.simulators||{})){
   const meta=manifest.simulators?.[spec.manifestKey]||{};
-  software[id]={display_name:names[id]||id,directory:spec.directory,package_key:spec.packageKey,action_source:"simulator/"+spec.directory+"/"+spec.engineSource,capability_source:"simulator/adaptive-capabilities.json#simulators."+spec.manifestKey,target_fidelity:meta.targetFidelity??null,features:[...new Set(meta.features||[])].sort(),indexed_actions:[...new Set(meta.actions||[])].sort(),action_lookup_required:!(Array.isArray(meta.actions)&&meta.actions.length)};
+  const catalog="simulator/"+spec.directory+"/features/index.json";
+  software[id]={
+   display_name:names[id]||id,
+   directory:spec.directory,
+   package_key:spec.packageKey,
+   action_source:"simulator/"+spec.directory+"/"+spec.engineSource,
+   capability_summary_source:"simulator/adaptive-capabilities.json#simulators."+spec.manifestKey,
+   detailed_feature_catalog:catalog,
+   detailed_feature_directory:"simulator/"+spec.directory+"/features/",
+   detailed_feature_read_required:true,
+   target_fidelity:meta.targetFidelity??null,
+   summary_features:[...new Set(meta.features||[])].sort(),
+   indexed_actions:[...new Set(meta.actions||[])].sort(),
+   action_lookup_required:!(Array.isArray(meta.actions)&&meta.actions.length)
+  };
  }
- return {schema_version:2,lesson_source:{root:"lesson-json",course_manifest:"lesson-json/course.json",chapter_schema:"lesson-json/chapter.schema.json",generated_output:"lessons.js",compiler:"scripts/build-lessons.cjs"},file_purpose:"AI FIRST READ — capability map for transcript-to-lesson JSON generation.",generated_by:"scripts/build-capability-index.cjs",rules:["Read this file before generating lesson JSON.","Create or edit chapters under lesson-json/; do not hand-edit lessons.js.","After lesson JSON changes run node scripts/build-lessons.cjs, then validate.","Use the canonical software id and existing product feature names.","Set feature_available=true only when the required feature appears in software.<id>.features. If it is absent, set feature_available=false.","When indexed_actions is non-empty, reuse those canonical action names. When action_lookup_required=true, read action_source before choosing an action name.","Never invent a new action if an existing canonical action already represents the transcript interaction.","For feature_available=false, include missing_feature_request with the software-owned UI surface, interaction, expected UI and expected behavior.","Product-specific UI belongs only inside that simulator.","Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."],lesson_json_contract:{software:"Canonical key from software.",required_capability:"Feature needed by this transcript step.",feature_available:"Boolean determined from this index, never memory.",canonical_action:"Existing simulator action name when available.",missing_feature_request:{surface:"Missing product-owned surface.",interaction:"Required interaction.",expected_ui:["Visible controls/results."],expected_behavior:"Required state/result."}},software};
+ return {
+  schema_version:3,
+  lesson_source:{root:"lesson-json",course_manifest:"lesson-json/course.json",chapter_schema:"lesson-json/chapter.schema.json",generated_output:"lessons.js",compiler:"scripts/build-lessons.cjs"},
+  file_purpose:"AI ROUTING INDEX — not a complete capability list. Use it to locate each software's detailed feature catalog, then read the relevant individual feature JSON files before deciding transcript support.",
+  generated_by:"scripts/build-capability-index.cjs",
+  detailed_catalog_generator:"scripts/build-feature-catalog.cjs",
+  rules:[
+   "This file is a router/summary only. Do NOT decide that a feature is present or missing from this file alone.",
+   "For the target software, open detailed_feature_catalog and then read the relevant individual JSON files under detailed_feature_directory.",
+   "Each detailed file describes source evidence, canonical actions, candidate mappings, visible UI contract, replay rules, transcript matching and lesson-authoring guidance.",
+   "Every advertised engine action must have an action-level feature file even when the old summary manifest omitted it.",
+   "Candidate related actions are heuristic; inspect action_source before writing action.data.",
+   "Create or edit chapters under lesson-json/; do not hand-edit lessons.js.",
+   "After lesson JSON changes run node scripts/build-lessons.cjs, then validate.",
+   "Never invent a new action if an existing canonical action already represents the transcript interaction.",
+   "If the transcript requires behavior not represented by the detailed catalog and engine UI, mark it missing and upgrade the master simulator first.",
+   "Product-specific UI belongs only inside that simulator.",
+   "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."
+  ],
+  lesson_json_contract:{
+   software:"Canonical key from software.",
+   required_capability:"Exact detailed feature id from the target software features/ directory.",
+   feature_available:"Boolean determined after reading the relevant detailed feature file and confirming the visible behavior.",
+   canonical_action:"Existing simulator action confirmed from the feature file and action source.",
+   missing_feature_request:{surface:"Missing product-owned surface.",interaction:"Required interaction.",expected_ui:["Visible controls/results."],expected_behavior:"Required state/result."}
+  },
+  software
+ };
 }
 function json(v){return JSON.stringify(v,null,2)+"\n"}
 if(require.main===module){const root=path.resolve(__dirname,".."),target=path.join(root,"AI_CAPABILITY_INDEX.json");fs.writeFileSync(target,json(build(root)));console.log("Wrote AI_CAPABILITY_INDEX.json")}

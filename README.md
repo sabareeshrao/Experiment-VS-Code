@@ -192,3 +192,24 @@ A downstream project keeps its own source, curriculum, Git history and GitHub Pa
 Use `templates/downstream-project/` as the reference integration pattern.
 
 Do not copy this repository's master curriculum into downstream projects, and do not maintain downstream-specific copies of simulator source.
+
+
+## Detailed per-software feature catalogs
+
+The summarized capability manifest is no longer the AI's final source for transcript matching.
+
+Every registered simulator now owns:
+
+`simulator/<software>/features/`
+
+with one detailed JSON file per registered feature and per advertised engine action.
+
+`AI_CAPABILITY_INDEX.json` is a routing index. It points to each software's detailed catalog. Before deciding whether a transcript feature is available or missing, read the relevant individual feature file and then confirm exact action parameters in the simulator engine.
+
+Generate/bootstrap catalogs with:
+
+```bash
+node scripts/build-feature-catalog.cjs
+```
+
+Repository validation requires every manifest feature and every supported engine action to remain represented in the detailed catalog.

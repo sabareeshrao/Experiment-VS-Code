@@ -53,3 +53,19 @@ When asked to create a new learning/project repository:
 If a downstream lesson requires a missing software capability, implement that capability **here in the master**, validate the master, then update the downstream project's master reference.
 
 Do not silently modify multiple downstream repositories when upgrading the master unless the user explicitly requests propagation.
+
+
+## Detailed feature-catalog rule
+
+`AI_CAPABILITY_INDEX.json` is now a **routing index only**. It is not sufficient for deciding whether a transcript feature exists.
+
+For every transcript/video requirement:
+
+1. identify the target software
+2. open that software's `features/index.json`
+3. read the relevant individual JSON file(s) under `simulator/<software>/features/`
+4. confirm `canonical_actions`, visible UI contract, implementation source, and lesson-authoring guidance
+5. inspect the engine handler before writing `action.data`
+6. if no detailed feature file/UI/action supports the transcript behavior, upgrade the master first
+
+Do not mark a capability missing merely because it is absent from the short summary list in `AI_CAPABILITY_INDEX.json`. Engine action-level capabilities are also cataloged as separate feature files.

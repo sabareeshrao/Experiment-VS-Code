@@ -476,6 +476,62 @@ if (exists("simulator/intellij/ide-polish.css")) {
   );
 }
 
+// Detailed per-software feature catalog contract.
+assert(exists("scripts/build-feature-catalog.cjs"), "Missing scripts/build-feature-catalog.cjs");
+function featureCatalogSlug(value){
+  return String(value||"")
+    .replace(/([a-z0-9])([A-Z])/g,"$1 $2")
+    .replace(/[_.\\/-]+/g," ")
+    .trim().toLowerCase().split(/\\s+/).filter(Boolean).join("-");
+}
+if (contract && manifest) {
+  for (const [software, spec] of Object.entries(contract.simulators || {})) {
+    const featureDir = "simulator/" + spec.directory + "/features";
+    const indexPath = featureDir + "/index.json";
+    const readmePath = featureDir + "/README.md";
+    assert(exists(indexPath), software + ": missing detailed features/index.json");
+    assert(exists(readmePath), software + ": missing detailed features/README.md");
+    if (!exists(indexPath)) continue;
+    let featureIndex;
+    try { featureIndex = JSON.parse(read(indexPath)); }
+    catch (error) { fail(software + ": cannot parse " + indexPath + ": " + error.message); continue; }
+    const listed = Array.isArray(featureIndex.files) ? featureIndex.files : [];
+    assert(featureIndex.purpose && /individual feature/i.test(featureIndex.purpose), software + ": feature index must say individual feature files are authoritative");
+    assert(featureIndex.feature_file_count === listed.length, software + ": feature_file_count does not match files[]");
+    const fileSet = new Set(listed);
+    const meta = manifest.simulators?.[spec.manifestKey] || {};
+    for (const feature of meta.features || []) {
+      const file = featureCatalogSlug(feature) + ".json";
+      assert(fileSet.has(file), software + ": manifest capability missing detailed feature file: " + file);
+    }
+    const enginePath = "simulator/" + spec.directory + "/" + spec.engineSource;
+    if (exists(enginePath)) {
+      const actions = extractSupportedActions(read(enginePath));
+      for (const action of actions) {
+        const file = featureCatalogSlug(action) + ".json";
+        assert(fileSet.has(file), software + ": engine action missing detailed feature file: " + action + " -> " + file);
+      }
+    }
+    for (const file of listed) {
+      const full = featureDir + "/" + file;
+      assert(exists(full), software + ": feature index references missing file " + full);
+      if (!exists(full)) continue;
+      let detail;
+      try { detail = JSON.parse(read(full)); }
+      catch (error) { fail(software + ": cannot parse feature file " + full + ": " + error.message); continue; }
+      assert(detail.schema_version === 1, software + ": unsupported feature schema in " + file);
+      assert(detail.software?.id === software, software + ": feature file software id mismatch in " + file);
+      assert(detail.feature?.id === file.replace(/\\.json$/,""), software + ": feature id/file mismatch in " + file);
+      for (const key of ["intent","ui_contract","input_contract","state_contract","transcript_matching","lesson_authoring","implementation","replay_and_quality","validation","maintenance"]) {
+        assert(detail[key] && typeof detail[key] === "object", software + ": " + file + " missing detailed section " + key);
+      }
+      assert(detail.lesson_authoring?.missing_feature_rule, software + ": " + file + " missing missing-feature guidance");
+      assert(detail.implementation?.engine_source, software + ": " + file + " missing engine source");
+      assert(detail.ui_contract?.required_visibility, software + ": " + file + " missing visible UI contract");
+    }
+  }
+}
+
 for (const warning of warnings) console.warn("WARNING:", warning);
 
 if (errors.length) {

@@ -278,6 +278,18 @@ It must not add project-specific explanation CSS, drag code, resize code, persis
 
 ## 11. Simulator capability expansion always goes upstream first
 
+### Detailed capability check
+
+Before declaring a transcript/video feature missing, the downstream AI must:
+
+1. use `AI_CAPABILITY_INDEX.json` only to locate the target software
+2. open that software's `simulator/<software>/features/index.json`
+3. read the relevant individual feature JSON files
+4. confirm canonical actions and visible UI behavior
+5. inspect the engine handler for exact action parameters
+
+The short capability summary is not sufficient because many implemented capabilities exist at engine-action level and are cataloged separately.
+
 When a downstream lesson needs a capability that the master does not support:
 
 1. identify the required software and interaction
