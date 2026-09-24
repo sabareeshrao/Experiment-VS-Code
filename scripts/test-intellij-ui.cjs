@@ -97,7 +97,7 @@ const server = http.createServer((req, res) => {
       }
       if (step === 504) await completion();
     }
-    assert.deepEqual(await page.evaluate(() => window.ijFocuses.filter(id => id === "ijClassName")), ["ijClassName"], "Historical class chooser stole focus");
+    assert.deepEqual(await page.evaluate(() => window.ijFocuses.filter(id => id === "ijClassName")), ["ijClassName","ijClassName"], "Historical replay stole focus beyond the deliberate 497 revisit");
     assert((await frame().locator("#bottomPanel").boundingBox()).height > 80, "Run panel collapsed");
     assert((await frame().locator("#bottomBody").innerText()).includes("Process finished with exit code 0"));
     await navigate(() => page.locator("#prevBtn").click(), 504);
