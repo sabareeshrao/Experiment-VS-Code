@@ -12,6 +12,26 @@ function focusFidelityInput(id,select=false){
  const input=$(id),token=seekToken;
  setTimeout(()=>{if(token!==seekToken||!input?.isConnected)return;input.focus({preventScroll:true});if(select)input.select()},0);
 }
+function handleIntellijLessonKeydown(event){
+ if(event.defaultPrevented||event.isComposing)return;
+ if(event.ctrlKey||event.metaKey||event.shiftKey)return;
+ const target=event.target;
+ const editing=target?.isContentEditable||target?.closest?.('input, textarea, select, [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]');
+ if(editing&&!event.altKey)return;
+ const direction=event.key==="ArrowRight"?"next":event.key==="ArrowLeft"?"prev":"";
+ if(direction){
+  event.preventDefault();
+  event.stopPropagation();
+  parent.postMessage({type:"SIM_NAVIGATE",direction},location.origin==="null"?"*":location.origin);
+  return;
+ }
+ if(!event.altKey&&event.key.toLowerCase()==="r"&&!editing){
+  event.preventDefault();
+  event.stopPropagation();
+  parent.postMessage({type:"SIM_NAVIGATE",direction:"replay"},location.origin==="null"?"*":location.origin);
+ }
+}
+document.addEventListener("keydown",handleIntellijLessonKeydown,true);
 function theme(v){document.body.classList.toggle("theme-dark",v!=="light")}
 function normalize(){
  state=state||{};state.project=state.project||{name:"Project",sdk:"Java 17",languageLevel:"17"};state.tree=state.tree||[];files=clone(state.files||{});

@@ -871,6 +871,7 @@
       if (fullCodeMode || !flat.length) return;
       if (event.data.direction === "next" && current < flat.length - 1) goToStep(current + 1, true);
       if (event.data.direction === "prev" && current > 0) goToStep(current - 1, false);
+      if (event.data.direction === "replay") seekSoftware(current, flat[current].software, true);
       return;
     }
 
@@ -921,7 +922,7 @@
   }
 
   function installFrameNavigationBridge(frame) {
-    if (!frame) return;
+    if (!frame || frame === frames.intellij) return;
     const attach = () => {
       try {
         const doc = frame.contentDocument;
