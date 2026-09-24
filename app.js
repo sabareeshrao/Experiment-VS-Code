@@ -900,6 +900,26 @@
     }
   });
 
+  function handleLessonKeydown(event) {
+    if (fullCodeMode || !flat.length || event.defaultPrevented || event.isComposing) return;
+    if (event.ctrlKey || event.metaKey || event.shiftKey) return;
+    const target = event.target;
+    const editing = target?.isContentEditable || target?.closest?.(
+      'input, textarea, select, [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]'
+    );
+    // Plain arrows belong to editable controls; Alt+Arrow always navigates lessons.
+    if (editing && !event.altKey) return;
+    const delta = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+    if (delta) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (current + delta >= 0 && current + delta < flat.length) goToStep(current + delta, delta > 0);
+    } else if (!event.altKey && event.key.toLowerCase() === "r") {
+      event.preventDefault();
+      seekSoftware(current, flat[current].software, true);
+    }
+  }
+
   function installFrameNavigationBridge(frame) {
     if (!frame) return;
     const attach = () => {
@@ -907,19 +927,7 @@
         const doc = frame.contentDocument;
         if (!doc || doc.__lessonNavBridgeInstalled) return;
         doc.__lessonNavBridgeInstalled = true;
-        doc.addEventListener("keydown", event => {
-          if (fullCodeMode || !flat.length) return;
-          if (!event.altKey || event.ctrlKey || event.metaKey) return;
-          if (event.key === "ArrowRight" && current < flat.length - 1) {
-            event.preventDefault();
-            event.stopPropagation();
-            goToStep(current + 1, true);
-          } else if (event.key === "ArrowLeft" && current > 0) {
-            event.preventDefault();
-            event.stopPropagation();
-            goToStep(current - 1, false);
-          }
-        }, true);
+        doc.addEventListener("keydown", handleLessonKeydown);
       } catch (_) {}
     };
     frame.addEventListener("load", attach);
@@ -955,24 +963,7 @@
     } catch (_) {}
   };
 
-  document.addEventListener("keydown", event => {
-    if (fullCodeMode || !flat.length) return;
-
-    if (event.key === "ArrowRight" && current < flat.length - 1) {
-      goToStep(current + 1, true);
-    }
-
-    if (event.key === "ArrowLeft" && current > 0) {
-      goToStep(current - 1, false);
-    }
-
-    if (
-      event.key.toLowerCase() === "r" &&
-      !/input|textarea/i.test(document.activeElement?.tagName || "")
-    ) {
-      seekSoftware(current, flat[current].software, true);
-    }
-  });
+  document.addEventListener("keydown", handleLessonKeydown);
 
   switchWorkspace(activeSoftware);
   renderSidebar();

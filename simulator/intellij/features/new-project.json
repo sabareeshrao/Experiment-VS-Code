@@ -106,7 +106,8 @@
     "deterministic_required": true,
     "historical_replay": "silent",
     "final_step_animation": "allowed when requested",
-    "user_preferences": "User-controlled layout/theme/persistent preferences must not be overwritten by lesson replay unless explicitly changed."
+    "user_preferences": "User-controlled layout/theme/persistent preferences must not be overwritten by lesson replay unless explicitly changed.",
+    "screenshot_workspace": "Creating a fidelity workspace resets prior project split-editor state. Pane sizes continue to use shared persistent layout variables."
   },
   "transcript_matching": {
     "canonical_feature_id": "new-project",
