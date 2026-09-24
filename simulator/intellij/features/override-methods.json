@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "software": {
+    "id": "intellij",
+    "display_name": "IntelliJ IDEA",
+    "directory": "intellij",
+    "package_key": "intellij_idea",
+    "target_fidelity": 90
+  },
+  "feature": {
+    "id": "override-methods",
+    "display_name": "Override Methods",
+    "area": "general",
+    "interaction_kind": "interaction",
+    "implementation_status": "engine_action_exposed",
+    "source_kinds": [
+      "engine_supported_action"
+    ],
+    "manifest_declared": false,
+    "canonical_actions": [
+      "overrideMethods"
+    ],
+    "candidate_related_actions": [
+      {
+        "action": "showRepositoryMethods",
+        "score": 0.5,
+        "overlap": [
+          "methods"
+        ]
+      }
+    ],
+    "action_mapping_note": "Canonical actions are backed by the simulator's advertised supported-action surface."
+  },
+  "intent": {
+    "user_goal": "Use Override Methods as part of a realistic IntelliJ IDEA workflow.",
+    "transcript_requirement": "Treat this as available only when the transcript/video requires the visible capability described here.",
+    "when_to_use": "Use this file when transcript actions, spoken UI references, or expected visible results correspond to Override Methods.",
+    "when_not_to_use": "Do not substitute this feature for a different control merely because the concepts are related."
+  },
+  "ui_contract": {
+    "owner": "simulator/intellij",
+    "primary_area": "general",
+    "required_visibility": "A lesson using this capability must produce a visible software-owned UI state.",
+    "before_state": "The simulator starts from the package baseline plus prior cumulative actions.",
+    "interaction": "Invoke one of the canonical actions with data matching its engine handler.",
+    "after_state": "The software must visibly reflect the result of the canonical action; hidden JavaScript state alone is insufficient.",
+    "focus_and_scroll": "Keep the active control/result visible without replay shaking.",
+    "highlight_rule": "Highlight only the precise control, row, field, tab, code line, command, or result relevant to this feature; never the whole application surface.",
+    "explanation_rule": "Explanation UI is parent-owned and global; this feature must not create a competing explanation card."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard when applicable"
+    ],
+    "parameters": "Read the exact engine handler for the selected canonical action before creating lesson action.data. Do not invent parameters.",
+    "destructive": false,
+    "destructive_note": "No destructive semantics are inferred from the canonical action name."
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.intellij_idea",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent",
+    "final_step_animation": "allowed when requested",
+    "user_preferences": "User-controlled layout/theme/persistent preferences must not be overwritten by lesson replay unless explicitly changed."
+  },
+  "transcript_matching": {
+    "canonical_feature_id": "override-methods",
+    "normalized_terms": [
+      "override-methods",
+      "Override Methods",
+      "override",
+      "methods"
+    ],
+    "exact_engine_actions": [
+      "overrideMethods"
+    ],
+    "candidate_engine_actions": [
+      "showRepositoryMethods"
+    ],
+    "decision_rule": "Match the visible interaction and expected UI result, then confirm the canonical engine action."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "override-methods",
+    "feature_available": true,
+    "preferred_actions": [
+      "overrideMethods"
+    ],
+    "action_lookup_required": false,
+    "authoring_steps": [
+      "Confirm the transcript actually uses this visible feature.",
+      "Read this feature file rather than relying only on AI_CAPABILITY_INDEX.json.",
+      "Inspect the matching engine handler for required action.data.",
+      "Do not invent an action when preferred_actions is empty.",
+      "Ensure the lesson visibly changes or focuses the expected UI.",
+      "Validate deterministic direct-jump replay from a clean load."
+    ],
+    "missing_feature_rule": "If transcript behavior exceeds this file and no engine action/UI supports it, upgrade the master simulator before building the lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/intellij/engine.js",
+    "ui_source": "simulator/intellij/index.html",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.intellij",
+    "action_contract_source": "simulator/action-contract.json#simulators.intellij",
+    "implementation_search_terms": [
+      "override-methods",
+      "overrideMethods"
+    ],
+    "source_review_required": false
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "visual_fidelity_note": "Catalog presence proves registered/action coverage, not pixel-perfect visual fidelity."
+  },
+  "validation": {
+    "manifest_feature_present": false,
+    "engine_action_present": true,
+    "exact_action_names": [
+      "overrideMethods"
+    ],
+    "catalog_generated_from_current_master": true,
+    "visual_browser_verification": "not implied",
+    "regression_expectations": [
+      "Feature file remains present while capability/action remains supported.",
+      "Canonical actions remain declared by the simulator.",
+      "Feature remains software-owned rather than implemented in app.js.",
+      "Lesson replay remains deterministic."
+    ]
+  },
+  "maintenance": {
+    "canonical_file": "simulator/intellij/features/override-methods.json",
+    "update_when": [
+      "feature UI changes materially",
+      "canonical action is added/renamed/removed",
+      "lesson data parameters change",
+      "capability is split into more precise sub-features",
+      "transcript audits discover a missing visible state"
+    ],
+    "generated_baseline_note": "Detailed baseline generated from registered capability and engine action surfaces; future manual enrichment is allowed."
+  }
+}
