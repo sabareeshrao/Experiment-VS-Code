@@ -978,3 +978,4 @@
   } else {
     renderCurrentStep();
   }
+})();
