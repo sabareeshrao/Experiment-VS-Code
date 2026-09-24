@@ -54,9 +54,9 @@ window.COURSE = {
     {
       "id": "book-8",
       "title": "IntelliJ IDEA Fidelity Lab",
-      "subtitle": "Screenshot-grounded IntelliJ IDEA 2025.2 UI states and interaction tests.",
+      "subtitle": "Screenshot-grounded and interaction-fidelity IntelliJ IDEA verification labs covering creation, navigation, debugging, testing, build, Spring, editor and terminal workflows.",
       "chapterStart": 15,
-      "chapterEnd": 15
+      "chapterEnd": 18
     }
   ],
   "package": {
@@ -12625,6 +12625,661 @@ window.COURSE = {
               "uiState": "symbolCard",
               "package": "pkg1",
               "className": "Hello1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "16: IntelliJ Search, Navigation & Refactoring UI Verification",
+      "subtitle": "Interactive verification of the upgraded Search Everywhere, Go To, Find/Replace, Find Usages, and refactoring-preview surfaces.",
+      "steps": [
+        {
+          "title": "Verify real Search Everywhere",
+          "why": "Open the IntelliJ-style Search Everywhere popup and verify the search field, All/Classes/Files/Symbols/Actions tabs, result icons, highlighted selection, keyboard movement, and click-to-open behavior. This replaces the previous generic key/value surface.",
+          "software": "intellij",
+          "action": {
+            "action": "searchEverywhere",
+            "data": {
+              "query": "Project",
+              "results": [
+                {
+                  "kind": "Class",
+                  "name": "ProjectService",
+                  "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 8,
+                  "detail": "com.aerotopo.service"
+                },
+                {
+                  "kind": "File",
+                  "name": "ProjectController.java",
+                  "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 1,
+                  "detail": "src/main/java/com/aerotopo/api"
+                },
+                {
+                  "kind": "Symbol",
+                  "name": "findProjectById()",
+                  "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 24,
+                  "detail": "ProjectService"
+                },
+                {
+                  "kind": "Action",
+                  "name": "Project Structure",
+                  "detail": "File > Project Structure",
+                  "shortcut": "Ctrl+Alt+Shift+S"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Verify Go To File / Class / Symbol popup fidelity",
+          "why": "Open the narrow IntelliJ navigation popup used by the existing Go To actions. Results must show file names, package paths and line information, allow keyboard selection, and open the selected source instead of displaying a generic dialog.",
+          "software": "intellij",
+          "action": {
+            "action": "gotoFile",
+            "data": {
+              "query": "ProjectController",
+              "results": [
+                {
+                  "kind": "File",
+                  "name": "ProjectController.java",
+                  "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 1,
+                  "detail": "com.aerotopo.api"
+                },
+                {
+                  "kind": "File",
+                  "name": "ProjectService.java",
+                  "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 1,
+                  "detail": "com.aerotopo.service"
+                },
+                {
+                  "kind": "File",
+                  "name": "SurveyProject.java",
+                  "path": "src/main/java/com/aerotopo/domain/SurveyProject.java",
+                  "line": 1,
+                  "detail": "com.aerotopo.domain"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Verify Find in Files and Replace in Files",
+          "why": "Inspect a project-wide search with scope controls, case/word/regex toggles, grouped source matches and an editable replacement field. Result rows must navigate to source, while Replace All must modify matching open project files when they exist.",
+          "software": "intellij",
+          "action": {
+            "action": "findInFiles",
+            "data": {
+              "uiState": "replace",
+              "query": "findById",
+              "replace": "findProjectById",
+              "results": [
+                {
+                  "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 24,
+                  "preview": "return repository.findById(id).orElseThrow();"
+                },
+                {
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 31,
+                  "preview": "return service.findById(id);"
+                },
+                {
+                  "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                  "line": 44,
+                  "preview": "service.findById(42L);"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Verify real Find Usages tool window",
+          "why": "Open the Find Usages tool window with grouped file paths, line snippets, a usage count and preview pane. Clicking a usage must update the preview; double-clicking must navigate to the matching file and line.",
+          "software": "intellij",
+          "action": {
+            "action": "findUsages",
+            "data": {
+              "symbol": "findById",
+              "results": [
+                {
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 31,
+                  "preview": "service.findById(id)"
+                },
+                {
+                  "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                  "line": 44,
+                  "preview": "service.findById(42L)"
+                },
+                {
+                  "file": "src/test/java/com/aerotopo/api/ProjectControllerTest.java",
+                  "line": 52,
+                  "preview": "verify(service).findById(42L)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Verify Rename refactoring dialog and preview",
+          "why": "Open a real refactoring dialog rather than a generic surface. The new-name field, search options, affected-usage list, Preview, Refactor and Cancel controls must respond, and Preview must open the refactoring-results surface before any source mutation.",
+          "software": "intellij",
+          "action": {
+            "action": "renameSymbol",
+            "data": {
+              "uiState": "dialog",
+              "symbol": "findById",
+              "newName": "findProjectById",
+              "usages": [
+                {
+                  "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 24,
+                  "preview": "public SurveyProject findById(Long id)"
+                },
+                {
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 31,
+                  "preview": "service.findById(id)"
+                },
+                {
+                  "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                  "line": 44,
+                  "preview": "service.findById(42L)"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "17: IntelliJ Debugger, Tests, Maven & Spring UI Verification",
+      "subtitle": "Interactive verification of the high-value Debugger, JUnit, Maven, Spring Services and Spring Beans/Mappings interfaces.",
+      "steps": [
+        {
+          "title": "Verify the full Debugger tool window",
+          "why": "Open the Debugger with Frames, Variables, Watches and Console panes, breakpoint state, current execution location, and working Resume/Pause/Step Over/Step Into/Step Out/Stop controls. This is the UI needed for later Java, exception, concurrency and Spring debugging lessons.",
+          "software": "intellij",
+          "action": {
+            "action": "debugConfiguration",
+            "data": {
+              "name": "AeroTopoApplication",
+              "running": false,
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 27,
+              "frames": [
+                {
+                  "name": "ProjectService.loadProject()",
+                  "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 27
+                },
+                {
+                  "name": "ProjectController.getProject()",
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 42
+                },
+                {
+                  "name": "DispatcherServlet.doDispatch()",
+                  "file": "spring-webmvc",
+                  "line": 1089
+                }
+              ],
+              "variables": [
+                {
+                  "name": "id",
+                  "value": "42",
+                  "type": "Long"
+                },
+                {
+                  "name": "project",
+                  "value": "SurveyProject@7a31",
+                  "type": "SurveyProject"
+                },
+                {
+                  "name": "repository",
+                  "value": "SimpleJpaRepository@192a",
+                  "type": "ProjectRepository"
+                }
+              ],
+              "watches": [
+                {
+                  "expression": "project.getStatus()",
+                  "result": "READY"
+                }
+              ],
+              "console": "Connected to target VM\nBreakpoint hit at ProjectService.java:27"
+            }
+          }
+        },
+        {
+          "title": "Verify the JUnit test runner",
+          "why": "Inspect a hierarchical test runner with green/red status, duration, selected-test details, assertion expected/actual values, stack trace and rerun controls. Selecting a test and rerunning failed tests must visibly update the test state.",
+          "software": "intellij",
+          "action": {
+            "action": "runJUnit",
+            "data": {
+              "suite": "ProjectServiceTest",
+              "duration": "1.28 s",
+              "tests": [
+                {
+                  "name": "createsProjectWithValidSurvey",
+                  "status": "PASS",
+                  "duration": "212 ms"
+                },
+                {
+                  "name": "rejectsMissingCoordinateSystem",
+                  "status": "FAIL",
+                  "duration": "84 ms",
+                  "expected": "400 BAD_REQUEST",
+                  "actual": "500 INTERNAL_SERVER_ERROR",
+                  "trace": "AssertionError: expected 400 but was 500\n  at ProjectServiceTest.java:88"
+                },
+                {
+                  "name": "calculatesQualityScore",
+                  "status": "PASS",
+                  "duration": "146 ms"
+                }
+              ],
+              "total": 3,
+              "passed": 2,
+              "failed": 1
+            }
+          }
+        },
+        {
+          "title": "Verify the Maven tool window",
+          "why": "Open a real Maven tool window with expandable Lifecycle, Plugins, Dependencies and Profiles sections. Reload, profile selection and lifecycle goals must respond, and running a goal must feed the Run output instead of using a generic card surface.",
+          "software": "intellij",
+          "action": {
+            "action": "openMavenToolWindow",
+            "data": {
+              "project": "AeroTopo",
+              "profile": "dev",
+              "status": "Ready",
+              "plugins": [
+                "spring-boot",
+                "compiler",
+                "surefire",
+                "resources"
+              ],
+              "profiles": [
+                "dev",
+                "test",
+                "prod"
+              ],
+              "dependencies": [
+                {
+                  "groupId": "org.springframework.boot",
+                  "artifactId": "spring-boot-starter-web",
+                  "version": "3.5.6"
+                },
+                {
+                  "groupId": "org.springframework.boot",
+                  "artifactId": "spring-boot-starter-validation",
+                  "version": "3.5.6"
+                },
+                {
+                  "groupId": "org.springframework.boot",
+                  "artifactId": "spring-boot-starter-data-jpa",
+                  "version": "3.5.6"
+                },
+                {
+                  "groupId": "org.postgresql",
+                  "artifactId": "postgresql",
+                  "version": "42.7.7"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Verify the Spring Boot Services dashboard",
+          "why": "Open the Services tool window with a populated Spring Boot service card showing running state, port and active profile. Run, Debug, Restart, Stop and Console controls must change service state rather than acting as dead decorations.",
+          "software": "intellij",
+          "action": {
+            "action": "showSpringBootDashboard",
+            "data": {
+              "activeProfile": "dev",
+              "apps": [
+                {
+                  "name": "AeroTopoApplication",
+                  "status": "Running",
+                  "port": 8080,
+                  "profile": "dev"
+                },
+                {
+                  "name": "ImportWorker",
+                  "status": "Stopped",
+                  "port": 8091,
+                  "profile": "dev"
+                }
+              ],
+              "console": "2026-09-24 16:18:11 INFO Started AeroTopoApplication\n2026-09-24 16:18:12 INFO Tomcat initialized on port 8080"
+            }
+          }
+        },
+        {
+          "title": "Verify Spring Beans and MVC Mappings views",
+          "why": "Open searchable Spring tooling with separate Beans and MVC Mappings tabs. Bean rows must show implementation type and scope; mappings must show HTTP method, path, controller and handler, with source navigation when a file is provided.",
+          "software": "intellij",
+          "action": {
+            "action": "showSpringBeans",
+            "data": {
+              "beans": [
+                {
+                  "name": "projectController",
+                  "className": "com.aerotopo.api.ProjectController",
+                  "scope": "singleton",
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 12
+                },
+                {
+                  "name": "projectService",
+                  "className": "com.aerotopo.service.ProjectService",
+                  "scope": "singleton",
+                  "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                  "line": 15
+                },
+                {
+                  "name": "projectRepository",
+                  "className": "com.aerotopo.persistence.ProjectRepository",
+                  "scope": "singleton",
+                  "file": "src/main/java/com/aerotopo/persistence/ProjectRepository.java",
+                  "line": 8
+                }
+              ],
+              "mappings": [
+                {
+                  "method": "GET",
+                  "path": "/api/projects/{id}",
+                  "controller": "ProjectController",
+                  "handler": "getProject(Long)",
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 42
+                },
+                {
+                  "method": "POST",
+                  "path": "/api/projects",
+                  "controller": "ProjectController",
+                  "handler": "createProject(CreateProjectRequest)",
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 28
+                },
+                {
+                  "method": "DELETE",
+                  "path": "/api/projects/{id}",
+                  "controller": "ProjectController",
+                  "handler": "deleteProject(Long)",
+                  "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+                  "line": 58
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "18: IntelliJ Project, Editor, Breadcrumbs & Terminal UI Verification",
+      "subtitle": "Interactive verification of the always-visible workspace surfaces used throughout future IntelliJ lessons.",
+      "steps": [
+        {
+          "title": "Verify the upgraded Project tree",
+          "why": "Inspect realistic package/file icons, source/test/resource root styling, generated folders, Git status marks, compact package nodes, External Libraries and context-menu behavior. Long labels must keep the horizontal scrolling behavior already established for the Project pane.",
+          "software": "intellij",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "name": "AeroTopo",
+              "sdk": "Java 21",
+              "languageLevel": "21",
+              "tree": [
+                {
+                  "name": ".idea",
+                  "path": ".idea",
+                  "type": "folder",
+                  "open": false,
+                  "children": []
+                },
+                {
+                  "name": "src",
+                  "path": "src",
+                  "type": "folder",
+                  "open": true,
+                  "children": [
+                    {
+                      "name": "main",
+                      "path": "src/main",
+                      "type": "folder",
+                      "open": true,
+                      "children": [
+                        {
+                          "name": "java",
+                          "path": "src/main/java",
+                          "type": "folder",
+                          "rootKind": "source",
+                          "open": true,
+                          "children": [
+                            {
+                              "name": "com.aerotopo",
+                              "path": "src/main/java/com/aerotopo",
+                              "type": "package",
+                              "open": true,
+                              "children": [
+                                {
+                                  "name": "api",
+                                  "path": "src/main/java/com/aerotopo/api",
+                                  "type": "package",
+                                  "open": true,
+                                  "children": [
+                                    {
+                                      "name": "ProjectController.java",
+                                      "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+                                      "type": "file",
+                                      "language": "java"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "service",
+                                  "path": "src/main/java/com/aerotopo/service",
+                                  "type": "package",
+                                  "open": true,
+                                  "children": [
+                                    {
+                                      "name": "ProjectService.java",
+                                      "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+                                      "type": "file",
+                                      "language": "java"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "domain",
+                                  "path": "src/main/java/com/aerotopo/domain",
+                                  "type": "package",
+                                  "open": false,
+                                  "children": [
+                                    {
+                                      "name": "SurveyProject.java",
+                                      "path": "src/main/java/com/aerotopo/domain/SurveyProject.java",
+                                      "type": "file",
+                                      "language": "java"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "resources",
+                          "path": "src/main/resources",
+                          "type": "folder",
+                          "rootKind": "resource",
+                          "open": true,
+                          "children": [
+                            {
+                              "name": "application.yml",
+                              "path": "src/main/resources/application.yml",
+                              "type": "file",
+                              "language": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "test",
+                      "path": "src/test",
+                      "type": "folder",
+                      "open": true,
+                      "children": [
+                        {
+                          "name": "java",
+                          "path": "src/test/java",
+                          "type": "folder",
+                          "rootKind": "test",
+                          "open": true,
+                          "children": [
+                            {
+                              "name": "com.aerotopo.service",
+                              "path": "src/test/java/com/aerotopo/service",
+                              "type": "package",
+                              "open": true,
+                              "children": [
+                                {
+                                  "name": "ProjectServiceTest.java",
+                                  "path": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                                  "type": "file",
+                                  "language": "java"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "target",
+                  "path": "target",
+                  "type": "folder",
+                  "generated": true,
+                  "open": false,
+                  "children": []
+                },
+                {
+                  "name": "pom.xml",
+                  "path": "pom.xml",
+                  "type": "file",
+                  "language": "xml"
+                }
+              ],
+              "files": {
+                "src/main/java/com/aerotopo/api/ProjectController.java": {
+                  "language": "java",
+                  "content": "package com.aerotopo.api;\n\npublic class ProjectController {\n    private final ProjectService service;\n\n    public SurveyProject getProject(Long id) {\n        return service.findProjectById(id);\n    }\n}\n"
+                },
+                "src/main/java/com/aerotopo/service/ProjectService.java": {
+                  "language": "java",
+                  "content": "package com.aerotopo.service;\n\npublic class ProjectService {\n    private final ProjectRepository repository;\n\n    public SurveyProject findProjectById(Long id) {\n        SurveyProject project = repository.findById(id).orElseThrow();\n        return project;\n    }\n}\n"
+                },
+                "src/main/java/com/aerotopo/domain/SurveyProject.java": {
+                  "language": "java",
+                  "content": "package com.aerotopo.domain;\n\npublic class SurveyProject {\n    private Long id;\n    private String name;\n}\n"
+                },
+                "src/test/java/com/aerotopo/service/ProjectServiceTest.java": {
+                  "language": "java",
+                  "content": "package com.aerotopo.service;\n\npublic class ProjectServiceTest {\n    void loadsProject() {\n        service.findProjectById(42L);\n    }\n}\n"
+                },
+                "src/main/resources/application.yml": {
+                  "language": "yaml",
+                  "content": "spring:\n  application:\n    name: aerotopo\n"
+                },
+                "pom.xml": {
+                  "language": "xml",
+                  "content": "<project>\n  <artifactId>aerotopo</artifactId>\n</project>\n"
+                }
+              },
+              "maven": {
+                "dependencies": [
+                  {
+                    "groupId": "org.springframework.boot",
+                    "artifactId": "spring-boot-starter-web",
+                    "version": "3.5.6"
+                  },
+                  {
+                    "groupId": "org.springframework.boot",
+                    "artifactId": "spring-boot-starter-validation",
+                    "version": "3.5.6"
+                  }
+                ]
+              },
+              "git": {
+                "branch": "feature/intellij-ui",
+                "changes": [
+                  {
+                    "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                    "status": "M"
+                  },
+                  {
+                    "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                    "status": "A"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "Verify editor caret, current line and text selection realism",
+          "why": "Open a real Java source file with a visible caret, current-line state, selected expression, line numbers and folding markers. The selected text must retain syntax coloring while behaving visually like an IntelliJ editor selection.",
+          "software": "intellij",
+          "action": {
+            "action": "setCode",
+            "data": {
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "code": "package com.aerotopo.service;\n\npublic class ProjectService {\n    private final ProjectRepository repository;\n\n    public SurveyProject findProjectById(Long id) {\n        SurveyProject project = repository.findById(id).orElseThrow();\n        return project;\n    }\n}\n",
+              "caretLine": 7,
+              "caretColumn": 33,
+              "selectionLine": 7,
+              "selectionText": "repository.findById(id)",
+              "breadcrumbs": true
+            }
+          }
+        },
+        {
+          "title": "Verify code breadcrumbs and navigation bar",
+          "why": "Use the editor navigation bar to keep the learner oriented inside a deep Java project. It should show the project, source path, package, file, class and current method in a compact clickable chain rather than forcing the learner to infer location from the tree.",
+          "software": "intellij",
+          "action": {
+            "action": "openFile",
+            "data": {
+              "path": "src/main/java/com/aerotopo/service/ProjectService.java"
+            }
+          }
+        },
+        {
+          "title": "Verify the first-class IntelliJ terminal",
+          "why": "Open a terminal session with session tabs, shell identity, selectable output, current-command yellow rectangle and exit status. The plus control must create another session while the current command remains visually distinct from historical terminal output.",
+          "software": "intellij",
+          "action": {
+            "action": "typeTerminal",
+            "data": {
+              "sessionId": "powershell-1",
+              "session": "PowerShell",
+              "shell": "PowerShell",
+              "command": "mvn spring-boot:run",
+              "output": "[INFO] Scanning for projects...\n[INFO] Starting AeroTopoApplication\n[INFO] BUILD SUCCESS",
+              "exitCode": 0
             }
           }
         }

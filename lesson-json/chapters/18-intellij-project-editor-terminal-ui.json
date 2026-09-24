@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "id": "chapter-18",
+  "title": "18: IntelliJ Project, Editor, Breadcrumbs & Terminal UI Verification",
+  "subtitle": "Interactive verification of the always-visible workspace surfaces used throughout future IntelliJ lessons.",
+  "steps": [
+    {
+      "title": "Verify the upgraded Project tree",
+      "why": "Inspect realistic package/file icons, source/test/resource root styling, generated folders, Git status marks, compact package nodes, External Libraries and context-menu behavior. Long labels must keep the horizontal scrolling behavior already established for the Project pane.",
+      "software": "intellij",
+      "action": {
+        "action": "newProject",
+        "data": {
+          "name": "AeroTopo",
+          "sdk": "Java 21",
+          "languageLevel": "21",
+          "tree": [
+            {
+              "name": ".idea",
+              "path": ".idea",
+              "type": "folder",
+              "open": false,
+              "children": []
+            },
+            {
+              "name": "src",
+              "path": "src",
+              "type": "folder",
+              "open": true,
+              "children": [
+                {
+                  "name": "main",
+                  "path": "src/main",
+                  "type": "folder",
+                  "open": true,
+                  "children": [
+                    {
+                      "name": "java",
+                      "path": "src/main/java",
+                      "type": "folder",
+                      "rootKind": "source",
+                      "open": true,
+                      "children": [
+                        {
+                          "name": "com.aerotopo",
+                          "path": "src/main/java/com/aerotopo",
+                          "type": "package",
+                          "open": true,
+                          "children": [
+                            {
+                              "name": "api",
+                              "path": "src/main/java/com/aerotopo/api",
+                              "type": "package",
+                              "open": true,
+                              "children": [
+                                {
+                                  "name": "ProjectController.java",
+                                  "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+                                  "type": "file",
+                                  "language": "java"
+                                }
+                              ]
+                            },
+                            {
+                              "name": "service",
+                              "path": "src/main/java/com/aerotopo/service",
+                              "type": "package",
+                              "open": true,
+                              "children": [
+                                {
+                                  "name": "ProjectService.java",
+                                  "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+                                  "type": "file",
+                                  "language": "java"
+                                }
+                              ]
+                            },
+                            {
+                              "name": "domain",
+                              "path": "src/main/java/com/aerotopo/domain",
+                              "type": "package",
+                              "open": false,
+                              "children": [
+                                {
+                                  "name": "SurveyProject.java",
+                                  "path": "src/main/java/com/aerotopo/domain/SurveyProject.java",
+                                  "type": "file",
+                                  "language": "java"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "resources",
+                      "path": "src/main/resources",
+                      "type": "folder",
+                      "rootKind": "resource",
+                      "open": true,
+                      "children": [
+                        {
+                          "name": "application.yml",
+                          "path": "src/main/resources/application.yml",
+                          "type": "file",
+                          "language": "yaml"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "test",
+                  "path": "src/test",
+                  "type": "folder",
+                  "open": true,
+                  "children": [
+                    {
+                      "name": "java",
+                      "path": "src/test/java",
+                      "type": "folder",
+                      "rootKind": "test",
+                      "open": true,
+                      "children": [
+                        {
+                          "name": "com.aerotopo.service",
+                          "path": "src/test/java/com/aerotopo/service",
+                          "type": "package",
+                          "open": true,
+                          "children": [
+                            {
+                              "name": "ProjectServiceTest.java",
+                              "path": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                              "type": "file",
+                              "language": "java"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "target",
+              "path": "target",
+              "type": "folder",
+              "generated": true,
+              "open": false,
+              "children": []
+            },
+            {
+              "name": "pom.xml",
+              "path": "pom.xml",
+              "type": "file",
+              "language": "xml"
+            }
+          ],
+          "files": {
+            "src/main/java/com/aerotopo/api/ProjectController.java": {
+              "language": "java",
+              "content": "package com.aerotopo.api;\n\npublic class ProjectController {\n    private final ProjectService service;\n\n    public SurveyProject getProject(Long id) {\n        return service.findProjectById(id);\n    }\n}\n"
+            },
+            "src/main/java/com/aerotopo/service/ProjectService.java": {
+              "language": "java",
+              "content": "package com.aerotopo.service;\n\npublic class ProjectService {\n    private final ProjectRepository repository;\n\n    public SurveyProject findProjectById(Long id) {\n        SurveyProject project = repository.findById(id).orElseThrow();\n        return project;\n    }\n}\n"
+            },
+            "src/main/java/com/aerotopo/domain/SurveyProject.java": {
+              "language": "java",
+              "content": "package com.aerotopo.domain;\n\npublic class SurveyProject {\n    private Long id;\n    private String name;\n}\n"
+            },
+            "src/test/java/com/aerotopo/service/ProjectServiceTest.java": {
+              "language": "java",
+              "content": "package com.aerotopo.service;\n\npublic class ProjectServiceTest {\n    void loadsProject() {\n        service.findProjectById(42L);\n    }\n}\n"
+            },
+            "src/main/resources/application.yml": {
+              "language": "yaml",
+              "content": "spring:\n  application:\n    name: aerotopo\n"
+            },
+            "pom.xml": {
+              "language": "xml",
+              "content": "<project>\n  <artifactId>aerotopo</artifactId>\n</project>\n"
+            }
+          },
+          "maven": {
+            "dependencies": [
+              {
+                "groupId": "org.springframework.boot",
+                "artifactId": "spring-boot-starter-web",
+                "version": "3.5.6"
+              },
+              {
+                "groupId": "org.springframework.boot",
+                "artifactId": "spring-boot-starter-validation",
+                "version": "3.5.6"
+              }
+            ]
+          },
+          "git": {
+            "branch": "feature/intellij-ui",
+            "changes": [
+              {
+                "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+                "status": "M"
+              },
+              {
+                "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+                "status": "A"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Verify editor caret, current line and text selection realism",
+      "why": "Open a real Java source file with a visible caret, current-line state, selected expression, line numbers and folding markers. The selected text must retain syntax coloring while behaving visually like an IntelliJ editor selection.",
+      "software": "intellij",
+      "action": {
+        "action": "setCode",
+        "data": {
+          "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+          "code": "package com.aerotopo.service;\n\npublic class ProjectService {\n    private final ProjectRepository repository;\n\n    public SurveyProject findProjectById(Long id) {\n        SurveyProject project = repository.findById(id).orElseThrow();\n        return project;\n    }\n}\n",
+          "caretLine": 7,
+          "caretColumn": 33,
+          "selectionLine": 7,
+          "selectionText": "repository.findById(id)",
+          "breadcrumbs": true
+        }
+      }
+    },
+    {
+      "title": "Verify code breadcrumbs and navigation bar",
+      "why": "Use the editor navigation bar to keep the learner oriented inside a deep Java project. It should show the project, source path, package, file, class and current method in a compact clickable chain rather than forcing the learner to infer location from the tree.",
+      "software": "intellij",
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/main/java/com/aerotopo/service/ProjectService.java"
+        }
+      }
+    },
+    {
+      "title": "Verify the first-class IntelliJ terminal",
+      "why": "Open a terminal session with session tabs, shell identity, selectable output, current-command yellow rectangle and exit status. The plus control must create another session while the current command remains visually distinct from historical terminal output.",
+      "software": "intellij",
+      "action": {
+        "action": "typeTerminal",
+        "data": {
+          "sessionId": "powershell-1",
+          "session": "PowerShell",
+          "shell": "PowerShell",
+          "command": "mvn spring-boot:run",
+          "output": "[INFO] Scanning for projects...\n[INFO] Starting AeroTopoApplication\n[INFO] BUILD SUCCESS",
+          "exitCode": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "id": "chapter-17",
+  "title": "17: IntelliJ Debugger, Tests, Maven & Spring UI Verification",
+  "subtitle": "Interactive verification of the high-value Debugger, JUnit, Maven, Spring Services and Spring Beans/Mappings interfaces.",
+  "steps": [
+    {
+      "title": "Verify the full Debugger tool window",
+      "why": "Open the Debugger with Frames, Variables, Watches and Console panes, breakpoint state, current execution location, and working Resume/Pause/Step Over/Step Into/Step Out/Stop controls. This is the UI needed for later Java, exception, concurrency and Spring debugging lessons.",
+      "software": "intellij",
+      "action": {
+        "action": "debugConfiguration",
+        "data": {
+          "name": "AeroTopoApplication",
+          "running": false,
+          "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+          "line": 27,
+          "frames": [
+            {
+              "name": "ProjectService.loadProject()",
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 27
+            },
+            {
+              "name": "ProjectController.getProject()",
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 42
+            },
+            {
+              "name": "DispatcherServlet.doDispatch()",
+              "file": "spring-webmvc",
+              "line": 1089
+            }
+          ],
+          "variables": [
+            {
+              "name": "id",
+              "value": "42",
+              "type": "Long"
+            },
+            {
+              "name": "project",
+              "value": "SurveyProject@7a31",
+              "type": "SurveyProject"
+            },
+            {
+              "name": "repository",
+              "value": "SimpleJpaRepository@192a",
+              "type": "ProjectRepository"
+            }
+          ],
+          "watches": [
+            {
+              "expression": "project.getStatus()",
+              "result": "READY"
+            }
+          ],
+          "console": "Connected to target VM\nBreakpoint hit at ProjectService.java:27"
+        }
+      }
+    },
+    {
+      "title": "Verify the JUnit test runner",
+      "why": "Inspect a hierarchical test runner with green/red status, duration, selected-test details, assertion expected/actual values, stack trace and rerun controls. Selecting a test and rerunning failed tests must visibly update the test state.",
+      "software": "intellij",
+      "action": {
+        "action": "runJUnit",
+        "data": {
+          "suite": "ProjectServiceTest",
+          "duration": "1.28 s",
+          "tests": [
+            {
+              "name": "createsProjectWithValidSurvey",
+              "status": "PASS",
+              "duration": "212 ms"
+            },
+            {
+              "name": "rejectsMissingCoordinateSystem",
+              "status": "FAIL",
+              "duration": "84 ms",
+              "expected": "400 BAD_REQUEST",
+              "actual": "500 INTERNAL_SERVER_ERROR",
+              "trace": "AssertionError: expected 400 but was 500\n  at ProjectServiceTest.java:88"
+            },
+            {
+              "name": "calculatesQualityScore",
+              "status": "PASS",
+              "duration": "146 ms"
+            }
+          ],
+          "total": 3,
+          "passed": 2,
+          "failed": 1
+        }
+      }
+    },
+    {
+      "title": "Verify the Maven tool window",
+      "why": "Open a real Maven tool window with expandable Lifecycle, Plugins, Dependencies and Profiles sections. Reload, profile selection and lifecycle goals must respond, and running a goal must feed the Run output instead of using a generic card surface.",
+      "software": "intellij",
+      "action": {
+        "action": "openMavenToolWindow",
+        "data": {
+          "project": "AeroTopo",
+          "profile": "dev",
+          "status": "Ready",
+          "plugins": [
+            "spring-boot",
+            "compiler",
+            "surefire",
+            "resources"
+          ],
+          "profiles": [
+            "dev",
+            "test",
+            "prod"
+          ],
+          "dependencies": [
+            {
+              "groupId": "org.springframework.boot",
+              "artifactId": "spring-boot-starter-web",
+              "version": "3.5.6"
+            },
+            {
+              "groupId": "org.springframework.boot",
+              "artifactId": "spring-boot-starter-validation",
+              "version": "3.5.6"
+            },
+            {
+              "groupId": "org.springframework.boot",
+              "artifactId": "spring-boot-starter-data-jpa",
+              "version": "3.5.6"
+            },
+            {
+              "groupId": "org.postgresql",
+              "artifactId": "postgresql",
+              "version": "42.7.7"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Verify the Spring Boot Services dashboard",
+      "why": "Open the Services tool window with a populated Spring Boot service card showing running state, port and active profile. Run, Debug, Restart, Stop and Console controls must change service state rather than acting as dead decorations.",
+      "software": "intellij",
+      "action": {
+        "action": "showSpringBootDashboard",
+        "data": {
+          "activeProfile": "dev",
+          "apps": [
+            {
+              "name": "AeroTopoApplication",
+              "status": "Running",
+              "port": 8080,
+              "profile": "dev"
+            },
+            {
+              "name": "ImportWorker",
+              "status": "Stopped",
+              "port": 8091,
+              "profile": "dev"
+            }
+          ],
+          "console": "2026-09-24 16:18:11 INFO Started AeroTopoApplication\n2026-09-24 16:18:12 INFO Tomcat initialized on port 8080"
+        }
+      }
+    },
+    {
+      "title": "Verify Spring Beans and MVC Mappings views",
+      "why": "Open searchable Spring tooling with separate Beans and MVC Mappings tabs. Bean rows must show implementation type and scope; mappings must show HTTP method, path, controller and handler, with source navigation when a file is provided.",
+      "software": "intellij",
+      "action": {
+        "action": "showSpringBeans",
+        "data": {
+          "beans": [
+            {
+              "name": "projectController",
+              "className": "com.aerotopo.api.ProjectController",
+              "scope": "singleton",
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 12
+            },
+            {
+              "name": "projectService",
+              "className": "com.aerotopo.service.ProjectService",
+              "scope": "singleton",
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 15
+            },
+            {
+              "name": "projectRepository",
+              "className": "com.aerotopo.persistence.ProjectRepository",
+              "scope": "singleton",
+              "file": "src/main/java/com/aerotopo/persistence/ProjectRepository.java",
+              "line": 8
+            }
+          ],
+          "mappings": [
+            {
+              "method": "GET",
+              "path": "/api/projects/{id}",
+              "controller": "ProjectController",
+              "handler": "getProject(Long)",
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 42
+            },
+            {
+              "method": "POST",
+              "path": "/api/projects",
+              "controller": "ProjectController",
+              "handler": "createProject(CreateProjectRequest)",
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 28
+            },
+            {
+              "method": "DELETE",
+              "path": "/api/projects/{id}",
+              "controller": "ProjectController",
+              "handler": "deleteProject(Long)",
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 58
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

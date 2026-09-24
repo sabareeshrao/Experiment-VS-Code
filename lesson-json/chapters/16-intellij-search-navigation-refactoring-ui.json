@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "id": "chapter-16",
+  "title": "16: IntelliJ Search, Navigation & Refactoring UI Verification",
+  "subtitle": "Interactive verification of the upgraded Search Everywhere, Go To, Find/Replace, Find Usages, and refactoring-preview surfaces.",
+  "steps": [
+    {
+      "title": "Verify real Search Everywhere",
+      "why": "Open the IntelliJ-style Search Everywhere popup and verify the search field, All/Classes/Files/Symbols/Actions tabs, result icons, highlighted selection, keyboard movement, and click-to-open behavior. This replaces the previous generic key/value surface.",
+      "software": "intellij",
+      "action": {
+        "action": "searchEverywhere",
+        "data": {
+          "query": "Project",
+          "results": [
+            {
+              "kind": "Class",
+              "name": "ProjectService",
+              "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 8,
+              "detail": "com.aerotopo.service"
+            },
+            {
+              "kind": "File",
+              "name": "ProjectController.java",
+              "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 1,
+              "detail": "src/main/java/com/aerotopo/api"
+            },
+            {
+              "kind": "Symbol",
+              "name": "findProjectById()",
+              "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 24,
+              "detail": "ProjectService"
+            },
+            {
+              "kind": "Action",
+              "name": "Project Structure",
+              "detail": "File > Project Structure",
+              "shortcut": "Ctrl+Alt+Shift+S"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Verify Go To File / Class / Symbol popup fidelity",
+      "why": "Open the narrow IntelliJ navigation popup used by the existing Go To actions. Results must show file names, package paths and line information, allow keyboard selection, and open the selected source instead of displaying a generic dialog.",
+      "software": "intellij",
+      "action": {
+        "action": "gotoFile",
+        "data": {
+          "query": "ProjectController",
+          "results": [
+            {
+              "kind": "File",
+              "name": "ProjectController.java",
+              "path": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 1,
+              "detail": "com.aerotopo.api"
+            },
+            {
+              "kind": "File",
+              "name": "ProjectService.java",
+              "path": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 1,
+              "detail": "com.aerotopo.service"
+            },
+            {
+              "kind": "File",
+              "name": "SurveyProject.java",
+              "path": "src/main/java/com/aerotopo/domain/SurveyProject.java",
+              "line": 1,
+              "detail": "com.aerotopo.domain"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Verify Find in Files and Replace in Files",
+      "why": "Inspect a project-wide search with scope controls, case/word/regex toggles, grouped source matches and an editable replacement field. Result rows must navigate to source, while Replace All must modify matching open project files when they exist.",
+      "software": "intellij",
+      "action": {
+        "action": "findInFiles",
+        "data": {
+          "uiState": "replace",
+          "query": "findById",
+          "replace": "findProjectById",
+          "results": [
+            {
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 24,
+              "preview": "return repository.findById(id).orElseThrow();"
+            },
+            {
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 31,
+              "preview": "return service.findById(id);"
+            },
+            {
+              "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+              "line": 44,
+              "preview": "service.findById(42L);"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Verify real Find Usages tool window",
+      "why": "Open the Find Usages tool window with grouped file paths, line snippets, a usage count and preview pane. Clicking a usage must update the preview; double-clicking must navigate to the matching file and line.",
+      "software": "intellij",
+      "action": {
+        "action": "findUsages",
+        "data": {
+          "symbol": "findById",
+          "results": [
+            {
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 31,
+              "preview": "service.findById(id)"
+            },
+            {
+              "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+              "line": 44,
+              "preview": "service.findById(42L)"
+            },
+            {
+              "file": "src/test/java/com/aerotopo/api/ProjectControllerTest.java",
+              "line": 52,
+              "preview": "verify(service).findById(42L)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Verify Rename refactoring dialog and preview",
+      "why": "Open a real refactoring dialog rather than a generic surface. The new-name field, search options, affected-usage list, Preview, Refactor and Cancel controls must respond, and Preview must open the refactoring-results surface before any source mutation.",
+      "software": "intellij",
+      "action": {
+        "action": "renameSymbol",
+        "data": {
+          "uiState": "dialog",
+          "symbol": "findById",
+          "newName": "findProjectById",
+          "usages": [
+            {
+              "file": "src/main/java/com/aerotopo/service/ProjectService.java",
+              "line": 24,
+              "preview": "public SurveyProject findById(Long id)"
+            },
+            {
+              "file": "src/main/java/com/aerotopo/api/ProjectController.java",
+              "line": 31,
+              "preview": "service.findById(id)"
+            },
+            {
+              "file": "src/test/java/com/aerotopo/service/ProjectServiceTest.java",
+              "line": 44,
+              "preview": "service.findById(42L)"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -55,9 +55,9 @@
     {
       "id": "book-8",
       "title": "IntelliJ IDEA Fidelity Lab",
-      "subtitle": "Screenshot-grounded IntelliJ IDEA 2025.2 UI states and interaction tests.",
+      "subtitle": "Screenshot-grounded and interaction-fidelity IntelliJ IDEA verification labs covering creation, navigation, debugging, testing, build, Spring, editor and terminal workflows.",
       "chapterStart": 15,
-      "chapterEnd": 15
+      "chapterEnd": 18
     }
   ],
   "package": {
@@ -6057,6 +6057,18 @@
     {
       "id": "chapter-15",
       "path": "chapters/15-intellij-2025-screenshot-fidelity-test.json"
+    },
+    {
+      "id": "chapter-16",
+      "path": "chapters/16-intellij-search-navigation-refactoring-ui.json"
+    },
+    {
+      "id": "chapter-17",
+      "path": "chapters/17-intellij-debug-test-maven-spring-ui.json"
+    },
+    {
+      "id": "chapter-18",
+      "path": "chapters/18-intellij-project-editor-terminal-ui.json"
     }
   ]
 }
