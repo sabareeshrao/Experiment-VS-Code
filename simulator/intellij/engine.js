@@ -533,6 +533,7 @@ function p0DefaultSearchResults(kind){
  ];
 }
 function showP0SearchSurface(kind,d={}){
+ if(state.fidelityMode){state.fidelityMode=false;renderAll()}
  const titles={searchEverywhere:"Search Everywhere",gotoFile:"Go to File",gotoClass:"Go to Class",gotoSymbol:"Go to Symbol"};
  const title=titles[kind]||"Search Everywhere";
  const results=clone(d.results||p0DefaultSearchResults(kind));
@@ -787,7 +788,7 @@ async function applyStep(st,animate,token){
   case"moveCursor":await highlight(d.target,token);break;
   case"showNotification":notify(d.text||d.message||"IntelliJ IDEA");break;
   case"openProject":state.project={...state.project,...clone(d.project||d)};renderAll();break;
-  case"newProject":if(d.uiState==="welcome"){showWelcomeSurface();break}if(d.uiState==="wizard"||d.uiState==="jdkDropdown"){showNewProjectSurface(d,d.uiState==="jdkDropdown");break}if(d.fidelityMode){resetScreenshotWorkspace(d);break}state.project={name:d.name||"New Project",sdk:d.sdk||state.project.sdk,languageLevel:String(d.languageLevel||state.project.languageLevel)};state.fidelityMode=d.fidelityMode??state.fidelityMode;if(d.maven)state.maven={...state.maven,...clone(d.maven)};if(d.git)state.git={...state.git,...clone(d.git)};if(d.spring)state.spring={...state.spring,...clone(d.spring)};if(!d.preserveFiles){state.tree=clone(d.tree||[]);files=clone(d.files||{});state.files=clone(files);activeFile=null;openTabs=[]}renderAll();break;
+  case"newProject":if(d.uiState==="welcome"){showWelcomeSurface();break}if(d.uiState==="wizard"||d.uiState==="jdkDropdown"){showNewProjectSurface(d,d.uiState==="jdkDropdown");break}if(d.fidelityMode){resetScreenshotWorkspace(d);break}state.project={name:d.name||"New Project",sdk:d.sdk||state.project.sdk,languageLevel:String(d.languageLevel||state.project.languageLevel)};state.fidelityMode=d.fidelityMode===true;if(d.maven)state.maven={...state.maven,...clone(d.maven)};if(d.git)state.git={...state.git,...clone(d.git)};if(d.spring)state.spring={...state.spring,...clone(d.spring)};if(!d.preserveFiles){state.tree=clone(d.tree||[]);files=clone(d.files||{});state.files=clone(files);activeFile=null;openTabs=[]}renderAll();break;
   case"openFile":openFile(d.file);break;
   case"closeFile":closeFile(d.file||activeFile);break;
   case"createFile":if(d.uiState==="projectContextMenu"){showProjectContextSurface();break}if(d.uiState==="newJavaClass"){showNewJavaClassSurface(d.name||"Test");break}files[d.path]={language:d.language||"java",content:String(d.content||"")};state.files=clone(files);addTreePath(d.path,d.language||"java");markGit(d.path,"A");openFile(d.path);break;
