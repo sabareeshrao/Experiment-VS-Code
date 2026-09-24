@@ -5,8 +5,8 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{outline:2px solid rgba(77,163,255,1)!important;outline-offset:2px!important;box-shadow:0 0 0 3px rgba(77,163,255,.34),0 0 16px 5px rgba(77,163,255,.48),0 0 28px 9px rgba(77,163,255,.20)!important;border-radius:4px!important;transition:none!important}",
-".simActionHighlight.simActionPulse{animation:none!important}",
+".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:3px solid rgba(101,184,255,1)!important;outline-offset:3px!important;box-shadow:0 0 0 2px rgba(235,247,255,.98),0 0 0 6px rgba(60,151,255,.96),0 0 20px 9px rgba(60,151,255,.82),0 0 42px 16px rgba(60,151,255,.48)!important;border-radius:5px!important;transition:none!important}",
+".simActionHighlight.simActionPulse{animation:none!important;filter:brightness(1.12)!important}",
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
@@ -15,6 +15,7 @@ style.textContent=[
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
 "body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important}",
 "body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:2px;bottom:2px;width:2px;border-radius:2px;background:#4da3ff;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active,body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{background-image:linear-gradient(90deg,rgba(77,163,255,.18),rgba(77,163,255,.07) 42%,transparent 78%)!important}",
 ".sim-line-text{position:relative;z-index:3}",
 /* Global overflow + scrollbar safety.  Every simulator can expose long tree
    paths, filenames, SQL/code lines, table rows, console output, etc.  Never
@@ -106,7 +107,7 @@ function highlight(plan){
  active.classList.add("simActionHighlight");
  // Global guidance contract: precise blue action glow remains visible for five seconds
  // so the learner has enough time to notice the intended control without obscuring the UI.
- var ms=5000;
+ var ms=Math.max(5000,Number(plan&&plan.duration)||0);
  timer=setTimeout(clean,ms);
 }
 window.addEventListener("message",function(e){

@@ -123,6 +123,24 @@ assert(!player.includes('player.html?software=redis'), "Simulator-specific softw
 assert(!app.includes('searchParams.get("software")'), "Simulator-specific software preview routing is forbidden in app.js");
 assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
+assert(
+  app.includes("simulator/shared/highlighter.js?v=10"),
+  "Universal highlighter cache version is stale in app.js"
+);
+if (exists("simulator/shared/highlighter.js")) {
+  const sharedHighlighter = read("simulator/shared/highlighter.js");
+  assert(
+    sharedHighlighter.includes("outline:3px solid rgba(101,184,255,1)") &&
+    sharedHighlighter.includes("0 0 42px 16px rgba(60,151,255,.48)"),
+    "Strong shared action-highlight contract is missing"
+  );
+  assert(
+    sharedHighlighter.includes("width:4px") &&
+    sharedHighlighter.includes("background-image:linear-gradient(90deg,rgba(77,163,255,.18)"),
+    "Strong shared editor-line highlight contract is missing"
+  );
+}
+
 // Software simulators must be activated by lesson steps, not bespoke player navigation.
 assert(exists("simulator/shared/explanation-controls.js"), "Missing simulator/shared/explanation-controls.js");
 if (exists("simulator/shared/explanation-controls.js")) {

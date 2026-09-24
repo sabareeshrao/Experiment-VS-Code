@@ -146,7 +146,7 @@
       );
       ensureScript(
         "/simulator/shared/highlighter.js",
-        "simulator/shared/highlighter.js?v=9",
+        "simulator/shared/highlighter.js?v=10",
         "globalHighlightRuntime"
       );
       ensureScript(
@@ -407,7 +407,7 @@
     if (!step?.action) return null;
     const software = normalizeSoftware(step.software);
     const action = step.action.action;
-    const plan = (selectors, extra = {}) => ({ selectors, duration: 1050, ...extra });
+    const plan = (selectors, extra = {}) => ({ selectors, duration: 5000, ...extra });
 
     // Blue guidance is only for controls the developer clicks.
     // Editors/terminals use their own native changed-line emphasis.
