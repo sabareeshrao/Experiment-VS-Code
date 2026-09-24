@@ -112,3 +112,17 @@ body.ijScreenshotMode .left,body.ijScreenshotMode .tree,body.ijScreenshotMode .e
 .treeRow .gitMark{flex:0 0 auto}
 .libraryChild{white-space:nowrap!important}
 
+
+/* v14: IntelliJ terminal current-command emphasis */
+.terminalText{margin:0;white-space:pre;font:12px/20px "JetBrains Mono","Cascadia Code",Consolas,monospace;color:#c7c9ce}
+.terminalLine{display:block;min-height:20px;white-space:pre;width:max-content;min-width:100%}
+.terminalCommandFocus{
+  position:relative;
+  background:rgba(255,212,0,.06);
+  outline:2px solid #ffd400;
+  outline-offset:-1px;
+  box-shadow:0 0 10px rgba(255,212,0,.22);
+  border-radius:2px;
+  padding-left:7px;
+  margin-left:-7px;
+}

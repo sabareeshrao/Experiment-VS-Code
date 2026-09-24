@@ -173,6 +173,35 @@ const server = http.createServer((req, res) => {
     assert(treeScroll.rowHeight < 32, `Long Project tree item wrapped vertically: ${JSON.stringify(treeScroll)}`);
     assert.equal(treeScroll.whiteSpace, "nowrap", "Project tree row is allowed to wrap");
     assert(treeScroll.scrollLeft > 0, "Project tree horizontal scrollbar is not functional");
+
+    // IntelliJ terminal command rectangle regression: current command gets the
+    // VS Code-style yellow outline, historical replay commands do not.
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[{action:"typeTerminal",data:{command:"mvn test",output:"BUILD SUCCESS"}}]
+    }, "*"));
+    await frame().waitForSelector(".terminalCommandFocus");
+    const terminalFocus = await frame().locator(".terminalCommandFocus").evaluate(el => {
+      const cs=getComputedStyle(el);
+      return {text:el.textContent,outlineWidth:parseFloat(cs.outlineWidth)||0,outlineColor:cs.outlineColor};
+    });
+    assert(terminalFocus.text.includes("mvn test"), "IntelliJ terminal highlighted the wrong command line");
+    assert(terminalFocus.outlineWidth >= 2, "IntelliJ terminal yellow rectangle is too weak");
+    assert(/rgb\(255, 212, 0\)/.test(terminalFocus.outlineColor), "IntelliJ terminal command rectangle is not yellow");
+
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[
+        {action:"typeTerminal",data:{command:"mvn test",output:"BUILD SUCCESS"}},
+        {action:"openTerminal",data:{}}
+      ]
+    }, "*"));
+    await frame().waitForTimeout(80);
+    assert.equal(await frame().locator(".terminalCommandFocus").count(), 0, "Historical IntelliJ terminal command remained highlighted");
     assert.deepEqual(errors, [], "Browser JavaScript errors");
     console.log("IntelliJ browser regression checks passed: layout, completion, Run, focus, navigation, replay, reload, resize persistence, responsive views and normal mode.");
   } finally {

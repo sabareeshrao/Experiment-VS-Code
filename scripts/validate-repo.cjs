@@ -124,20 +124,37 @@ assert(!app.includes('searchParams.get("software")'), "Simulator-specific softwa
 assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
 assert(
-  app.includes("simulator/shared/highlighter.js?v=10"),
+  app.includes("simulator/shared/highlighter.js?v=11"),
   "Universal highlighter cache version is stale in app.js"
 );
 if (exists("simulator/shared/highlighter.js")) {
   const sharedHighlighter = read("simulator/shared/highlighter.js");
   assert(
-    sharedHighlighter.includes("outline:3px solid rgba(101,184,255,1)") &&
-    sharedHighlighter.includes("0 0 42px 16px rgba(60,151,255,.48)"),
-    "Strong shared action-highlight contract is missing"
+    sharedHighlighter.includes("outline:3px solid #65b8ff") &&
+    sharedHighlighter.includes("box-shadow:none") &&
+    !sharedHighlighter.includes("timer=setTimeout(clean"),
+    "Persistent boundary-only shared action-highlight contract is missing"
   );
   assert(
     sharedHighlighter.includes("width:4px") &&
-    sharedHighlighter.includes("background-image:linear-gradient(90deg,rgba(77,163,255,.18)"),
-    "Strong shared editor-line highlight contract is missing"
+    sharedHighlighter.includes("background:#65b8ff") &&
+    !sharedHighlighter.includes("0 0 13px 5px rgba(77,163,255,.58)"),
+    "Boundary-only shared editor-line highlight contract is missing"
+  );
+}
+
+if (exists("simulator/intellij/engine.js") && exists("simulator/intellij/ide-polish.css")) {
+  const intellijEngine = read("simulator/intellij/engine.js");
+  const intellijPolish = read("simulator/intellij/ide-polish.css");
+  assert(
+    intellijEngine.includes("terminalHighlightText") &&
+    intellijEngine.includes("terminalCommandFocus"),
+    "IntelliJ terminal command emphasis runtime is missing"
+  );
+  assert(
+    intellijPolish.includes(".terminalCommandFocus") &&
+    intellijPolish.includes("outline:2px solid #ffd400"),
+    "IntelliJ terminal yellow command rectangle is missing"
   );
 }
 

@@ -49,7 +49,7 @@ const server=http.createServer((req,res)=>{
         probe.textContent="Highlight probe";
         probe.style.cssText="position:fixed;left:36px;top:36px;width:132px;height:38px;z-index:2147479999";
         document.body.appendChild(probe);
-        window.postMessage({type:"SIM_HIGHLIGHT",plan:{selectors:["#globalHighlightProbe"],duration:5000}},"*");
+        window.postMessage({type:"SIM_HIGHLIGHT",plan:{selectors:["#globalHighlightProbe"]}},"*");
         await new Promise(r=>setTimeout(r,80));
         const cs=getComputedStyle(probe);
         const out={
@@ -61,14 +61,20 @@ const server=http.createServer((req,res)=>{
           width:probe.getBoundingClientRect().width,
           height:probe.getBoundingClientRect().height
         };
-        window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*");
-        probe.remove();
         return out;
       });
       assert(result.highlighted,software+": shared highlighter did not activate");
       assert(result.outlineWidth>=3,software+": action outline is too weak: "+JSON.stringify(result));
-      assert(result.boxShadow && result.boxShadow!=="none",software+": action glow is missing");
-      assert(/rgb\(101, 184, 255\)|rgba\(101, 184, 255/.test(result.outlineColor),software+": expected bright blue outline: "+result.outlineColor);
+      assert.equal(result.boxShadow,"none",software+": blue guidance must be boundary-only, not a glow");
+      assert.equal(result.filter,"none",software+": blue guidance must not brighten/pulse the control");
+      assert(/rgb\(101, 184, 255\)|rgba\(101, 184, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
+      if(checked.length===0){
+        await child.waitForTimeout(5300);
+        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
+      }
+      await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
+      assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": explicit highlight clear did not remove the boundary");
+      await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());
       checked.push(software);
     }
     assert.equal(checked.length,Object.keys(contract.simulators||{}).length);
