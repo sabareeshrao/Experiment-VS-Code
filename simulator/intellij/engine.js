@@ -553,7 +553,7 @@ function showP0SearchSurface(kind,d={}){
    const r=results[Number(row.dataset.resultIndex)]||{};
    const text=(r.name+" "+(r.detail||"")+" "+(r.path||"")).toLowerCase();
    const kindLabel=String(r.kind||"").toLowerCase();
-   const tabOk=activeTab==="All"||kindLabel.startsWith(activeTab.toLowerCase().replace(/s$/,""));
+   const normalizedTab=activeTab==="Classes"?"class":activeTab.toLowerCase().replace(/s$/,"");const tabOk=activeTab==="All"||kindLabel.startsWith(normalizedTab);
    row.classList.toggle("filtered",!(tabOk&&(!q||text.includes(q))));
   });
   cursor=0;select(0);const n=rows().length;if($("ijP0SearchCount"))$("ijP0SearchCount").textContent=n+" result"+(n===1?"":"s");
