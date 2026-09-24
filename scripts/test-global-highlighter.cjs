@@ -64,20 +64,35 @@ const server=http.createServer((req,res)=>{
         return out;
       });
       assert(result.highlighted,software+": shared highlighter did not activate");
-      assert(result.outlineWidth>=3,software+": action outline is too weak: "+JSON.stringify(result));
-      assert.notEqual(result.boxShadow,"none",software+": blue guidance glow is missing");
+      assert(result.outlineWidth>=4,software+": action outline is too weak: "+JSON.stringify(result));
+      assert.equal(result.boxShadow,"none",software+": blue guidance must be boundary-only, not a glow");
       assert.equal(result.filter,"none",software+": blue guidance must not brighten/pulse the control");
-      assert(/rgb\(101, 184, 255\)|rgba\(101, 184, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
+      assert(/rgb\(83, 169, 255\)|rgba\(83, 169, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
       if(checked.length===0){
-        await child.waitForTimeout(1100);
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
-        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue glow cleared before five seconds");
-        await child.waitForTimeout(4100);
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": blue glow did not expire after five seconds");
-      }else{
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR",force:true},"*"));
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": forced highlight clear did not remove the glow");
+        const lineStyle=await child.evaluate(()=>{
+          const line=document.createElement("div");
+          line.id="globalLineHighlightProbe";
+          line.className="codeLine sim-emphasis";
+          line.textContent="boolean isPresent;";
+          line.style.cssText="position:fixed;left:36px;top:100px;width:420px;height:28px;line-height:28px";
+          document.body.appendChild(line);
+          const cs=getComputedStyle(line);
+          const out={
+            outlineWidth:parseFloat(cs.outlineWidth)||0,
+            outlineColor:cs.outlineColor,
+            backgroundColor:cs.backgroundColor
+          };
+          line.remove();
+          return out;
+        });
+        assert(lineStyle.outlineWidth>=2,"editor-line emphasis rectangle is too weak: "+JSON.stringify(lineStyle));
+        assert(/rgb\(83, 169, 255\)/.test(lineStyle.outlineColor),"editor-line emphasis boundary is not bright blue");
+        assert(lineStyle.backgroundColor!=="transparent"&&!/rgba?\(0, 0, 0, 0\)/.test(lineStyle.backgroundColor),"editor-line emphasis fill is missing");
+        await child.waitForTimeout(5300);
+        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
       }
+      await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
+      assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": explicit highlight clear did not remove the boundary");
       await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());
       checked.push(software);
     }

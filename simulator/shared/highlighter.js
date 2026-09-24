@@ -5,16 +5,16 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:3px solid #65b8ff!important;outline-offset:3px!important;box-shadow:0 0 0 3px rgba(101,184,255,.32),0 0 18px 7px rgba(77,163,255,.52)!important;border-radius:5px!important;transition:none!important}",
+".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:4px solid #53a9ff!important;outline-offset:2px!important;box-shadow:none!important;border-radius:5px!important;transition:none!important}",
 ".simActionHighlight.simActionPulse{animation:none!important;filter:none!important}",
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
-"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important}",
-"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-8px;top:1px;bottom:1px;width:4px;border-radius:4px;background:#65b8ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:2px solid #53a9ff!important;outline-offset:-2px!important;background-color:rgba(33,115,205,.28)!important}",
+"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:1px;bottom:1px;width:5px;border-radius:2px;background:#7ac7ff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
-"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important}",
-"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-8px;top:1px;bottom:1px;width:4px;border-radius:4px;background:#65b8ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:2px solid #53a9ff!important;outline-offset:-2px!important;background-color:rgba(33,115,205,.28)!important}",
+"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:1px;bottom:1px;width:5px;border-radius:2px;background:#7ac7ff;box-shadow:none;pointer-events:none;z-index:2}",
 ".sim-line-text{position:relative;z-index:3}",
 /* Global overflow + scrollbar safety.  Every simulator can expose long tree
    paths, filenames, SQL/code lines, table rows, console output, etc.  Never
@@ -47,7 +47,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null,timer=0,visibleUntil=0;
+var active=null;
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -56,14 +56,7 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(force){
- if(!force&&active&&Date.now()<visibleUntil){
-   clearTimeout(timer);
-   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
-   return;
- }
- clearTimeout(timer);
- visibleUntil=0;
+function clean(){
  if(active){
    active.classList.remove("simActionHighlight","simActionPulse");
    active=null;
@@ -99,7 +92,7 @@ function find(plan){
  return null;
 }
 function highlight(plan){
- clean(true);
+ clean();
  var el=find(plan||{});
  if(!el)return;
  var r=el.getBoundingClientRect();
@@ -110,13 +103,12 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- visibleUntil=Date.now()+5000;
- timer=setTimeout(function(){clean(true)},5000);
+ // Global guidance contract: keep the precise blue boundary until the player explicitly clears/replaces it.
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};
  if(m.type==="SIM_HIGHLIGHT")highlight(m.plan||{});
- if(m.type==="SIM_HIGHLIGHT_CLEAR")clean(!!m.force);
+ if(m.type==="SIM_HIGHLIGHT_CLEAR")clean();
 });
 try{parent.postMessage({type:"SIM_HIGHLIGHT_READY"},"*");}catch(_){}
 })();

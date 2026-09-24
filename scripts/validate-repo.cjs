@@ -124,20 +124,22 @@ assert(!app.includes('searchParams.get("software")'), "Simulator-specific softwa
 assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
 assert(
-  app.includes("simulator/shared/highlighter.js?v=11"),
+  app.includes("simulator/shared/highlighter.js?v=12"),
   "Universal highlighter cache version is stale in app.js"
 );
 if (exists("simulator/shared/highlighter.js")) {
   const sharedHighlighter = read("simulator/shared/highlighter.js");
   assert(
-    sharedHighlighter.includes("outline:3px solid #65b8ff") &&
+    sharedHighlighter.includes("outline:4px solid #53a9ff") &&
     sharedHighlighter.includes("box-shadow:none") &&
     !sharedHighlighter.includes("timer=setTimeout(clean"),
     "Persistent boundary-only shared action-highlight contract is missing"
   );
   assert(
-    sharedHighlighter.includes("width:4px") &&
-    sharedHighlighter.includes("background:#65b8ff") &&
+    sharedHighlighter.includes("width:5px") &&
+    sharedHighlighter.includes("background:#7ac7ff") &&
+    sharedHighlighter.includes("outline:2px solid #53a9ff") &&
+    sharedHighlighter.includes("background-color:rgba(33,115,205,.28)") &&
     !sharedHighlighter.includes("0 0 13px 5px rgba(77,163,255,.58)"),
     "Boundary-only shared editor-line highlight contract is missing"
   );

@@ -146,7 +146,7 @@
       );
       ensureScript(
         "/simulator/shared/highlighter.js",
-        "simulator/shared/highlighter.js?v=11",
+        "simulator/shared/highlighter.js?v=12",
         "globalHighlightRuntime"
       );
       ensureScript(
