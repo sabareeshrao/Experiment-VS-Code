@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "soap",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the soap domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 34,
+    "end": 39
+  },
+  "actions": {
+    "importWsdl": {
+      "action_specific_data_keys": [
+        "endpoint",
+        "envelope",
+        "name",
+        "operation",
+        "operations",
+        "package",
+        "path",
+        "soapAction",
+        "url",
+        "wsdl"
+      ],
+      "action_specific_state_paths": [
+        "soap.clients",
+        "soap.requests",
+        "soap.wsdls"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.soap.includes(a)){if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "generateSoapClient": {
+      "action_specific_data_keys": [
+        "body",
+        "endpoint",
+        "envelope",
+        "name",
+        "operation",
+        "operations",
+        "package",
+        "path",
+        "soapAction",
+        "status",
+        "url",
+        "wsdl"
+      ],
+      "action_specific_state_paths": [
+        "soap.clients",
+        "soap.requests",
+        "soap.responses",
+        "soap.wsdls"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.soap.includes(a)){if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelop"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "createSoapRequest": {
+      "action_specific_data_keys": [
+        "body",
+        "endpoint",
+        "envelope",
+        "name",
+        "operation",
+        "package",
+        "soapAction",
+        "status",
+        "wsdl"
+      ],
+      "action_specific_state_paths": [
+        "soap.clients",
+        "soap.fault",
+        "soap.requests",
+        "soap.responses",
+        "soap.wsdls"
+      ],
+      "action_specific_source_snippets": [
+        "||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "sendSoapRequest": {
+      "action_specific_data_keys": [
+        "body",
+        "endpoint",
+        "envelope",
+        "operation",
+        "soapAction",
+        "status"
+      ],
+      "action_specific_state_paths": [
+        "soap.clients",
+        "soap.fault",
+        "soap.req",
+        "soap.requests",
+        "soap.responses",
+        "soap.wsdls"
+      ],
+      "action_specific_source_snippets": [
+        "{operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid([[\"WSDL\",state.soap.wsdls.at(-1)?.url||\"Not imported\"],[\"Generated client\",state.soap.clients.at(-1)?.name||\"None\"],[\"Endpoint\",state.soap.requests.at(-1)?.endpoint||d.endpoint||\"\"]])+card(\"SOAP Request\",code(state.soap.req"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showSoapResponse": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "configureSoapFaultHandling": {
+      "action_specific_data_keys": [
+        "body",
+        "endpoint",
+        "envelope",
+        "status"
+      ],
+      "action_specific_state_paths": [
+        "soap",
+        "soap.clients",
+        "soap.fault",
+        "soap.requests",
+        "soap.responses",
+        "soap.wsdls"
+      ],
+      "action_specific_source_snippets": [
+        "\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid([[\"WSDL\",state.soap.wsdls.at(-1)?.url||\"Not imported\"],[\"Generated client\",state.soap.clients.at(-1)?.name||\"None\"],[\"Endpoint\",state.soap.requests.at(-1)?.endpoint||d.endpoint||\"\"]])+card(\"SOAP Request\",code(state.soap.requests.at(-1)?.envelope||d.envelope||\"\"))+card(\"SOAP Response\",code(state.soap.responses.at(-1)?.body||d.body||\"\"))+card(\"Fault handling\",code(JSON.stringify(state.soap."
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "body",
+      "endpoint",
+      "envelope",
+      "name",
+      "operation",
+      "operations",
+      "package",
+      "path",
+      "soapAction",
+      "status",
+      "url",
+      "wsdl"
+    ],
+    "state_paths": [
+      "jdk.sdk",
+      "project",
+      "soap.clients",
+      "soap.fault",
+      "soap.requests",
+      "soap.responses",
+      "soap.wsdls"
+    ],
+    "helper_functions": [
+      "addEventListener",
+      "apply",
+      "at",
+      "card",
+      "clone",
+      "code",
+      "fresh",
+      "grid",
+      "hide",
+      "includes",
+      "init",
+      "isArray",
+      "push",
+      "replay",
+      "reset",
+      "show",
+      "stringify",
+      "tc"
+    ],
+    "handler_excerpt": "if(D.soap.includes(a)){if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid([[\"WSDL\",state.soap.wsdls.at(-1)?.url||\"Not imported\"],[\"Generated client\",state.soap.clients.at(-1)?.name||\"None\"],[\"Endpoint\",state.soap.requests.at(-1)?.endpoint||d.endpoint||\"\"]])+card(\"SOAP Request\",code(state.soap.requests.at(-1)?.envelope||d.envelope||\"\"))+card(\"SOAP Response\",code(state.soap.responses.at(-1)?.body||d.body||\"\"))+card(\"Fault handling\",code(JSON.stringify(state.soap.fault||{},null,2))));return}\nshow(\"Enterprise Java\",card(tc(a),code(JSON.stringify(d,null,2))))}\nfunction reset(pkg){state=fresh();const app=pkg?.apps?.intellij_idea||{};state.project=app.project?.name||\"Project\";state.jdk.sdk=app.project?.sdk||\"Project SDK\";hide()}\nfunction replay(steps){const keep={project:state?.project||\"Project\",sdk:state?.jdk?.sdk||\"Project SDK\"};state=fresh();state.project=keep.project;state.jdk.sdk=keep.sdk;hide();for(const st of steps||[]){if(ACTIONS.includes(st?.action))apply(st.action,st.data||{});else hide()}}\nwindow.addEventListener(\"message\",e=>{const m=e.data||{};if(m.type===\"SIM_PACKAGE\")reset(m.package||{});else if(m.type===\"SIM_SEEK\")replay(Array.isArray(m.steps)?m.steps:[])});init();state=fresh();\n})();"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

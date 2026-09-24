@@ -23,4 +23,4 @@ Regenerate with `node scripts/build-intellij-microscopic-features.cjs` after Int
 
 ## Enterprise action evidence
 
-Advanced Java/Spring actions implemented in `enterprise-ui.js` are documented in `enterprise-action-evidence.json`. If a feature's main-engine handler excerpt is null, read that supplemental evidence before authoring `action.data`.
+Advanced Java/Spring actions implemented in `enterprise-ui.js` are split under `features/enterprise/`. Read `features/enterprise/index.json`, resolve the canonical action through `action_to_domain`, then open the matching domain JSON before authoring `action.data`. `enterprise-action-evidence.json` remains only as a compatibility router.

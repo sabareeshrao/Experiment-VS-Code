@@ -582,18 +582,26 @@ if (contract && manifest) {
 
 
 // IntelliJ enterprise microscopic evidence contract.
-assert(exists("simulator/intellij/features/enterprise-action-evidence.json"), "Missing IntelliJ enterprise microscopic evidence");
-if (exists("simulator/intellij/features/enterprise-action-evidence.json")) {
-  const ent = JSON.parse(read("simulator/intellij/features/enterprise-action-evidence.json"));
+assert(exists("simulator/intellij/features/enterprise/index.json"), "Missing IntelliJ enterprise microscopic evidence index");
+if (exists("simulator/intellij/features/enterprise/index.json")) {
+  const ent = JSON.parse(read("simulator/intellij/features/enterprise/index.json"));
   assert(ent.software === "intellij", "IntelliJ enterprise evidence software id mismatch");
   assert(ent.domain_count === Object.keys(ent.domains || {}).length, "IntelliJ enterprise evidence domain_count mismatch");
   let enterpriseActionCount = 0;
-  for (const domain of Object.values(ent.domains || {})) {
-    assert(domain.shared_handler?.handler_excerpt, "IntelliJ enterprise domain is missing handler evidence");
-    enterpriseActionCount += Object.keys(domain.actions || {}).length;
+  for (const [domainName, meta] of Object.entries(ent.domains || {})) {
+    const domainPath = meta.file;
+    assert(exists(domainPath), "Missing IntelliJ enterprise domain evidence: " + domainPath);
+    enterpriseActionCount += Array.isArray(meta.actions) ? meta.actions.length : 0;
+    if (!exists(domainPath)) continue;
+    const domain = JSON.parse(read(domainPath));
+    assert(domain.domain === domainName, "IntelliJ enterprise domain name mismatch in " + domainPath);
+    assert(domain.shared_handler?.handler_excerpt, "IntelliJ enterprise domain is missing handler evidence: " + domainPath);
+    for (const action of meta.actions || []) assert(domain.actions?.[action], "IntelliJ enterprise action missing from domain evidence: " + action);
   }
   assert(ent.action_count === enterpriseActionCount, "IntelliJ enterprise evidence action_count mismatch");
+  assert(Object.keys(ent.action_to_domain || {}).length === ent.action_count, "IntelliJ enterprise action_to_domain coverage mismatch");
 }
+assert(exists("simulator/intellij/features/enterprise-action-evidence.json"), "Missing IntelliJ enterprise compatibility router");
 
 for (const warning of warnings) console.warn("WARNING:", warning);
 

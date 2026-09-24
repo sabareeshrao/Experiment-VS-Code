@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "logging",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the logging domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 32,
+    "end": 32
+  },
+  "actions": {
+    "openLoggingToolWindow": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "configureLogging": {
+      "action_specific_data_keys": [
+        "enabled",
+        "level",
+        "logger",
+        "mdc",
+        "time",
+        "values"
+      ],
+      "action_specific_state_paths": [
+        "logging",
+        "logging.entries",
+        "logging.level",
+        "logging.loggers",
+        "logging.mdc",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.logging.includes(a)){if(a===\"configureLogging\")state.logging={...state.logging,...clone(d)};if(a===\"setLogLevel\"){if(d.logger)state.logging.loggers[d.logger]=d.level||\"INFO\";else state.logging.level=d.level||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setLogLevel": {
+      "action_specific_data_keys": [
+        "enabled",
+        "level",
+        "logger",
+        "mdc",
+        "message",
+        "time",
+        "values"
+      ],
+      "action_specific_state_paths": [
+        "logging",
+        "logging.entries",
+        "logging.level",
+        "logging.loggers",
+        "logging.mdc",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.logging.includes(a)){if(a===\"configureLogging\")state.logging={...state.logging,...clone(d)};if(a===\"setLogLevel\"){if(d.logger)state.logging.loggers[d.logger]=d.level||\"INFO\";else state.logging.level=d.level||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "addStructuredLogging": {
+      "action_specific_data_keys": [
+        "enabled",
+        "level",
+        "logger",
+        "mdc",
+        "message",
+        "time",
+        "values"
+      ],
+      "action_specific_state_paths": [
+        "logging",
+        "logging.entries",
+        "logging.level",
+        "logging.loggers",
+        "logging.mdc",
+        "logging.rolling",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        "ng\")state.logging={...state.logging,...clone(d)};if(a===\"setLogLevel\"){if(d.logger)state.logging.loggers[d.logger]=d.level||\"INFO\";else state.logging.level=d.level||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a===\"showRollingPolicy\")state.logging.rolling=clone(d);show(\"Application Logging\",grid([[\"Root level\",state.logging.level],["
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "setMdc": {
+      "action_specific_data_keys": [
+        "enabled",
+        "level",
+        "logger",
+        "mdc",
+        "message",
+        "time",
+        "values"
+      ],
+      "action_specific_state_paths": [
+        "logging.entries",
+        "logging.level",
+        "logging.loggers",
+        "logging.mdc",
+        "logging.rolling",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        "(d.logger)state.logging.loggers[d.logger]=d.level||\"INFO\";else state.logging.level=d.level||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a===\"showRollingPolicy\")state.logging.rolling=clone(d);show(\"Application Logging\",grid([[\"Root level\",state.logging.level],[\"Structured JSON\",state.logging.structured?\"Enabled\":\"Disabled\"],[\"MDC\",s"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "appendApplicationLog": {
+      "action_specific_data_keys": [
+        "enabled",
+        "level",
+        "logger",
+        "mdc",
+        "message",
+        "time",
+        "values"
+      ],
+      "action_specific_state_paths": [
+        "logging.entries",
+        "logging.level",
+        "logging.mdc",
+        "logging.rolling",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        "vel||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a===\"showRollingPolicy\")state.logging.rolling=clone(d);show(\"Application Logging\",grid([[\"Root level\",state.logging.level],[\"Structured JSON\",state.logging.structured?\"Enabled\":\"Disabled\"],[\"MDC\",state.logging.mdc],[\"Rolling policy\",state.logging.rolling]])+card(\"Log output\",code(sta"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showApplicationLogs": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showRollingPolicy": {
+      "action_specific_data_keys": [
+        "level",
+        "logger",
+        "message",
+        "time"
+      ],
+      "action_specific_state_paths": [
+        "logging.entries",
+        "logging.level",
+        "logging.mdc",
+        "logging.rolling",
+        "logging.structured"
+      ],
+      "action_specific_source_snippets": [
+        ")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a===\"showRollingPolicy\")state.logging.rolling=clone(d);show(\"Application Logging\",grid([[\"Root level\",state.logging.level],[\"Structured JSON\",state.logging.structured?\"Enabled\":\"Disabled\"],[\"MDC\",state.logging.mdc],[\"Rolling policy\",state.logging.rolling]])+card(\"Log output\",code(state.logging.entries.slice(-20).map(x=>x.time+\" \"+x.level+\" \"+x.logger+\" \"+x.message+\" \"+JSON.stringify(x.mdc||{})).join(\"\\n\"))));return}"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showTraceCorrelation": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "enabled",
+      "level",
+      "logger",
+      "mdc",
+      "message",
+      "time",
+      "values"
+    ],
+    "state_paths": [
+      "logging",
+      "logging.entries",
+      "logging.level",
+      "logging.loggers",
+      "logging.mdc",
+      "logging.rolling",
+      "logging.structured"
+    ],
+    "helper_functions": [
+      "card",
+      "clone",
+      "code",
+      "grid",
+      "includes",
+      "join",
+      "map",
+      "push",
+      "show",
+      "slice",
+      "stringify"
+    ],
+    "handler_excerpt": "if(D.logging.includes(a)){if(a===\"configureLogging\")state.logging={...state.logging,...clone(d)};if(a===\"setLogLevel\"){if(d.logger)state.logging.loggers[d.logger]=d.level||\"INFO\";else state.logging.level=d.level||\"INFO\"}if(a===\"addStructuredLogging\")state.logging.structured=d.enabled!==false;if(a===\"setMdc\")state.logging.mdc={...state.logging.mdc,...clone(d.values||d.mdc||{})};if(a===\"appendApplicationLog\")state.logging.entries.push({time:d.time||\"18:00:00\",level:d.level||state.logging.level,logger:d.logger||\"com.example\",message:d.message||\"\",mdc:clone(state.logging.mdc)});if(a===\"showRollingPolicy\")state.logging.rolling=clone(d);show(\"Application Logging\",grid([[\"Root level\",state.logging.level],[\"Structured JSON\",state.logging.structured?\"Enabled\":\"Disabled\"],[\"MDC\",state.logging.mdc],[\"Rolling policy\",state.logging.rolling]])+card(\"Log output\",code(state.logging.entries.slice(-20).map(x=>x.time+\" \"+x.level+\" \"+x.logger+\" \"+x.message+\" \"+JSON.stringify(x.mdc||{})).join(\"\\n\"))));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

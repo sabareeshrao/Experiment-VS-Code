@@ -31,7 +31,8 @@ function build(root=path.resolve(__dirname,"..")){
        textual_marker_for_typeCode:true
      },
      enterprise_action_source:"simulator/intellij/enterprise-ui.js",
-     enterprise_microscopic_evidence:"simulator/intellij/features/enterprise-action-evidence.json",
+     enterprise_microscopic_evidence:"simulator/intellij/features/enterprise/index.json",
+     enterprise_microscopic_directory:"simulator/intellij/features/enterprise/",
      enterprise_microscopic_read_required:true
    }:{})
   };

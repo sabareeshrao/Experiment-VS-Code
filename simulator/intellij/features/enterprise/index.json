@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "purpose": "Router for microscopic IntelliJ enterprise action evidence. Resolve the canonical action to a domain, then read only that domain file.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "domain_count": 14,
+  "action_count": 113,
+  "domains": {
+    "jdk": {
+      "file": "simulator/intellij/features/enterprise/jdk.json",
+      "actions": [
+        "showSdkTable",
+        "showJvmRuntime",
+        "setJvmArgument",
+        "showClasspath",
+        "showModulePath"
+      ]
+    },
+    "maven": {
+      "file": "simulator/intellij/features/enterprise/maven.json",
+      "actions": [
+        "showMavenPlugins",
+        "showMavenProfiles",
+        "runMavenWrapper",
+        "runMavenTests",
+        "showDependencyConflict",
+        "resolveMavenDependencyConflict"
+      ]
+    },
+    "gradle": {
+      "file": "simulator/intellij/features/enterprise/gradle.json",
+      "actions": [
+        "openGradleToolWindow",
+        "reloadGradleProject",
+        "showGradleTasks",
+        "runGradleTask",
+        "showGradleDependencies",
+        "setGradleJvm",
+        "setGradleOfflineMode",
+        "runGradleWrapper",
+        "showGradleBuildOutput"
+      ]
+    },
+    "spring": {
+      "file": "simulator/intellij/features/enterprise/spring.json",
+      "actions": [
+        "showBeanGraph",
+        "showDependencyInjection",
+        "showComponentScan",
+        "showRequestLifecycle",
+        "showControllerAdvice"
+      ]
+    },
+    "junit": {
+      "file": "simulator/intellij/features/enterprise/junit.json",
+      "actions": [
+        "runParameterizedTest",
+        "debugJUnit",
+        "showTestTree",
+        "showAssertionDiff",
+        "setTestFilter"
+      ]
+    },
+    "mockito": {
+      "file": "simulator/intellij/features/enterprise/mockito.json",
+      "actions": [
+        "mockitoCreateMock",
+        "mockitoInjectMocks",
+        "mockitoStub",
+        "mockitoCaptureArgument",
+        "mockitoSpy",
+        "mockitoThrow",
+        "mockitoReset",
+        "showMockitoDetails"
+      ]
+    },
+    "persistence": {
+      "file": "simulator/intellij/features/enterprise/persistence.json",
+      "actions": [
+        "showJpaRelationships",
+        "setFetchStrategy",
+        "reproduceNPlusOne",
+        "showTransactionBoundary",
+        "showDirtyChecking",
+        "showHibernateCaches",
+        "showOptimisticLocking",
+        "showEntityLifecycle",
+        "showPagination",
+        "runNativeQuery"
+      ]
+    },
+    "security": {
+      "file": "simulator/intellij/features/enterprise/security.json",
+      "actions": [
+        "openSecurityToolWindow",
+        "configureSecurityFilterChain",
+        "configureUserDetailsService",
+        "configurePasswordEncoder",
+        "configureJwtFilter",
+        "issueJwt",
+        "validateJwt",
+        "configureMethodSecurity",
+        "setCorsConfig",
+        "setCsrfConfig",
+        "configureOAuth2Client",
+        "showAuthenticationFlow",
+        "showAuthorizationFlow",
+        "showOAuth2LoginFlow"
+      ]
+    },
+    "clients": {
+      "file": "simulator/intellij/features/enterprise/clients.json",
+      "actions": [
+        "configureRestTemplate",
+        "configureWebClient",
+        "configureFeignClient",
+        "setClientTimeouts",
+        "sendExternalRequest",
+        "showClientRequestResponse",
+        "showClientErrorHandling"
+      ]
+    },
+    "resilience": {
+      "file": "simulator/intellij/features/enterprise/resilience.json",
+      "actions": [
+        "configureCircuitBreaker",
+        "configureRetry",
+        "configureSpringRetry",
+        "configureRateLimiter",
+        "configureTimeLimiter",
+        "configureBulkhead",
+        "setFallbackMethod",
+        "simulateResilienceCall",
+        "simulateSpringRetry",
+        "showResilienceEvents",
+        "showCircuitState"
+      ]
+    },
+    "migrations": {
+      "file": "simulator/intellij/features/enterprise/migrations.json",
+      "actions": [
+        "openMigrationToolWindow",
+        "createFlywayMigration",
+        "runFlywayMigrate",
+        "showFlywayInfo",
+        "repairFlyway",
+        "baselineFlyway",
+        "createLiquibaseChangelog",
+        "runLiquibaseUpdate",
+        "showLiquibaseStatus",
+        "rollbackLiquibase",
+        "showSchemaHistory"
+      ]
+    },
+    "logging": {
+      "file": "simulator/intellij/features/enterprise/logging.json",
+      "actions": [
+        "openLoggingToolWindow",
+        "configureLogging",
+        "setLogLevel",
+        "addStructuredLogging",
+        "setMdc",
+        "appendApplicationLog",
+        "showApplicationLogs",
+        "showRollingPolicy",
+        "showTraceCorrelation"
+      ]
+    },
+    "tomcat": {
+      "file": "simulator/intellij/features/enterprise/tomcat.json",
+      "actions": [
+        "showEmbeddedTomcat",
+        "configureServerPort",
+        "openTomcatRunConfig",
+        "deployWar",
+        "showTomcatLogs",
+        "showServletMappings",
+        "showTomcatThreads"
+      ]
+    },
+    "soap": {
+      "file": "simulator/intellij/features/enterprise/soap.json",
+      "actions": [
+        "importWsdl",
+        "generateSoapClient",
+        "createSoapRequest",
+        "sendSoapRequest",
+        "showSoapResponse",
+        "configureSoapFaultHandling"
+      ]
+    }
+  },
+  "action_to_domain": {
+    "showSdkTable": "jdk",
+    "showJvmRuntime": "jdk",
+    "setJvmArgument": "jdk",
+    "showClasspath": "jdk",
+    "showModulePath": "jdk",
+    "showMavenPlugins": "maven",
+    "showMavenProfiles": "maven",
+    "runMavenWrapper": "maven",
+    "runMavenTests": "maven",
+    "showDependencyConflict": "maven",
+    "resolveMavenDependencyConflict": "maven",
+    "openGradleToolWindow": "gradle",
+    "reloadGradleProject": "gradle",
+    "showGradleTasks": "gradle",
+    "runGradleTask": "gradle",
+    "showGradleDependencies": "gradle",
+    "setGradleJvm": "gradle",
+    "setGradleOfflineMode": "gradle",
+    "runGradleWrapper": "gradle",
+    "showGradleBuildOutput": "gradle",
+    "showBeanGraph": "spring",
+    "showDependencyInjection": "spring",
+    "showComponentScan": "spring",
+    "showRequestLifecycle": "spring",
+    "showControllerAdvice": "spring",
+    "runParameterizedTest": "junit",
+    "debugJUnit": "junit",
+    "showTestTree": "junit",
+    "showAssertionDiff": "junit",
+    "setTestFilter": "junit",
+    "mockitoCreateMock": "mockito",
+    "mockitoInjectMocks": "mockito",
+    "mockitoStub": "mockito",
+    "mockitoCaptureArgument": "mockito",
+    "mockitoSpy": "mockito",
+    "mockitoThrow": "mockito",
+    "mockitoReset": "mockito",
+    "showMockitoDetails": "mockito",
+    "showJpaRelationships": "persistence",
+    "setFetchStrategy": "persistence",
+    "reproduceNPlusOne": "persistence",
+    "showTransactionBoundary": "persistence",
+    "showDirtyChecking": "persistence",
+    "showHibernateCaches": "persistence",
+    "showOptimisticLocking": "persistence",
+    "showEntityLifecycle": "persistence",
+    "showPagination": "persistence",
+    "runNativeQuery": "persistence",
+    "openSecurityToolWindow": "security",
+    "configureSecurityFilterChain": "security",
+    "configureUserDetailsService": "security",
+    "configurePasswordEncoder": "security",
+    "configureJwtFilter": "security",
+    "issueJwt": "security",
+    "validateJwt": "security",
+    "configureMethodSecurity": "security",
+    "setCorsConfig": "security",
+    "setCsrfConfig": "security",
+    "configureOAuth2Client": "security",
+    "showAuthenticationFlow": "security",
+    "showAuthorizationFlow": "security",
+    "showOAuth2LoginFlow": "security",
+    "configureRestTemplate": "clients",
+    "configureWebClient": "clients",
+    "configureFeignClient": "clients",
+    "setClientTimeouts": "clients",
+    "sendExternalRequest": "clients",
+    "showClientRequestResponse": "clients",
+    "showClientErrorHandling": "clients",
+    "configureCircuitBreaker": "resilience",
+    "configureRetry": "resilience",
+    "configureSpringRetry": "resilience",
+    "configureRateLimiter": "resilience",
+    "configureTimeLimiter": "resilience",
+    "configureBulkhead": "resilience",
+    "setFallbackMethod": "resilience",
+    "simulateResilienceCall": "resilience",
+    "simulateSpringRetry": "resilience",
+    "showResilienceEvents": "resilience",
+    "showCircuitState": "resilience",
+    "openMigrationToolWindow": "migrations",
+    "createFlywayMigration": "migrations",
+    "runFlywayMigrate": "migrations",
+    "showFlywayInfo": "migrations",
+    "repairFlyway": "migrations",
+    "baselineFlyway": "migrations",
+    "createLiquibaseChangelog": "migrations",
+    "runLiquibaseUpdate": "migrations",
+    "showLiquibaseStatus": "migrations",
+    "rollbackLiquibase": "migrations",
+    "showSchemaHistory": "migrations",
+    "openLoggingToolWindow": "logging",
+    "configureLogging": "logging",
+    "setLogLevel": "logging",
+    "addStructuredLogging": "logging",
+    "setMdc": "logging",
+    "appendApplicationLog": "logging",
+    "showApplicationLogs": "logging",
+    "showRollingPolicy": "logging",
+    "showTraceCorrelation": "logging",
+    "showEmbeddedTomcat": "tomcat",
+    "configureServerPort": "tomcat",
+    "openTomcatRunConfig": "tomcat",
+    "deployWar": "tomcat",
+    "showTomcatLogs": "tomcat",
+    "showServletMappings": "tomcat",
+    "showTomcatThreads": "tomcat",
+    "importWsdl": "soap",
+    "generateSoapClient": "soap",
+    "createSoapRequest": "soap",
+    "sendSoapRequest": "soap",
+    "showSoapResponse": "soap",
+    "configureSoapFaultHandling": "soap"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Use the ordinary per-feature JSON first.",
+    "If its main-engine handler excerpt is null and its action is listed here, read the matching enterprise domain/action record before authoring action.data.",
+    "Use action_specific_data_keys as strongest evidence. Domain keys are shared possibilities and are not automatically valid for every action.",
+    "Do not claim projectImpact, destructive reset protection, semantic anchors, or checkpoints are implemented."
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "clients",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the clients domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 29,
+    "end": 29
+  },
+  "actions": {
+    "configureRestTemplate": {
+      "action_specific_data_keys": [
+        "client",
+        "exchange",
+        "method",
+        "request",
+        "response",
+        "status",
+        "url"
+      ],
+      "action_specific_state_paths": [
+        "clients.feign",
+        "clients.last",
+        "clients.restTemplate",
+        "clients.timeouts",
+        "clients.webClient"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureWebClient": {
+      "action_specific_data_keys": [
+        "client",
+        "exchange",
+        "method",
+        "request",
+        "response",
+        "status",
+        "url"
+      ],
+      "action_specific_state_paths": [
+        "clients.feign",
+        "clients.last",
+        "clients.restTemplate",
+        "clients.timeouts",
+        "clients.webClient"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client|"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureFeignClient": {
+      "action_specific_data_keys": [
+        "client",
+        "exchange",
+        "method",
+        "request",
+        "response",
+        "status",
+        "url"
+      ],
+      "action_specific_state_paths": [
+        "clients.feign",
+        "clients.last",
+        "clients.restTemplate",
+        "clients.timeouts",
+        "clients.webClient"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.u"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setClientTimeouts": {
+      "action_specific_data_keys": [
+        "client",
+        "exchange",
+        "method",
+        "request",
+        "response",
+        "status",
+        "url"
+      ],
+      "action_specific_state_paths": [
+        "clients.feign",
+        "clients.last",
+        "clients.restTemplate",
+        "clients.timeouts",
+        "clients.webClient"
+      ],
+      "action_specific_source_snippets": [
+        "reRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.url||d.url||\"\"],[\"Status\",x.status||d.status||\"—\"],[\"Timeout"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "sendExternalRequest": {
+      "action_specific_data_keys": [
+        "client",
+        "exchange",
+        "method",
+        "request",
+        "response",
+        "status",
+        "url"
+      ],
+      "action_specific_state_paths": [
+        "clients.feign",
+        "clients.last",
+        "clients.timeouts",
+        "clients.webClient"
+      ],
+      "action_specific_source_snippets": [
+        "\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.url||d.url||\"\"],[\"Status\",x.status||d.status||\"—\"],[\"Timeouts\",state.clients.timeouts]])+card(\"Request / Response\",code"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showClientRequestResponse": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showClientErrorHandling": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "client",
+      "exchange",
+      "method",
+      "request",
+      "response",
+      "status",
+      "url"
+    ],
+    "state_paths": [
+      "clients.feign",
+      "clients.last",
+      "clients.restTemplate",
+      "clients.timeouts",
+      "clients.webClient"
+    ],
+    "helper_functions": [
+      "card",
+      "clone",
+      "code",
+      "grid",
+      "includes",
+      "show",
+      "stringify"
+    ],
+    "handler_excerpt": "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.url||d.url||\"\"],[\"Status\",x.status||d.status||\"—\"],[\"Timeouts\",state.clients.timeouts]])+card(\"Request / Response\",code(JSON.stringify(x.response||d.response||d,null,2))));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

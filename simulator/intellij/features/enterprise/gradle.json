@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "gradle",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the gradle domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 23,
+    "end": 23
+  },
+  "actions": {
+    "openGradleToolWindow": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "reloadGradleProject": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "status",
+        "task",
+        "tasks"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.lastTask",
+        "gradle.status",
+        "gradle.tasks"
+      ],
+      "action_specific_source_snippets": [
+        "adleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><span class=\"ij-ent-btn\">Reload All Gradle Projects</span><span class=\"ij-ent-btn\">Execute Gradle Task</span"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showGradleTasks": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "enabled",
+        "jvm",
+        "sdk",
+        "status",
+        "task",
+        "tasks"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.offline",
+        "gradle.status",
+        "gradle.tasks"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.gradle.includes(a)){if(a===\"setGradleJvm\")state.gradle.jvm=d.jvm||d.sdk||state.gradle.jvm;if(a===\"setGradleOfflineMode\")state.gradle.offline=d.enabled!==false;if(a===\"showGradleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\""
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "runGradleTask": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "status",
+        "task"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.status"
+      ],
+      "action_specific_source_snippets": [
+        "le.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><span class=\"ij-ent-btn\">Reload All Gradle Projects</span><span class=\"ij-ent-btn\">Execute Gradle Task</span></div>'+grid([[\"Gradle JVM\",state.gradle.jvm],[\"Offlin"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showGradleDependencies": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "enabled",
+        "sdk",
+        "status",
+        "task",
+        "tasks"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.offline",
+        "gradle.status",
+        "gradle.tasks"
+      ],
+      "action_specific_source_snippets": [
+        "d.sdk||state.gradle.jvm;if(a===\"setGradleOfflineMode\")state.gradle.offline=d.enabled!==false;if(a===\"showGradleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "setGradleJvm": {
+      "action_specific_data_keys": [
+        "dependencies",
+        "enabled",
+        "jvm",
+        "sdk",
+        "task",
+        "tasks"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.offline",
+        "gradle.status",
+        "gradle.tasks"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.gradle.includes(a)){if(a===\"setGradleJvm\")state.gradle.jvm=d.jvm||d.sdk||state.gradle.jvm;if(a===\"setGradleOfflineMode\")state.gradle.offline=d.enabled!==false;if(a===\"showGradleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setGradleOfflineMode": {
+      "action_specific_data_keys": [
+        "dependencies",
+        "enabled",
+        "jvm",
+        "sdk",
+        "status",
+        "task",
+        "tasks"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.offline",
+        "gradle.status",
+        "gradle.tasks"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.gradle.includes(a)){if(a===\"setGradleJvm\")state.gradle.jvm=d.jvm||d.sdk||state.gradle.jvm;if(a===\"setGradleOfflineMode\")state.gradle.offline=d.enabled!==false;if(a===\"showGradleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "runGradleWrapper": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "status",
+        "task"
+      ],
+      "action_specific_state_paths": [
+        "gr",
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.status"
+      ],
+      "action_specific_source_snippets": [
+        "=\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><span class=\"ij-ent-btn\">Reload All Gradle Projects</span><span class=\"ij-ent-btn\">Execute Gradle Task</span></div>'+grid([[\"Gradle JVM\",state.gradle.jvm],[\"Offline mode\",state.gr"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showGradleBuildOutput": {
+      "action_specific_data_keys": [
+        "console",
+        "dependencies",
+        "status",
+        "task"
+      ],
+      "action_specific_state_paths": [
+        "gradle.dependencies",
+        "gradle.jvm",
+        "gradle.lastTask",
+        "gradle.offline",
+        "gradle.status"
+      ],
+      "action_specific_source_snippets": [
+        "ncies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><span class=\"ij-ent-btn\">Reload All Gradle Projects</span><span class=\"ij-ent-btn\">Execute Gradle Task</span></div>'+grid([[\"Gradle JVM\",state.gradle.jvm],[\"Offline mode\",state.gradle.offline?\"On\":\""
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "console",
+      "dependencies",
+      "enabled",
+      "jvm",
+      "sdk",
+      "status",
+      "task",
+      "tasks"
+    ],
+    "state_paths": [
+      "gradle.dependencies",
+      "gradle.jvm",
+      "gradle.lastTask",
+      "gradle.offline",
+      "gradle.status",
+      "gradle.tasks"
+    ],
+    "helper_functions": [
+      "E",
+      "card",
+      "clone",
+      "code",
+      "grid",
+      "includes",
+      "join",
+      "map",
+      "out",
+      "show"
+    ],
+    "handler_excerpt": "if(D.gradle.includes(a)){if(a===\"setGradleJvm\")state.gradle.jvm=d.jvm||d.sdk||state.gradle.jvm;if(a===\"setGradleOfflineMode\")state.gradle.offline=d.enabled!==false;if(a===\"showGradleTasks\")state.gradle.tasks=clone(d.tasks||state.gradle.tasks);if(a===\"showGradleDependencies\")state.gradle.dependencies=clone(d.dependencies||state.gradle.dependencies);if(a===\"reloadGradleProject\")state.gradle.status=\"Synced\";if([\"runGradleTask\",\"runGradleWrapper\",\"showGradleBuildOutput\"].includes(a)){state.gradle.lastTask=d.task||\"build\";state.gradle.status=d.status||\"BUILD SUCCESSFUL\";out(\"Gradle\",d.console||(\"> Task :compileJava\\n> Task :\"+state.gradle.lastTask+\"\\nBUILD SUCCESSFUL in 2s\"));return}show(\"Gradle\",'<div class=\"ij-ent-toolbar\"><span class=\"ij-ent-btn\">Reload All Gradle Projects</span><span class=\"ij-ent-btn\">Execute Gradle Task</span></div>'+grid([[\"Gradle JVM\",state.gradle.jvm],[\"Offline mode\",state.gradle.offline?\"On\":\"Off\"],[\"Status\",state.gradle.status],[\"Last task\",state.gradle.lastTask]])+card(\"Tasks\",(state.gradle.tasks||[]).map(x=>'<span class=\"ij-ent-pill\">'+E(x)+'</span>').join(\"\"))+card(\"Dependencies\",code((state.gradle.dependencies||[]).join(\"\\n\")||\"runtimeClasspath\")));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

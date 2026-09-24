@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "migrations",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the migrations domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 31,
+    "end": 31
+  },
+  "actions": {
+    "openMigrationToolWindow": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "createFlywayMigration": {
+      "action_specific_data_keys": [
+        "description",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.f",
+        "migrations.files",
+        "migrations.flyway",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.migrations.includes(a)){if(a===\"createFlywayMigration\")state.migrations.files.push(d.path||(\"db/migration/\"+(d.version||\"V1\")+\"__\"+(d.description||\"migration\")+\".sql\"));if(a===\"runFlywayMigrate\")state.migrations.flyway.push({version:d.version||String(state.migrations.flyway.length+1),description:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.f"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "runFlywayMigrate": {
+      "action_specific_data_keys": [
+        "description",
+        "id",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "mig",
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.flyway",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "(D.migrations.includes(a)){if(a===\"createFlywayMigration\")state.migrations.files.push(d.path||(\"db/migration/\"+(d.version||\"V1\")+\"__\"+(d.description||\"migration\")+\".sql\"));if(a===\"runFlywayMigrate\")state.migrations.flyway.push({version:d.version||String(state.migrations.flyway.length+1),description:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.mig"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showFlywayInfo": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "repairFlyway": {
+      "action_specific_data_keys": [
+        "author",
+        "count",
+        "description",
+        "id",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.flyway",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "f(a===\"runFlywayMigrate\")state.migrations.flyway.push({version:d.version||String(state.migrations.flyway.length+1),description:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "baselineFlyway": {
+      "action_specific_data_keys": [
+        "author",
+        "count",
+        "description",
+        "id",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.flyway",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "({version:d.version||String(state.migrations.flyway.length+1),description:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math.max(1,Number(d.count||1)));show(\"Database Migrations"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "createLiquibaseChangelog": {
+      "action_specific_data_keys": [
+        "author",
+        "count",
+        "description",
+        "id",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "cription:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math.max(1,Number(d.count||1)));show(\"Database Migrations\",grid([[\"Flyway baseline\",state.migrations.baseline||\"None\"],[\"F"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "runLiquibaseUpdate": {
+      "action_specific_data_keys": [
+        "author",
+        "count",
+        "id",
+        "path",
+        "version"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math.max(1,Number(d.count||1)));show(\"Database Migrations\",grid([[\"Flyway baseline\",state.migrations.baseline||\"None\"],[\"Flyway repair\",state.migrations.repaired?\"Completed\":\"Not required\"],[\"Migration files\",state.migrations.files.l"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showLiquibaseStatus": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "rollbackLiquibase": {
+      "action_specific_data_keys": [
+        "author",
+        "count",
+        "id"
+      ],
+      "action_specific_state_paths": [
+        "migrations.baseline",
+        "migrations.files",
+        "migrations.flyway",
+        "migrations.liquibase",
+        "migrations.repaired"
+      ],
+      "action_specific_source_snippets": [
+        "er.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math.max(1,Number(d.count||1)));show(\"Database Migrations\",grid([[\"Flyway baseline\",state.migrations.baseline||\"None\"],[\"Flyway repair\",state.migrations.repaired?\"Completed\":\"Not required\"],[\"Migration files\",state.migrations.files.length]])+card(\"Flyway schema history\",rows(state.migrations.flyway,x=>(x.version||\"\")+\"  \"+(x.description||\"\")+\"  \"+(x.state||\"\")))+card(\"Liquibase DATABASECHANGE"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showSchemaHistory": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "author",
+      "count",
+      "description",
+      "id",
+      "path",
+      "version"
+    ],
+    "state_paths": [
+      "migrations.baseline",
+      "migrations.files",
+      "migrations.flyway",
+      "migrations.liquibase",
+      "migrations.repaired"
+    ],
+    "helper_functions": [
+      "card",
+      "grid",
+      "includes",
+      "max",
+      "push",
+      "rows",
+      "show",
+      "splice"
+    ],
+    "handler_excerpt": "if(D.migrations.includes(a)){if(a===\"createFlywayMigration\")state.migrations.files.push(d.path||(\"db/migration/\"+(d.version||\"V1\")+\"__\"+(d.description||\"migration\")+\".sql\"));if(a===\"runFlywayMigrate\")state.migrations.flyway.push({version:d.version||String(state.migrations.flyway.length+1),description:d.description||\"migration\",state:\"Success\"});if(a===\"repairFlyway\")state.migrations.repaired=true;if(a===\"baselineFlyway\")state.migrations.baseline=d.version||\"1\";if(a===\"createLiquibaseChangelog\")state.migrations.files.push(d.path||\"db/changelog/db.changelog-master.yaml\");if(a===\"runLiquibaseUpdate\")state.migrations.liquibase.push({id:d.id||String(state.migrations.liquibase.length+1),author:d.author||\"developer\",state:\"Executed\"});if(a===\"rollbackLiquibase\")state.migrations.liquibase.splice(-Math.max(1,Number(d.count||1)),Math.max(1,Number(d.count||1)));show(\"Database Migrations\",grid([[\"Flyway baseline\",state.migrations.baseline||\"None\"],[\"Flyway repair\",state.migrations.repaired?\"Completed\":\"Not required\"],[\"Migration files\",state.migrations.files.length]])+card(\"Flyway schema history\",rows(state.migrations.flyway,x=>(x.version||\"\")+\"  \"+(x.description||\"\")+\"  \"+(x.state||\"\")))+card(\"Liquibase DATABASECHANGELOG\",rows(state.migrations.liquibase,x=>(x.id||\"\")+\"  \"+(x.author||\"\")+\"  \"+(x.state||\"\"))));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "jdk",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the jdk domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 21,
+    "end": 21
+  },
+  "actions": {
+    "showSdkTable": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showJvmRuntime": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "setJvmArgument": {
+      "action_specific_data_keys": [
+        "entries",
+        "languageLevel",
+        "sdk",
+        "value"
+      ],
+      "action_specific_state_paths": [
+        "jdk.args",
+        "jdk.classpath",
+        "jdk.modulePath",
+        "jdk.sdk"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.jdk.includes(a)){if(a===\"setJvmArgument\"&&d.value&&!state.jdk.args.includes(d.value))state.jdk.args.push(d.value);if(a===\"showClasspath\")state.jdk.classpath=clone(d.entries||state.jdk.classpath);if(a===\"showModulePath\")state.jdk.modulePath=clone(d.entries||state.jdk.modulePath);show(\"Project SDK / JVM\",grid([[\"Project SDK\",d.sdk||state.jdk.sdk],[\"Language level\",d.languageLevel||\"17+\"],[\"VM options\",state.jdk.args.join(\" \")||\"None\"],[\"Classpath\",state.jdk.classpath.join(\"\\n\")||\"Project dependencies\"]"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showClasspath": {
+      "action_specific_data_keys": [
+        "entries",
+        "languageLevel",
+        "sdk",
+        "value"
+      ],
+      "action_specific_state_paths": [
+        "jdk.args",
+        "jdk.classpath",
+        "jdk.modulePath",
+        "jdk.sdk"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.jdk.includes(a)){if(a===\"setJvmArgument\"&&d.value&&!state.jdk.args.includes(d.value))state.jdk.args.push(d.value);if(a===\"showClasspath\")state.jdk.classpath=clone(d.entries||state.jdk.classpath);if(a===\"showModulePath\")state.jdk.modulePath=clone(d.entries||state.jdk.modulePath);show(\"Project SDK / JVM\",grid([[\"Project SDK\",d.sdk||state.jdk.sdk],[\"Language level\",d.languageLevel||\"17+\"],[\"VM options\",state.jdk.args.join(\" \")||\"None\"],[\"Classpath\",state.jdk.classpath.join(\"\\n\")||\"Project dependencies\"],[\"Module path\",state.jdk.modulePath.join(\"\\n\")||\"Not configured\"]]));return}"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showModulePath": {
+      "action_specific_data_keys": [
+        "entries",
+        "languageLevel",
+        "sdk",
+        "value"
+      ],
+      "action_specific_state_paths": [
+        "jdk.args",
+        "jdk.classpath",
+        "jdk.modulePath",
+        "jdk.sdk"
+      ],
+      "action_specific_source_snippets": [
+        "=\"setJvmArgument\"&&d.value&&!state.jdk.args.includes(d.value))state.jdk.args.push(d.value);if(a===\"showClasspath\")state.jdk.classpath=clone(d.entries||state.jdk.classpath);if(a===\"showModulePath\")state.jdk.modulePath=clone(d.entries||state.jdk.modulePath);show(\"Project SDK / JVM\",grid([[\"Project SDK\",d.sdk||state.jdk.sdk],[\"Language level\",d.languageLevel||\"17+\"],[\"VM options\",state.jdk.args.join(\" \")||\"None\"],[\"Classpath\",state.jdk.classpath.join(\"\\n\")||\"Project dependencies\"],[\"Module path\",state.jdk.modulePath.join(\"\\n\")||\"Not configured\"]]));return}"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "entries",
+      "languageLevel",
+      "sdk",
+      "value"
+    ],
+    "state_paths": [
+      "jdk.args",
+      "jdk.classpath",
+      "jdk.modulePath",
+      "jdk.sdk"
+    ],
+    "helper_functions": [
+      "clone",
+      "grid",
+      "includes",
+      "join",
+      "push",
+      "show"
+    ],
+    "handler_excerpt": "if(D.jdk.includes(a)){if(a===\"setJvmArgument\"&&d.value&&!state.jdk.args.includes(d.value))state.jdk.args.push(d.value);if(a===\"showClasspath\")state.jdk.classpath=clone(d.entries||state.jdk.classpath);if(a===\"showModulePath\")state.jdk.modulePath=clone(d.entries||state.jdk.modulePath);show(\"Project SDK / JVM\",grid([[\"Project SDK\",d.sdk||state.jdk.sdk],[\"Language level\",d.languageLevel||\"17+\"],[\"VM options\",state.jdk.args.join(\" \")||\"None\"],[\"Classpath\",state.jdk.classpath.join(\"\\n\")||\"Project dependencies\"],[\"Module path\",state.jdk.modulePath.join(\"\\n\")||\"Not configured\"]]));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

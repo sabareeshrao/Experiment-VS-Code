@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "security",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the security domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 28,
+    "end": 28
+  },
+  "actions": {
+    "openSecurityToolWindow": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "configureSecurityFilterChain": {
+      "action_specific_data_keys": [
+        "authorize",
+        "encoder",
+        "filter",
+        "filters",
+        "rules"
+      ],
+      "action_specific_state_paths": [
+        "security.encoder",
+        "security.filters",
+        "security.jwt",
+        "security.rules",
+        "security.userDetails"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.security.includes(a)){if(a===\"configureSecurityFilterChain\"){state.security.filters=clone(d.filters||[\"SecurityContextHolderFilter\",\"JwtAuthenticationFilter\",\"AuthorizationFilter\"]);state.security.rules=clone(d.rules||d.authorize||[])}if(a===\"configureUserDetailsService\")state.security.userDetails=clone(d);if(a===\"configurePasswordEncoder\")state.security.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthen"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureUserDetailsService": {
+      "action_specific_data_keys": [
+        "authorize",
+        "encoder",
+        "filter",
+        "filters",
+        "roles",
+        "rules",
+        "subject",
+        "token",
+        "user"
+      ],
+      "action_specific_state_paths": [
+        "security.encoder",
+        "security.jwt",
+        "security.rules",
+        "security.userDetails"
+      ],
+      "action_specific_source_snippets": [
+        "ate.security.filters=clone(d.filters||[\"SecurityContextHolderFilter\",\"JwtAuthenticationFilter\",\"AuthorizationFilter\"]);state.security.rules=clone(d.rules||d.authorize||[])}if(a===\"configureUserDetailsService\")state.security.userDetails=clone(d);if(a===\"configurePasswordEncoder\")state.security.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthenticationFilter\"};if(a===\"issueJwt\")state.security.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signat"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configurePasswordEncoder": {
+      "action_specific_data_keys": [
+        "authorize",
+        "en",
+        "encoder",
+        "filter",
+        "roles",
+        "rules",
+        "subject",
+        "token",
+        "user"
+      ],
+      "action_specific_state_paths": [
+        "security.encoder",
+        "security.jwt",
+        "security.methodSecurity",
+        "security.rules",
+        "security.userDetails"
+      ],
+      "action_specific_source_snippets": [
+        "AuthenticationFilter\",\"AuthorizationFilter\"]);state.security.rules=clone(d.rules||d.authorize||[])}if(a===\"configureUserDetailsService\")state.security.userDetails=clone(d);if(a===\"configurePasswordEncoder\")state.security.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthenticationFilter\"};if(a===\"issueJwt\")state.security.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.en"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureJwtFilter": {
+      "action_specific_data_keys": [
+        "enabled",
+        "encoder",
+        "filter",
+        "roles",
+        "subject",
+        "token",
+        "user"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.encoder",
+        "security.jwt",
+        "security.methodSecurity",
+        "security.userDetails"
+      ],
+      "action_specific_source_snippets": [
+        "e||[])}if(a===\"configureUserDetailsService\")state.security.userDetails=clone(d);if(a===\"configurePasswordEncoder\")state.security.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthenticationFilter\"};if(a===\"issueJwt\")state.security.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")sta"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "issueJwt": {
+      "action_specific_data_keys": [
+        "enabled",
+        "encoder",
+        "filter",
+        "roles",
+        "stages",
+        "subject",
+        "token",
+        "user"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.jwt",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        "y.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthenticationFilter\"};if(a===\"issueJwt\")state.security.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"sho"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "validateJwt": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureMethodSecurity": {
+      "action_specific_data_keys": [
+        "enabled",
+        "roles",
+        "stages",
+        "subject",
+        "token",
+        "user"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.jwt",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        "ty.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"Authenticat"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setCorsConfig": {
+      "action_specific_data_keys": [
+        "enabled",
+        "roles",
+        "stages",
+        "token"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        ",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAu"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setCsrfConfig": {
+      "action_specific_data_keys": [
+        "enabled",
+        "stages"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        "bGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"Authori"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureOAuth2Client": {
+      "action_specific_data_keys": [
+        "enabled",
+        "stages"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        "dSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"AuthorizationManager\",\"Decision\"]:[]);show(\"Spring Security\",grid([["
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showAuthenticationFlow": {
+      "action_specific_data_keys": [
+        "stages"
+      ],
+      "action_specific_state_paths": [
+        "security.csrf",
+        "security.encoder",
+        "security.jwt",
+        "security.methodSecurity"
+      ],
+      "action_specific_source_snippets": [
+        ".oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"AuthorizationManager\",\"Decision\"]:[]);show(\"Spring Security\",grid([[\"Password encoder\",state.security.encoder],[\"JWT\",state.security.jwt.enabled?\"Enabled\":\"Not configured\"],[\"Method security\",state.security.methodSecurity?\"Enabled\":\"Disabled\"],[\"CSRF\",state.security.csrf?\"Enabled\":\"Di"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showAuthorizationFlow": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [
+        "security.csrf",
+        "security.encoder",
+        "security.jwt",
+        "security.methodSecurity",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        ",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"AuthorizationManager\",\"Decision\"]:[]);show(\"Spring Security\",grid([[\"Password encoder\",state.security.encoder],[\"JWT\",state.security.jwt.enabled?\"Enabled\":\"Not configured\"],[\"Method security\",state.security.methodSecurity?\"Enabled\":\"Disabled\"],[\"CSRF\",state.security.csrf?\"Enabled\":\"Disabled\"],[\"OAuth2 registration\",state.security.oauth2.registration||state.security.oauth2.name||\"None\"]])+card(\"Security filter chain\",rows(stat"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showOAuth2LoginFlow": {
+      "action_specific_data_keys": [
+        "enabled",
+        "stages"
+      ],
+      "action_specific_state_paths": [
+        "security.cors",
+        "security.csrf",
+        "security.encoder",
+        "security.jwt",
+        "security.oauth2"
+      ],
+      "action_specific_source_snippets": [
+        ")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"AuthorizationManager\",\"Decision\"]:[]);show(\"Spring Security\",grid([[\"Password encoder\",state.security.encoder],[\"JWT\",state.security.jwt.enabled?\"Ena"
+      ],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "authorize",
+      "enabled",
+      "encoder",
+      "filter",
+      "filters",
+      "roles",
+      "rules",
+      "stages",
+      "subject",
+      "token",
+      "user"
+    ],
+    "state_paths": [
+      "security.cors",
+      "security.csrf",
+      "security.encoder",
+      "security.filters",
+      "security.jwt",
+      "security.methodSecurity",
+      "security.oauth2",
+      "security.rules",
+      "security.userDetails"
+    ],
+    "helper_functions": [
+      "card",
+      "clone",
+      "code",
+      "grid",
+      "includes",
+      "rows",
+      "show",
+      "stringify",
+      "tc"
+    ],
+    "handler_excerpt": "if(D.security.includes(a)){if(a===\"configureSecurityFilterChain\"){state.security.filters=clone(d.filters||[\"SecurityContextHolderFilter\",\"JwtAuthenticationFilter\",\"AuthorizationFilter\"]);state.security.rules=clone(d.rules||d.authorize||[])}if(a===\"configureUserDetailsService\")state.security.userDetails=clone(d);if(a===\"configurePasswordEncoder\")state.security.encoder=d.encoder||\"BCryptPasswordEncoder\";if(a===\"configureJwtFilter\")state.security.jwt={...state.security.jwt,enabled:true,filter:d.filter||\"JwtAuthenticationFilter\"};if(a===\"issueJwt\")state.security.jwt={...state.security.jwt,enabled:true,subject:d.subject||d.user||\"developer\",roles:clone(d.roles||[\"USER\"]),token:d.token||\"eyJhbGciOiJIUzI1NiJ9.simulated.signature\"};if(a===\"configureMethodSecurity\")state.security.methodSecurity=d.enabled!==false;if(a===\"setCorsConfig\")state.security.cors=clone(d);if(a===\"setCsrfConfig\")state.security.csrf=d.enabled!==false;if(a===\"configureOAuth2Client\")state.security.oauth2=clone(d);const flow=d.stages||(a===\"showOAuth2LoginFlow\"?[\"Authorization request\",\"Provider login\",\"Authorization code\",\"Token exchange\",\"UserInfo\",\"SecurityContext\"]:a===\"showAuthenticationFlow\"?[\"Request\",\"SecurityFilterChain\",\"AuthenticationManager\",\"UserDetailsService\",\"PasswordEncoder\",\"SecurityContext\"]:a===\"showAuthorizationFlow\"?[\"Principal\",\"Authorities\",\"AuthorizationManager\",\"Decision\"]:[]);show(\"Spring Security\",grid([[\"Password encoder\",state.security.encoder],[\"JWT\",state.security.jwt.enabled?\"Enabled\":\"Not configured\"],[\"Method security\",state.security.methodSecurity?\"Enabled\":\"Disabled\"],[\"CSRF\",state.security.csrf?\"Enabled\":\"Disabled\"],[\"OAuth2 registration\",state.security.oauth2.registration||state.security.oauth2.name||\"None\"]])+card(\"Security filter chain\",rows(state.security.filters))+card(tc(a),flow.length?rows(flow):code(JSON.stringify(d,null,2))));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}

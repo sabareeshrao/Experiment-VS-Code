@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "software": "intellij",
+  "domain": "resilience",
+  "purpose": "Microscopic IntelliJ enterprise evidence for the resilience domain.",
+  "source": "simulator/intellij/enterprise-ui.js",
+  "source_lines": {
+    "start": 30,
+    "end": 30
+  },
+  "actions": {
+    "configureCircuitBreaker": {
+      "action_specific_data_keys": [
+        "backoff",
+        "failureRateThreshold",
+        "maxAttempts",
+        "name",
+        "recover",
+        "slidingWindowSize",
+        "state",
+        "waitDuration"
+      ],
+      "action_specific_state_paths": [
+        "resilie",
+        "resilience.circuit",
+        "resilience.retry",
+        "resilience.springRetry"
+      ],
+      "action_specific_source_snippets": [
+        "if(D.resilience.includes(a)){const k=d.name||\"backend\";if(a===\"configureCircuitBreaker\")state.resilience.circuit[k]={state:d.state||\"CLOSED\",failureRateThreshold:d.failureRateThreshold||50,slidingWindowSize:d.slidingWindowSize||10};if(a===\"configureRetry\")state.resilience.retry[k]={maxAttempts:d.maxAttempts||3,waitDuration:d.waitDuration||\"500ms\"};if(a===\"configureSpringRetry\")state.resilience.springRetry[k]={maxAttempts:d.maxAttempts||3,backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilie"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureRetry": {
+      "action_specific_data_keys": [
+        "backoff",
+        "failureRateThreshold",
+        "limitForPeriod",
+        "maxAttempts",
+        "recover",
+        "refreshPeriod",
+        "slidingWindowSize",
+        "state",
+        "timeout",
+        "waitDuration"
+      ],
+      "action_specific_state_paths": [
+        "resilience.circuit",
+        "resilience.rate",
+        "resilience.retry",
+        "resilience.springRetry",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "==\"configureCircuitBreaker\")state.resilience.circuit[k]={state:d.state||\"CLOSED\",failureRateThreshold:d.failureRateThreshold||50,slidingWindowSize:d.slidingWindowSize||10};if(a===\"configureRetry\")state.resilience.retry[k]={maxAttempts:d.maxAttempts||3,waitDuration:d.waitDuration||\"500ms\"};if(a===\"configureSpringRetry\")state.resilience.springRetry[k]={maxAttempts:d.maxAttempts||3,backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureSpringRetry": {
+      "action_specific_data_keys": [
+        "backoff",
+        "limitForPeriod",
+        "maxAttempts",
+        "maxConcurrentCalls",
+        "recover",
+        "refreshPeriod",
+        "slidingWindowSize",
+        "timeout",
+        "waitDuration"
+      ],
+      "action_specific_state_paths": [
+        "resilien",
+        "resilience.bulkhead",
+        "resilience.rate",
+        "resilience.retry",
+        "resilience.springRetry",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "eshold||50,slidingWindowSize:d.slidingWindowSize||10};if(a===\"configureRetry\")state.resilience.retry[k]={maxAttempts:d.maxAttempts||3,waitDuration:d.waitDuration||\"500ms\"};if(a===\"configureSpringRetry\")state.resilience.springRetry[k]={maxAttempts:d.maxAttempts||3,backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilien"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureRateLimiter": {
+      "action_specific_data_keys": [
+        "backoff",
+        "limitForPeriod",
+        "maxAttempts",
+        "maxConcurrentCalls",
+        "method",
+        "outcome",
+        "recover",
+        "refreshPeriod",
+        "timeout"
+      ],
+      "action_specific_state_paths": [
+        "resilience.bulkhead",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.rate",
+        "resilience.springRetry",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "aitDuration||\"500ms\"};if(a===\"configureSpringRetry\")state.resilience.springRetry[k]={maxAttempts:d.maxAttempts||3,backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome|"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureTimeLimiter": {
+      "action_specific_data_keys": [
+        "attempts",
+        "backoff",
+        "circuitState",
+        "limitForPeriod",
+        "maxConcurrentCalls",
+        "method",
+        "outcome",
+        "recover",
+        "refreshPeriod",
+        "timeout"
+      ],
+      "action_specific_state_paths": [
+        "resilience.bulkhead",
+        "resilience.circuit",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.rate",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Res"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "configureBulkhead": {
+      "action_specific_data_keys": [
+        "attempts",
+        "circuitState",
+        "limitForPeriod",
+        "maxConcurrentCalls",
+        "method",
+        "outcome",
+        "refreshPeriod",
+        "timeout"
+      ],
+      "action_specific_state_paths": [
+        "resilience.bulkhead",
+        "resilience.circuit",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.rate",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "miter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Resilience\",grid([[\"Circuit breaker\",state.resilience.circuit[k]||\"Not configured\"],"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "setFallbackMethod": {
+      "action_specific_data_keys": [
+        "attempts",
+        "circuitState",
+        "maxConcurrentCalls",
+        "method",
+        "outcome",
+        "timeout"
+      ],
+      "action_specific_state_paths": [
+        "resilience.bulkhead",
+        "resilience.circuit",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.retry",
+        "resilience.springRetry",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "figureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Resilience\",grid([[\"Circuit breaker\",state.resilience.circuit[k]||\"Not configured\"],[\"Retry\",state.resilience.retry[k]||state.resilience.springRetry[k]||\"Not configured\"],[\"Rate limiter\""
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "simulateResilienceCall": {
+      "action_specific_data_keys": [
+        "attempts",
+        "circuitState",
+        "maxConcurrentCalls",
+        "method",
+        "outcome"
+      ],
+      "action_specific_state_paths": [
+        "resilience",
+        "resilience.bulkhead",
+        "resilience.circuit",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.rate",
+        "resilience.retry",
+        "resilience.springRetry"
+      ],
+      "action_specific_source_snippets": [
+        "\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Resilience\",grid([[\"Circuit breaker\",state.resilience.circuit[k]||\"Not configured\"],[\"Retry\",state.resilience.retry[k]||state.resilience.springRetry[k]||\"Not configured\"],[\"Rate limiter\",state.resilience.rate[k]||\"Not configured\"],[\"Time limiter\",state.resilience"
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "simulateSpringRetry": {
+      "action_specific_data_keys": [
+        "attempts",
+        "circuitState",
+        "maxConcurrentCalls",
+        "method",
+        "outcome"
+      ],
+      "action_specific_state_paths": [
+        "resilience.circuit",
+        "resilience.events",
+        "resilience.fallback",
+        "resilience.rate",
+        "resilience.retry",
+        "resilience.springRetry",
+        "resilience.time"
+      ],
+      "action_specific_source_snippets": [
+        "lience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Resilience\",grid([[\"Circuit breaker\",state.resilience.circuit[k]||\"Not configured\"],[\"Retry\",state.resilience.retry[k]||state.resilience.springRetry[k]||\"Not configured\"],[\"Rate limiter\",state.resilience.rate[k]||\"Not configured\"],[\"Time limiter\",state.resilience.time[k]||\"Not configured\"],[\""
+      ],
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "showResilienceEvents": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    },
+    "showCircuitState": {
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [],
+      "action_specific_source_snippets": [],
+      "project_effect_default": "inspect_or_transient_ui"
+    }
+  },
+  "shared_handler": {
+    "possible_data_keys": [
+      "attempts",
+      "backoff",
+      "circuitState",
+      "failureRateThreshold",
+      "limitForPeriod",
+      "maxAttempts",
+      "maxConcurrentCalls",
+      "method",
+      "name",
+      "outcome",
+      "recover",
+      "refreshPeriod",
+      "slidingWindowSize",
+      "state",
+      "timeout",
+      "waitDuration"
+    ],
+    "state_paths": [
+      "resilience.bulkhead",
+      "resilience.circuit",
+      "resilience.events",
+      "resilience.fallback",
+      "resilience.rate",
+      "resilience.retry",
+      "resilience.springRetry",
+      "resilience.time"
+    ],
+    "helper_functions": [
+      "card",
+      "grid",
+      "includes",
+      "push",
+      "rows",
+      "show",
+      "slice",
+      "stringify"
+    ],
+    "handler_excerpt": "if(D.resilience.includes(a)){const k=d.name||\"backend\";if(a===\"configureCircuitBreaker\")state.resilience.circuit[k]={state:d.state||\"CLOSED\",failureRateThreshold:d.failureRateThreshold||50,slidingWindowSize:d.slidingWindowSize||10};if(a===\"configureRetry\")state.resilience.retry[k]={maxAttempts:d.maxAttempts||3,waitDuration:d.waitDuration||\"500ms\"};if(a===\"configureSpringRetry\")state.resilience.springRetry[k]={maxAttempts:d.maxAttempts||3,backoff:d.backoff||\"500ms\",recover:d.recover||\"@Recover\"};if(a===\"configureRateLimiter\")state.resilience.rate[k]={limit:d.limitForPeriod||10,refresh:d.refreshPeriod||\"1s\"};if(a===\"configureTimeLimiter\")state.resilience.time[k]={timeout:d.timeout||\"2s\"};if(a===\"configureBulkhead\")state.resilience.bulkhead[k]={maxConcurrentCalls:d.maxConcurrentCalls||10};if(a===\"setFallbackMethod\")state.resilience.fallback[k]=d.method||\"fallback\";if(a===\"simulateResilienceCall\"||a===\"simulateSpringRetry\")state.resilience.events.push({name:k,outcome:d.outcome||\"SUCCESS\",attempts:d.attempts||1,circuit:d.circuitState||state.resilience.circuit[k]?.state||\"CLOSED\"});show(\"Resilience\",grid([[\"Circuit breaker\",state.resilience.circuit[k]||\"Not configured\"],[\"Retry\",state.resilience.retry[k]||state.resilience.springRetry[k]||\"Not configured\"],[\"Rate limiter\",state.resilience.rate[k]||\"Not configured\"],[\"Time limiter\",state.resilience.time[k]||\"Not configured\"],[\"Bulkhead\",state.resilience.bulkhead[k]||\"Not configured\"],[\"Fallback\",state.resilience.fallback[k]||\"None\"]])+card(\"Events\",rows(state.resilience.events.slice(-8),x=>JSON.stringify(x))));return}"
+  },
+  "replay_and_continuity": {
+    "cumulative_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "destructive_reset_protection": false,
+    "semantic_anchors": false,
+    "checkpoints": false
+  },
+  "ai_rules": [
+    "Read the top-level feature JSON for the requested capability first.",
+    "Use action-specific keys and snippets before shared domain keys.",
+    "Shared handler keys are possibilities, not automatically valid for every action.",
+    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+  ]
+}
