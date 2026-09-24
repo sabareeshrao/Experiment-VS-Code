@@ -16,13 +16,19 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,"."+deco
 
  await page.locator("#prevBtn").click();
  await page.waitForFunction(()=>document.querySelector("#stepTitle")?.textContent.startsWith("497."));
- const input=frame().locator("#ijClassName");
+ let input=frame().locator("#ijClassName");
  await input.click();
+ await input.press("End");
+ await input.type("X");
+ assert((await input.inputValue()).endsWith("X"),"Live input did not accept typed text");
  await input.press("ArrowRight");
- await page.waitForTimeout(120);
- assert.match(await page.locator("#stepTitle").innerText(),/^497\./);
+ await page.waitForFunction(()=>document.querySelector("#stepTitle")?.textContent.startsWith("498."));
+ assert.match(await page.locator("#stepTitle").innerText(),/^498\./);
 
+ await page.locator("#prevBtn").click();
+ await page.waitForFunction(()=>document.querySelector("#stepTitle")?.textContent.startsWith("497."));
+ input=frame().locator("#ijClassName");
  await input.press("Alt+ArrowRight");
  await page.waitForFunction(()=>document.querySelector("#stepTitle")?.textContent.startsWith("498."));
- console.log("Lesson navigation focus regression passed.");
+ console.log("Lesson navigation focus regression passed: live text cannot steal Left/Right lesson arrows.");
 }finally{if(browser)await browser.close();server.close()}})().catch(e=>{console.error(e);process.exitCode=1});
