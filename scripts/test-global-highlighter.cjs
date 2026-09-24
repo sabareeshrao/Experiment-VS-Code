@@ -110,13 +110,7 @@ const server=http.createServer((req,res)=>{
         assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
       }
       await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
-        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary cleared before the five-second notice window");
-        await child.waitForTimeout(4100);
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": blue boundary did not clear after five seconds");
-      }else{
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": forced highlight clear did not remove the boundary");
-      }
+      assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": explicit highlight clear did not remove the boundary");
       await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());
       checked.push(software);
     }
