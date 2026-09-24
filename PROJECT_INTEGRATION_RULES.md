@@ -364,6 +364,7 @@ Before a new project or master upgrade is considered complete, verify:
 - explanation height adapts to content
 - no duplicate explanation cards
 - no giant/blinking highlight
+- blue action guidance targets only the precise control/row/line, uses the master highlighter's enhanced visible glow, and remains visible for **5 seconds** so the learner has time to notice it
 - user layout persistence does not get overwritten by replay
 - full-code/reference view is project-specific
 - downstream curriculum count/order remains unchanged by a runtime-only upgrade
