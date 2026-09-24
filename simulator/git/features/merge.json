@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "software": {
+    "id": "git",
+    "display_name": "Git",
+    "directory": "git",
+    "package_key": "git",
+    "target_fidelity": null
+  },
+  "feature": {
+    "id": "merge",
+    "display_name": "Merge",
+    "area": "branches_tags",
+    "interaction_kind": "passive_ui_capability",
+    "implementation_status": "registered_capability",
+    "source_kinds": [
+      "adaptive_capability_manifest"
+    ],
+    "manifest_declared": true,
+    "canonical_actions": [],
+    "candidate_related_actions": [
+      {
+        "action": "mergeBranch",
+        "score": 0.5,
+        "overlap": [
+          "merge"
+        ]
+      },
+      {
+        "action": "openMergeConflict",
+        "score": 0.5,
+        "overlap": [
+          "merge"
+        ]
+      },
+      {
+        "action": "continueMerge",
+        "score": 0.5,
+        "overlap": [
+          "merge"
+        ]
+      },
+      {
+        "action": "abortMerge",
+        "score": 0.5,
+        "overlap": [
+          "merge"
+        ]
+      }
+    ],
+    "action_mapping_note": "No exact action-name match; candidates are heuristic and require engine review."
+  },
+  "intent": {
+    "user_goal": "Use Merge in a realistic Git workflow.",
+    "transcript_requirement": "Match only when the video/transcript requires this visible interaction or result.",
+    "when_to_use": "Use when observed UI behavior corresponds to Merge.",
+    "when_not_to_use": "Do not substitute a related feature without matching visible behavior."
+  },
+  "ui_contract": {
+    "owner": "simulator/git",
+    "primary_area": "branches_tags",
+    "required_visibility": "Lesson use must produce a visible software-owned state.",
+    "before_state": "Package baseline plus prior cumulative actions.",
+    "interaction": "Inspect the engine to determine the correct action.",
+    "after_state": "The named surface/control/result must visibly reflect the interaction.",
+    "focus_and_scroll": "Keep active control/result visible without shaking.",
+    "highlight_rule": "Highlight only the precise target.",
+    "explanation_rule": "Use the single parent-owned global explanation card."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard when applicable"
+    ],
+    "parameters": "Inspect the exact engine handler before writing action.data; never invent parameters.",
+    "destructive": false
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.git",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent",
+    "final_step_animation": "current step only",
+    "user_preferences": "Persistent user layout/theme settings survive replay unless explicitly changed."
+  },
+  "transcript_matching": {
+    "canonical_feature_id": "merge",
+    "normalized_terms": [
+      "merge",
+      "Merge"
+    ],
+    "exact_engine_actions": [],
+    "candidate_engine_actions": [
+      "mergeBranch",
+      "openMergeConflict",
+      "continueMerge",
+      "abortMerge"
+    ],
+    "decision_rule": "Match visible interaction + expected result, then verify canonical action."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "merge",
+    "feature_available": true,
+    "preferred_actions": [],
+    "action_lookup_required": true,
+    "authoring_steps": [
+      "Confirm transcript use.",
+      "Read this feature file.",
+      "Inspect action handler parameters.",
+      "Do not invent actions.",
+      "Require visible UI result.",
+      "Test direct-jump replay."
+    ],
+    "missing_feature_rule": "If behavior is absent, upgrade the master simulator before creating the lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/git/engine.js",
+    "ui_source": "simulator/git/index.html",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.git",
+    "action_contract_source": "simulator/action-contract.json#simulators.git",
+    "implementation_search_terms": [
+      "merge"
+    ],
+    "source_review_required": true
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "visual_fidelity_note": "Catalog coverage does not prove pixel-perfect fidelity."
+  },
+  "validation": {
+    "manifest_feature_present": true,
+    "engine_action_present": false,
+    "exact_action_names": [],
+    "visual_browser_verification": "not implied"
+  },
+  "maintenance": {
+    "canonical_file": "simulator/git/features/merge.json",
+    "update_when": [
+      "feature UI changes",
+      "action changes",
+      "lesson parameters change",
+      "transcript audit discovers missing state"
+    ],
+    "generated_baseline_note": "Detailed baseline from current manifest and engine action surfaces; manual enrichment is allowed."
+  }
+}
