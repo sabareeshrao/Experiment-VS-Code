@@ -242,6 +242,36 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
 .ij-ps{width:min(1080px,92vw);height:min(680px,90vh);display:grid;grid-template-rows:54px minmax(0,1fr) 62px}.ij-ps-body{display:grid;grid-template-columns:190px minmax(0,1fr);min-height:0}.ij-ps-left{background:#292a2e;border-right:1px solid #37393e;padding:48px 10px 12px}.ij-ps-group{font-weight:600;margin:0 0 6px;color:#ddd}.ij-ps-item{height:30px;padding:0 40px;display:flex;align-items:center;border-radius:4px;font-size:13px}.ij-ps-item.active{background:#34578f}.ij-ps-main{position:relative;padding:35px 28px}.ij-ps-main h2{font-size:15px;margin:0 0 8px}.ij-ps-main .desc{color:#7f838b;font-size:12px;margin-bottom:25px}.ij-ps-row{display:grid;grid-template-columns:135px minmax(0,1fr) 95px;gap:14px;align-items:center;margin-bottom:16px;font-size:13px}.ij-ps-row .ij-field,.ij-ps-row .ij-select{height:40px}.ij-ps-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:0 18px;border-top:1px solid #383a3f}.ij-ps .ij-jdk-menu{left:163px;right:120px;top:174px}
 body.ijScreenshotMode .menu{display:none!important}body.ijScreenshotMode .app{grid-template-rows:42px 0 42px minmax(0,1fr) 23px}body.ijScreenshotMode .titlebar{height:42px}body.ijScreenshotMode .toolbar{height:42px;padding-left:8px}body.ijScreenshotMode .toolbar #newBtn,body.ijScreenshotMode .toolbar #saveBtn{display:none}body.ijScreenshotMode .projectTitle{font-size:12px}body.ijScreenshotMode .runConfig{margin-left:auto}
 
+
+/* v11: interactive fidelity repair */
+.ijFidelityLayer.transparent{pointer-events:none}
+.ijFidelityLayer.transparent .ij-context,.ijFidelityLayer.transparent .ij-submenu,.ijFidelityLayer.transparent .ij-class-pop,.ijFidelityLayer.transparent .ij-mini-create{pointer-events:auto}
+.ij-dialog-close,.ij-search-ghost,.ij-tech,.ij-build button,.ij-advanced,.ij-context-row,.ij-class-opt,.ij-ps-item,.ij-sdk-list-row,.ij-jdk-row,.ij-field-icon,.ij-welcome-nav button,.ij-welcome-action,.ij-onboarding-close{border:0;font:inherit;color:inherit;cursor:pointer}
+.ij-dialog-close,.ij-search-ghost,.ij-tech,.ij-build button,.ij-advanced,.ij-context-row,.ij-class-opt,.ij-ps-item,.ij-sdk-list-row,.ij-jdk-row,.ij-field-icon{background:transparent}
+.ij-dialog-close{margin-left:auto;width:34px;height:34px;border-radius:5px;display:grid;place-items:center}.ij-dialog-close:hover{background:#383a3f}
+.ij-onboarding-close{position:absolute;right:12px;top:10px;background:transparent;color:#8d9198;font-size:20px}
+.ij-field{width:100%;outline:none}.ij-field:focus,.ij-select:focus{border-color:#4f86f7;box-shadow:0 0 0 1px #4f86f7}
+.ij-field-wrap{position:relative;display:flex;min-width:0}.ij-field-wrap .ij-field{padding-right:40px}.ij-field-icon{position:absolute;right:4px;top:4px;width:31px;height:31px;border-radius:4px}.ij-field-icon:hover{background:#3a3c42}
+.ij-click-check{display:flex!important;align-items:center;cursor:pointer}.ij-click-check input{position:absolute;opacity:0;pointer-events:none}.ij-click-check .check-ui{width:22px;height:22px;border:1px solid #64676e;border-radius:4px;margin-right:8px;display:grid;place-items:center}.ij-click-check input:checked+.check-ui{background:#4c86f7;border-color:#4c86f7;color:#fff}.ij-click-check input:not(:checked)+.check-ui{background:transparent;color:transparent}
+.ij-build button{height:39px;min-width:92px;border:1px solid #55585f;margin-right:-1px}.ij-build button:first-child{border-radius:5px 0 0 5px}.ij-build button:last-child{border-radius:0 5px 5px 0}.ij-build button.active{background:#3b3d42}.ij-build button:hover{background:#414349}
+.ij-advanced{display:block;width:calc(100% - 6px);margin:29px 0 0 6px;text-align:left;border-top:1px solid #36383d;padding:15px 0 0;color:#c9cbd0}.ij-advanced-body{display:none;margin:14px 0 0 120px}.ij-advanced-body.show{display:block}.ij-advanced-body label{display:grid;gap:7px;color:#aaaeb5}
+.ij-jdk-row{width:100%;text-align:left}.ij-jdk-row:not(.section):hover{background:#383b41}.ij-jdk-row.section{cursor:default}
+.ij-context-row{width:100%;text-align:left}.ij-context-row:hover,.ij-context-row:focus-visible{background:#335a91;outline:0}.ij-submenu .ij-context-row:first-child{background:transparent}.ij-submenu .ij-context-row:first-child:hover{background:#335a91}
+.ij-class-input input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#e1e3e7;font:inherit}.ij-class-opt{width:100%;text-align:left}.ij-class-opt:hover{background:#383b41}.ij-class-help{margin-top:9px;color:#787c84;font-size:11px}
+.ij-mini-create{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:390px;background:#292a2e;border:1px solid #3a3c42;border-radius:7px;box-shadow:0 18px 42px rgba(0,0,0,.55);padding:18px;display:grid;gap:15px}.ij-mini-create>div{display:flex;justify-content:flex-end;gap:9px}
+.ij-ps-item{width:100%;text-align:left}.ij-ps-item:hover{background:#373a40}.ij-ps-item.active:hover{background:#34578f}
+.ij-ps-main{overflow:auto;min-width:0}.ij-ps-card,.ij-ps-empty{border:1px solid #3d3f45;border-radius:6px;padding:14px;background:#26272b;white-space:pre-wrap}.ij-ps-card span{display:block;color:#8d9198;margin-top:5px}
+.ij-sdk-list{display:grid;border:1px solid #3d3f45;border-radius:6px;overflow:hidden;margin-bottom:14px}.ij-sdk-list-row{height:44px;padding:0 12px;text-align:left;border-bottom:1px solid #36383d!important}.ij-sdk-list-row:last-child{border-bottom:0!important}.ij-sdk-list-row:hover{background:#34363c}.ij-sdk-list-row span{display:block;margin-left:22px;color:#7d8189;font-size:11px}
+.ij-btn.disabled,.ij-btn:disabled{opacity:.45;cursor:not-allowed}.ij-btn:not(:disabled){cursor:pointer}.ij-btn:not(:disabled):hover{filter:brightness(1.12)}
+.ij-empty-editor-hints{position:absolute;left:50%;top:28%;transform:translate(-50%,-50%);font:15px/1.5 "Segoe UI",Arial,sans-serif;color:#74777e;white-space:pre;text-align:left;pointer-events:none}.editorWrap{position:relative}
+body.ijScreenshotMode .bottom.hidden,body.ijScreenshotMode .splitH.hidden{display:none!important}
+.ij-ps-row select.ij-select{display:block;appearance:auto;padding:0 10px}
+.projectHeadTool.active,.rail.active{background:#34578f!important;color:#fff!important}
+body.ijScreenshotMode .work.noBottom{grid-template-rows:minmax(0,1fr) 0 0!important}
+body.ijScreenshotMode .toolbar #searchBtn{display:block!important}
+body.ijScreenshotMode .toolbar #terminalBtn,body.ijScreenshotMode .toolbar #gitBtn{display:block!important}
+body.ijScreenshotMode .toolbar #terminalBtn.hidden,body.ijScreenshotMode .toolbar #gitBtn.hidden{display:none!important}
+
 </style>
 <link rel="stylesheet" href="ide-polish.css?v=3">
 </head>
@@ -279,7 +309,7 @@ body.ijScreenshotMode .menu{display:none!important}body.ijScreenshotMode .app{gr
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="enterprise-ui.js?v=1"></script>
-<script src="engine.js?v=19"></script>
+<script src="engine.js?v=21"></script>
 <script src="adaptive-ui.js?v=1"></script>
   <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=23"></script>

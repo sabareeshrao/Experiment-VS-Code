@@ -40,7 +40,7 @@ function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))o
 function renderTabs(){refs.tabs.innerHTML="";for(const p of openTabs){if(!files[p])continue;const t=document.createElement("div");t.className="tab"+(p===activeFile?" active":"");t.dataset.file=p;t.innerHTML='<span>'+esc(p.split("/").pop())+'</span>'+(files[p].pinned?'<span class="tabPin">PIN</span>':'')+'<span class="tabClose">×</span>';t.onclick=e=>{if(!e.target.classList.contains("tabClose")){activeFile=p;renderAll()}};t.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeFile(p)};refs.tabs.appendChild(t)}}
 function closeFile(p){openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;renderAll()}
 function renderSplitEditor(){const splitFile=state.editorSplit&&state.splitFile&&files[state.splitFile]?state.splitFile:(state.editorSplit?activeFile:null);const enabled=!!splitFile;refs.editorPane?.classList.toggle("editorSplit",enabled);refs.editorSplitWrap?.classList.toggle("hidden",!enabled);if(!enabled){if(refs.editorSplitCode)refs.editorSplitCode.innerHTML="";return}refs.editorSplitTitle.textContent=splitFile.split("/").pop();const sf=files[splitFile],lines=String(sf?.content??"").split("\n");refs.editorSplitCode.innerHTML=lines.map((line,i)=>'<div class="splitCodeLine"><span class="splitLineNo">'+(i+1)+'</span><span class="splitCodeText">'+syntax(line,sf?.language||"java")+'</span></div>').join("")}
-function renderEditor(){refs.gutter.innerHTML="";refs.code.innerHTML="";if(!activeFile||!files[activeFile]){renderSplitEditor();return}const f=files[activeFile],lines=String(f.content??"").split("\n");lines.forEach((line,i)=>{const no=i+1,g=document.createElement("div");g.className="gline";const has=state.breakpoints.some(b=>b.file===activeFile&&Number(b.line)===no);g.innerHTML='<span class="bp '+(has?"on":"")+'"></span><span></span><span class="gnum">'+no+'</span>';g.onclick=()=>toggleManualBreakpoint(no);refs.gutter.appendChild(g);const p=(state.problems||[]).find(x=>(!x.file||x.file===activeFile)&&Number(x.line||0)===no);const s=document.createElement("span");s.className="codeLine"+(focusRange&&focusRange.file===activeFile&&((Array.isArray(focusRange.lines)&&focusRange.lines.includes(no))||(!focusRange.lines&&no>=focusRange.start&&no<=focusRange.end))?" focus":"")+(p?" diag-"+(String(p.severity||"warning").toLowerCase().includes("error")?"error":"warning"):"");s.dataset.line=no;s.title=p?.message||"";s.innerHTML=syntax(line,f.language||"java");refs.code.appendChild(s)});renderSplitEditor()}
+function renderEditor(){refs.gutter.innerHTML="";refs.code.innerHTML="";if(!activeFile||!files[activeFile]){if(state.fidelityMode)refs.code.innerHTML='<span class="ij-empty-editor-hints">Search Everywhere  Double Shift\n\nGo to File  Ctrl+Shift+N\n\nRecent Files  Ctrl+E\n\nNavigation Bar  Alt+Home\n\nDrop files here to open them</span>';renderSplitEditor();return}const f=files[activeFile],lines=String(f.content??"").split("\n");lines.forEach((line,i)=>{const no=i+1,g=document.createElement("div");g.className="gline";const has=state.breakpoints.some(b=>b.file===activeFile&&Number(b.line)===no);g.innerHTML='<span class="bp '+(has?"on":"")+'"></span><span></span><span class="gnum">'+no+'</span>';g.onclick=()=>toggleManualBreakpoint(no);refs.gutter.appendChild(g);const p=(state.problems||[]).find(x=>(!x.file||x.file===activeFile)&&Number(x.line||0)===no);const s=document.createElement("span");s.className="codeLine"+(focusRange&&focusRange.file===activeFile&&((Array.isArray(focusRange.lines)&&focusRange.lines.includes(no))||(!focusRange.lines&&no>=focusRange.start&&no<=focusRange.end))?" focus":"")+(p?" diag-"+(String(p.severity||"warning").toLowerCase().includes("error")?"error":"warning"):"");s.dataset.line=no;s.title=p?.message||"";s.innerHTML=syntax(line,f.language||"java");refs.code.appendChild(s)});renderSplitEditor()}
 function toggleManualBreakpoint(line){const i=state.breakpoints.findIndex(b=>b.file===activeFile&&Number(b.line)===line);if(i>=0)state.breakpoints.splice(i,1);else state.breakpoints.push({file:activeFile,line});renderEditor()}
 function renderRight(){
  if(activeRight==="maven"){const m=state.maven;refs.right.innerHTML='<div class="cards">'+card("Project",m.project||state.project.name)+card("Profile",m.profile||"default")+card("Last Goal",m.lastGoal||"—")+card("Status",m.status||"Ready")+'</div><div class="head">Lifecycle</div>'+["clean","validate","compile","test","package","verify","install","deploy"].map(g=>'<div class="mavenGoal" data-maven-goal="'+g+'">▶ '+g+'</div>').join("")+'<div class="head">Dependencies</div><div class="mavenGoal" data-maven-goal="dependency:tree">dependencies</div>';refs.right.querySelectorAll("[data-maven-goal]").forEach(row=>row.onclick=()=>{state.maven.lastGoal=row.dataset.mavenGoal;state.maven.status="BUILD SUCCESS";ensureMavenArtifacts(row.dataset.mavenGoal);activeBottom="run";setBottom("run","[INFO] --- "+row.dataset.mavenGoal+"\n[INFO] BUILD SUCCESS");renderRight()});return}
@@ -93,7 +93,13 @@ function notify(text,type=""){clearTimeout(notificationTimer);refs.notification.
 function showModal(kind,title,html){modalKind=kind;refs.modalTitle.textContent=title;refs.modalBody.innerHTML=html;refs.modalFoot.innerHTML='<button id="modalOk">OK</button>';refs.modalLayer.classList.add("show");$("modalOk").onclick=closeModal}
 function closeModal(){modalKind="";refs.modalLayer.classList.remove("show");refs.modalBody.innerHTML="";refs.modalFoot.innerHTML=""}
 
-function hideFidelity(){if(!refs.fidelity)return;refs.fidelity.className="ijFidelityLayer";refs.fidelity.innerHTML=""}
+function hideFidelity(){
+ if(!refs.fidelity)return;
+ refs.fidelity.className="ijFidelityLayer";
+ refs.fidelity.innerHTML="";
+}
+function fidelityNotice(message,type=""){notify(message,type)}
+function fidelityButton(label,attrs=""){return '<button type="button" '+attrs+'>'+label+'</button>'}
 function screenshotTree(){
  return [
   {name:".idea",path:".idea",type:"folder",open:false,children:[]},
@@ -101,43 +107,215 @@ function screenshotTree(){
   {name:".gitignore",path:".gitignore",type:"file",language:"text"}
  ];
 }
-function applyScreenshotProject(d={}){
+function resetScreenshotWorkspace(d={}){
  state.project={name:d.name||"App_1",sdk:d.sdk||"Java 21",languageLevel:String(d.languageLevel||"21")};
  state.fidelityMode=d.fidelityMode!==false;
  state.tree=clone(d.tree||screenshotTree());
  files=clone(d.files||{".gitignore":{language:"text",content:"# IntelliJ project files\n.idea/\nout/\n"}});
- state.files=clone(files);activeFile=null;openTabs=[];state.git=state.git||{branch:"main",changes:[],history:[]};state.git.branch=state.git.branch||"main";
+ state.files=clone(files);
+ state.visibleFeatures=[];
+ state.problems=[];
+ state.breakpoints=[];
+ state.runConfigurations=[];
+ state.activeRunConfiguration="";
+ state.bottomCache={};
+ state.terminal="";
+ state.console="";
+ state.maven={};
+ state.spring={};
+ state.jpa={};
+ state.database={};
+ state.tests={};
+ state.git={branch:"main",changes:[],history:[]};
+ activeFile=null;
+ openTabs=[];
+ activeBottom="run";
+ activeRight="structure";
+ focusRange=null;
  renderAll();
 }
-function showWelcomeSurface(){
- refs.fidelity.className="ijFidelityLayer show";
- refs.fidelity.innerHTML='<section class="ij-welcome"><aside class="ij-welcome-side"><div class="ij-brand"><span class="ij-shot-logo">IJ</span><div><span class="ij-brand-title">IntelliJ IDEA</span><span class="ij-brand-ver">2025.2.6.2</span></div></div><div class="ij-welcome-nav"><button class="active">Projects</button><button>Kotlin Notebooks</button><button>Customize</button><button>Plugins</button><button>Learn</button></div></aside><main class="ij-welcome-main"><h1>Welcome to IntelliJ IDEA</h1><p>Create a new project to start from scratch.<br>Open existing project from disk or version control.</p><div class="ij-welcome-actions"><button class="ij-welcome-action primary" id="ijWelcomeNew"><span class="box">＋</span>New Project</button><button class="ij-welcome-action"><span class="box">▱</span>Open</button><button class="ij-welcome-action"><span class="box">⑂</span>Clone Repository</button></div><div class="ij-onboarding"><strong>Take a quick onboarding tour</strong><span>New to IntelliJ IDEA? Get the most out of your IDE.</span></div></main></section>';
- const b=$("ijWelcomeNew");if(b)b.onclick=()=>showNewProjectSurface({name:"untitled",location:"~\\IdeaProjects",sdk:"Oracle OpenJDK 21.0.11"},false);
+function applyScreenshotProject(d={}){resetScreenshotWorkspace(d)}
+function closeFidelityToWorkspace(){
+ hideFidelity();
+ if(state.fidelityMode)renderAll();
 }
-function jdkMenuHtml(selected){
- return '<div class="ij-jdk-menu"><div class="ij-jdk-row ij-jdk-bad">◉ &lt;No JDK&gt;</div><div class="ij-jdk-row">⇩ Download Oracle OpenJDK 26.0.2</div><div class="ij-jdk-row">⇩ Download JDK...</div><div class="ij-jdk-row">▱ Add JDK from Disk...</div><div class="ij-jdk-row section">Detected JDKs</div><div class="ij-jdk-row '+(String(selected).includes("21")?"active":"")+'">▱ Oracle OpenJDK 21.0.11 <span class="ij-jdk-path">C:\\Program Files\\Java\\jdk-21.0.11</span></div><div class="ij-jdk-row '+(String(selected).includes("17")?"active":"")+'">▱ Oracle OpenJDK 17.0.12 <span class="ij-jdk-path">C:\\Program Files\\Java\\jdk-17</span></div><div class="ij-jdk-row '+(String(selected).includes("1.8")||String(selected).includes("8")?"active":"")+'">▱ Oracle OpenJDK 1.8.0_351 <span class="ij-jdk-path">C:\\Program Files\\Java\\jdk1.8.0_351</span></div></div>';
+function bindFidelityClose(selector,onClose){
+ const el=refs.fidelity?.querySelector(selector);
+ if(el)el.addEventListener("click",onClose||closeFidelityToWorkspace);
+}
+function showWelcomeSurface(panel="Projects"){
+ refs.fidelity.className="ijFidelityLayer show";
+ const panels={
+  Projects:{title:"Welcome to IntelliJ IDEA",copy:"Create a new project to start from scratch.<br>Open existing project from disk or version control."},
+  "Kotlin Notebooks":{title:"Kotlin Notebooks",copy:"Create and open Kotlin notebooks inside IntelliJ IDEA."},
+  Customize:{title:"Customize IntelliJ IDEA",copy:"Adjust color theme, accessibility, keymap, and UI settings."},
+  Plugins:{title:"Plugins",copy:"Install and manage IntelliJ IDEA plugins."},
+  Learn:{title:"Learn IntelliJ IDEA",copy:"Open learning resources and IDE feature tours."}
+ };
+ const info=panels[panel]||panels.Projects;
+ refs.fidelity.innerHTML='<section class="ij-welcome"><aside class="ij-welcome-side"><div class="ij-brand"><span class="ij-shot-logo">IJ</span><div><span class="ij-brand-title">IntelliJ IDEA</span><span class="ij-brand-ver">2025.2.6.2</span></div></div><div class="ij-welcome-nav">'+Object.keys(panels).map(name=>'<button type="button" data-welcome-panel="'+esc(name)+'" class="'+(name===panel?'active':'')+'">'+esc(name)+'</button>').join("")+'</div></aside><main class="ij-welcome-main"><h1>'+info.title+'</h1><p>'+info.copy+'</p><div class="ij-welcome-actions"><button type="button" class="ij-welcome-action primary" id="ijWelcomeNew"><span class="box">＋</span>New Project</button><button type="button" class="ij-welcome-action" id="ijWelcomeOpen"><span class="box">▱</span>Open</button><button type="button" class="ij-welcome-action" id="ijWelcomeClone"><span class="box">⑂</span>Clone Repository</button></div><div class="ij-onboarding"><button type="button" class="ij-onboarding-close" id="ijOnboardingClose" aria-label="Close onboarding">×</button><strong>Take a quick onboarding tour</strong><span>New to IntelliJ IDEA? Get the most out of your IDE.</span></div></main></section>';
+ refs.fidelity.querySelectorAll("[data-welcome-panel]").forEach(btn=>btn.addEventListener("click",()=>showWelcomeSurface(btn.dataset.welcomePanel)));
+ $("ijWelcomeNew")?.addEventListener("click",()=>showNewProjectSurface({name:"untitled",location:"~\\IdeaProjects",sdk:"Oracle OpenJDK 21.0.11"},false));
+ $("ijWelcomeOpen")?.addEventListener("click",()=>fidelityNotice("Open project chooser opened"));
+ $("ijWelcomeClone")?.addEventListener("click",()=>fidelityNotice("Clone Repository workflow opened"));
+ $("ijOnboardingClose")?.addEventListener("click",e=>{e.currentTarget.closest(".ij-onboarding")?.remove()});
+}
+function normalizeSdkChoice(value){
+ const v=String(value||"");
+ if(v==="none"||v.includes("<No JDK>"))return "<No JDK>";
+ if(v==="8"||v.includes("1.8"))return "Oracle OpenJDK 1.8.0_351";
+ if(v==="17"||v.includes("17"))return "Oracle OpenJDK 17.0.12";
+ return "Oracle OpenJDK 21.0.11";
+}
+function sdkLanguageLevel(value){
+ const v=String(value||"");
+ if(v.includes("1.8")||v==="8"||v.includes("Java 8"))return "8";
+ if(v.includes("17"))return "17";
+ return "21";
+}
+function jdkMenuHtml(selected,scope="wizard"){
+ const rows=[
+  {label:"◉ <No JDK>",value:"none",bad:true},
+  {label:"⇩ Download Oracle OpenJDK 26.0.2",action:"download26"},
+  {label:"⇩ Download JDK...",action:"download"},
+  {label:"▱ Add JDK from Disk...",action:"disk"},
+  {section:"Detected JDKs"},
+  {label:"▱ Oracle OpenJDK 21.0.11",path:"C:\\Program Files\\Java\\jdk-21.0.11",value:"21"},
+  {label:"▱ Oracle OpenJDK 17.0.12",path:"C:\\Program Files\\Java\\jdk-17",value:"17"},
+  {label:"▱ Oracle OpenJDK 1.8.0_351",path:"C:\\Program Files\\Java\\jdk1.8.0_351",value:"8"}
+ ];
+ return '<div class="ij-jdk-menu" data-jdk-menu="'+scope+'">'+rows.map(row=>{
+  if(row.section)return '<div class="ij-jdk-row section">'+row.section+'</div>';
+  const normalized=normalizeSdkChoice(row.value||"");
+  const active=row.value&&String(selected).includes(normalized.replace("Oracle OpenJDK ","").split(" ")[0]);
+  return '<button type="button" class="ij-jdk-row '+(row.bad?'ij-jdk-bad ':'')+(active?'active':'')+'" '+(row.value?'data-sdk-value="'+row.value+'"':'data-sdk-action="'+row.action+'"')+'><span>'+esc(row.label)+'</span>'+(row.path?'<span class="ij-jdk-path">'+esc(row.path)+'</span>':'')+'</button>';
+ }).join("")+'</div>';
 }
 function showNewProjectSurface(d={},jdkOpen=false){
- const name=d.name||"App_1",location=d.location||"~\\Desktop\\Java_Codes",sdk=d.sdk||"Oracle OpenJDK 21.0.11";
+ const draft={
+  name:String(d.name??"App_1"),
+  location:String(d.location??"~\\Desktop\\Java_Codes"),
+  sdk:String(d.sdk??"Oracle OpenJDK 21.0.11"),
+  tech:String(d.tech??"Java"),
+  build:String(d.build??"IntelliJ"),
+  git:d.git===true,
+  sample:d.sample!==false,
+  advanced:d.advanced===true
+ };
  refs.fidelity.className="ijFidelityLayer show";
- refs.fidelity.innerHTML='<div class="ij-screen-dim"><section class="ij-dialog ij-new-project"><header class="ij-dialog-head"><span class="ij-shot-logo sm">IJ</span><span>New Project</span><span class="ij-dialog-close">×</span></header><div class="ij-new-project-body"><aside class="ij-new-project-left"><div class="ij-search-ghost">⌕</div><div class="ij-left-label">New Project</div><div class="ij-tech active"><span class="ti">▱</span>Java</div><div class="ij-tech"><span class="ti">〈</span>Kotlin</div><div class="ij-tech"><span class="ti">G</span>Groovy</div><div class="ij-tech"><span class="ti">▱</span>Empty Project</div><div class="ij-left-label" style="margin-top:18px">Generators</div><div class="ij-tech"><span class="ti">m</span>Maven Archetype</div><div class="ij-tech"><span class="ti">▭</span>JavaFX</div><div class="ij-tech locked"><span class="ti">♨</span>Spring</div></aside><main class="ij-new-project-main"><div class="ij-form-row"><span>Name:</span><div class="ij-field '+(name==="untitled"?"focus":"")+'">'+esc(name)+'</div></div><div class="ij-form-row"><span>Location:</span><div class="ij-field">'+esc(location)+'<span style="margin-left:auto">▱</span></div></div><div class="ij-muted">Project will be created in: '+esc(location)+'\\'+esc(name)+'</div><div class="ij-check" style="margin-bottom:24px"><span style="display:inline-block;width:21px;height:21px;border:1px solid #64676e;border-radius:4px;margin-right:8px;vertical-align:middle"></span>Create Git repository</div><div class="ij-form-row"><span>Build system:</span><div class="ij-build"><span class="active">IntelliJ</span><span>Maven</span><span>Gradle</span></div></div><div class="ij-form-row"><span>JDK:</span><div class="ij-select focus" id="ijWizardJdk">▱ '+esc(sdk)+'<span style="margin-left:auto">⌄</span></div></div><div class="ij-check"><span class="box">✓</span>Add sample code</div><div class="ij-advanced">›&nbsp;&nbsp;Advanced Settings</div>'+(jdkOpen?jdkMenuHtml(sdk):'')+'<div class="ij-dialog-actions"><button class="ij-btn primary" id="ijWizardCreate">Create</button><button class="ij-btn">Cancel</button></div></main></div></section></div>';
- const j=$("ijWizardJdk");if(j)j.onclick=()=>showNewProjectSurface(d,true);
- const c=$("ijWizardCreate");if(c)c.onclick=()=>{hideFidelity();applyScreenshotProject({name:name,sdk:sdk.includes("1.8")?"Java 8":sdk.includes("17")?"Java 17":"Java 21",languageLevel:sdk.includes("1.8")?"8":sdk.includes("17")?"17":"21"})};
+ const techs=["Java","Kotlin","Groovy","Empty Project"];
+ const generators=["Maven Archetype","JavaFX","Spring"];
+ refs.fidelity.innerHTML='<div class="ij-screen-dim"><section class="ij-dialog ij-new-project" role="dialog" aria-label="New Project"><header class="ij-dialog-head"><span class="ij-shot-logo sm">IJ</span><span>New Project</span><button type="button" class="ij-dialog-close" id="ijWizardClose" aria-label="Close">×</button></header><div class="ij-new-project-body"><aside class="ij-new-project-left"><button type="button" class="ij-search-ghost" id="ijWizardSearch" aria-label="Search project types">⌕</button><div class="ij-left-label">New Project</div>'+techs.map(x=>'<button type="button" class="ij-tech '+(x===draft.tech?'active':'')+'" data-tech="'+esc(x)+'"><span class="ti">'+(x==="Java"?"▱":x==="Kotlin"?"〈":x==="Groovy"?"G":"▱")+'</span>'+esc(x)+'</button>').join("")+'<div class="ij-left-label" style="margin-top:18px">Generators</div>'+generators.map(x=>'<button type="button" class="ij-tech '+(x==="Spring"?'locked':'')+'" data-generator="'+esc(x)+'"><span class="ti">'+(x==="Maven Archetype"?"m":x==="JavaFX"?"▭":"♨")+'</span>'+esc(x)+'</button>').join("")+'</aside><main class="ij-new-project-main"><div class="ij-form-row"><label for="ijProjectName">Name:</label><input id="ijProjectName" class="ij-field '+(draft.name==="untitled"?'focus':'')+'" value="'+esc(draft.name)+'"></div><div class="ij-form-row"><label for="ijProjectLocation">Location:</label><div class="ij-field-wrap"><input id="ijProjectLocation" class="ij-field" value="'+esc(draft.location)+'"><button type="button" class="ij-field-icon" id="ijLocationBrowse" title="Choose location">▱</button></div></div><div class="ij-muted" id="ijProjectPathPreview">Project will be created in: '+esc(draft.location)+'\\'+esc(draft.name)+'</div><label class="ij-check ij-click-check"><input type="checkbox" id="ijGitCheck" '+(draft.git?'checked':'')+'><span class="check-ui"></span>Create Git repository</label><div class="ij-form-row" style="margin-top:24px"><span>Build system:</span><div class="ij-build">'+["IntelliJ","Maven","Gradle"].map(x=>'<button type="button" data-build="'+x+'" class="'+(x===draft.build?'active':'')+'">'+x+'</button>').join("")+'</div></div><div class="ij-form-row"><span>JDK:</span><button type="button" class="ij-select focus" id="ijWizardJdk">▱ <span id="ijWizardJdkText">'+esc(draft.sdk)+'</span><span style="margin-left:auto">⌄</span></button></div><label class="ij-check ij-click-check"><input type="checkbox" id="ijSampleCheck" '+(draft.sample?'checked':'')+'><span class="check-ui checked">✓</span>Add sample code</label><button type="button" class="ij-advanced" id="ijAdvancedToggle">›&nbsp;&nbsp;Advanced Settings</button><div class="ij-advanced-body '+(draft.advanced?'show':'')+'" id="ijAdvancedBody"><label>Module name <input class="ij-field" id="ijModuleName" value="'+esc(draft.name)+'"></label></div>'+(jdkOpen?jdkMenuHtml(draft.sdk,"wizard"):'')+'<div class="ij-dialog-actions"><button type="button" class="ij-btn primary" id="ijWizardCreate">Create</button><button type="button" class="ij-btn" id="ijWizardCancel">Cancel</button></div></main></div></section></div>';
+ const collect=()=>({
+  name:$("ijProjectName")?.value||draft.name,
+  location:$("ijProjectLocation")?.value||draft.location,
+  sdk:$("ijWizardJdkText")?.textContent||draft.sdk,
+  tech:refs.fidelity.querySelector(".ij-tech.active")?.dataset.tech||draft.tech,
+  build:refs.fidelity.querySelector("[data-build].active")?.dataset.build||draft.build,
+  git:!!$("ijGitCheck")?.checked,
+  sample:!!$("ijSampleCheck")?.checked,
+  advanced:$("ijAdvancedBody")?.classList.contains("show")
+ });
+ const updatePreview=()=>{const x=collect(),p=$("ijProjectPathPreview");if(p)p.textContent="Project will be created in: "+x.location+"\\"+x.name};
+ refs.fidelity.querySelectorAll("[data-tech]").forEach(btn=>btn.addEventListener("click",()=>{refs.fidelity.querySelectorAll("[data-tech]").forEach(x=>x.classList.remove("active"));btn.classList.add("active");fidelityNotice(btn.dataset.tech+" project type selected")}));
+ refs.fidelity.querySelectorAll("[data-generator]").forEach(btn=>btn.addEventListener("click",()=>fidelityNotice(btn.dataset.generator+" generator selected")));
+ refs.fidelity.querySelectorAll("[data-build]").forEach(btn=>btn.addEventListener("click",()=>{refs.fidelity.querySelectorAll("[data-build]").forEach(x=>x.classList.remove("active"));btn.classList.add("active")}));
+ $("ijProjectName")?.addEventListener("input",updatePreview);$("ijProjectLocation")?.addEventListener("input",updatePreview);
+ $("ijLocationBrowse")?.addEventListener("click",()=>{const i=$("ijProjectLocation");if(i){i.value="~\\Desktop\\Java_Codes";updatePreview();i.focus()}fidelityNotice("Project location selected")});
+ $("ijWizardSearch")?.addEventListener("click",()=>fidelityNotice("Project type search focused"));
+ $("ijAdvancedToggle")?.addEventListener("click",()=>{$("ijAdvancedBody")?.classList.toggle("show")});
+ $("ijWizardJdk")?.addEventListener("click",()=>showNewProjectSurface(collect(),!jdkOpen));
+ refs.fidelity.querySelectorAll("[data-sdk-value]").forEach(btn=>btn.addEventListener("click",()=>showNewProjectSurface({...collect(),sdk:normalizeSdkChoice(btn.dataset.sdkValue)},false)));
+ refs.fidelity.querySelectorAll("[data-sdk-action]").forEach(btn=>btn.addEventListener("click",()=>{const a=btn.dataset.sdkAction;if(a==="disk")showNewProjectSurface({...collect(),sdk:"Oracle OpenJDK 1.8.0_351"},false);else fidelityNotice(a==="download26"?"OpenJDK 26 download selected":"JDK download dialog opened")}));
+ $("ijWizardCreate")?.addEventListener("click",()=>{const x=collect();resetScreenshotWorkspace({name:x.name||"App_1",sdk:x.sdk==="<No JDK>"?"<No SDK>":("Java "+sdkLanguageLevel(x.sdk)),languageLevel:sdkLanguageLevel(x.sdk),fidelityMode:true});hideFidelity();fidelityNotice((x.name||"App_1")+" created")});
+ const cancel=()=>showWelcomeSurface("Projects");$("ijWizardCancel")?.addEventListener("click",cancel);$("ijWizardClose")?.addEventListener("click",cancel);
+}
+function contextActionLabel(action){
+ const labels={cut:"Cut",copy:"Copy",paste:"Paste",findUsages:"Find Usages",findFiles:"Find in Files",replaceFiles:"Replace in Files",analyze:"Analyze",rename:"Rename",refactor:"Refactor",reformat:"Reformat Code",optimize:"Optimize Imports"};
+ return labels[action]||action;
+}
+function showSimpleCreatePopup(kind){
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><form class="ij-mini-create" id="ijMiniCreate"><strong>New '+esc(kind)+'</strong><input id="ijMiniCreateName" class="ij-field" value="'+(kind==="Package"?"com.example":"NewFile")+'" autofocus><div><button type="submit" class="ij-btn primary">Create</button><button type="button" class="ij-btn" id="ijMiniCancel">Cancel</button></div></form></div>';
+ $("ijMiniCreate")?.addEventListener("submit",e=>{e.preventDefault();const name=$("ijMiniCreateName")?.value.trim();if(!name)return;if(kind==="Package"){const p=name.replace(/\./g,"/");addTreePath("src/"+p+"/.package","java");deleteTreePath(state.tree,"src/"+p+"/.package");renderTree()}else{const path="src/"+(name.includes(".")?name:name+".txt");files[path]={language:"text",content:""};state.files=clone(files);addTreePath(path,"text");openFile(path)}hideFidelity();fidelityNotice(kind+" created")});
+ $("ijMiniCancel")?.addEventListener("click",hideFidelity);
+ setTimeout(()=>$("ijMiniCreateName")?.focus(),0);
 }
 function showProjectContextSurface(){
- refs.fidelity.className="ijFidelityLayer show";
- refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><div class="ij-context"><div class="ij-context-row active">New <span class="ij-context-short">›</span><div class="ij-submenu"><div class="ij-context-row" id="ijMenuJavaClass"><span class="ij-type-icon">C</span>Java Class</div><div class="ij-context-row">〈 Kotlin Class/File</div><div class="ij-context-row">☰ File</div><div class="ij-context-row">☷ Scratch File <span class="ij-context-short">Ctrl+Alt+Shift+Insert</span></div><div class="ij-context-row">▱ Package</div><div class="ij-context-row">▱ package-info.java</div><div class="ij-context-row">▱ module-info.java</div><div class="ij-context-row sep">⌁ Kotlin Notebook</div><div class="ij-context-row">&lt;&gt; HTML File</div><div class="ij-context-row">⚙ EditorConfig File</div><div class="ij-context-row">⚙ Resource Bundle</div></div></div><div class="ij-context-row">✂ Cut <span class="ij-context-short">Ctrl+X</span></div><div class="ij-context-row">▣ Copy <span class="ij-context-short">Ctrl+C</span></div><div class="ij-context-row">Copy Path/Reference...</div><div class="ij-context-row">▣ Paste <span class="ij-context-short">Ctrl+V</span></div><div class="ij-context-row sep">Find Usages <span class="ij-context-short">Alt+F7</span></div><div class="ij-context-row">Find in Files... <span class="ij-context-short">Ctrl+Shift+F</span></div><div class="ij-context-row">Replace in Files... <span class="ij-context-short">Ctrl+Shift+R</span></div><div class="ij-context-row">Analyze <span class="ij-context-short">›</span></div><div class="ij-context-row sep">Rename... <span class="ij-context-short">Shift+F6</span></div><div class="ij-context-row">Refactor <span class="ij-context-short">›</span></div><div class="ij-context-row sep">Reformat Code <span class="ij-context-short">Ctrl+Alt+L</span></div><div class="ij-context-row">Optimize Imports <span class="ij-context-short">Ctrl+Alt+O</span></div></div></div>';
- const item=$("ijMenuJavaClass");if(item)item.onclick=()=>showNewJavaClassSurface("Test");
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><div class="ij-context" role="menu"><div class="ij-context-row active" id="ijNewMenuRow">New <span class="ij-context-short">›</span><div class="ij-submenu"><button type="button" class="ij-context-row" data-new-kind="Java Class"><span class="ij-type-icon">C</span>Java Class</button><button type="button" class="ij-context-row" data-new-kind="Kotlin Class/File">〈 Kotlin Class/File</button><button type="button" class="ij-context-row" data-new-kind="File">☰ File</button><button type="button" class="ij-context-row" data-new-kind="Scratch File">☷ Scratch File <span class="ij-context-short">Ctrl+Alt+Shift+Insert</span></button><button type="button" class="ij-context-row" data-new-kind="Package">▱ Package</button><button type="button" class="ij-context-row" data-new-kind="package-info.java">▱ package-info.java</button><button type="button" class="ij-context-row" data-new-kind="module-info.java">▱ module-info.java</button><button type="button" class="ij-context-row sep" data-new-kind="Kotlin Notebook">⌁ Kotlin Notebook</button><button type="button" class="ij-context-row" data-new-kind="HTML File">&lt;&gt; HTML File</button><button type="button" class="ij-context-row" data-new-kind="EditorConfig File">⚙ EditorConfig File</button><button type="button" class="ij-context-row" data-new-kind="Resource Bundle">⚙ Resource Bundle</button></div></div><button type="button" class="ij-context-row" data-context-action="cut">✂ Cut <span class="ij-context-short">Ctrl+X</span></button><button type="button" class="ij-context-row" data-context-action="copy">▣ Copy <span class="ij-context-short">Ctrl+C</span></button><button type="button" class="ij-context-row" data-context-action="copyPath">Copy Path/Reference...</button><button type="button" class="ij-context-row" data-context-action="paste">▣ Paste <span class="ij-context-short">Ctrl+V</span></button><button type="button" class="ij-context-row sep" data-context-action="findUsages">Find Usages <span class="ij-context-short">Alt+F7</span></button><button type="button" class="ij-context-row" data-context-action="findFiles">Find in Files... <span class="ij-context-short">Ctrl+Shift+F</span></button><button type="button" class="ij-context-row" data-context-action="replaceFiles">Replace in Files... <span class="ij-context-short">Ctrl+Shift+R</span></button><button type="button" class="ij-context-row" data-context-action="analyze">Analyze <span class="ij-context-short">›</span></button><button type="button" class="ij-context-row sep" data-context-action="rename">Rename... <span class="ij-context-short">Shift+F6</span></button><button type="button" class="ij-context-row" data-context-action="refactor">Refactor <span class="ij-context-short">›</span></button><button type="button" class="ij-context-row sep" data-context-action="reformat">Reformat Code <span class="ij-context-short">Ctrl+Alt+L</span></button><button type="button" class="ij-context-row" data-context-action="optimize">Optimize Imports <span class="ij-context-short">Ctrl+Alt+O</span></button></div></div>';
+ refs.fidelity.querySelectorAll("[data-new-kind]").forEach(btn=>btn.addEventListener("click",()=>{
+  const kind=btn.dataset.newKind;
+  if(kind==="Java Class")showNewJavaClassSurface("Test");
+  else if(kind==="Package"||kind==="File")showSimpleCreatePopup(kind);
+  else fidelityNotice(kind+" creation selected");
+ }));
+ refs.fidelity.querySelectorAll("[data-context-action]").forEach(btn=>btn.addEventListener("click",()=>{const action=btn.dataset.contextAction;if(action==="reformat"){if(activeFile&&files[activeFile])files[activeFile].content=String(files[activeFile].content||"").split("\n").map(x=>x.replace(/\s+$/,"")).join("\n");renderEditor()}else if(action==="rename")fidelityNotice("Rename dialog opened");else if(action==="findUsages")genericSurface("Find Usages",{scope:"src"});else if(action==="findFiles")genericSurface("Find in Files",{scope:"Project"});else if(action==="replaceFiles")genericSurface("Replace in Files",{scope:"Project"});else fidelityNotice(contextActionLabel(action)+" action executed");hideFidelity()}));
 }
-function showNewJavaClassSurface(name="Test"){
- refs.fidelity.className="ijFidelityLayer show";
- refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><section class="ij-class-pop"><h3>New Java Class</h3><div class="ij-class-input"><span class="ij-type-icon">C</span><span>'+esc(name)+'</span><span style="width:1px;height:18px;background:#d9dadd"></span></div><div class="ij-class-opt active"><span class="ij-type-icon">C</span>Class</div><div class="ij-class-opt"><span class="ij-type-icon" style="color:#77ba72;border-color:#5a9a58">I</span>Interface</div><div class="ij-class-opt"><span class="ij-type-icon">R</span>Record</div><div class="ij-class-opt"><span class="ij-type-icon" style="color:#c985cf;border-color:#9b5aa5">E</span>Enum</div><div class="ij-class-opt"><span class="ij-type-icon" style="color:#6fc691;border-color:#4b9769">@</span>Annotation</div><div class="ij-class-opt"><span class="ij-type-icon" style="color:#e0ad4e;border-color:#a87d2d">⚡</span>Exception</div></section></div>';
+function javaSkeletonForType(name,type){
+ const safe=name.replace(/[^\w$]/g,"")||"Test";
+ if(type==="Interface")return "public interface "+safe+" {\n}\n";
+ if(type==="Record")return "public record "+safe+"() {\n}\n";
+ if(type==="Enum")return "public enum "+safe+" {\n}\n";
+ if(type==="Annotation")return "public @interface "+safe+" {\n}\n";
+ if(type==="Exception")return "public class "+safe+" extends Exception {\n}\n";
+ return "public class "+safe+" {\n}\n";
+}
+function showNewJavaClassSurface(name="Test",selectedType="Class"){
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ const types=[["Class","C"],["Interface","I"],["Record","R"],["Enum","E"],["Annotation","@"],["Exception","⚡"]];
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><form class="ij-class-pop" id="ijClassForm"><h3>New Java Class</h3><label class="ij-class-input"><span class="ij-type-icon">C</span><input id="ijClassName" value="'+esc(name)+'" aria-label="Java class name"></label>'+types.map(([type,ico])=>'<button type="button" class="ij-class-opt '+(type===selectedType?'active':'')+'" data-class-type="'+type+'"><span class="ij-type-icon">'+ico+'</span>'+type+'</button>').join("")+'<div class="ij-class-help">Enter creates the selected type · Esc cancels</div></form></div>';
+ const create=()=>{const nm=$("ijClassName")?.value.trim();if(!nm)return;const path="src/"+nm.replace(/\./g,"/")+".java";files[path]={language:"java",content:javaSkeletonForType(nm.split(".").pop(),selectedType)};state.files=clone(files);addTreePath(path,"java");markGit(path,"A");hideFidelity();openFile(path);fidelityNotice(selectedType+" "+nm+" created")};
+ refs.fidelity.querySelectorAll("[data-class-type]").forEach(btn=>btn.addEventListener("click",()=>showNewJavaClassSurface($("ijClassName")?.value||name,btn.dataset.classType)));
+ $("ijClassForm")?.addEventListener("submit",e=>{e.preventDefault();create()});
+ $("ijClassName")?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();create()}if(e.key==="Escape"){e.preventDefault();hideFidelity()}});
+ setTimeout(()=>{$("ijClassName")?.focus();$("ijClassName")?.select()},0);
+}
+function projectStructureBody(page,draft){
+ if(page==="Modules")return '<h2>Modules</h2><div class="desc">Configure module sources, dependencies, and SDK inheritance.</div><div class="ij-ps-card"><strong>'+esc(state.project.name||"App_1")+'</strong><span>Sources · Paths · Dependencies</span></div>';
+ if(page==="Libraries")return '<h2>Libraries</h2><div class="desc">Project-level libraries available to modules.</div><div class="ij-ps-empty">No project libraries configured.</div>';
+ if(page==="Facets")return '<h2>Facets</h2><div class="desc">Framework facets attached to project modules.</div><div class="ij-ps-empty">No facets configured.</div>';
+ if(page==="Artifacts")return '<h2>Artifacts</h2><div class="desc">Build output and artifact packaging.</div><button type="button" class="ij-btn" id="ijAddArtifact">＋ Add artifact</button>';
+ if(page==="SDKs")return '<h2>SDKs</h2><div class="desc">Platform SDKs detected for this IntelliJ installation.</div><div class="ij-sdk-list"><button type="button" data-ps-sdk="21" class="ij-sdk-list-row">▱ Oracle OpenJDK 21.0.11 <span>C:\\Program Files\\Java\\jdk-21.0.11</span></button><button type="button" data-ps-sdk="17" class="ij-sdk-list-row">▱ Oracle OpenJDK 17.0.12 <span>C:\\Program Files\\Java\\jdk-17</span></button><button type="button" data-ps-sdk="8" class="ij-sdk-list-row">▱ Oracle OpenJDK 1.8.0_351 <span>C:\\Program Files\\Java\\jdk1.8.0_351</span></button></div><button type="button" class="ij-btn" id="ijAddSdk">＋ Add SDK</button>';
+ if(page==="Global Libraries")return '<h2>Global Libraries</h2><div class="desc">Libraries shared across projects.</div><div class="ij-ps-empty">No global libraries configured.</div>';
+ if(page==="Problems")return '<h2>Problems</h2><div class="desc">Project configuration issues.</div><div class="ij-ps-empty">'+((state.problems||[]).length?esc(state.problems.map(x=>x.message).join("\n")):"No problems detected.")+'</div>';
+ return '<h2>Project</h2><div class="desc">Default settings for all modules. Configure these parameters for each module on the module page as needed.</div><div class="ij-ps-row"><label for="ijPsName">Name:</label><input class="ij-field" id="ijPsName" value="'+esc(draft.name)+'"><span></span></div><div class="ij-ps-row"><span>SDK:</span><button type="button" class="ij-select focus" id="ijPsJdk">▱ <span id="ijPsJdkText">'+esc(draft.sdk)+'</span><span style="margin-left:auto">⌄</span></button><button type="button" class="ij-btn" id="ijPsEdit">Edit</button></div><div class="ij-ps-row"><label for="ijPsLanguage">Language level:</label><select class="ij-select" id="ijPsLanguage">'+["8","17","21"].map(x=>'<option '+(String(draft.languageLevel)===x?'selected':'')+' value="'+x+'">'+x+'</option>').join("")+'</select><span></span></div><div class="ij-ps-row"><label for="ijPsOutput">Compiler output:</label><div class="ij-field-wrap"><input class="ij-field" id="ijPsOutput" value="'+esc(draft.compilerOutput)+'"><button type="button" class="ij-field-icon" id="ijPsBrowse">▱</button></div><span></span></div>';
 }
 function showProjectStructureSurface(d={}){
- const sdk=d.sdk||state.project.sdk||"Java 21",open=!!d.jdkOpen;
+ const page=d.page||"Project";
+ const draft={
+  name:String(d.name??state.project.name??"App_1"),
+  sdk:String(d.sdk??state.project.sdk??"Java 21"),
+  languageLevel:String(d.languageLevel??state.project.languageLevel??"21"),
+  compilerOutput:String(d.compilerOutput??state.compiler?.output??""),
+  dirty:d.dirty===true
+ };
+ const open=!!d.jdkOpen;
  refs.fidelity.className="ijFidelityLayer show";
- refs.fidelity.innerHTML='<div class="ij-screen-dim"><section class="ij-dialog ij-ps"><header class="ij-dialog-head"><span class="ij-shot-logo sm">IJ</span><span>Project Structure</span><span class="ij-dialog-close">×</span></header><div class="ij-ps-body"><aside class="ij-ps-left"><div class="ij-ps-group">Project Settings</div><div class="ij-ps-item active">Project</div><div class="ij-ps-item">Modules</div><div class="ij-ps-item">Libraries</div><div class="ij-ps-item">Facets</div><div class="ij-ps-item">Artifacts</div><div class="ij-ps-group" style="margin-top:7px">Platform Settings</div><div class="ij-ps-item">SDKs</div><div class="ij-ps-item">Global Libraries</div><div class="ij-ps-item" style="margin-top:20px">Problems</div></aside><main class="ij-ps-main"><h2>Project</h2><div class="desc">Default settings for all modules. Configure these parameters for each module on the module page as needed.</div><div class="ij-ps-row"><span>Name:</span><div class="ij-field">'+esc(state.project.name||"App_1")+'</div><span></span></div><div class="ij-ps-row"><span>SDK:</span><div class="ij-select focus" id="ijPsJdk">▱ '+esc(sdk)+'<span style="margin-left:auto">⌄</span></div><button class="ij-btn">Edit</button></div><div class="ij-ps-row"><span>Language level:</span><div class="ij-select">'+esc(state.project.languageLevel||"21")+'<span style="margin-left:auto">⌄</span></div><span></span></div><div class="ij-ps-row"><span>Compiler output:</span><div class="ij-field"><span style="margin-left:auto">▱</span></div><span></span></div>'+(open?jdkMenuHtml(sdk):'')+'</main></div><footer class="ij-ps-actions"><button class="ij-btn primary">OK</button><button class="ij-btn">Cancel</button><button class="ij-btn" style="color:#74777e">Apply</button></footer></section></div>';
- const j=$("ijPsJdk");if(j)j.onclick=()=>showProjectStructureSurface({...d,jdkOpen:true});
+ const items=["Project","Modules","Libraries","Facets","Artifacts","SDKs","Global Libraries","Problems"];
+ refs.fidelity.innerHTML='<div class="ij-screen-dim"><section class="ij-dialog ij-ps" role="dialog" aria-label="Project Structure"><header class="ij-dialog-head"><span class="ij-shot-logo sm">IJ</span><span>Project Structure</span><button type="button" class="ij-dialog-close" id="ijPsClose" aria-label="Close">×</button></header><div class="ij-ps-body"><aside class="ij-ps-left"><div class="ij-ps-group">Project Settings</div>'+items.slice(0,5).map(x=>'<button type="button" class="ij-ps-item '+(page===x?'active':'')+'" data-ps-page="'+x+'">'+x+'</button>').join("")+'<div class="ij-ps-group" style="margin-top:7px">Platform Settings</div>'+items.slice(5,7).map(x=>'<button type="button" class="ij-ps-item '+(page===x?'active':'')+'" data-ps-page="'+x+'">'+x+'</button>').join("")+'<button type="button" class="ij-ps-item '+(page==="Problems"?'active':'')+'" style="margin-top:20px" data-ps-page="Problems">Problems</button></aside><main class="ij-ps-main">'+projectStructureBody(page,draft)+(open&&page==="Project"?jdkMenuHtml(draft.sdk,"projectStructure"):'')+'</main></div><footer class="ij-ps-actions"><button type="button" class="ij-btn primary" id="ijPsOk">OK</button><button type="button" class="ij-btn" id="ijPsCancel">Cancel</button><button type="button" class="ij-btn '+(draft.dirty?'':'disabled')+'" id="ijPsApply" '+(draft.dirty?'':'disabled')+'>Apply</button></footer></section></div>';
+ const collect=()=>({
+  name:$("ijPsName")?.value||draft.name,
+  sdk:$("ijPsJdkText")?.textContent||draft.sdk,
+  languageLevel:$("ijPsLanguage")?.value||draft.languageLevel,
+  compilerOutput:$("ijPsOutput")?.value||draft.compilerOutput,
+  dirty:true
+ });
+ const rerender=(patch={})=>showProjectStructureSurface({...draft,...collect(),page,...patch});
+ refs.fidelity.querySelectorAll("[data-ps-page]").forEach(btn=>btn.addEventListener("click",()=>showProjectStructureSurface({...draft,...collect(),page:btn.dataset.psPage,jdkOpen:false})));
+ $("ijPsJdk")?.addEventListener("click",()=>rerender({jdkOpen:!open}));
+ refs.fidelity.querySelectorAll("[data-sdk-value]").forEach(btn=>btn.addEventListener("click",()=>showProjectStructureSurface({...draft,...collect(),sdk:normalizeSdkChoice(btn.dataset.sdkValue),dirty:true,page:"Project",jdkOpen:false})));
+ refs.fidelity.querySelectorAll("[data-sdk-action]").forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.sdkAction==="disk")showProjectStructureSurface({...draft,...collect(),sdk:"Oracle OpenJDK 1.8.0_351",dirty:true,page:"Project",jdkOpen:false});else fidelityNotice("JDK download dialog opened")}));
+ refs.fidelity.querySelectorAll("[data-ps-sdk]").forEach(btn=>btn.addEventListener("click",()=>showProjectStructureSurface({...draft,...collect(),sdk:normalizeSdkChoice(btn.dataset.psSdk),dirty:true,page:"Project",jdkOpen:false})));
+ $("ijPsEdit")?.addEventListener("click",()=>showProjectStructureSurface({...draft,...collect(),page:"SDKs",jdkOpen:false}));
+ $("ijAddSdk")?.addEventListener("click",()=>fidelityNotice("Add SDK from disk chooser opened"));
+ $("ijAddArtifact")?.addEventListener("click",()=>fidelityNotice("Artifact creation menu opened"));
+ $("ijPsBrowse")?.addEventListener("click",()=>{const i=$("ijPsOutput");if(i){i.value="out";i.focus()}fidelityNotice("Compiler output folder selected")});
+ ["ijPsName","ijPsLanguage","ijPsOutput"].forEach(id=>$(id)?.addEventListener("input",()=>{$("ijPsApply")?.removeAttribute("disabled");$("ijPsApply")?.classList.remove("disabled")}));
+ const apply=()=>{const x=collect();state.project.name=x.name;state.project.sdk=x.sdk;state.project.languageLevel=x.languageLevel;state.compiler={...(state.compiler||{}),output:x.compilerOutput};renderAll();fidelityNotice("Project Structure settings applied")};
+ $("ijPsApply")?.addEventListener("click",()=>{apply();showProjectStructureSurface({...collect(),page,jdkOpen:false,dirty:false})});
+ $("ijPsOk")?.addEventListener("click",()=>{apply();hideFidelity()});
+ const cancel=()=>hideFidelity();$("ijPsCancel")?.addEventListener("click",cancel);$("ijPsClose")?.addEventListener("click",cancel);
 }
 
 function showPopup(kind,items){popupKind=kind;const el=kind==="completion"?refs.completion:refs.intentions;el.innerHTML=(items||[]).map((x,i)=>'<div class="popupRow '+(i===0?"active":"")+'">'+esc(typeof x==="string"?x:(x.label||x.text||JSON.stringify(x)))+'</div>').join("");el.classList.add("show")}
@@ -236,7 +414,7 @@ async function applyStep(st,animate,token){
   case"moveCursor":await highlight(d.target,token);break;
   case"showNotification":notify(d.text||d.message||"IntelliJ IDEA");break;
   case"openProject":state.project={...state.project,...clone(d.project||d)};renderAll();break;
-  case"newProject":if(d.uiState==="welcome"){showWelcomeSurface();break}if(d.uiState==="wizard"||d.uiState==="jdkDropdown"){showNewProjectSurface(d,d.uiState==="jdkDropdown");break}state.project={name:d.name||"New Project",sdk:d.sdk||state.project.sdk,languageLevel:String(d.languageLevel||state.project.languageLevel)};state.fidelityMode=d.fidelityMode??state.fidelityMode;if(!d.preserveFiles){state.tree=clone(d.tree||[]);files=clone(d.files||{});state.files=clone(files);activeFile=null;openTabs=[]}renderAll();break;
+  case"newProject":if(d.uiState==="welcome"){showWelcomeSurface();break}if(d.uiState==="wizard"||d.uiState==="jdkDropdown"){showNewProjectSurface(d,d.uiState==="jdkDropdown");break}if(d.fidelityMode){resetScreenshotWorkspace(d);break}state.project={name:d.name||"New Project",sdk:d.sdk||state.project.sdk,languageLevel:String(d.languageLevel||state.project.languageLevel)};state.fidelityMode=d.fidelityMode??state.fidelityMode;if(!d.preserveFiles){state.tree=clone(d.tree||[]);files=clone(d.files||{});state.files=clone(files);activeFile=null;openTabs=[]}renderAll();break;
   case"openFile":openFile(d.file);break;
   case"closeFile":closeFile(d.file||activeFile);break;
   case"createFile":if(d.uiState==="projectContextMenu"){showProjectContextSurface();break}if(d.uiState==="newJavaClass"){showNewJavaClassSurface(d.name||"Test");break}files[d.path]={language:d.language||"java",content:String(d.content||"")};state.files=clone(files);addTreePath(d.path,d.language||"java");markGit(d.path,"A");openFile(d.path);break;
@@ -406,6 +584,39 @@ refs.modalClose.onclick=closeModal;refs.modalLayer.onclick=e=>{if(e.target===ref
 document.querySelectorAll(".menuItem").forEach(m=>m.onclick=()=>openMenu(m.dataset.menu));
 document.querySelectorAll(".bottomTab").forEach(t=>t.onclick=()=>{activeBottom=t.dataset.bottom;renderBottom()});
 document.querySelectorAll(".twTab").forEach(t=>t.onclick=()=>{activeRight=t.dataset.right;document.querySelectorAll(".twTab").forEach(x=>x.classList.toggle("active",x===t));renderRight()});
+
+document.querySelectorAll(".projectHeadTool").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  const title=btn.getAttribute("title")||"";
+  if(title==="New"){showProjectContextSurface();return}
+  if(title==="Collapse All"){const walk=nodes=>(nodes||[]).forEach(n=>{if(n.children){n.open=false;walk(n.children)}});walk(state.tree);renderTree();return}
+  if(title==="Expand All"){const walk=nodes=>(nodes||[]).forEach(n=>{if(n.children){n.open=true;walk(n.children)}});walk(state.tree);renderTree();return}
+  if(title==="Autoscroll"){btn.classList.toggle("active");fidelityNotice("Autoscroll "+(btn.classList.contains("active")?"enabled":"disabled"));return}
+  if(title==="More"){genericSurface("Project View Options",{view:"Project",flattenPackages:false,showExcluded:false});return}
+ });
+});
+document.querySelectorAll(".leftRail .rail").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  const title=btn.getAttribute("title")||"";
+  document.querySelectorAll(".leftRail .rail").forEach(x=>x.classList.toggle("active",x===btn));
+  if(title==="Project"){refs.leftPanel?.classList?.remove("hidden");return}
+  if(title==="Run"){if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();return}
+  if(title==="Terminal"){if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";renderFeatureVisibility();return}
+  if(title==="Commit"){if(!state.visibleFeatures.includes("git"))state.visibleFeatures.push("git");activeBottom="git";renderFeatureVisibility();return}
+ });
+});
+document.querySelectorAll(".rightRail .rail").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  const title=btn.getAttribute("title")||"";
+  if(title==="Notifications"){fidelityNotice("No new notifications");return}
+  if(title==="Database"){if(!state.visibleFeatures.includes("database"))state.visibleFeatures.push("database");activeRight="database";renderAll();return}
+  if(title==="Maven"){if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();return}
+ });
+});
+document.querySelector(".hamburger")?.addEventListener("click",()=>openMenu("File"));
+refs.project?.addEventListener("click",()=>fidelityNotice("Project switcher opened"));
+refs.branch?.addEventListener("click",()=>genericSurface("Git Branches",{current:state.git?.branch||"main"}));
+
 refs.newBtn.onclick=()=>{const p="src/main/java/NewClass.java";files[p]={language:"java",content:"public class NewClass {\\n}\\n"};state.files=clone(files);addTreePath(p,"java");openFile(p)};
 refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStatus("Saved")};
 refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
