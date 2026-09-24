@@ -5,7 +5,7 @@ window.__SIM_HIGHLIGHT_READY__=true;
 
 var style=document.createElement("style");
 style.textContent=[
-".simActionHighlight{outline:1px solid rgba(77,163,255,.95)!important;outline-offset:1px!important;box-shadow:0 0 0 2px rgba(77,163,255,.12)!important;border-radius:3px!important;transition:none!important}",
+".simActionHighlight{outline:2px solid rgba(77,163,255,1)!important;outline-offset:2px!important;box-shadow:0 0 0 3px rgba(77,163,255,.34),0 0 16px 5px rgba(77,163,255,.48),0 0 28px 9px rgba(77,163,255,.20)!important;border-radius:4px!important;transition:none!important}",
 ".simActionHighlight.simActionPulse{animation:none!important}",
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
@@ -104,7 +104,9 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- var ms=Math.max(350,Math.min(1100,Number(plan&&plan.duration)||650));
+ // Global guidance contract: precise blue action glow remains visible for five seconds
+ // so the learner has enough time to notice the intended control without obscuring the UI.
+ var ms=5000;
  timer=setTimeout(clean,ms);
 }
 window.addEventListener("message",function(e){
