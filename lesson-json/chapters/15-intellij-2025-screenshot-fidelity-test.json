@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "chapter-15",
   "title": "15: IntelliJ IDEA 2025.2 Screenshot Fidelity Test",
-  "subtitle": "Screenshot-grounded test of Welcome, New Project, JDK selection, Project tree, Java class creation, editor, and Project Structure UI.",
+  "subtitle": "Screenshot-grounded interactive test covering project creation, editor completion, execution, packages, refactoring, tab management, navigation, and responsive layout.",
   "steps": [
     {
       "title": "Show the IntelliJ IDEA welcome screen",
@@ -155,6 +155,120 @@
         "data": {
           "sdk": "21 Oracle OpenJDK 21.0.11",
           "jdkOpen": true
+        }
+      }
+    },
+    {
+      "title": "Prepare Test.java with a runnable main method",
+      "why": "Build the editor state used by the next screenshot batch. The Java file should contain a main method and a simple print statement so completion, execution, refactoring, and navigation features all have a real file to operate on.",
+      "software": "intellij",
+      "action": {
+        "action": "setCode",
+        "data": {
+          "file": "src/Test.java",
+          "code": "public class Test {\n    public static void main(String[] args) {\n        System.out.println(\"Welcome to java \");\n    }\n}\n"
+        }
+      }
+    },
+    {
+      "title": "Show the main-method live-template completion",
+      "why": "Type toward the Java main entry-point template and show IntelliJ's compact completion row for main(). Clicking the suggestion must insert the main-method skeleton into the active Java class.",
+      "software": "intellij",
+      "action": {
+        "action": "showCodeCompletion",
+        "data": {
+          "uiState": "mainTemplate",
+          "file": "src/Test.java"
+        }
+      }
+    },
+    {
+      "title": "Show statement completion for sout and related suggestions",
+      "why": "Open the larger code-completion list around a print statement. The selected sout row and nearby Java keywords and live templates should behave like clickable completion choices, not a static overlay.",
+      "software": "intellij",
+      "action": {
+        "action": "showCodeCompletion",
+        "data": {
+          "uiState": "soutTemplate",
+          "file": "src/Test.java"
+        }
+      }
+    },
+    {
+      "title": "Run Test and inspect the Run tool window",
+      "why": "Execute the Java main class and open the Run tool window. The output, process exit status, rerun control, stop state, and hide control should all respond while the editor and project tree remain visible above.",
+      "software": "intellij",
+      "action": {
+        "action": "showRunConsole",
+        "data": {
+          "uiState": "screenshot",
+          "name": "Test",
+          "output": "Welcome to java "
+        }
+      }
+    },
+    {
+      "title": "Create a package from the Project tool window",
+      "why": "Open the compact New Package popup over the editor and create a package under src. The text field must accept input and Enter must update the project tree.",
+      "software": "intellij",
+      "action": {
+        "action": "createPackage",
+        "data": {
+          "uiState": "newPackage",
+          "name": "pkg1"
+        }
+      }
+    },
+    {
+      "title": "Open the Move refactoring dialog",
+      "why": "Show the Move refactoring dialog used to move Java classes between packages. Destination path, search checkboxes, Refactor, Preview, Cancel, browse, and close controls must all be interactive.",
+      "software": "intellij",
+      "action": {
+        "action": "moveClass",
+        "data": {
+          "uiState": "moveDialog",
+          "files": [
+            "src/Test.java"
+          ],
+          "targetPackage": "pkg2"
+        }
+      }
+    },
+    {
+      "title": "Inspect Refactoring Preview results",
+      "why": "Preview a refactoring before applying it. The bottom preview should show a result entry and code context, and its Refactor, Cancel, and close actions must respond.",
+      "software": "intellij",
+      "action": {
+        "action": "findUsages",
+        "data": {
+          "uiState": "refactoringPreview",
+          "file": "src/Test.java",
+          "text": "System.out.println(\"Welcome to java \");"
+        }
+      }
+    },
+    {
+      "title": "Open the editor-tab context menu and split controls",
+      "why": "Open the editor-tab context menu and test close variants, split right/down, pinning, copy-path, and related tab actions. Choosing a split option must mutate the editor layout.",
+      "software": "intellij",
+      "action": {
+        "action": "splitEditor",
+        "data": {
+          "uiState": "tabContextMenu",
+          "file": "src/Test.java"
+        }
+      }
+    },
+    {
+      "title": "Show the Java symbol information popup",
+      "why": "Open the compact symbol information card for a Java class. Package navigation, project identity, edit, and more-actions controls should respond while the editor remains available underneath.",
+      "software": "intellij",
+      "action": {
+        "action": "showQuickDocumentation",
+        "data": {
+          "uiState": "symbolCard",
+          "package": "pkg1",
+          "className": "Hello1"
         }
       }
     }

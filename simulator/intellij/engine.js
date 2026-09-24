@@ -318,6 +318,117 @@ function showProjectStructureSurface(d={}){
  const cancel=()=>hideFidelity();$("ijPsCancel")?.addEventListener("click",cancel);$("ijPsClose")?.addEventListener("click",cancel);
 }
 
+
+function ensureFidelityFile(path,content){
+ files[path]={language:"java",content:String(content||"")};state.files=clone(files);addTreePath(path,"java");activeFile=path;if(!openTabs.includes(path))openTabs.push(path);renderAll();
+}
+function showScreenshotCompletion(kind,d={}){
+ hideFidelity();
+ const file=d.file||activeFile||"src/Test.java";
+ if(!files[file])ensureFidelityFile(file,"public class Test {\n    \n}\n");else{activeFile=file;if(!openTabs.includes(file))openTabs.push(file);renderAll()}
+ popupKind="completion";
+ refs.completion.className="popup completion show ij-completion-shot";
+ const mainItems=kind==="main"
+  ?[{label:"main",desc:"main() method declaration",insert:"public static void main(String[] args) {\n    \n}"}]
+  :[
+    {label:"sout",desc:"Prints a string to System.out",insert:'System.out.println("Welcome to java ");'},
+    {label:"short",desc:"keyword",insert:"short "},{label:"super",desc:"keyword",insert:"super"},{label:"switch",desc:"keyword",insert:"switch"},{label:"synchronized",desc:"keyword",insert:"synchronized "},
+    {label:"args",desc:"String[]",insert:"args"},{label:"serr",desc:"Prints a string to System.err",insert:"System.err.println();"},
+    {label:"souf",desc:"Prints a formatted string to System.out",insert:'System.out.printf("");'},
+    {label:"soutm",desc:"Prints current class and method names",insert:'System.out.println("Test.main");'},
+    {label:"soutp",desc:"Prints method parameter names and values",insert:'System.out.println("args = " + args);'}
+  ];
+ refs.completion.innerHTML=mainItems.map((it,i)=>'<button type="button" class="popupRow '+(i===0?'active':'')+'" data-completion-index="'+i+'"><strong>'+esc(it.label)+'</strong><span>'+esc(it.desc)+'</span></button>').join("")+'<div class="ij-completion-tip">Press Ctrl+Space to see non-imported classes <span>Next Tip</span> 💡 ⋮</div>';
+ refs.completion.querySelectorAll("[data-completion-index]").forEach(btn=>btn.addEventListener("click",()=>{
+   const it=mainItems[Number(btn.dataset.completionIndex)]||mainItems[0];
+   const current=String(files[file]?.content||"");
+   if(kind==="main"){
+     files[file].content=current.includes("main(String[]")?current:current.replace(/\n}\s*$/,"\n    "+it.insert.replace(/\n/g,"\n    ")+"\n}\n");
+   }else{
+     files[file].content=current.includes("System.out.println")?current:current.replace(/\n\s*}\s*\n}\s*$/,'\n        '+it.insert+'\n    }\n}\n');
+   }
+   state.files=clone(files);markGit(file,"M");refs.completion.classList.remove("show");renderEditor();fidelityNotice(it.label+" inserted");
+ }));
+}
+function showRunConsoleScreenshot(d={}){
+ hideFidelity();
+ if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");
+ activeBottom="run";
+ state.activeRunConfiguration=d.name||"Test";
+ state.console=String(d.text||"Welcome to java \n\nProcess finished with exit code 0");
+ if(!state.tree.some(n=>n.path==="out"))state.tree.splice(Math.min(1,state.tree.length),0,{name:"out",path:"out",type:"folder",open:false,children:[]});
+ if(!state.tree.some(n=>n.path==="App_1.iml"))state.tree.push({name:"App_1.iml",path:"App_1.iml",type:"file",language:"text"});
+ renderAll();
+ setBottom("run",'<div class="processBar"><span class="processName">▣ '+esc(state.activeRunConfiguration)+'</span><span class="grow"></span><button type="button" id="ijRunRerun">↻</button><button type="button" id="ijRunStop">■</button><button type="button" id="ijRunHide">−</button></div><pre class="toolConsole"><span class="ij-console-selection">'+esc(String(d.output||"Welcome to java "))+'</span>\n\nProcess finished with exit code 0</pre>',true);
+ refs.bottom.querySelector("#ijRunRerun")?.addEventListener("click",()=>showRunConsoleScreenshot(d));
+ refs.bottom.querySelector("#ijRunStop")?.addEventListener("click",()=>fidelityNotice("Process already finished"));
+ refs.bottom.querySelector("#ijRunHide")?.addEventListener("click",()=>{state.visibleFeatures=state.visibleFeatures.filter(x=>x!=="run");renderFeatureVisibility()});
+}
+function showNewPackageSurface(d={}){
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><form class="ij-package-pop" id="ijPackageForm"><strong>New Package</strong><input id="ijPackageName" class="ij-field" value="'+esc(d.name||"pkg")+'" aria-label="Package name"></form></div>';
+ const create=()=>{const name=$("ijPackageName")?.value.trim();if(!name)return;const p="src/"+name.replace(/\./g,"/");addTreePath(p+"/.package","java");deleteTreePath(state.tree,p+"/.package");renderTree();hideFidelity();fidelityNotice("Package "+name+" created")};
+ $("ijPackageForm")?.addEventListener("submit",e=>{e.preventDefault();create()});
+ $("ijPackageName")?.addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();hideFidelity()}});
+ setTimeout(()=>{$("ijPackageName")?.focus();$("ijPackageName")?.select()},0);
+}
+function moveOneFile(file,targetPackage){
+ if(!files[file])return null;
+ const base=file.split("/").pop(),newPath="src/"+targetPackage.replace(/\./g,"/")+"/"+base;
+ let content=String(files[file].content||"");
+ const pkg="package "+targetPackage+";";
+ content=/^\s*package\s+[\w.]+\s*;/m.test(content)?content.replace(/^\s*package\s+[\w.]+\s*;/m,pkg):pkg+"\n\n"+content;
+ files[newPath]={...files[file],content};delete files[file];state.files=clone(files);
+ deleteTreePath(state.tree,file);addTreePath(newPath,"java");
+ openTabs=openTabs.map(x=>x===file?newPath:x);if(activeFile===file)activeFile=newPath;markGit(newPath,"M");
+ return newPath;
+}
+function showMoveRefactorSurface(d={}){
+ const selected=(d.files||[d.file||activeFile]).filter(Boolean);
+ const target=d.targetPackage||"pkg2";
+ refs.fidelity.className="ijFidelityLayer show";
+ refs.fidelity.innerHTML='<div class="ij-screen-dim"><section class="ij-dialog ij-move-dialog"><header class="ij-dialog-head"><span class="ij-shot-logo sm">IJ</span><span>Move</span><button type="button" class="ij-dialog-close" id="ijMoveClose">×</button></header><main class="ij-move-main"><div class="ij-move-row"><span>Move:</span><div>'+selected.map(x=>esc(x.split("/").pop().replace(/\.java$/,""))).join("<br>")+'</div></div><div class="ij-move-row"><label for="ijMoveTarget">To directory:</label><div class="ij-field-wrap"><input class="ij-field focus" id="ijMoveTarget" value="'+esc(d.targetPath||("C:\\Users\\User\\Desktop\\Java_Codes\\App_1\\src\\"+target))+'"><button type="button" class="ij-field-icon" id="ijMoveBrowse">▱</button></div></div><div class="ij-move-hint">Use Ctrl+Space for path completion</div><label class="ij-check ij-click-check"><input type="checkbox" checked id="ijMoveComments"><span class="check-ui checked">✓</span>Search in comments and strings</label><label class="ij-check ij-click-check"><input type="checkbox" checked id="ijMoveText"><span class="check-ui checked">✓</span>Search for text occurrences</label><label class="ij-check ij-click-check"><input type="checkbox" id="ijMoveOpen"><span class="check-ui"></span>Open in editor</label><div class="ij-dialog-actions"><button type="button" class="ij-btn primary" id="ijMoveRefactor">Refactor</button><button type="button" class="ij-btn" id="ijMovePreview">Preview</button><button type="button" class="ij-btn" id="ijMoveCancel">Cancel</button></div></main></section></div>';
+ const doMove=()=>{const raw=$("ijMoveTarget")?.value||"";const pkg=(raw.split(/[/\\]/).filter(Boolean).pop()||target).replace(/[^\w.]/g,"")||target;let moved=[];selected.forEach(x=>{const n=moveOneFile(x,pkg);if(n)moved.push(n)});hideFidelity();renderAll();fidelityNotice("Moved "+moved.length+" file"+(moved.length===1?"":"s")+" to "+pkg)};
+ $("ijMoveRefactor")?.addEventListener("click",doMove);
+ $("ijMovePreview")?.addEventListener("click",()=>showRefactoringPreviewSurface({file:selected[0],text:'System.out.println("Welcome to java ");'}));
+ $("ijMoveCancel")?.addEventListener("click",hideFidelity);$("ijMoveClose")?.addEventListener("click",hideFidelity);
+ $("ijMoveBrowse")?.addEventListener("click",()=>{const i=$("ijMoveTarget");if(i){i.value="C:\\Users\\User\\Desktop\\Java_Codes\\App_1\\src\\pkg2";i.focus()}});
+}
+function showRefactoringPreviewSurface(d={}){
+ hideFidelity();
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ const text=d.text||'System.out.println("Welcome to java ");';
+ refs.fidelity.innerHTML='<section class="ij-refactor-preview"><header><strong>Find</strong><span>Refactoring Preview</span><button type="button" id="ijRefPreviewClose">×</button></header><div class="ij-refactor-grid"><div class="ij-refactor-results"><div class="ij-refactor-title">◉ main(String[]) <span>1 result</span></div><button type="button" class="ij-refactor-result active">4 '+esc(text)+'</button><div class="ij-refactor-actions"><button type="button" class="ij-btn" id="ijPreviewRefactor">Refactor</button><button type="button" class="ij-btn" id="ijPreviewCancel">Cancel</button></div></div><pre class="ij-refactor-code">3    public static void main(String[] args) {\n4        '+esc(text)+'\n5    }</pre></div></section>';
+ const close=()=>hideFidelity();$("ijRefPreviewClose")?.addEventListener("click",close);$("ijPreviewCancel")?.addEventListener("click",close);$("ijPreviewRefactor")?.addEventListener("click",()=>{close();fidelityNotice("Refactoring applied")});
+}
+function showTabContextSurface(d={}){
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ const file=d.file||activeFile||openTabs[0];
+ const items=[
+  ["close","Close","Ctrl+F4"],["closeOthers","Close Other Tabs",""],["closeAll","Close All Tabs",""],["closeLeft","Close Tabs to the Left",""],["closeRight","Close Tabs to the Right",""],
+  ["copyPath","Copy Path/Reference...",""],["splitRight","▣ Split Right",""],["splitMoveRight","Split and Move Right",""],["splitDown","▤ Split Down",""],["splitMoveDown","Split and Move Down",""],
+  ["pin","Pin Tab",""],["newWindow","Open Tab in New Window","Shift+F4"],["configure","Configure Editor Tabs...",""],["reopen","Reopen Closed Tab",""],["bookmarks","Bookmarks","›"],["override","Override File Type",""]
+ ];
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><div class="ij-tab-context">'+items.map((it,i)=>'<button type="button" data-tab-action="'+it[0]+'" class="'+(i===1?'active':'')+'"><span>'+it[1]+'</span><small>'+it[2]+'</small></button>').join("")+'</div></div>';
+ const idx=openTabs.indexOf(file);
+ refs.fidelity.querySelectorAll("[data-tab-action]").forEach(btn=>btn.addEventListener("click",()=>{
+  const a=btn.dataset.tabAction;hideFidelity();
+  if(a==="close")closeFile(file);
+  else if(a==="closeOthers"){openTabs=[file];activeFile=file;renderAll()}
+  else if(a==="closeAll"){openTabs=[];activeFile=null;renderAll()}
+  else if(a==="closeLeft"){openTabs=openTabs.slice(Math.max(0,idx));renderAll()}
+  else if(a==="closeRight"){openTabs=openTabs.slice(0,idx+1);renderAll()}
+  else if(a==="splitRight"||a==="splitDown"||a==="splitMoveRight"||a==="splitMoveDown"){state.editorSplit=true;state.splitFile=file;renderAll();fidelityNotice(a.includes("Down")?"Editor split down":"Editor split right")}
+  else if(a==="pin"){if(files[file])files[file].pinned=true;renderTabs()}
+  else if(a==="copyPath")fidelityNotice(file)
+  else fidelityNotice(btn.querySelector("span")?.textContent+" selected");
+ }));
+}
+function showSymbolInfoSurface(d={}){
+ refs.fidelity.className="ijFidelityLayer show transparent";
+ refs.fidelity.innerHTML='<div class="ij-project-menu-wrap"><section class="ij-symbol-card"><div>▱ <a href="#" id="ijSymbolPkg">'+esc(d.package||"pkg1")+'</a></div><div class="ij-symbol-decl">public class <strong>'+esc(d.className||"Hello1")+'</strong></div><div class="ij-symbol-project">▱ '+esc(state.project.name||"App_1")+'<button type="button" id="ijSymbolEdit">✎</button><button type="button" id="ijSymbolMore">⋮</button></div></section></div>';
+ $("ijSymbolPkg")?.addEventListener("click",e=>{e.preventDefault();fidelityNotice("Package "+(d.package||"pkg1")+" selected")});$("ijSymbolEdit")?.addEventListener("click",()=>fidelityNotice("Edit source action opened"));$("ijSymbolMore")?.addEventListener("click",()=>fidelityNotice("More symbol actions opened"));
+}
 function showPopup(kind,items){popupKind=kind;const el=kind==="completion"?refs.completion:refs.intentions;el.innerHTML=(items||[]).map((x,i)=>'<div class="popupRow '+(i===0?"active":"")+'">'+esc(typeof x==="string"?x:(x.label||x.text||JSON.stringify(x)))+'</div>').join("");el.classList.add("show")}
 function clearTransient(action){clearTimeout(notificationTimer);refs.notification.classList.remove("show");refs.menuPopup.classList.remove("show");refs.completion.classList.remove("show");refs.intentions.classList.remove("show");hideFidelity();popupKind="";const continueModal=["setProgramArguments","setVmOptions","setEnvironmentVariables","setWorkingDirectory","addSdk","setProjectSdk","setLanguageLevel","setModuleSdk","configureCompiler","installPlugin"];if(modalKind&&!continueModal.includes(action))closeModal()}
 function markerReplace(src,marker,code,position="replace"){const s=String(src),m=String(marker||"");const idx=s.indexOf(m);if(idx<0)return null;const ins=String(code||"");if(position==="before")return s.slice(0,idx)+ins+s.slice(idx);if(position==="after")return s.slice(0,idx+m.length)+ins+s.slice(idx+m.length);return s.slice(0,idx)+ins+s.slice(idx+m.length)}
@@ -418,7 +529,7 @@ async function applyStep(st,animate,token){
   case"openFile":openFile(d.file);break;
   case"closeFile":closeFile(d.file||activeFile);break;
   case"createFile":if(d.uiState==="projectContextMenu"){showProjectContextSurface();break}if(d.uiState==="newJavaClass"){showNewJavaClassSurface(d.name||"Test");break}files[d.path]={language:d.language||"java",content:String(d.content||"")};state.files=clone(files);addTreePath(d.path,d.language||"java");markGit(d.path,"A");openFile(d.path);break;
-  case"createPackage":{const p=(d.path||d.name||"package").replace(/\./g,"/");addTreePath(p+"/.package","java");delete files[p+"/.package"];deleteTreePath(state.tree,p+"/.package");actionStatus("Package created: "+(d.name||p));renderAll();break}
+  case"createPackage":if(d.uiState==="newPackage"){showNewPackageSurface(d);break}{const p=(d.path||d.name||"package").replace(/\./g,"/");addTreePath(p+"/.package","java");delete files[p+"/.package"];deleteTreePath(state.tree,p+"/.package");actionStatus("Package created: "+(d.name||p));renderAll();break}
   case"renameResource":{const old=d.path||d.oldPath,nw=d.newPath||d.name;if(files[old]){files[nw]=files[old];delete files[old];state.files=clone(files);openTabs=openTabs.map(x=>x===old?nw:x);if(activeFile===old)activeFile=nw}renameTreePath(state.tree,old,nw);renderAll();break}
   case"deleteResource":{const p=d.path;delete files[p];state.files=clone(files);openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;deleteTreePath(state.tree,p);renderAll();break}
   case"saveFile":if(f())f().dirty=false;actionStatus("Saved "+(d.file||activeFile||"file"));renderTabs();break;
@@ -428,19 +539,20 @@ async function applyStep(st,animate,token){
   case"replaceCode":if(f()){f().content=String(f().content).replace(String(d.find||""),String(d.replace||""));f().dirty=true;markGit(d.file||activeFile,"M");renderEditor()}break;
   case"formatCode":case"reformatFile":if(f()){f().content=String(f().content).split("\n").map(x=>x.replace(/\s+$/,"")).join("\n");renderEditor();actionStatus("Code reformatted")}break;
   case"optimizeImports":actionStatus("Imports optimized");break;
-  case"splitEditor":{state.editorSplit=true;state.splitFile=(d.file&&files[d.file]?d.file:(openTabs.find(x=>x!==activeFile&&files[x])||activeFile));if(state.splitFile&&!openTabs.includes(state.splitFile))openTabs.push(state.splitFile);renderAll();actionStatus("Editor split");break}
+  case"splitEditor":if(d.uiState==="tabContextMenu"){showTabContextSurface(d);break}{state.editorSplit=true;state.splitFile=(d.file&&files[d.file]?d.file:(openTabs.find(x=>x!==activeFile&&files[x])||activeFile));if(state.splitFile&&!openTabs.includes(state.splitFile))openTabs.push(state.splitFile);renderAll();actionStatus("Editor split");break}
   case"unsplitEditor":state.editorSplit=false;state.splitFile=null;renderAll();actionStatus("Editor unsplit");break;
   case"pinTab":if(f()){f().pinned=d.pinned!==false;renderTabs()}break;
   case"toggleDistractionFree":refs.app.classList.toggle("distraction",d.enabled!==false);break;
   case"toggleZenMode":document.body.classList.toggle("zen",d.enabled!==false);break;
 
   case"gotoClass":case"gotoFile":case"gotoSymbol":case"searchEverywhere":case"findInFiles":case"recentFiles":genericSurface(st.action,d);break;
-  case"goToDefinition":case"gotoDeclaration":case"gotoImplementation":case"findUsages":case"showCallHierarchy":case"showTypeHierarchy":genericSurface(st.action,d);if(d.file)openFile(d.file);break;
+  case"findUsages":if(d.uiState==="refactoringPreview"){showRefactoringPreviewSurface(d);break}genericSurface(st.action,d);if(d.file)openFile(d.file);break;
+  case"goToDefinition":case"gotoDeclaration":case"gotoImplementation":case"showCallHierarchy":case"showTypeHierarchy":genericSurface(st.action,d);if(d.file)openFile(d.file);break;
   case"showFileStructure":showFileStructure(d.file||activeFile);break;
 
-  case"showCodeCompletion":case"showCompletion":showPopup("completion",d.items||["sorted()","filter(...)","distinct()","findFirst()","map(...)","collect(...)"]);break;
+  case"showCodeCompletion":case"showCompletion":if(d.uiState==="mainTemplate"){showScreenshotCompletion("main",d);break}if(d.uiState==="soutTemplate"){showScreenshotCompletion("sout",d);break}showPopup("completion",d.items||["sorted()","filter(...)","distinct()","findFirst()","map(...)","collect(...)"]);break;
   case"showParameterInfo":showPopup("completion",d.items||["saveSurvey(SurveyRecord survey)"]);break;
-  case"showJavaDocumentation":case"showQuickDocumentation":genericSurface("JDK Documentation",d);break;
+  case"showJavaDocumentation":case"showQuickDocumentation":if(d.uiState==="symbolCard"){showSymbolInfoSurface(d);break}genericSurface("JDK Documentation",d);break;
   case"showQuickFixes":case"showIntentionActions":showPopup("intentions",d.items||["Add exception to method signature","Import class","Replace with modern API","Refactor expression"]);break;
   case"applyQuickFix":if(d.file&&d.find!==undefined&&files[d.file])files[d.file].content=String(files[d.file].content).replace(String(d.find),String(d.replace||""));actionStatus("Quick fix applied");renderAll();break;
   case"showEditorDiagnostics":case"runInspection":if(d.problems)state.problems=clone(d.problems);else if(!state.problems.length)state.problems=[{severity:"error",message:"Cannot resolve method",file:activeFile,line:1},{severity:"warning",message:"Type or declaration should be reviewed",file:activeFile,line:2}];activeBottom="problems";renderEditor();setBottom("problems",state.problems.map(p=>p.severity+": "+p.message).join("\n"));break;
@@ -448,7 +560,8 @@ async function applyStep(st,animate,token){
   case"addProblem":addProblem(d);activeBottom="problems";renderBottom();break;
   case"suppressInspection":state.problems=state.problems.filter(p=>p.message!==d.message);renderBottom();break;
 
-  case"renameSymbol":case"extractMethod":case"extractVariable":case"inlineRefactor":case"moveClass":case"changeSignature":case"safeDelete":case"generateGetterSetter":case"generateConstructor":case"generateToString":case"generateEqualsHashCode":case"overrideMethods":
+  case"moveClass":if(d.uiState==="moveDialog"){showMoveRefactorSurface(d);break}if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;
+  case"renameSymbol":case"extractMethod":case"extractVariable":case"inlineRefactor":case"changeSignature":case"safeDelete":case"generateGetterSetter":case"generateConstructor":case"generateToString":case"generateEqualsHashCode":case"overrideMethods":
     if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;
 
   case"openRunConfigurations":showModal("runConfig","Run/Debug Configurations",'<div class="kv"><span>Name</span><input value="'+esc(state.activeRunConfiguration||"Application")+'"><span>Main class</span><input value="'+esc(findRun()?.mainClass||"")+'"><span>Program arguments</span><input value="'+esc(findRun()?.programArguments||"")+'"><span>VM options</span><input value="'+esc(findRun()?.vmOptions||"")+'"></div>');break;
@@ -460,7 +573,7 @@ async function applyStep(st,animate,token){
   case"setWorkingDirectory":{const r=findRun(d.name);if(r)r.workingDirectory=d.path||"";break}
   case"runJavaMain":case"runConfiguration":state.activeRunConfiguration=d.name||d.mainClass||state.activeRunConfiguration;state.console=d.console||("Running "+state.activeRunConfiguration+"\nProcess finished with exit code 0");activeBottom="run";renderAll();break;
   case"stopProcess":state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom();break;
-  case"showRunConsole":activeBottom="run";if(d.text!==undefined)state.console=String(d.text);renderBottom();break;case"clearRunConsole":state.console="";activeBottom="run";renderBottom();break;case"restartApplication":state.console=d.console||("Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started");activeBottom="run";renderBottom();break;
+  case"showRunConsole":if(d.uiState==="screenshot"){showRunConsoleScreenshot(d);break}activeBottom="run";if(d.text!==undefined)state.console=String(d.text);renderBottom();break;case"clearRunConsole":state.console="";activeBottom="run";renderBottom();break;case"restartApplication":state.console=d.console||("Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started");activeBottom="run";renderBottom();break;
 
   case"debugConfiguration":state.debug={...state.debug,running:true,config:d.name||state.activeRunConfiguration,frames:clone(d.frames||[]),variables:clone(d.variables||[])};activeBottom="debug";setBottom("debug",d.console||"Debugger attached");break;
   case"setBreakpoint":if(!state.breakpoints.some(b=>b.file===d.file&&Number(b.line)===Number(d.line)))state.breakpoints.push({file:d.file,line:Number(d.line),condition:d.condition||""});renderEditor();break;
