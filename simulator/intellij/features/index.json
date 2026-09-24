@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software_id": "intellij",
   "display_name": "IntelliJ IDEA",
-  "directory": "intellij",
-  "purpose": "Routing index only. Read the individual feature JSON file before deciding whether a transcript requirement is supported.",
+  "purpose": "AI routing index for microscopic IntelliJ capability files. Read the individual file before authoring.",
   "feature_file_count": 345,
   "manifest_feature_count": 57,
   "engine_action_count": 291,
+  "microscopic_detail_required": true,
   "files": [
     "action-highlight.json",
     "add-data-source.json",
@@ -355,8 +355,22 @@
     "webclient.json"
   ],
   "sources": {
-    "manifest": "simulator/adaptive-capabilities.json#simulators.intellij",
     "engine": "simulator/intellij/engine.js",
-    "action_contract": "simulator/action-contract.json#simulators.intellij"
-  }
+    "manifest": "simulator/adaptive-capabilities.json#simulators.intellij",
+    "player_replay": "app.js#stepsThrough/sendSeekNow",
+    "ui": "simulator/intellij/index.html",
+    "polish": "simulator/intellij/ide-polish.css"
+  },
+  "current_replay_architecture": {
+    "cumulative_action_replay": true,
+    "projectImpact_runtime_enforced": false,
+    "checkpoints": false,
+    "semantic_anchors": false,
+    "textual_marker_for_typeCode": true
+  },
+  "browser_regressions": [
+    "scripts/test-intellij-ui.cjs",
+    "scripts/test-intellij-p0-ui.cjs",
+    "scripts/test-global-highlighter.cjs"
+  ]
 }

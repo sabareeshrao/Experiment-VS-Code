@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": {
     "id": "intellij",
     "display_name": "IntelliJ IDEA",
@@ -10,12 +10,8 @@
   "feature": {
     "id": "project-context-menu",
     "display_name": "Project Context Menu",
-    "area": "project_navigation",
-    "interaction_kind": "passive_ui_capability",
-    "implementation_status": "registered_capability",
-    "source_kinds": [
-      "adaptive_capability_manifest"
-    ],
+    "area": "project_structure",
+    "implementation_status": "registered_passive_or_composite_capability",
     "manifest_declared": true,
     "canonical_actions": [],
     "candidate_related_actions": [
@@ -35,13 +31,6 @@
       },
       {
         "action": "importExistingProject",
-        "score": 0.333,
-        "overlap": [
-          "project"
-        ]
-      },
-      {
-        "action": "openImportProjectWizard",
         "score": 0.333,
         "overlap": [
           "project"
@@ -74,43 +63,70 @@
         "overlap": [
           "project"
         ]
+      },
+      {
+        "action": "showProjectStructure",
+        "score": 0.333,
+        "overlap": [
+          "project"
+        ]
       }
-    ],
-    "action_mapping_note": "No exact canonical action name matches this feature id. Candidate mappings are heuristic and must be confirmed in the engine before authoring action data."
+    ]
   },
-  "intent": {
-    "user_goal": "Use Project Context Menu as part of a realistic IntelliJ IDEA workflow.",
-    "transcript_requirement": "Treat this as available only when the transcript/video requires the visible capability described here.",
-    "when_to_use": "Use this file when transcript actions, spoken UI references, or expected visible results correspond to Project Context Menu.",
-    "when_not_to_use": "Do not substitute this feature for a different control merely because the concepts are related."
-  },
-  "ui_contract": {
-    "owner": "simulator/intellij",
-    "primary_area": "project_navigation",
-    "required_visibility": "A lesson using this capability must produce a visible software-owned UI state.",
-    "before_state": "The simulator starts from the package baseline plus prior cumulative actions.",
-    "interaction": "This capability may be passive or represented through another action; inspect the implementation before choosing lesson action data.",
-    "after_state": "The named capability must be visibly represented in the software UI when a lesson depends on it.",
-    "focus_and_scroll": "Keep the active control/result visible without replay shaking.",
-    "highlight_rule": "Highlight only the precise control, row, field, tab, code line, command, or result relevant to this feature; never the whole application surface.",
-    "explanation_rule": "Explanation UI is parent-owned and global; this feature must not create a competing explanation card."
-  },
-  "input_contract": {
-    "likely_input_modes": [
-      "mouse",
-      "keyboard when applicable"
-    ],
-    "parameters": "Read the exact engine handler for the selected canonical action before creating lesson action.data. Do not invent parameters.",
-    "destructive": false,
-    "destructive_note": "No destructive semantics are inferred from the canonical action name."
-  },
-  "state_contract": {
-    "baseline_source": "window.COURSE.package.apps.intellij_idea",
-    "cumulative_replay": true,
-    "deterministic_required": true,
-    "historical_replay": "silent",
-    "final_step_animation": "allowed when requested",
-    "user_preferences": "User-controlled layout/theme/persistent preferences must not be overwritten by lesson replay unless explicitly changed."
+  "microscopic_contract": {
+    "availability": "available_as_manifest_capability_requires_related_action_lookup",
+    "behavior_summary": "Passive/composite capability. Read related canonical actions and implementation source before authoring.",
+    "exact_action_data_keys": [],
+    "state_areas_touched": [],
+    "ui_refs_touched": [],
+    "helper_functions_called": [],
+    "literal_ui_selectors_or_tokens": [],
+    "visible_surfaces": [],
+    "project_effect_default": "passive_or_composite_capability",
+    "project_effect_note": "Documentation classification only. projectImpact=build|temporary|inspect is proposed but NOT runtime-enforced yet.",
+    "replay_contract": {
+      "baseline": "window.COURSE.package.apps.intellij_idea",
+      "current_runtime": "Player stepsThrough() replays every earlier IntelliJ action through SIM_SEEK after IntelliJ reset().",
+      "historical_action_behavior": "Earlier actions run with replayingHistory=true; only the final action is current/animated.",
+      "focus_safety": "Historical fidelity inputs suppress autofocus. typeCode uses focusRange and shared SIM_FOCUS.follow.",
+      "checkpoint_support": "not_implemented",
+      "semantic_anchor_support": "not_implemented; typeCode supports textual marker + position + derived focus lines",
+      "direct_jump_required": true
+    },
+    "lesson_authoring_contract": {
+      "software": "intellij",
+      "required_capability": "project-context-menu",
+      "canonical_action": null,
+      "action_data_keys_to_consider": [],
+      "handler_search_token": null,
+      "do_not_invent_parameters": true,
+      "visible_result_required": true,
+      "use_existing_action_before_new_action": true,
+      "temporary_demo_warning": "Temporary project mutations must currently be explicitly undone; automatic projectImpact=temporary behavior does not exist yet."
+    },
+    "implementation_evidence": {
+      "engine_source": "simulator/intellij/engine.js",
+      "handler_search_token": null,
+      "handler_excerpt": null,
+      "ui_source": "simulator/intellij/index.html",
+      "polish_source": "simulator/intellij/ide-polish.css",
+      "shared_highlighter": "simulator/shared/highlighter.js",
+      "player_replay_source": "app.js#stepsThrough/sendSeekNow"
+    },
+    "verification": {
+      "engine_advertised": false,
+      "browser_regression": "not_feature_specific",
+      "browser_test_sources": [],
+      "deterministic_replay_required": true,
+      "hard_refresh_forbidden": true
+    },
+    "limitations_and_non_assumptions": [
+      "Catalog presence does not imply pixel-perfect parity with JetBrains IntelliJ IDEA.",
+      "Do not invent action.data keys not supported by the handler.",
+      "Do not assume projectImpact/checkpoints/semantic anchors exist yet.",
+      "Do not create a competing explanation box.",
+      "Do not use whole-screen blue overlays; control guidance is a persistent boundary, code/SQL uses shared line emphasis, and IntelliJ terminal current commands use yellow command emphasis."
+    ]
   },
   "transcript_matching": {
     "canonical_feature_id": "project-context-menu",
@@ -126,71 +142,23 @@
       "refreshProjectTree",
       "createMavenProject",
       "importExistingProject",
-      "openImportProjectWizard",
       "openMenu",
       "openProject",
       "newProject",
-      "reloadMavenProject"
+      "reloadMavenProject",
+      "showProjectStructure"
     ],
-    "decision_rule": "Match the visible interaction and expected UI result, then confirm the canonical engine action."
-  },
-  "lesson_authoring": {
-    "required_capability_value": "project-context-menu",
-    "feature_available": true,
-    "preferred_actions": [],
-    "action_lookup_required": true,
-    "authoring_steps": [
-      "Confirm the transcript actually uses this visible feature.",
-      "Read this feature file rather than relying only on AI_CAPABILITY_INDEX.json.",
-      "Inspect the matching engine handler for required action.data.",
-      "Do not invent an action when preferred_actions is empty.",
-      "Ensure the lesson visibly changes or focuses the expected UI.",
-      "Validate deterministic direct-jump replay from a clean load."
-    ],
-    "missing_feature_rule": "If transcript behavior exceeds this file and no engine action/UI supports it, upgrade the master simulator before building the lesson."
-  },
-  "implementation": {
-    "engine_source": "simulator/intellij/engine.js",
-    "ui_source": "simulator/intellij/index.html",
-    "manifest_source": "simulator/adaptive-capabilities.json#simulators.intellij",
-    "action_contract_source": "simulator/action-contract.json#simulators.intellij",
-    "implementation_search_terms": [
-      "project-context-menu"
-    ],
-    "source_review_required": true
-  },
-  "replay_and_quality": {
-    "direct_middle_jump_required": true,
-    "normal_reload_required": true,
-    "hard_refresh_forbidden": true,
-    "stale_screen_forbidden": true,
-    "historical_flicker_forbidden": true,
-    "duplicate_explanation_forbidden": true,
-    "giant_highlight_forbidden": true,
-    "visual_fidelity_note": "Catalog presence proves registered/action coverage, not pixel-perfect visual fidelity."
-  },
-  "validation": {
-    "manifest_feature_present": true,
-    "engine_action_present": false,
-    "exact_action_names": [],
-    "catalog_generated_from_current_master": true,
-    "visual_browser_verification": "not implied",
-    "regression_expectations": [
-      "Feature file remains present while capability/action remains supported.",
-      "Canonical actions remain declared by the simulator.",
-      "Feature remains software-owned rather than implemented in app.js.",
-      "Lesson replay remains deterministic."
-    ]
+    "decision_rule": "Match the transcript's visible IntelliJ interaction/result. If canonical_actions is empty, inspect candidates and engine source before deciding support."
   },
   "maintenance": {
     "canonical_file": "simulator/intellij/features/project-context-menu.json",
-    "update_when": [
-      "feature UI changes materially",
-      "canonical action is added/renamed/removed",
-      "lesson data parameters change",
-      "capability is split into more precise sub-features",
-      "transcript audits discover a missing visible state"
-    ],
-    "generated_baseline_note": "Detailed baseline generated from registered capability and engine action surfaces; future manual enrichment is allowed."
+    "generated_by": "scripts/build-intellij-microscopic-features.cjs",
+    "regenerate_after": [
+      "engine action change",
+      "action.data parameter change",
+      "UI surface upgrade",
+      "browser regression coverage change",
+      "replay architecture change"
+    ]
   }
 }

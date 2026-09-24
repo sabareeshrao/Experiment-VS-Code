@@ -20,7 +20,7 @@ function build(root=path.resolve(__dirname,"..")){
    target_fidelity:meta.targetFidelity??null,
    summary_features:[...new Set(meta.features||[])].sort(),
    indexed_actions:[...new Set(meta.actions||[])].sort(),
-   action_lookup_required:!(Array.isArray(meta.actions)&&meta.actions.length)
+   action_lookup_required:!(Array.isArray(meta.actions)&&meta.actions.length),\n   ...(id==="intellij"?{microscopic_schema_version:2,microscopic_generator:"scripts/build-intellij-microscopic-features.cjs",current_replay_limitations:{projectImpact_runtime_enforced:false,checkpoints:false,semantic_anchors:false,textual_marker_for_typeCode:true}}:{})
   };
  }
  return {
@@ -40,7 +40,7 @@ function build(root=path.resolve(__dirname,"..")){
    "Never invent a new action if an existing canonical action already represents the transcript interaction.",
    "If the transcript requires behavior not represented by the detailed catalog and engine UI, mark it missing and upgrade the master simulator first.",
    "Product-specific UI belongs only inside that simulator.",
-   "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."
+   "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes.",\n   "For IntelliJ, feature JSON uses microscopic schema v2; read the exact file before authoring action.data.",\n   "Do not assume IntelliJ projectImpact, checkpoint, or semantic-anchor support exists until runtime implements it."
   ],
   lesson_json_contract:{
    software:"Canonical key from software.",

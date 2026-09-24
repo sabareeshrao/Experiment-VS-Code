@@ -21,7 +21,9 @@
     "Never invent a new action if an existing canonical action already represents the transcript interaction.",
     "If the transcript requires behavior not represented by the detailed catalog and engine UI, mark it missing and upgrade the master simulator first.",
     "Product-specific UI belongs only inside that simulator.",
-    "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes."
+    "Simulator visibility is lesson-driven; never add software-specific global player buttons or one-off ?software= preview routes.",
+    "For IntelliJ, feature JSON uses microscopic schema v2; read the exact file before authoring action.data.",
+    "Do not assume IntelliJ projectImpact, checkpoint, or semantic-anchor support exists until runtime implements it."
   ],
   "lesson_json_contract": {
     "software": "Canonical key from software.",
@@ -108,7 +110,15 @@
         "webclient"
       ],
       "indexed_actions": [],
-      "action_lookup_required": true
+      "action_lookup_required": true,
+      "microscopic_schema_version": 2,
+      "microscopic_generator": "scripts/build-intellij-microscopic-features.cjs",
+      "current_replay_limitations": {
+        "projectImpact_runtime_enforced": false,
+        "checkpoints": false,
+        "semantic_anchors": false,
+        "textual_marker_for_typeCode": true
+      }
     },
     "vscode": {
       "display_name": "Visual Studio Code",
