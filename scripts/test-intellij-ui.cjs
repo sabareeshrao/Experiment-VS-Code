@@ -87,10 +87,10 @@ const server = http.createServer((req, res) => {
       await geometry();
       if (step === 497) {
         await frame().waitForFunction(() => document.activeElement?.id === "ijClassName");
-        await page.keyboard.press("ArrowRight");
-        assert((await title()).startsWith("497."), "ArrowRight escaped the editable field");
         await page.keyboard.press("r");
-        assert((await frame().locator("#ijClassName").inputValue()).endsWith("r"), "Replay shortcut consumed input text");
+        assert((await frame().locator("#ijClassName").inputValue()).endsWith("r"), "Typed input was consumed as a replay shortcut");
+        await page.keyboard.press("ArrowRight");
+        assert((await title()).startsWith("497."), "ArrowRight escaped after the user intentionally edited the field");
       }
       if (step === 504) await completion();
     }
@@ -107,6 +107,7 @@ const server = http.createServer((req, res) => {
     await navigate(() => page.keyboard.press("ArrowRight"), 499);
     await navigate(() => page.keyboard.press("ArrowLeft"), 498);
     await navigate(() => page.keyboard.press("r"), 498);
+    await page.locator("#stepSearch").click();
     await page.locator("#stepSearch").fill("Test");
     await page.keyboard.press("ArrowLeft");
     assert((await title()).startsWith("498."), "Parent search input lost cursor navigation");
