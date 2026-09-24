@@ -7,27 +7,60 @@ const refs={editorPane:$("editorPane"),editorWrap:$("editorWrap"),editorSplitWra
 let baseline=null,state=null,files={},activeFile=null,openTabs=[],activeBottom="run",activeRight="structure",autoType=true,seekToken=0,allowBoundary=true,treeMap=new Map(),focusRange=null,popupKind="",modalKind="",notificationTimer=0,trackedBoundary=null,terminalHighlightText="";
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let replayingHistory=false;
+const LESSON_EDITABLE_SELECTOR='input, textarea, select, [contenteditable="true"], [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]';
+let lessonUserEditTarget=null,lessonTabArmed=false;
+function lessonEditableTarget(target){
+ if(!target)return null;
+ if(target.isContentEditable)return target;
+ return target.closest?.(LESSON_EDITABLE_SELECTOR)||null;
+}
+function clearLessonEditIntent(){
+ if(lessonUserEditTarget?.dataset)delete lessonUserEditTarget.dataset.lessonUserEditing;
+ lessonUserEditTarget=null;
+ lessonTabArmed=false;
+}
+document.addEventListener("pointerdown",event=>{
+ const editable=lessonEditableTarget(event.target);
+ clearLessonEditIntent();
+ if(editable){lessonUserEditTarget=editable;if(editable.dataset)editable.dataset.lessonUserEditing="true"}
+},true);
+document.addEventListener("keydown",event=>{if(event.key==="Tab")lessonTabArmed=true},true);
+document.addEventListener("focusin",event=>{
+ if(!lessonTabArmed)return;
+ const editable=lessonEditableTarget(event.target);
+ clearLessonEditIntent();
+ if(editable){lessonUserEditTarget=editable;if(editable.dataset)editable.dataset.lessonUserEditing="true"}
+},true);
 function focusFidelityInput(id,select=false){
  if(replayingHistory)return;
  const input=$(id),token=seekToken;
+ clearLessonEditIntent();
+ if(input?.dataset)input.dataset.lessonAutoFocus="true";
  setTimeout(()=>{if(token!==seekToken||!input?.isConnected)return;input.focus({preventScroll:true});if(select)input.select()},0);
 }
 function handleIntellijLessonKeydown(event){
  if(event.defaultPrevented||event.isComposing)return;
  if(event.ctrlKey||event.metaKey||event.shiftKey)return;
- const target=event.target;
- const editing=target?.isContentEditable||target?.closest?.('input, textarea, select, [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]');
- if(editing&&!event.altKey)return;
+ const editing=lessonEditableTarget(event.target);
+ const userEditing=!!editing&&lessonUserEditTarget===editing;
  const direction=event.key==="ArrowRight"?"next":event.key==="ArrowLeft"?"prev":"";
  if(direction){
+  if(userEditing&&!event.altKey)return;
   event.preventDefault();
   event.stopPropagation();
+  clearLessonEditIntent();
   parent.postMessage({type:"SIM_NAVIGATE",direction},location.origin==="null"?"*":location.origin);
   return;
  }
- if(!event.altKey&&event.key.toLowerCase()==="r"&&!editing){
+ if(editing&&!event.altKey&&(event.key.length===1||["Backspace","Delete","Home","End","Enter"].includes(event.key))){
+  lessonUserEditTarget=editing;
+  if(editing.dataset){delete editing.dataset.lessonAutoFocus;editing.dataset.lessonUserEditing="true"}
+  return;
+ }
+ if(!event.altKey&&event.key.toLowerCase()==="r"&&!userEditing){
   event.preventDefault();
   event.stopPropagation();
+  clearLessonEditIntent();
   parent.postMessage({type:"SIM_NAVIGATE",direction:"replay"},location.origin==="null"?"*":location.origin);
  }
 }
@@ -960,6 +993,7 @@ async function applyStep(st,animate,token){
 }
 function showProjectStructureModal(){showProjectStructureSurface({sdk:state.project.sdk,jdkOpen:false})}
 async function seek(steps,animateFinal){
+ clearLessonEditIntent();
  const token=++seekToken;
  try{
   replayingHistory=true;

@@ -901,22 +901,78 @@
     }
   });
 
+  const LESSON_EDITABLE_SELECTOR =
+    'input, textarea, select, [contenteditable="true"], [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]';
+
+  function lessonEditableTarget(target) {
+    if (!target) return null;
+    if (target.isContentEditable) return target;
+    return target.closest?.(LESSON_EDITABLE_SELECTOR) || null;
+  }
+
+  function clearLessonEditingIntent(doc) {
+    if (!doc) return;
+    const old = doc.__lessonNavUserEditTarget;
+    if (old?.dataset) delete old.dataset.lessonUserEditing;
+    doc.__lessonNavUserEditTarget = null;
+    doc.__lessonNavTabArmed = false;
+  }
+
+  function installLessonEditIntent(doc) {
+    if (!doc || doc.__lessonEditIntentInstalled) return;
+    doc.__lessonEditIntentInstalled = true;
+    doc.addEventListener("pointerdown", event => {
+      const editable = lessonEditableTarget(event.target);
+      clearLessonEditingIntent(doc);
+      if (editable) {
+        doc.__lessonNavUserEditTarget = editable;
+        if (editable.dataset) editable.dataset.lessonUserEditing = "true";
+      }
+    }, true);
+    doc.addEventListener("keydown", event => {
+      if (event.key === "Tab") doc.__lessonNavTabArmed = true;
+    }, true);
+    doc.addEventListener("focusin", event => {
+      if (!doc.__lessonNavTabArmed) return;
+      const editable = lessonEditableTarget(event.target);
+      clearLessonEditingIntent(doc);
+      if (editable) {
+        doc.__lessonNavUserEditTarget = editable;
+        if (editable.dataset) editable.dataset.lessonUserEditing = "true";
+      }
+    }, true);
+  }
+
+  function clearAllLessonEditingIntent() {
+    clearLessonEditingIntent(document);
+    for (const frame of Object.values(frames)) {
+      try { clearLessonEditingIntent(frame?.contentDocument); } catch (_) {}
+    }
+  }
+
   function handleLessonKeydown(event) {
     if (fullCodeMode || !flat.length || event.defaultPrevented || event.isComposing) return;
     if (event.ctrlKey || event.metaKey || event.shiftKey) return;
-    const target = event.target;
-    const editing = target?.isContentEditable || target?.closest?.(
-      'input, textarea, select, [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]'
-    );
-    // Plain arrows belong to editable controls; Alt+Arrow always navigates lessons.
-    if (editing && !event.altKey) return;
+    const doc = event.target?.ownerDocument || document;
+    const editing = lessonEditableTarget(event.target);
+    const userEditing = !!editing && doc.__lessonNavUserEditTarget === editing;
     const delta = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (delta) {
+      if (userEditing && !event.altKey) return;
       event.preventDefault();
       event.stopPropagation();
+      clearAllLessonEditingIntent();
       if (current + delta >= 0 && current + delta < flat.length) goToStep(current + delta, delta > 0);
-    } else if (!event.altKey && event.key.toLowerCase() === "r") {
+      return;
+    }
+    if (editing && !event.altKey && (event.key.length === 1 || ["Backspace", "Delete", "Home", "End", "Enter"].includes(event.key))) {
+      doc.__lessonNavUserEditTarget = editing;
+      if (editing.dataset) editing.dataset.lessonUserEditing = "true";
+      return;
+    }
+    if (!event.altKey && event.key.toLowerCase() === "r" && !userEditing) {
       event.preventDefault();
+      clearAllLessonEditingIntent();
       seekSoftware(current, flat[current].software, true);
     }
   }
@@ -928,6 +984,7 @@
         const doc = frame.contentDocument;
         if (!doc || doc.__lessonNavBridgeInstalled) return;
         doc.__lessonNavBridgeInstalled = true;
+        installLessonEditIntent(doc);
         doc.addEventListener("keydown", handleLessonKeydown, true);
       } catch (_) {}
     };
@@ -935,6 +992,7 @@
     attach();
   }
 
+  installLessonEditIntent(document);
   Object.values(frames).forEach(installFrameNavigationBridge);
 
   fullCodeBtn.onclick = loadFullCode;
