@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "software_id": "powershell",
+  "display_name": "Windows PowerShell",
+  "directory": "powershell",
+  "purpose": "Navigation only. Read individual feature files for support decisions.",
+  "feature_file_count": 22,
+  "manifest_feature_count": 14,
+  "engine_action_count": 8,
+  "files": [
+    "action-highlight.json",
+    "clear-terminal.json",
+    "command-history.json",
+    "environment-variables.json",
+    "exit-code-display.json",
+    "explanation-box.json",
+    "explanation-minimize-close.json",
+    "git-command-execution.json",
+    "highlight-target.json",
+    "java-command-execution.json",
+    "persistent-explanation-minimize.json",
+    "persistent-explanation-position.json",
+    "persistent-layout.json",
+    "powershell-terminal.json",
+    "resizable-sidebars.json",
+    "run-command.json",
+    "set-cwd.json",
+    "set-env.json",
+    "show-dialog.json",
+    "show-exit-code.json",
+    "show-output.json",
+    "working-directory.json"
+  ],
+  "sources": {
+    "manifest": "simulator/adaptive-capabilities.json#simulators.powershell",
+    "engine": "simulator/powershell/index.html",
+    "action_contract": "simulator/action-contract.json#simulators.powershell"
+  }
+}

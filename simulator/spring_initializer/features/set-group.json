@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "software": {
+    "id": "spring_initializer",
+    "display_name": "Spring Initializr",
+    "directory": "spring_initializer",
+    "package_key": "spring_initializer",
+    "target_fidelity": 94
+  },
+  "feature": {
+    "id": "set-group",
+    "display_name": "Set Group",
+    "area": "general",
+    "interaction_kind": "modify",
+    "implementation_status": "engine_action_exposed",
+    "source_kinds": [
+      "engine_supported_action"
+    ],
+    "manifest_declared": false,
+    "canonical_actions": [
+      "setGroup"
+    ],
+    "candidate_related_actions": [],
+    "action_mapping_note": "Canonical action is advertised by the simulator."
+  },
+  "intent": {
+    "user_goal": "Use Set Group in a realistic Spring Initializr workflow.",
+    "transcript_requirement": "Match this capability only when the video/transcript requires its visible interaction or result.",
+    "when_to_use": "Use when the observed UI behavior corresponds to Set Group.",
+    "when_not_to_use": "Do not substitute a conceptually related feature without matching the visible interaction."
+  },
+  "ui_contract": {
+    "owner": "simulator/spring_initializer",
+    "primary_area": "general",
+    "required_visibility": "Lesson use must produce a visible software-owned UI state; hidden state mutation is insufficient.",
+    "before_state": "Package baseline plus prior cumulative actions.",
+    "interaction": "Invoke a canonical action using parameters confirmed in the engine handler.",
+    "after_state": "The named surface/control/result must visibly reflect the interaction.",
+    "focus_and_scroll": "Keep the active control/result visible without shaking.",
+    "highlight_rule": "Highlight only the exact control/row/field/tab/code line/command/result.",
+    "explanation_rule": "Use the single parent-owned global explanation card; never create a feature-specific explanation UI."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard/text"
+    ],
+    "parameters": "Inspect the exact action handler before writing action.data; this file does not invent parameters.",
+    "destructive": false
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.spring_initializer",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent",
+    "final_step_animation": "allowed only for current step",
+    "user_preferences": "Persistent user layout/theme settings must survive replay unless explicitly changed."
+  },
+  "transcript_matching": {
+    "canonical_feature_id": "set-group",
+    "normalized_terms": [
+      "set-group",
+      "Set Group",
+      "set",
+      "group"
+    ],
+    "exact_engine_actions": [
+      "setGroup"
+    ],
+    "candidate_engine_actions": [],
+    "decision_rule": "Match visible interaction + expected result, then verify the canonical action."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "set-group",
+    "feature_available": true,
+    "preferred_actions": [
+      "setGroup"
+    ],
+    "action_lookup_required": false,
+    "authoring_steps": [
+      "Confirm the transcript visibly uses this feature.",
+      "Read this file, not only AI_CAPABILITY_INDEX.json.",
+      "Inspect the exact action handler for parameters.",
+      "Do not invent actions.",
+      "Require a visible result.",
+      "Test direct-jump deterministic replay."
+    ],
+    "missing_feature_rule": "If the transcript requires behavior not supported here, upgrade the master simulator before creating the lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/spring_initializer/engine.js",
+    "ui_source": "simulator/spring_initializer/index.html",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.spring_initializer",
+    "action_contract_source": "simulator/action-contract.json#simulators.spring_initializer",
+    "implementation_search_terms": [
+      "set-group",
+      "setGroup"
+    ],
+    "source_review_required": false
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "visual_fidelity_note": "Catalog coverage does not itself prove pixel-perfect visual fidelity."
+  },
+  "validation": {
+    "manifest_feature_present": false,
+    "engine_action_present": true,
+    "exact_action_names": [
+      "setGroup"
+    ],
+    "visual_browser_verification": "not implied",
+    "regression_expectations": [
+      "Keep feature file while supported.",
+      "Keep canonical actions declared.",
+      "Keep feature UI software-owned.",
+      "Keep replay deterministic."
+    ]
+  },
+  "maintenance": {
+    "canonical_file": "simulator/spring_initializer/features/set-group.json",
+    "update_when": [
+      "feature UI changes",
+      "action changes",
+      "lesson parameters change",
+      "feature is split/refined",
+      "transcript audit finds missing state"
+    ],
+    "generated_baseline_note": "Detailed baseline from current manifest and engine action surfaces; manual enrichment is allowed."
+  }
+}

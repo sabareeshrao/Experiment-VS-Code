@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "software_id": "maven_central",
+  "display_name": "Maven Central",
+  "directory": "maven_central",
+  "purpose": "Navigation only. Read individual feature files for support decisions.",
+  "feature_file_count": 19,
+  "manifest_feature_count": 11,
+  "engine_action_count": 8,
+  "files": [
+    "action-highlight.json",
+    "artifact-page.json",
+    "copy-dependency-xml.json",
+    "copy-maven-snippet.json",
+    "dependency-search.json",
+    "explanation-box.json",
+    "explanation-minimize-close.json",
+    "highlight-target.json",
+    "maven-dependency-snippet.json",
+    "open-artifact.json",
+    "persistent-explanation-minimize.json",
+    "persistent-explanation-position.json",
+    "reset-search.json",
+    "search-dependency.json",
+    "search-results.json",
+    "select-version.json",
+    "set-search.json",
+    "show-maven-snippet.json",
+    "version-list.json"
+  ],
+  "sources": {
+    "manifest": "simulator/adaptive-capabilities.json#simulators.maven_central",
+    "engine": "simulator/maven_central/engine.js",
+    "action_contract": "simulator/action-contract.json#simulators.maven_central"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "software": {
+    "id": "eclipse",
+    "display_name": "Eclipse IDE",
+    "directory": "eclipse",
+    "package_key": "eclipse",
+    "target_fidelity": null
+  },
+  "feature": {
+    "id": "bytecode-inspection",
+    "display_name": "Bytecode Inspection",
+    "area": "general",
+    "interaction_kind": "passive_ui_capability",
+    "implementation_status": "registered_capability",
+    "source_kinds": [
+      "adaptive_capability_manifest"
+    ],
+    "manifest_declared": true,
+    "canonical_actions": [],
+    "candidate_related_actions": [
+      {
+        "action": "showBytecode",
+        "score": 0.5,
+        "overlap": [
+          "bytecode"
+        ]
+      }
+    ],
+    "action_mapping_note": "No exact action-name match; candidates are heuristic and require engine review."
+  },
+  "intent": {
+    "user_goal": "Use Bytecode Inspection in a realistic Eclipse IDE workflow.",
+    "transcript_requirement": "Match this capability only when the video/transcript requires its visible interaction or result.",
+    "when_to_use": "Use when the observed UI behavior corresponds to Bytecode Inspection.",
+    "when_not_to_use": "Do not substitute a conceptually related feature without matching the visible interaction."
+  },
+  "ui_contract": {
+    "owner": "simulator/eclipse",
+    "primary_area": "general",
+    "required_visibility": "Lesson use must produce a visible software-owned UI state; hidden state mutation is insufficient.",
+    "before_state": "Package baseline plus prior cumulative actions.",
+    "interaction": "Inspect the simulator engine to determine the correct action.",
+    "after_state": "The named surface/control/result must visibly reflect the interaction.",
+    "focus_and_scroll": "Keep the active control/result visible without shaking.",
+    "highlight_rule": "Highlight only the exact control/row/field/tab/code line/command/result.",
+    "explanation_rule": "Use the single parent-owned global explanation card; never create a feature-specific explanation UI."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard when applicable"
+    ],
+    "parameters": "Inspect the exact action handler before writing action.data; this file does not invent parameters.",
+    "destructive": false
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.eclipse",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent",
+    "final_step_animation": "allowed only for current step",
+    "user_preferences": "Persistent user layout/theme settings must survive replay unless explicitly changed."
+  },
+  "transcript_matching": {
+    "canonical_feature_id": "bytecode-inspection",
+    "normalized_terms": [
+      "bytecode-inspection",
+      "Bytecode Inspection",
+      "bytecode",
+      "inspection"
+    ],
+    "exact_engine_actions": [],
+    "candidate_engine_actions": [
+      "showBytecode"
+    ],
+    "decision_rule": "Match visible interaction + expected result, then verify the canonical action."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "bytecode-inspection",
+    "feature_available": true,
+    "preferred_actions": [],
+    "action_lookup_required": true,
+    "authoring_steps": [
+      "Confirm the transcript visibly uses this feature.",
+      "Read this file, not only AI_CAPABILITY_INDEX.json.",
+      "Inspect the exact action handler for parameters.",
+      "Do not invent actions.",
+      "Require a visible result.",
+      "Test direct-jump deterministic replay."
+    ],
+    "missing_feature_rule": "If the transcript requires behavior not supported here, upgrade the master simulator before creating the lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/eclipse/index.html",
+    "ui_source": "simulator/eclipse/index.html",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.eclipse",
+    "action_contract_source": "simulator/action-contract.json#simulators.eclipse",
+    "implementation_search_terms": [
+      "bytecode-inspection"
+    ],
+    "source_review_required": true
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "visual_fidelity_note": "Catalog coverage does not itself prove pixel-perfect visual fidelity."
+  },
+  "validation": {
+    "manifest_feature_present": true,
+    "engine_action_present": false,
+    "exact_action_names": [],
+    "visual_browser_verification": "not implied",
+    "regression_expectations": [
+      "Keep feature file while supported.",
+      "Keep canonical actions declared.",
+      "Keep feature UI software-owned.",
+      "Keep replay deterministic."
+    ]
+  },
+  "maintenance": {
+    "canonical_file": "simulator/eclipse/features/bytecode-inspection.json",
+    "update_when": [
+      "feature UI changes",
+      "action changes",
+      "lesson parameters change",
+      "feature is split/refined",
+      "transcript audit finds missing state"
+    ],
+    "generated_baseline_note": "Detailed baseline from current manifest and engine action surfaces; manual enrichment is allowed."
+  }
+}
