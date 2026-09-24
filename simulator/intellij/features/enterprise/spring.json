@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "spring",
   "purpose": "Microscopic IntelliJ enterprise evidence for the spring domain.",
@@ -10,59 +10,55 @@
   },
   "actions": {
     "showBeanGraph": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "beans",
-        "components",
-        "handlers",
-        "injections",
-        "profile",
-        "stages"
+        "beans"
       ],
       "action_specific_state_paths": [
-        "spring.beans",
-        "spring.components",
-        "spring.profile"
+        "spring.beans"
       ],
-      "action_specific_source_snippets": [
-        "if(D.spring.includes(a)){if(a===\"showBeanGraph\")state.spring.beans=clone(d.beans||state.spring.beans);if(a===\"showComponentScan\")state.spring.components=clone(d.components||state.spring.components);show(\"Spring\",grid([[\"Profile\",d.profile||state.spring.profile],[\"Beans\",state.spring.beans.length],[\"Components\",state.spring.components.length]])+card(tc(a),rows(d.stages||d.injections||d.handlers||state.spring.beans||[],x=>typeof x===\"string\"?x:JSON.stringify(x))));return}"
+      "action_specific_source_branches": [
+        "if(a===\"showBeanGraph\")state.spring.beans=clone(d.beans||state.spring.beans);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showDependencyInjection": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showComponentScan": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "beans",
-        "components",
-        "handlers",
-        "injections",
-        "profile",
-        "stages"
+        "components"
       ],
       "action_specific_state_paths": [
-        "spring.beans",
-        "spring.components",
-        "spring.profile"
+        "spring.components"
       ],
-      "action_specific_source_snippets": [
-        "if(D.spring.includes(a)){if(a===\"showBeanGraph\")state.spring.beans=clone(d.beans||state.spring.beans);if(a===\"showComponentScan\")state.spring.components=clone(d.components||state.spring.components);show(\"Spring\",grid([[\"Profile\",d.profile||state.spring.profile],[\"Beans\",state.spring.beans.length],[\"Components\",state.spring.components.length]])+card(tc(a),rows(d.stages||d.injections||d.handlers||state.spring.beans||[],x=>typeof x===\"string\"?x:JSON.stringify(x))));return}"
+      "action_specific_source_branches": [
+        "if(a===\"showComponentScan\")state.spring.components=clone(d.components||state.spring.components);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showRequestLifecycle": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showControllerAdvice": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     }
   },
@@ -84,6 +80,7 @@
       "card",
       "clone",
       "grid",
+      "if",
       "includes",
       "rows",
       "show",
@@ -100,9 +97,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

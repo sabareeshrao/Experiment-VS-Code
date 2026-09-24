@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "purpose": "Router for microscopic IntelliJ enterprise action evidence. Resolve the canonical action to a domain, then read only that domain file.",
   "source": "simulator/intellij/enterprise-ui.js",

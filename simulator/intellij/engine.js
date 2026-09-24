@@ -45,7 +45,7 @@ function handleIntellijLessonKeydown(event){
  const userEditing=!!editing&&lessonUserEditTarget===editing;
  const direction=event.key==="ArrowRight"?"next":event.key==="ArrowLeft"?"prev":"";
  if(direction){
-  if(userEditing&&!event.altKey)return;
+  // Live IntelliJ text fields must never steal the lesson navigation arrows.
   event.preventDefault();
   event.stopPropagation();
   clearLessonEditIntent();

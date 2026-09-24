@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "mockito",
   "purpose": "Microscopic IntelliJ enterprise evidence for the mockito domain.",
@@ -10,166 +10,113 @@
   },
   "actions": {
     "mockitoCreateMock": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "call",
         "name",
-        "returns",
-        "target",
-        "type",
-        "value"
+        "type"
       ],
       "action_specific_state_paths": [
-        "mockito",
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs"
+        "mockito.mocks"
       ],
-      "action_specific_source_snippets": [
-        "if(D.mockito.includes(a)){if(a===\"mockitoReset\")state.mockito=fresh().mockito;if(a===\"mockitoCreateMock\")state.mockito.mocks.push(d.name||d.type||\"mock\");if(a===\"mockitoInjectMocks\")state.mockito.injected.push(d.target||\"service\");if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state."
+      "action_specific_source_branches": [
+        "if(a===\"mockitoCreateMock\")state.mockito.mocks.push(d.name||d.type||\"mock\");"
       ],
-      "project_effect_default": "inspect_or_transient_ui"
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
     },
     "mockitoInjectMocks": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "call",
-        "exception",
-        "name",
-        "returns",
-        "target",
-        "type",
-        "value"
+        "target"
       ],
       "action_specific_state_paths": [
-        "mockito",
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs",
-        "mockito.throws"
+        "mockito.injected"
       ],
-      "action_specific_source_snippets": [
-        "if(D.mockito.includes(a)){if(a===\"mockitoReset\")state.mockito=fresh().mockito;if(a===\"mockitoCreateMock\")state.mockito.mocks.push(d.name||d.type||\"mock\");if(a===\"mockitoInjectMocks\")state.mockito.injected.push(d.target||\"service\");if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\""
+      "action_specific_source_branches": [
+        "if(a===\"mockitoInjectMocks\")state.mockito.injected.push(d.target||\"service\");"
       ],
-      "project_effect_default": "inspect_or_transient_ui"
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
     },
     "mockitoStub": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "call",
-        "exception",
-        "name",
         "returns",
-        "target",
-        "type",
         "value"
       ],
       "action_specific_state_paths": [
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs",
-        "mockito.throws"
-      ],
-      "action_specific_source_snippets": [
-        "to=fresh().mockito;if(a===\"mockitoCreateMock\")state.mockito.mocks.push(d.name||d.type||\"mock\");if(a===\"mockitoInjectMocks\")state.mockito.injected.push(d.target||\"service\");if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\"RuntimeException\"));show(\"Mockito\",grid([[\"@Mock\",state.mockito.mocks.join(\","
-      ],
-      "project_effect_default": "inspect_or_transient_ui"
-    },
-    "mockitoCaptureArgument": {
-      "action_specific_data_keys": [
-        "call",
-        "exception",
-        "name",
-        "returns",
-        "target",
-        "type",
-        "value"
-      ],
-      "action_specific_state_paths": [
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs",
-        "mockito.throws"
-      ],
-      "action_specific_source_snippets": [
-        "tate.mockito.injected.push(d.target||\"service\");if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\"RuntimeException\"));show(\"Mockito\",grid([[\"@Mock\",state.mockito.mocks.join(\", \")||\"None\"],[\"@InjectMocks\",state.mockito.injected.join(\", \")||\"None\"],[\"Spies\",state.mockito.spies.join(\", \")||\"None\"]])+c"
-      ],
-      "project_effect_default": "inspect_or_transient_ui"
-    },
-    "mockitoSpy": {
-      "action_specific_data_keys": [
-        "call",
-        "exception",
-        "name",
-        "returns",
-        "type",
-        "value"
-      ],
-      "action_specific_state_paths": [
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs",
-        "mockito.throws"
-      ],
-      "action_specific_source_snippets": [
-        "findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\"RuntimeException\"));show(\"Mockito\",grid([[\"@Mock\",state.mockito.mocks.join(\", \")||\"None\"],[\"@InjectMocks\",state.mockito.injected.join(\", \")||\"None\"],[\"Spies\",state.mockito.spies.join(\", \")||\"None\"]])+card(\"Stubbing\",rows(state.mockito.stubs))+card(\"ArgumentCaptor\",rows(state.mockito.captors))+card(\"Exceptions\",rows"
-      ],
-      "project_effect_default": "inspect_or_transient_ui"
-    },
-    "mockitoThrow": {
-      "action_specific_data_keys": [
-        "call",
-        "exception",
-        "name",
-        "type",
-        "value"
-      ],
-      "action_specific_state_paths": [
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
-        "mockito.stubs",
-        "mockito.throws"
-      ],
-      "action_specific_source_snippets": [
-        "kitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\"RuntimeException\"));show(\"Mockito\",grid([[\"@Mock\",state.mockito.mocks.join(\", \")||\"None\"],[\"@InjectMocks\",state.mockito.injected.join(\", \")||\"None\"],[\"Spies\",state.mockito.spies.join(\", \")||\"None\"]])+card(\"Stubbing\",rows(state.mockito.stubs))+card(\"ArgumentCaptor\",rows(state.mockito.captors))+card(\"Exceptions\",rows(state.mockito.throws)));return}"
-      ],
-      "project_effect_default": "inspect_or_transient_ui"
-    },
-    "mockitoReset": {
-      "action_specific_data_keys": [
-        "call",
-        "name",
-        "returns",
-        "target",
-        "type",
-        "value"
-      ],
-      "action_specific_state_paths": [
-        "mockito",
-        "mockito.captors",
-        "mockito.injected",
-        "mockito.mocks",
-        "mockito.spies",
         "mockito.stubs"
       ],
-      "action_specific_source_snippets": [
-        "if(D.mockito.includes(a)){if(a===\"mockitoReset\")state.mockito=fresh().mockito;if(a===\"mockitoCreateMock\")state.mockito.mocks.push(d.name||d.type||\"mock\");if(a===\"mockitoInjectMocks\")state.mockito.injected.push(d.target||\"service\");if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));if(a===\"mockitoSpy\")state.mockito.spies.push"
+      "action_specific_source_branches": [
+        "if(a===\"mockitoStub\")state.mockito.stubs.push((d.call||\"repository.findById()\")+\" → \"+String(d.returns??d.value??\"result\"));"
       ],
-      "project_effect_default": "inspect_or_transient_ui"
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "mockitoCaptureArgument": {
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [
+        "type",
+        "value"
+      ],
+      "action_specific_state_paths": [
+        "mockito.captors"
+      ],
+      "action_specific_source_branches": [
+        "if(a===\"mockitoCaptureArgument\")state.mockito.captors.push((d.type||\"Argument\")+\" = \"+String(d.value??\"captured\"));"
+      ],
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "mockitoSpy": {
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [
+        "name",
+        "type"
+      ],
+      "action_specific_state_paths": [
+        "mockito.spies"
+      ],
+      "action_specific_source_branches": [
+        "if(a===\"mockitoSpy\")state.mockito.spies.push(d.name||d.type||\"spy\");"
+      ],
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "mockitoThrow": {
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [
+        "call",
+        "exception"
+      ],
+      "action_specific_state_paths": [
+        "mockito.throws"
+      ],
+      "action_specific_source_branches": [
+        "if(a===\"mockitoThrow\")state.mockito.throws.push((d.call||\"dependency.call()\")+\" throws \"+(d.exception||\"RuntimeException\"));"
+      ],
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
+    },
+    "mockitoReset": {
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
+      "action_specific_state_paths": [
+        "mockito"
+      ],
+      "action_specific_source_branches": [
+        "if(a===\"mockitoReset\")state.mockito=fresh().mockito;"
+      ],
+      "falls_through_to_shared_domain_render": false,
+      "project_effect_default": "state_or_project_mutation_candidate"
     },
     "showMockitoDetails": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     }
   },
@@ -193,11 +140,13 @@
       "mockito.throws"
     ],
     "helper_functions": [
+      "String",
       "call",
       "card",
       "findById",
       "fresh",
       "grid",
+      "if",
       "includes",
       "join",
       "push",
@@ -214,9 +163,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

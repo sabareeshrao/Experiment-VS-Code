@@ -956,9 +956,12 @@
     const doc = event.target?.ownerDocument || document;
     const editing = lessonEditableTarget(event.target);
     const userEditing = !!editing && doc.__lessonNavUserEditTarget === editing;
+    const inPlayerDocument = doc === document;
     const delta = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (delta) {
-      if (userEditing && !event.altKey) return;
+      // Inside simulator frames, Left/Right are always lesson navigation.
+      // Parent-player editable controls keep their normal caret-arrow behavior.
+      if (inPlayerDocument && userEditing && !event.altKey) return;
       event.preventDefault();
       event.stopPropagation();
       clearAllLessonEditingIntent();

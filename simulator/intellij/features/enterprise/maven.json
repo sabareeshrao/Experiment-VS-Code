@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "maven",
   "purpose": "Microscopic IntelliJ enterprise evidence for the maven domain.",
@@ -10,109 +10,84 @@
   },
   "actions": {
     "showMavenPlugins": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showMavenProfiles": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "active",
-        "console",
-        "goal",
-        "profile",
-        "status"
+        "profile"
       ],
       "action_specific_state_paths": [
-        "maven.conflict",
-        "maven.lastGoal",
-        "maven.profile",
-        "maven.status"
+        "maven.profile"
       ],
-      "action_specific_source_snippets": [
-        "if(D.maven.includes(a)){if(a===\"showMavenProfiles\")state.maven.profile=d.active||d.profile||state.maven.profile;if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid"
+      "action_specific_source_branches": [
+        "if(a===\"showMavenProfiles\")state.maven.profile=d.active||d.profile||state.maven.profile;"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "runMavenWrapper": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "active",
         "console",
         "goal",
-        "plugins",
-        "profile",
         "status"
       ],
       "action_specific_state_paths": [
-        "maven.conflict",
         "maven.lastGoal",
-        "maven.plugins",
-        "maven.profile",
         "maven.status"
       ],
-      "action_specific_source_snippets": [
-        "le=d.active||d.profile||state.maven.profile;if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid([[\"Active profile\",state.maven.profile],[\"Last goal\",state.maven.lastGoal],[\"Status\",state.maven.status],[\"Plugins\",(d.plugins||state.maven.plugins).join(\", \")],[\"Dependency conflict\",state.maven.conflict||\"None\"]])"
+      "action_specific_source_branches": [
+        "if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "runMavenTests": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "console",
         "goal",
-        "plugins",
         "status"
       ],
       "action_specific_state_paths": [
-        "maven.conflict",
         "maven.lastGoal",
-        "maven.plugins",
-        "maven.profile",
         "maven.status"
       ],
-      "action_specific_source_snippets": [
-        "|state.maven.profile;if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid([[\"Active profile\",state.maven.profile],[\"Last goal\",state.maven.lastGoal],[\"Status\",state.maven.status],[\"Plugins\",(d.plugins||state.maven.plugins).join(\", \")],[\"Dependency conflict\",state.maven.conflict||\"None\"]]));return}",
-        "\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid([[\"Active profile\",state.maven.profile],[\"Last goal\",state.maven.lastGoal],[\"Status\",state.maven.status],[\"Plugins\",(d.plugins||state.maven.plugins).join(\", \")],[\"Dependency conflict\",state.maven.conflict||\"None\"]]));return}"
+      "action_specific_source_branches": [
+        "if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "showDependencyConflict": {
-      "action_specific_data_keys": [
-        "active",
-        "console",
-        "goal",
-        "profile",
-        "status"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "maven.conflict",
-        "maven.lastGoal",
-        "maven.profile",
-        "maven.status"
+        "maven.conflict"
       ],
-      "action_specific_source_snippets": [
-        "if(D.maven.includes(a)){if(a===\"showMavenProfiles\")state.maven.profile=d.active||d.profile||state.maven.profile;if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid([[\"Active profile\",state.maven.profile],[\"Last goal\",state.maven.lastGoal],[\"Status\",st"
+      "action_specific_source_branches": [
+        "if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "resolveMavenDependencyConflict": {
-      "action_specific_data_keys": [
-        "active",
-        "console",
-        "goal",
-        "plugins",
-        "profile",
-        "status"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "maven.conflict",
-        "maven.lastGoal",
-        "maven.plugins",
-        "maven.profile",
-        "maven.status"
+        "maven.conflict"
       ],
-      "action_specific_source_snippets": [
-        "(D.maven.includes(a)){if(a===\"showMavenProfiles\")state.maven.profile=d.active||d.profile||state.maven.profile;if(a===\"showDependencyConflict\")state.maven.conflict=clone(d);if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;if(a===\"runMavenWrapper\"||a===\"runMavenTests\"){state.maven.lastGoal=d.goal||(a===\"runMavenTests\"?\"test\":\"verify\");state.maven.status=d.status||\"BUILD SUCCESS\";out(\"Maven\",d.console||(\"[INFO] ./mvnw \"+state.maven.lastGoal+\"\\n[INFO] BUILD SUCCESS\"));return}show(\"Maven\",grid([[\"Active profile\",state.maven.profile],[\"Last goal\",state.maven.lastGoal],[\"Status\",state.maven.status],[\"Plugins\",(d.plugins||state.maven.plugins)."
+      "action_specific_source_branches": [
+        "if(a===\"resolveMavenDependencyConflict\")state.maven.conflict=null;"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     }
   },
@@ -135,6 +110,7 @@
     "helper_functions": [
       "clone",
       "grid",
+      "if",
       "includes",
       "join",
       "out",
@@ -150,9 +126,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

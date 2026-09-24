@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "persistence",
   "purpose": "Microscopic IntelliJ enterprise evidence for the persistence domain.",
@@ -10,156 +10,125 @@
   },
   "actions": {
     "showJpaRelationships": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "field",
-        "relationship",
-        "relationships",
-        "secondLevel",
-        "strategy",
-        "transactions"
+        "relationships"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.fetch",
-        "persistence.relationships",
-        "persistence.transactions"
+        "persistence.relationships"
       ],
-      "action_specific_source_snippets": [
-        "if(D.persistence.includes(a)){if(a===\"showJpaRelationships\")state.persistence.relationships=clone(d.relationships||state.persistence.relationships);if(a===\"setFetchStrategy\")state.persistence.fetch[d.relationship||d.field||\"relationship\"]=d.strategy||\"LAZY\";if(a===\"showTransactionBoundary\")state.persistence.transactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const"
+      "action_specific_source_branches": [
+        "if(a===\"showJpaRelationships\")state.persistence.relationships=clone(d.relationships||state.persistence.relationships);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "setFetchStrategy": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "field",
-        "query",
         "relationship",
-        "relationships",
-        "secondLevel",
-        "sql",
-        "strategy",
-        "transactions"
+        "strategy"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.fetch",
-        "persistence.relationships",
-        "persistence.transactions"
+        "persistence.fetch"
       ],
-      "action_specific_source_snippets": [
-        "if(D.persistence.includes(a)){if(a===\"showJpaRelationships\")state.persistence.relationships=clone(d.relationships||state.persistence.relationships);if(a===\"setFetchStrategy\")state.persistence.fetch[d.relationship||d.field||\"relationship\"]=d.strategy||\"LAZY\";if(a===\"showTransactionBoundary\")state.persistence.transactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM tabl"
+      "action_specific_source_branches": [
+        "if(a===\"setFetchStrategy\")state.persistence.fetch[d.relationship||d.field||\"relationship\"]=d.strategy||\"LAZY\";"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "reproduceNPlusOne": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "query",
         "rows",
-        "secondLevel",
-        "sql",
-        "transactions"
+        "sql"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.fetch",
-        "persistence.queries",
-        "persistence.relationships",
-        "persistence.transactions"
+        "persistence.queries"
       ],
-      "action_specific_source_snippets": [
-        "sactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}show(\"Persistence\",grid([[\"Relationships\",state.persistence.relationships.length],[\"Fetch strategies\",state.persistence.fetch],[\"Transactions\",state.persistence.transactions.length],[\"Se",
-        "ransactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}show(\"Persistence\",grid([[\"Relationships\",state.persistence.relationships.length],[\"Fetch strategies\",state.persistence.fetch],[\"Transactions\",state.persistence.transactions.length],[\"Second-level cache\",state.persistence.cache.secondLe",
-        "PlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}show(\"Persistence\",grid([[\"Relationships\",state.persistence.relationships.length],[\"Fetch strategies\",state.persistence.fetch],[\"Transactions\",state.persistence.transactions.length],[\"Second-level cache\",state.persistence.cache.secondLevel?\"Enabled\":\"Disabled\"]])+card(tc(a),code(JSON.stringify(d,null,2))));return}"
+      "action_specific_source_branches": [
+        "if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showTransactionBoundary": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "field",
-        "query",
-        "relationship",
-        "relationships",
-        "secondLevel",
-        "sql",
-        "strategy",
         "transactions"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.fetch",
-        "persistence.queries",
-        "persistence.relationships",
         "persistence.transactions"
       ],
-      "action_specific_source_snippets": [
-        "ships=clone(d.relationships||state.persistence.relationships);if(a===\"setFetchStrategy\")state.persistence.fetch[d.relationship||d.field||\"relationship\"]=d.strategy||\"LAZY\";if(a===\"showTransactionBoundary\")state.persistence.transactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+J"
+      "action_specific_source_branches": [
+        "if(a===\"showTransactionBoundary\")state.persistence.transactions=clone(d.transactions||state.persistence.transactions);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showDirtyChecking": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showHibernateCaches": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "field",
-        "query",
-        "rows",
-        "secondLevel",
-        "sql",
-        "strategy",
-        "transactions"
+        "secondLevel"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.queries",
-        "persistence.relationships",
-        "persistence.transactions"
+        "persistence.cache"
       ],
-      "action_specific_source_snippets": [
-        "tionship||d.field||\"relationship\"]=d.strategy||\"LAZY\";if(a===\"showTransactionBoundary\")state.persistence.transactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}show(\"Persistence\",grid([[\"Relationships\",state.persistence.relationships.len"
+      "action_specific_source_branches": [
+        "if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showOptimisticLocking": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showEntityLifecycle": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showPagination": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "runNativeQuery": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "query",
         "rows",
-        "secondLevel",
-        "sql",
-        "transactions"
+        "sql"
       ],
       "action_specific_state_paths": [
-        "persistence.cache",
-        "persistence.fetch",
-        "persistence.queries",
-        "persistence.relationships",
-        "persistence.tra",
-        "persistence.transactions"
+        "persistence.queries"
       ],
-      "action_specific_source_snippets": [
-        "state.persistence.transactions=clone(d.transactions||state.persistence.transactions);if(a===\"showHibernateCaches\")state.persistence.cache.secondLevel=d.secondLevel!==false;if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}show(\"Persistence\",grid([[\"Relationships\",state.persistence.relationships.length],[\"Fetch strategies\",state.persistence.fetch],[\"Transactions\",state.persistence.tra"
+      "action_specific_source_branches": [
+        "if(a===\"runNativeQuery\"||a===\"reproduceNPlusOne\"){const q=d.query||d.sql||(a===\"reproduceNPlusOne\"?\"select parents; then select children for each parent\":\"SELECT * FROM table\");state.persistence.queries.push(q);out(a===\"reproduceNPlusOne\"?\"N+1 Query Analysis\":\"Native Query\",q+\"\\n\"+JSON.stringify(d.rows||[],null,2));return}"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     }
   },
@@ -187,6 +156,7 @@
       "clone",
       "code",
       "grid",
+      "if",
       "includes",
       "out",
       "push",
@@ -204,9 +174,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

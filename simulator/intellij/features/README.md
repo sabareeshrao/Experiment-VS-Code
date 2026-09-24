@@ -23,4 +23,8 @@ Regenerate with `node scripts/build-intellij-microscopic-features.cjs` after Int
 
 ## Enterprise action evidence
 
-Advanced Java/Spring actions implemented in `enterprise-ui.js` are split under `features/enterprise/`. Read `features/enterprise/index.json`, resolve the canonical action through `action_to_domain`, then open the matching domain JSON before authoring `action.data`. `enterprise-action-evidence.json` remains only as a compatibility router.
+Advanced Java/Spring actions implemented in `enterprise-ui.js` are split under `features/enterprise/`. Read `features/enterprise/index.json`, resolve the canonical action through `action_to_domain`, then open the matching domain JSON before authoring `action.data`. Enterprise domain files use exact conditional-branch extraction so action-specific keys are not inferred from neighboring actions. `enterprise-action-evidence.json` remains only as a compatibility router.
+
+## Lesson navigation keyboard contract
+
+Inside simulator UIs, plain **Left Arrow = previous lesson** and **Right Arrow = next lesson**, even when an auto-focused or user-edited live text field is active. Text entry keys still edit the field. Parent-player editable controls such as the lesson search box keep normal caret-arrow behavior.

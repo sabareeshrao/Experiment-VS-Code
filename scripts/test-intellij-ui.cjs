@@ -90,7 +90,10 @@ const server = http.createServer((req, res) => {
         await page.keyboard.press("r");
         assert((await frame().locator("#ijClassName").inputValue()).endsWith("r"), "Typed input was consumed as a replay shortcut");
         await page.keyboard.press("ArrowRight");
-        assert((await title()).startsWith("497."), "ArrowRight escaped after the user intentionally edited the field");
+        await page.waitForFunction(() => document.querySelector("#stepTitle").textContent.startsWith("498."));
+        await page.keyboard.press("ArrowLeft");
+        await page.waitForFunction(() => document.querySelector("#stepTitle").textContent.startsWith("497."));
+        assert((await title()).startsWith("497."), "Lesson arrows stopped working after live text editing");
       }
       if (step === 504) await completion();
     }

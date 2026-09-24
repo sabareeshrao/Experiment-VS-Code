@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "soap",
   "purpose": "Microscopic IntelliJ enterprise evidence for the soap domain.",
@@ -10,124 +10,89 @@
   },
   "actions": {
     "importWsdl": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "endpoint",
-        "envelope",
         "name",
-        "operation",
         "operations",
-        "package",
         "path",
-        "soapAction",
-        "url",
-        "wsdl"
+        "url"
       ],
       "action_specific_state_paths": [
-        "soap.clients",
-        "soap.requests",
         "soap.wsdls"
       ],
-      "action_specific_source_snippets": [
-        "if(D.soap.includes(a)){if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<"
+      "action_specific_source_branches": [
+        "if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "generateSoapClient": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "body",
-        "endpoint",
-        "envelope",
         "name",
-        "operation",
-        "operations",
         "package",
-        "path",
-        "soapAction",
-        "status",
-        "url",
         "wsdl"
       ],
       "action_specific_state_paths": [
         "soap.clients",
-        "soap.requests",
-        "soap.responses",
         "soap.wsdls"
       ],
-      "action_specific_source_snippets": [
-        "if(D.soap.includes(a)){if(a===\"importWsdl\")state.soap.wsdls.push({name:d.name||\"Service\",url:d.url||d.path||\"service.wsdl\",operations:clone(d.operations||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelop"
+      "action_specific_source_branches": [
+        "if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "createSoapRequest": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
-        "body",
         "endpoint",
         "envelope",
-        "name",
         "operation",
-        "package",
-        "soapAction",
-        "status",
-        "wsdl"
+        "soapAction"
       ],
       "action_specific_state_paths": [
-        "soap.clients",
-        "soap.fault",
-        "soap.requests",
-        "soap.responses",
-        "soap.wsdls"
+        "soap.requests"
       ],
-      "action_specific_source_snippets": [
-        "||[])});if(a===\"generateSoapClient\")state.soap.clients.push({name:d.name||\"ServiceClient\",wsdl:d.wsdl||state.soap.wsdls[0]?.url||\"\",package:d.package||\"com.example.soap\"});if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid"
+      "action_specific_source_branches": [
+        "if(a===\"createSoapRequest\")state.soap.requests.push({operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "sendSoapRequest": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "body",
-        "endpoint",
-        "envelope",
-        "operation",
-        "soapAction",
         "status"
       ],
       "action_specific_state_paths": [
-        "soap.clients",
-        "soap.fault",
-        "soap.req",
-        "soap.requests",
-        "soap.responses",
-        "soap.wsdls"
+        "soap.responses"
       ],
-      "action_specific_source_snippets": [
-        "{operation:d.operation||\"operation\",endpoint:d.endpoint||\"http://localhost:8080/ws\",soapAction:d.soapAction||\"\",envelope:d.envelope||\"<soap:Envelope>...</soap:Envelope>\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid([[\"WSDL\",state.soap.wsdls.at(-1)?.url||\"Not imported\"],[\"Generated client\",state.soap.clients.at(-1)?.name||\"None\"],[\"Endpoint\",state.soap.requests.at(-1)?.endpoint||d.endpoint||\"\"]])+card(\"SOAP Request\",code(state.soap.req"
+      "action_specific_source_branches": [
+        "if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "showSoapResponse": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "configureSoapFaultHandling": {
-      "action_specific_data_keys": [
-        "body",
-        "endpoint",
-        "envelope",
-        "status"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "soap",
-        "soap.clients",
-        "soap.fault",
-        "soap.requests",
-        "soap.responses",
-        "soap.wsdls"
+        "soap.fault"
       ],
-      "action_specific_source_snippets": [
-        "\"});if(a===\"sendSoapRequest\")state.soap.responses.push({status:d.status||200,body:d.body||\"<soap:Envelope><soap:Body><response>OK</response></soap:Body></soap:Envelope>\"});if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);show(\"SOAP / XML Web Service\",grid([[\"WSDL\",state.soap.wsdls.at(-1)?.url||\"Not imported\"],[\"Generated client\",state.soap.clients.at(-1)?.name||\"None\"],[\"Endpoint\",state.soap.requests.at(-1)?.endpoint||d.endpoint||\"\"]])+card(\"SOAP Request\",code(state.soap.requests.at(-1)?.envelope||d.envelope||\"\"))+card(\"SOAP Response\",code(state.soap.responses.at(-1)?.body||d.body||\"\"))+card(\"Fault handling\",code(JSON.stringify(state.soap."
+      "action_specific_source_branches": [
+        "if(a===\"configureSoapFaultHandling\")state.soap.fault=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     }
   },
@@ -162,9 +127,11 @@
       "card",
       "clone",
       "code",
+      "for",
       "fresh",
       "grid",
       "hide",
+      "if",
       "includes",
       "init",
       "isArray",
@@ -185,9 +152,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

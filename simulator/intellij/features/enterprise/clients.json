@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "software": "intellij",
   "domain": "clients",
   "purpose": "Microscopic IntelliJ enterprise evidence for the clients domain.",
@@ -10,97 +10,57 @@
   },
   "actions": {
     "configureRestTemplate": {
-      "action_specific_data_keys": [
-        "client",
-        "exchange",
-        "method",
-        "request",
-        "response",
-        "status",
-        "url"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "clients.feign",
-        "clients.last",
-        "clients.restTemplate",
-        "clients.timeouts",
-        "clients.webClient"
+        "clients.restTemplate"
       ],
-      "action_specific_source_snippets": [
-        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||"
+      "action_specific_source_branches": [
+        "if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "configureWebClient": {
-      "action_specific_data_keys": [
-        "client",
-        "exchange",
-        "method",
-        "request",
-        "response",
-        "status",
-        "url"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "clients.feign",
-        "clients.last",
-        "clients.restTemplate",
-        "clients.timeouts",
         "clients.webClient"
       ],
-      "action_specific_source_snippets": [
-        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client|"
+      "action_specific_source_branches": [
+        "if(a===\"configureWebClient\")state.clients.webClient=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "configureFeignClient": {
-      "action_specific_data_keys": [
-        "client",
-        "exchange",
-        "method",
-        "request",
-        "response",
-        "status",
-        "url"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "clients.feign",
-        "clients.last",
-        "clients.restTemplate",
-        "clients.timeouts",
-        "clients.webClient"
+        "clients.feign"
       ],
-      "action_specific_source_snippets": [
-        "if(D.clients.includes(a)){if(a===\"configureRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.u"
+      "action_specific_source_branches": [
+        "if(a===\"configureFeignClient\")state.clients.feign=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "setClientTimeouts": {
-      "action_specific_data_keys": [
-        "client",
-        "exchange",
-        "method",
-        "request",
-        "response",
-        "status",
-        "url"
-      ],
+      "exact_branch_match_count": 1,
+      "action_specific_data_keys": [],
       "action_specific_state_paths": [
-        "clients.feign",
-        "clients.last",
-        "clients.restTemplate",
-        "clients.timeouts",
-        "clients.webClient"
+        "clients.timeouts"
       ],
-      "action_specific_source_snippets": [
-        "reRestTemplate\")state.clients.restTemplate=clone(d);if(a===\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.url||d.url||\"\"],[\"Status\",x.status||d.status||\"—\"],[\"Timeout"
+      "action_specific_source_branches": [
+        "if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "sendExternalRequest": {
+      "exact_branch_match_count": 1,
       "action_specific_data_keys": [
         "client",
-        "exchange",
         "method",
         "request",
         "response",
@@ -108,26 +68,28 @@
         "url"
       ],
       "action_specific_state_paths": [
-        "clients.feign",
-        "clients.last",
-        "clients.timeouts",
-        "clients.webClient"
+        "clients.last"
       ],
-      "action_specific_source_snippets": [
-        "\"configureWebClient\")state.clients.webClient=clone(d);if(a===\"configureFeignClient\")state.clients.feign=clone(d);if(a===\"setClientTimeouts\")state.clients.timeouts=clone(d);if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};const x=d.exchange||state.clients.last||{};show(\"External REST Clients\",grid([[\"Client\",x.client||d.client||\"WebClient\"],[\"Method\",x.method||d.method||\"GET\"],[\"URL\",x.url||d.url||\"\"],[\"Status\",x.status||d.status||\"—\"],[\"Timeouts\",state.clients.timeouts]])+card(\"Request / Response\",code"
+      "action_specific_source_branches": [
+        "if(a===\"sendExternalRequest\")state.clients.last={client:d.client||\"WebClient\",method:d.method||\"GET\",url:d.url||\"https://service/api\",status:d.status||200,request:d.request||{},response:d.response||{}};"
       ],
+      "falls_through_to_shared_domain_render": false,
       "project_effect_default": "state_or_project_mutation_candidate"
     },
     "showClientRequestResponse": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     },
     "showClientErrorHandling": {
+      "exact_branch_match_count": 0,
       "action_specific_data_keys": [],
       "action_specific_state_paths": [],
-      "action_specific_source_snippets": [],
+      "action_specific_source_branches": [],
+      "falls_through_to_shared_domain_render": true,
       "project_effect_default": "inspect_or_transient_ui"
     }
   },
@@ -153,6 +115,7 @@
       "clone",
       "code",
       "grid",
+      "if",
       "includes",
       "show",
       "stringify"
@@ -167,9 +130,9 @@
     "checkpoints": false
   },
   "ai_rules": [
-    "Read the top-level feature JSON for the requested capability first.",
-    "Use action-specific keys and snippets before shared domain keys.",
-    "Shared handler keys are possibilities, not automatically valid for every action.",
-    "projectImpact, destructive-reset protection, semantic anchors and checkpoints are not runtime-enforced yet."
+    "Use exact branch evidence before shared domain keys.",
+    "Shared keys are possibilities, not automatically valid for every action.",
+    "An action with no exact branch falls through to the shared domain render/inspect surface.",
+    "Do not claim continuity features exist until the runtime implements them."
   ]
 }

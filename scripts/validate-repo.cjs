@@ -581,6 +581,28 @@ if (contract && manifest) {
 }
 
 
+// IntelliJ microscopic full coverage contract.
+if (exists("simulator/intellij/engine.js") && exists("simulator/intellij/features/index.json") && exists("simulator/adaptive-capabilities.json")) {
+  const ijEngine = read("simulator/intellij/engine.js");
+  const ijIndex = JSON.parse(read("simulator/intellij/features/index.json"));
+  const ijManifest = JSON.parse(read("simulator/adaptive-capabilities.json")).simulators?.intellij || {};
+  const supportedMatch = ijEngine.match(/const SUPPORTED_ACTIONS=\[([\s\S]*?)\];/);
+  assert(!!supportedMatch, "IntelliJ SUPPORTED_ACTIONS registry missing");
+  const supported = supportedMatch ? [...supportedMatch[1].matchAll(/"([^"]+)"/g)].map(m => m[1]) : [];
+  const kebab = value => String(value || "").replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/[^A-Za-z0-9]+/g, "-").toLowerCase().replace(/^-|-$/g, "");
+  const indexed = new Set(ijIndex.files || []);
+  for (const action of supported) {
+    const file = kebab(action) + ".json";
+    assert(indexed.has(file), "IntelliJ microscopic action missing from feature index: " + action);
+    assert(exists("simulator/intellij/features/" + file), "IntelliJ microscopic action file missing: " + action);
+  }
+  for (const feature of ijManifest.features || []) {
+    const file = kebab(feature) + ".json";
+    assert(indexed.has(file), "IntelliJ registered capability missing from feature index: " + feature);
+    assert(exists("simulator/intellij/features/" + file), "IntelliJ registered capability file missing: " + feature);
+  }
+}
+
 // IntelliJ enterprise microscopic evidence contract.
 assert(exists("simulator/intellij/features/enterprise/index.json"), "Missing IntelliJ enterprise microscopic evidence index");
 if (exists("simulator/intellij/features/enterprise/index.json")) {
@@ -596,7 +618,12 @@ if (exists("simulator/intellij/features/enterprise/index.json")) {
     const domain = JSON.parse(read(domainPath));
     assert(domain.domain === domainName, "IntelliJ enterprise domain name mismatch in " + domainPath);
     assert(domain.shared_handler?.handler_excerpt, "IntelliJ enterprise domain is missing handler evidence: " + domainPath);
-    for (const action of meta.actions || []) assert(domain.actions?.[action], "IntelliJ enterprise action missing from domain evidence: " + action);
+    for (const action of meta.actions || []) {
+      assert(domain.actions?.[action], "IntelliJ enterprise action missing from domain evidence: " + action);
+      assert(Array.isArray(domain.actions?.[action]?.action_specific_data_keys), "IntelliJ enterprise action keys missing: " + action);
+      assert(Array.isArray(domain.actions?.[action]?.action_specific_state_paths), "IntelliJ enterprise action state paths missing: " + action);
+      assert(Array.isArray(domain.actions?.[action]?.action_specific_source_branches), "IntelliJ enterprise exact branch evidence missing: " + action);
+    }
   }
   assert(ent.action_count === enterpriseActionCount, "IntelliJ enterprise evidence action_count mismatch");
   assert(Object.keys(ent.action_to_domain || {}).length === ent.action_count, "IntelliJ enterprise action_to_domain coverage mismatch");
