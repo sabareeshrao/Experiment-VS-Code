@@ -50,6 +50,13 @@ window.COURSE = {
       "subtitle": "A synchronized Kubernetes cluster workflow covering workloads, networking, storage, configuration, RBAC, observability, YAML, troubleshooting, node operations, and kubectl.",
       "chapterStart": 14,
       "chapterEnd": 14
+    },
+    {
+      "id": "book-8",
+      "title": "IntelliJ IDEA Fidelity Lab",
+      "subtitle": "Screenshot-grounded IntelliJ IDEA 2025.2 UI states and interaction tests.",
+      "chapterStart": 15,
+      "chapterEnd": 15
     }
   ],
   "package": {
@@ -12345,6 +12352,166 @@ window.COURSE = {
           "action": {
             "action": "openOverview",
             "data": {}
+          }
+        }
+      ]
+    },
+    {
+      "title": "15: IntelliJ IDEA 2025.2 Screenshot Fidelity Test",
+      "subtitle": "Screenshot-grounded test of Welcome, New Project, JDK selection, Project tree, Java class creation, editor, and Project Structure UI.",
+      "steps": [
+        {
+          "title": "Show the IntelliJ IDEA welcome screen",
+          "why": "Start from the same first-run surface shown in the reference screenshot. The left navigation, central welcome message, and New Project, Open, and Clone Repository actions should be visible before any project workspace exists.",
+          "software": "intellij",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "uiState": "welcome"
+            }
+          }
+        },
+        {
+          "title": "Open the Java New Project wizard",
+          "why": "Move from the welcome surface into the Java project-creation dialog. The dialog should expose the technology list, project name and location, build-system choices, JDK selector, sample-code option, and Create/Cancel controls in the same structural layout as the reference.",
+          "software": "intellij",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "uiState": "wizard",
+              "name": "untitled",
+              "location": "~\\IdeaProjects",
+              "sdk": "Oracle OpenJDK 21.0.11"
+            }
+          }
+        },
+        {
+          "title": "Inspect the detected JDK list",
+          "why": "Open the JDK selector before creating the project. The menu should distinguish download/add-from-disk actions from detected SDKs and visibly list Java 21, Java 17, and Java 8 installations.",
+          "software": "intellij",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "uiState": "jdkDropdown",
+              "name": "App_1",
+              "location": "~\\Desktop\\Java_Codes",
+              "sdk": "Oracle OpenJDK 21.0.11"
+            }
+          }
+        },
+        {
+          "title": "Create App_1 and inspect the main IDE skeleton",
+          "why": "Enter the normal IntelliJ workspace after project creation. The Project tool window should show the project root, .idea, src, .gitignore, External Libraries, and Scratches and Consoles while the editor remains ready for the first source file.",
+          "software": "intellij",
+          "action": {
+            "action": "newProject",
+            "data": {
+              "name": "App_1",
+              "sdk": "Java 21",
+              "languageLevel": "21",
+              "fidelityMode": true,
+              "tree": [
+                {
+                  "name": ".idea",
+                  "path": ".idea",
+                  "type": "folder",
+                  "open": false,
+                  "children": []
+                },
+                {
+                  "name": "src",
+                  "path": "src",
+                  "type": "folder",
+                  "open": true,
+                  "children": []
+                },
+                {
+                  "name": ".gitignore",
+                  "path": ".gitignore",
+                  "type": "file",
+                  "language": "text"
+                }
+              ],
+              "files": {
+                ".gitignore": {
+                  "language": "text",
+                  "content": "# IntelliJ project files\\n.idea/\\nout/\\n"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Open the src New context menu",
+          "why": "Use the Project tool window as the source of file creation. The context menu should expose New together with Java Class, Package, File, refactoring, formatting, and search commands instead of jumping directly to a generated class.",
+          "software": "intellij",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "uiState": "projectContextMenu"
+            }
+          }
+        },
+        {
+          "title": "Open the New Java Class chooser",
+          "why": "After choosing Java Class, show the focused class-creation popup. The class name and the Class, Interface, Record, Enum, Annotation, and Exception choices should be visible with the same compact IntelliJ popup structure.",
+          "software": "intellij",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "uiState": "newJavaClass",
+              "name": "Test"
+            }
+          }
+        },
+        {
+          "title": "Create Test.java and open it in the editor",
+          "why": "Complete the class-creation flow so the project tree, editor tab, gutter, and Java editor all update together. This verifies that the screenshot-matched dialogs are connected to real simulator state rather than being static pictures.",
+          "software": "intellij",
+          "action": {
+            "action": "createFile",
+            "data": {
+              "path": "src/Test.java",
+              "language": "java",
+              "content": "public class Test {\\n}\\n"
+            }
+          }
+        },
+        {
+          "title": "Show the editor inspection indicator",
+          "why": "Add a visible inspection state to the open Java file so the editor can be checked against the reference screenshot for gutter, line highlighting, warning decoration, and status-area behavior.",
+          "software": "intellij",
+          "action": {
+            "action": "addProblem",
+            "data": {
+              "severity": "warning",
+              "message": "Class 'Test' is never used",
+              "file": "src/Test.java",
+              "line": 1
+            }
+          }
+        },
+        {
+          "title": "Open Project Structure",
+          "why": "Open the Project Structure surface using the screenshot-grounded two-column layout. Project Settings and Platform Settings should remain visible on the left while project name, SDK, language level, compiler output, and OK/Cancel/Apply controls appear on the right.",
+          "software": "intellij",
+          "action": {
+            "action": "showProjectStructure",
+            "data": {
+              "sdk": "21 Oracle OpenJDK 21.0.11"
+            }
+          }
+        },
+        {
+          "title": "Open the Project Structure SDK dropdown",
+          "why": "Expand the SDK field inside Project Structure and verify the detected Java 21, Java 17, and Java 8 entries together with No SDK, Download JDK, and Add JDK from Disk actions. This is the final visual check for the first screenshot batch.",
+          "software": "intellij",
+          "action": {
+            "action": "showProjectStructure",
+            "data": {
+              "sdk": "21 Oracle OpenJDK 21.0.11",
+              "jdkOpen": true
+            }
           }
         }
       ]

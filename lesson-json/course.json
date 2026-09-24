@@ -51,6 +51,13 @@
       "subtitle": "A synchronized Kubernetes cluster workflow covering workloads, networking, storage, configuration, RBAC, observability, YAML, troubleshooting, node operations, and kubectl.",
       "chapterStart": 14,
       "chapterEnd": 14
+    },
+    {
+      "id": "book-8",
+      "title": "IntelliJ IDEA Fidelity Lab",
+      "subtitle": "Screenshot-grounded IntelliJ IDEA 2025.2 UI states and interaction tests.",
+      "chapterStart": 15,
+      "chapterEnd": 15
     }
   ],
   "package": {
@@ -6046,6 +6053,10 @@
     {
       "id": "chapter-14",
       "path": "chapters/14-kubernetes-headlamp-kubectl-operations.json"
+    },
+    {
+      "id": "chapter-15",
+      "path": "chapters/15-intellij-2025-screenshot-fidelity-test.json"
     }
   ]
 }

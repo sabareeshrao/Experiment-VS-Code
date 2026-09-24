@@ -83,7 +83,7 @@
   "ui_contract": {
     "owner": "simulator/intellij",
     "primary_area": "project_navigation",
-    "required_visibility": "A lesson using this capability must produce a visible software-owned UI state.",
+    "required_visibility": "Welcome screen, Java New Project wizard, and JDK selector states must be visibly reproducible when action.data.uiState is welcome, wizard, or jdkDropdown.",
     "before_state": "The simulator starts from the package baseline plus prior cumulative actions.",
     "interaction": "Invoke one of the canonical actions with data matching its engine handler.",
     "after_state": "The software must visibly reflect the result of the canonical action; hidden JavaScript state alone is insufficient.",
@@ -96,7 +96,7 @@
       "mouse",
       "keyboard when applicable"
     ],
-    "parameters": "Read the exact engine handler for the selected canonical action before creating lesson action.data. Do not invent parameters.",
+    "parameters": "newProject accepts normal project data. For screenshot-fidelity preview states use data.uiState = welcome | wizard | jdkDropdown. The normal creation path may also supply tree, files, and fidelityMode.",
     "destructive": false,
     "destructive_note": "No destructive semantics are inferred from the canonical action name."
   },
@@ -166,7 +166,7 @@
     "historical_flicker_forbidden": true,
     "duplicate_explanation_forbidden": true,
     "giant_highlight_forbidden": true,
-    "visual_fidelity_note": "Catalog presence proves registered/action coverage, not pixel-perfect visual fidelity."
+    "visual_fidelity_note": "The 2025.2 welcome screen, Java New Project dialog, and detected-JDK dropdown are screenshot-grounded visual states."
   },
   "validation": {
     "manifest_feature_present": false,

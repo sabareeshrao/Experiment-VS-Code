@@ -217,6 +217,31 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
   .toolbar #searchBtn,.toolbar #gitBtn{display:none}
   .toolbar{padding-left:32px}
 }
+
+/* v10: screenshot-grounded IntelliJ 2025.2 fidelity surfaces */
+.ijFidelityLayer{position:absolute;z-index:240;inset:0;display:none;color:#d5d7dc;font-family:Inter,"Segoe UI",Arial,sans-serif}
+.ijFidelityLayer.show{display:block}.ijFidelityLayer *{box-sizing:border-box}
+.ij-shot-logo{width:34px;height:34px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:800;color:white;background:linear-gradient(135deg,#ff3a8c 0%,#7858e8 46%,#1d8cf8 78%,#111 79%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.ij-shot-logo.sm{width:23px;height:23px;border-radius:5px;font-size:8px}
+.ij-welcome{position:absolute;inset:0;background:#1b1d1f;display:grid;grid-template-columns:305px minmax(0,1fr)}
+.ij-welcome-side{background:#26272b;border-right:1px solid #303137;padding:28px 24px}
+.ij-brand{display:flex;gap:13px;align-items:center;margin-bottom:31px}.ij-brand-title{font-size:18px;color:#e1e2e5}.ij-brand-ver{display:block;color:#8e929a;font-size:12px;margin-top:2px}
+.ij-welcome-nav{display:grid;gap:7px}.ij-welcome-nav button{height:42px;border:0;border-radius:5px;text-align:left;padding:0 20px;background:transparent;color:#d6d7da;font-size:15px}.ij-welcome-nav button.active{background:#334f83}
+.ij-welcome-main{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:118px;background:#1b1d1f}.ij-welcome-main h1{margin:0;font-size:32px;font-weight:500;color:#e5e6e9}.ij-welcome-main p{margin:28px 0 0;text-align:center;color:#777b82;font-size:15px;line-height:1.6}
+.ij-welcome-actions{display:flex;gap:74px;margin-top:52px}.ij-welcome-action{border:0;background:transparent;color:#d6d7dc;text-align:center;font-size:14px}.ij-welcome-action .box{width:78px;height:74px;border-radius:5px;background:#232529;display:grid;place-items:center;margin:0 auto 12px;font-size:35px;color:#4f85f5}.ij-welcome-action.primary .box{border:2px solid #4e7ce7}
+.ij-onboarding{position:absolute;left:24px;right:24px;bottom:0;height:94px;background:#25272a;border-radius:6px 6px 0 0;border:1px solid #2f3136;padding:17px 22px 17px 210px;color:#dfe0e3}.ij-onboarding strong{font-size:15px}.ij-onboarding span{display:block;color:#8d9198;margin-top:8px;font-size:12px}
+.ij-screen-dim{position:absolute;inset:0;background:rgba(11,12,13,.48);display:grid;place-items:center;padding:20px}
+.ij-dialog{background:#2a2b2f;border:1px solid #3a3c42;border-radius:8px;box-shadow:0 22px 60px rgba(0,0,0,.55);overflow:hidden}.ij-dialog-head{height:54px;display:flex;align-items:center;gap:11px;padding:0 16px;border-bottom:1px solid #3b3d42;color:#e2e3e6;font-size:15px}.ij-dialog-close{margin-left:auto;color:#a2a5ab;font-size:18px}
+.ij-new-project{width:min(935px,88vw);height:min(675px,88vh);display:grid;grid-template-rows:54px minmax(0,1fr)}
+.ij-new-project-body{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:0}.ij-new-project-left{border-right:1px solid #35373c;padding:12px;background:#292a2e}.ij-search-ghost{font-size:24px;color:#c7c9ce;padding:0 8px 13px}.ij-left-label{color:#696d74;font-size:13px;padding:6px 12px}.ij-tech{height:37px;padding:0 12px;display:flex;align-items:center;gap:10px;color:#d0d2d7;font-size:14px;border-radius:4px}.ij-tech.active{background:#34578f}.ij-tech .ti{width:18px;text-align:center;color:#d89b69}.ij-tech.locked:after{content:"▣";margin-left:auto;color:#c356ac}
+.ij-new-project-main{position:relative;padding:35px 24px 76px;overflow:visible}.ij-form-row{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;margin-bottom:15px;font-size:14px}.ij-field,.ij-select{height:39px;background:#2a2b2f;border:1px solid #55585f;border-radius:5px;color:#e0e1e4;padding:0 12px;display:flex;align-items:center}.ij-field.focus,.ij-select.focus{border:2px solid #4f86f7;padding:0 11px}.ij-muted{color:#6f737a;font-size:12px;margin:-8px 0 15px 120px}.ij-check{margin-left:120px;color:#d4d6da;font-size:14px}.ij-check .box{display:inline-grid;place-items:center;width:22px;height:22px;background:#4c86f7;border-radius:4px;margin-right:8px;color:white}.ij-build{display:flex}.ij-build span{height:39px;min-width:92px;display:grid;place-items:center;border:1px solid #55585f;margin-right:-1px}.ij-build span:first-child{border-radius:5px 0 0 5px}.ij-build span:last-child{border-radius:0 5px 5px 0}.ij-build .active{background:#37393e}.ij-advanced{margin:29px 0 0 6px;color:#c9cbd0;border-top:1px solid #36383d;padding-top:15px}
+.ij-dialog-actions{position:absolute;right:18px;bottom:18px;display:flex;gap:12px}.ij-btn{height:39px;padding:0 24px;border:1px solid #55585f;border-radius:5px;background:#2a2b2f;color:#d8dadd;font-size:14px}.ij-btn.primary{background:#377cf0;border-color:#377cf0;color:white}
+.ij-jdk-menu{position:absolute;z-index:4;left:144px;right:14px;top:310px;background:#292a2e;border:1px solid #3b3d43;border-radius:7px;box-shadow:0 13px 38px rgba(0,0,0,.55);padding:9px 0;font-size:13px}.ij-jdk-row{height:33px;display:flex;align-items:center;padding:0 14px;gap:8px;color:#d5d7da}.ij-jdk-row.section{height:28px;color:#777b82;border-top:1px solid #383a3f;margin-top:4px}.ij-jdk-row.active{background:#31588f}.ij-jdk-path{color:#777b82}.ij-jdk-bad{color:#d16b6b}
+.ij-project-menu-wrap{position:absolute;inset:0;background:transparent;pointer-events:none}.ij-context{pointer-events:auto;position:absolute;left:172px;top:66px;width:340px;background:#292a2e;border:1px solid #3a3c42;border-radius:5px;box-shadow:0 15px 35px rgba(0,0,0,.55);padding:5px 0;color:#d5d7dc;font-size:13px}.ij-context-row{height:35px;padding:0 14px;display:flex;align-items:center;gap:10px}.ij-context-row.active{background:#335a91}.ij-context-row.sep{border-top:1px solid #3a3c42}.ij-context-short{margin-left:auto;color:#7c8087}.ij-submenu{position:absolute;left:100%;top:-1px;width:330px;background:#292a2e;border:1px solid #3a3c42;border-radius:5px;box-shadow:0 15px 35px rgba(0,0,0,.55);padding:5px 0}.ij-submenu .ij-context-row{height:36px}.ij-submenu .ij-context-row:first-child{background:#335a91}
+.ij-class-pop{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:452px;background:#292a2e;border:1px solid #3a3c42;border-radius:6px;box-shadow:0 18px 42px rgba(0,0,0,.55);padding:17px}.ij-class-pop h3{text-align:center;margin:0 0 18px;font-size:14px;font-weight:600}.ij-class-input{height:34px;border:0;border-bottom:1px solid #4a4d53;display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:14px}.ij-class-opt{height:33px;border-radius:4px;padding:0 11px;display:flex;align-items:center;gap:9px;font-size:13px}.ij-class-opt.active{background:#345a92}.ij-type-icon{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;border:1px solid #4f86db;color:#6da5ff;font-size:10px}
+.ij-ps{width:min(1080px,92vw);height:min(680px,90vh);display:grid;grid-template-rows:54px minmax(0,1fr) 62px}.ij-ps-body{display:grid;grid-template-columns:190px minmax(0,1fr);min-height:0}.ij-ps-left{background:#292a2e;border-right:1px solid #37393e;padding:48px 10px 12px}.ij-ps-group{font-weight:600;margin:0 0 6px;color:#ddd}.ij-ps-item{height:30px;padding:0 40px;display:flex;align-items:center;border-radius:4px;font-size:13px}.ij-ps-item.active{background:#34578f}.ij-ps-main{position:relative;padding:35px 28px}.ij-ps-main h2{font-size:15px;margin:0 0 8px}.ij-ps-main .desc{color:#7f838b;font-size:12px;margin-bottom:25px}.ij-ps-row{display:grid;grid-template-columns:135px minmax(0,1fr) 95px;gap:14px;align-items:center;margin-bottom:16px;font-size:13px}.ij-ps-row .ij-field,.ij-ps-row .ij-select{height:40px}.ij-ps-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:0 18px;border-top:1px solid #383a3f}.ij-ps .ij-jdk-menu{left:163px;right:120px;top:174px}
+body.ijScreenshotMode .menu{display:none!important}body.ijScreenshotMode .app{grid-template-rows:42px 0 42px minmax(0,1fr) 23px}body.ijScreenshotMode .titlebar{height:42px}body.ijScreenshotMode .toolbar{height:42px;padding-left:8px}body.ijScreenshotMode .toolbar #newBtn,body.ijScreenshotMode .toolbar #saveBtn{display:none}body.ijScreenshotMode .projectTitle{font-size:12px}body.ijScreenshotMode .runConfig{margin-left:auto}
+
 </style>
 <link rel="stylesheet" href="ide-polish.css?v=3">
 </head>
@@ -242,6 +267,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  </div>
  <div class="status"><span id="statusText">Ready</span><span id="languageLevel">Java</span><span class="grow"></span><span id="encoding">UTF-8</span><span id="lineStatus">Ln 1, Col 1</span></div>
  <div class="modalLayer" id="modalLayer"><div class="modal"><div class="modalHead"><span id="modalTitle">Dialog</span><div class="grow"></div><button class="tool" id="modalClose">×</button></div><div class="modalBody" id="modalBody"></div><div class="modalFoot" id="modalFoot"></div></div></div>
+ <div class="ijFidelityLayer" id="intellijFidelityLayer"></div>
  <div class="ideAssistant hidden" id="ideAssistant">
    <div class="ideAssistantHead" id="ideAssistantDrag">
      <div class="ideAssistantIcon">AI</div>
@@ -253,7 +279,7 @@ html,body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#1e1f22}
  <div class="notification" id="notification"></div><div class="targetBoundary" id="targetBoundary"></div>
 </div>
 <script src="enterprise-ui.js?v=1"></script>
-<script src="engine.js?v=18"></script>
+<script src="engine.js?v=19"></script>
 <script src="adaptive-ui.js?v=1"></script>
   <script src="../shared/highlighter.js?v=7"></script>
 <script src="../shared/explanation-controls.js?v=23"></script>
