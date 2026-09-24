@@ -72,35 +72,49 @@ const server=http.createServer((req,res)=>{
         const line=document.createElement("div");
         line.id="globalLineHighlightProbe";
         line.className="codeLine sim-emphasis";
-        line.textContent="boolean isPresent;";
         line.style.cssText="position:fixed;left:36px;top:100px;width:420px;height:28px;line-height:28px";
+        const token=document.createElement("span");
+        token.id="globalSyntaxTokenProbe";
+        token.textContent="boolean";
+        token.style.color="rgb(255, 181, 110)";
+        line.appendChild(token);
+        line.append(" isPresent;");
         document.body.appendChild(line);
         const cs=getComputedStyle(line);
         const before=getComputedStyle(line,"::before");
+        const tokenStyle=getComputedStyle(token);
         const out={
           outlineStyle:cs.outlineStyle,
           outlineWidth:parseFloat(cs.outlineWidth)||0,
           backgroundColor:cs.backgroundColor,
+          textShadow:cs.textShadow,
           markerWidth:parseFloat(before.width)||0,
           markerColor:before.backgroundColor,
-          markerShadow:before.boxShadow
+          markerShadow:before.boxShadow,
+          tokenColor:tokenStyle.color,
+          tokenShadow:tokenStyle.textShadow
         };
         line.remove();
         return out;
       });
       assert(lineStyle.outlineStyle==="none"||lineStyle.outlineWidth===0,software+": code-line highlight became a rectangle: "+JSON.stringify(lineStyle));
-      assert(/rgba?\(37, 123, 230/.test(lineStyle.backgroundColor),software+": stronger flat code-line lighting is missing: "+JSON.stringify(lineStyle));
+      assert(/rgba?\(45, 132, 245/.test(lineStyle.backgroundColor),software+": stronger readable code-line lighting is missing: "+JSON.stringify(lineStyle));
+      assert(lineStyle.textShadow!=="none",software+": highlighted line text contrast edge is missing: "+JSON.stringify(lineStyle));
       assert(lineStyle.markerWidth>=6,software+": code-line left marker is too weak: "+JSON.stringify(lineStyle));
-      assert(/rgb\(125, 203, 255\)/.test(lineStyle.markerColor),software+": code-line left marker is not bright enough: "+JSON.stringify(lineStyle));
+      assert(/rgb\(139, 211, 255\)/.test(lineStyle.markerColor),software+": code-line left marker is not bright enough: "+JSON.stringify(lineStyle));
       assert(lineStyle.markerShadow==="none",software+": code-line marker must not glow");
+      assert.equal(lineStyle.tokenColor,"rgb(255, 181, 110)",software+": highlight overrode syntax token color");
+      assert(lineStyle.tokenShadow!=="none",software+": syntax token contrast was not improved");
       if(checked.length===0){
-        await child.waitForTimeout(1100);
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
+        await child.waitForTimeout(5300);
+        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
+      }
+      await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
         assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary cleared before the five-second notice window");
         await child.waitForTimeout(4100);
         assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": blue boundary did not clear after five seconds");
       }else{
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR",force:true},"*"));
+        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
         assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": forced highlight clear did not remove the boundary");
       }
       await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());

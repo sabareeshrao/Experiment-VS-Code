@@ -10,11 +10,12 @@ style.textContent=[
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
-"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(37,123,230,.42)!important}",
-"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:''position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#7dcbff;box-shadow:none;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
-"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(37,123,230,.42)!important}",
-"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:''position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#7dcbff;box-shadow:none;pointer-events:none;z-index:2}",
+"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body .codeLine.focus *,body .line.focus *,body .lineFocus *,body .sqlLessonLine.active *,body pre .sim-emphasis *,body .code .sim-emphasis *,body .sql .sim-emphasis *,body .codeLine.sim-emphasis *,body .line.sim-emphasis *{text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 ".sim-line-text{position:relative;z-index:3}",
 /* Global overflow + scrollbar safety.  Every simulator can expose long tree
    paths, filenames, SQL/code lines, table rows, console output, etc.  Never
@@ -47,7 +48,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null,timer=0,visibleUntil=0;
+var active=null;
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -56,14 +57,7 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(force){
- if(!force&&active&&Date.now()<visibleUntil){
-   clearTimeout(timer);
-   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
-   return;
- }
- clearTimeout(timer);
- visibleUntil=0;
+function clean(){
  if(active){
    active.classList.remove("simActionHighlight","simActionPulse");
    active=null;
@@ -99,7 +93,7 @@ function find(plan){
  return null;
 }
 function highlight(plan){
- clean(true);
+ clean();
  var el=find(plan||{});
  if(!el)return;
  var r=el.getBoundingClientRect();
@@ -110,10 +104,7 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- // Preserve the latest stronger flat-blue UI treatment, but guarantee the
- // learner a full five-second notice window before the action boundary clears.
- visibleUntil=Date.now()+5000;
- timer=setTimeout(function(){clean(true)},5000);
+ // Persist until the player explicitly clears or replaces the guidance boundary.
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};
