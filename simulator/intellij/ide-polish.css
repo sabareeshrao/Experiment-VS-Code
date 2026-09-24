@@ -73,3 +73,42 @@ body.ijScreenshotMode .left,body.ijScreenshotMode .tree,body.ijScreenshotMode .e
 @media(max-width:520px){
  .ij-completion-shot{left:6%;width:90%}.ij-tab-context{left:16%;width:80%}.ij-symbol-card{left:18%;width:78%}.ij-move-dialog{width:96vw}.ij-move-main{padding:18px 14px 82px}.ij-move-row{grid-template-columns:1fr;gap:6px}.ij-move-hint{margin-left:0}.ij-move-main .ij-check{font-size:12px}.ij-dialog-actions{flex-wrap:wrap}
 }
+
+
+/* v13: IntelliJ project tree keeps long labels intact and scrolls horizontally */
+.tree{
+  overflow-x:auto!important;
+  overflow-y:auto!important;
+  scrollbar-gutter:stable;
+  overscroll-behavior:contain;
+  padding-bottom:7px!important;
+  scrollbar-width:thin;
+  scrollbar-color:#5f636b transparent;
+}
+.tree::-webkit-scrollbar{width:8px;height:8px}
+.tree::-webkit-scrollbar-track{background:transparent}
+.tree::-webkit-scrollbar-thumb{background:#5f636b;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+.tree::-webkit-scrollbar-thumb:hover{background:#747982;background-clip:padding-box}
+.tree::-webkit-scrollbar-corner{background:transparent}
+.treeRoot,.treeRow,.treeAux{
+  width:max-content;
+  min-width:100%;
+  max-width:none;
+  white-space:nowrap;
+  flex-wrap:nowrap;
+}
+.treeRoot,.treeAux{display:flex;align-items:center}
+.tree .nodeText,
+.tree .nodeMeta,
+.treeRoot>span,
+.treeAux>span{
+  flex:0 0 auto;
+  min-width:max-content;
+  max-width:none;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+.treeRow .gitMark{flex:0 0 auto}
+.libraryChild{white-space:nowrap!important}
+

@@ -153,6 +153,26 @@ const server = http.createServer((req, res) => {
     await open(1);
     assert(!await frame().locator("body").evaluate(e => e.classList.contains("ijScreenshotMode")), "Normal IntelliJ inherited screenshot mode");
     await geometry();
+
+    // Project tree horizontal overflow regression: long labels must remain one line,
+    // increase intrinsic content width, and be reachable with horizontal scrolling.
+    const treeScroll = await frame().evaluate(() => {
+      const tree=document.querySelector("#tree");
+      const row=document.createElement("div");
+      row.className="treeAux";
+      row.dataset.scrollRegression="1";
+      row.innerHTML='<span class="twist"></span><span class="ico">·</span><span>org.springframework.boot:spring-boot-starter-validation:3.4.0 extremely-long-dependency-name-for-horizontal-scroll-verification</span><span class="nodeMeta">Maven dependency metadata</span>';
+      tree.appendChild(row);
+      const before={clientWidth:tree.clientWidth,scrollWidth:tree.scrollWidth,rowHeight:row.getBoundingClientRect().height,whiteSpace:getComputedStyle(row).whiteSpace};
+      tree.scrollLeft=tree.scrollWidth;
+      const after=tree.scrollLeft;
+      row.remove();
+      return {...before,scrollLeft:after};
+    });
+    assert(treeScroll.scrollWidth > treeScroll.clientWidth + 80, "Project tree did not expose horizontal overflow");
+    assert(treeScroll.rowHeight < 32, `Long Project tree item wrapped vertically: ${JSON.stringify(treeScroll)}`);
+    assert.equal(treeScroll.whiteSpace, "nowrap", "Project tree row is allowed to wrap");
+    assert(treeScroll.scrollLeft > 0, "Project tree horizontal scrollbar is not functional");
     assert.deepEqual(errors, [], "Browser JavaScript errors");
     console.log("IntelliJ browser regression checks passed: layout, completion, Run, focus, navigation, replay, reload, resize persistence, responsive views and normal mode.");
   } finally {
