@@ -2,7 +2,7 @@
   "schema_version": 2,
   "software_id": "intellij",
   "display_name": "IntelliJ IDEA",
-  "purpose": "AI routing index for microscopic IntelliJ capability files. Read the individual file before authoring.",
+  "purpose": "Routing index only. Read the individual feature JSON file before deciding whether a transcript requirement is supported.",
   "feature_file_count": 345,
   "manifest_feature_count": 57,
   "engine_action_count": 291,

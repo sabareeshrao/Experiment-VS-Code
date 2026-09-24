@@ -566,7 +566,7 @@ if (contract && manifest) {
       let detail;
       try { detail = JSON.parse(read(full)); }
       catch (error) { fail(software + ": cannot parse feature file " + full + ": " + error.message); continue; }
-      assert(detail.schema_version === 1, software + ": unsupported feature schema in " + file);
+      assert(detail.schema_version === 1 || (software === "intellij" && detail.schema_version === 2), software + ": unsupported feature schema in " + file);
       assert(detail.software?.id === software, software + ": feature file software id mismatch in " + file);
       assert(detail.feature?.id === file.slice(0,-5), software + ": feature id/file mismatch in " + file);
       for (const key of ["intent","ui_contract","input_contract","state_contract","transcript_matching","lesson_authoring","implementation","replay_and_quality","validation","maintenance"]) {
@@ -575,6 +575,7 @@ if (contract && manifest) {
       assert(detail.lesson_authoring?.missing_feature_rule, software + ": " + file + " missing missing-feature guidance");
       assert(detail.implementation?.engine_source, software + ": " + file + " missing engine source");
       assert(detail.ui_contract?.required_visibility, software + ": " + file + " missing visible UI contract");
+      if (software === "intellij" && detail.schema_version === 2) { assert(detail.microscopic_contract && typeof detail.microscopic_contract === "object", software + ": " + file + " missing microscopic_contract"); assert(Array.isArray(detail.microscopic_contract.exact_action_data_keys), software + ": " + file + " missing microscopic action.data keys"); }
     }
   }
 }

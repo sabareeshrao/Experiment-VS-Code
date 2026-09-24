@@ -11,7 +11,11 @@
     "id": "move-class",
     "display_name": "Move Class",
     "area": "refactoring",
+    "interaction_kind": "interaction",
     "implementation_status": "engine_action_exposed",
+    "source_kinds": [
+      "engine_supported_action"
+    ],
     "manifest_declared": false,
     "canonical_actions": [
       "moveClass"
@@ -38,80 +42,47 @@
           "class"
         ]
       }
-    ]
+    ],
+    "action_mapping_note": "Canonical action is advertised by IntelliJ SUPPORTED_ACTIONS."
   },
-  "microscopic_contract": {
-    "availability": "available_via_canonical_engine_action",
-    "behavior_summary": "Invokes moveClass targeting generic IntelliJ surface, editor tab, Move refactoring dialog. Reads action.data: content, file, uiState.",
-    "exact_action_data_keys": [
-      "content",
-      "file",
-      "uiState"
+  "intent": {
+    "user_goal": "Use Move Class as part of a realistic IntelliJ IDEA workflow.",
+    "transcript_requirement": "Treat this capability as available only when the transcript requires its visible IntelliJ interaction/result.",
+    "when_to_use": "Use this feature file when the transcript maps to Move Class.",
+    "when_not_to_use": "Do not substitute a conceptually related control when the visible interaction differs."
+  },
+  "ui_contract": {
+    "owner": "simulator/intellij",
+    "primary_area": "refactoring",
+    "required_visibility": "The software must visibly reflect the canonical action on the appropriate IntelliJ-owned surface.",
+    "before_state": "The simulator starts from the course package baseline plus cumulative replayed IntelliJ actions.",
+    "interaction": "Invoke moveClass with only handler-supported action.data.",
+    "after_state": "The software must visibly reflect the canonical action on the appropriate IntelliJ-owned surface.",
+    "focus_and_scroll": "Keep the active control/result/code/command visible without replay shaking.",
+    "highlight_rule": "Clickable controls use the shared persistent blue boundary. Code/SQL/text uses shared flat line emphasis. IntelliJ terminal current commands use yellow command emphasis.",
+    "explanation_rule": "Explanation UI is parent-owned/global; never create a competing explanation card."
+  },
+  "input_contract": {
+    "likely_input_modes": [
+      "mouse",
+      "keyboard when applicable"
     ],
-    "state_areas_touched": [],
-    "ui_refs_touched": [],
-    "helper_functions_called": [
-      "genericSurface",
-      "openFile",
-      "showMoveRefactorSurface"
-    ],
-    "literal_ui_selectors_or_tokens": [],
-    "visible_surfaces": [
-      "generic IntelliJ surface",
-      "editor tab",
-      "Move refactoring dialog"
-    ],
+    "parameters": "Current handler reads: content, file, uiState.",
+    "destructive": false,
+    "destructive_note": "No destructive behavior inferred from the canonical action name."
+  },
+  "state_contract": {
+    "baseline_source": "window.COURSE.package.apps.intellij_idea",
+    "cumulative_replay": true,
+    "deterministic_required": true,
+    "historical_replay": "silent/replayingHistory=true",
+    "final_step_animation": "allowed when requested",
+    "user_preferences": "User-controlled layout/theme/persistent preferences must not be reset by lesson replay unless explicitly changed.",
     "project_effect_default": "project_mutation",
-    "project_effect_note": "Documentation classification only. projectImpact=build|temporary|inspect is proposed but NOT runtime-enforced yet.",
-    "replay_contract": {
-      "baseline": "window.COURSE.package.apps.intellij_idea",
-      "current_runtime": "Player stepsThrough() replays every earlier IntelliJ action through SIM_SEEK after IntelliJ reset().",
-      "historical_action_behavior": "Earlier actions run with replayingHistory=true; only the final action is current/animated.",
-      "focus_safety": "Historical fidelity inputs suppress autofocus. typeCode uses focusRange and shared SIM_FOCUS.follow.",
-      "checkpoint_support": "not_implemented",
-      "semantic_anchor_support": "not_implemented; typeCode supports textual marker + position + derived focus lines",
-      "direct_jump_required": true
-    },
-    "lesson_authoring_contract": {
-      "software": "intellij",
-      "required_capability": "move-class",
-      "canonical_action": "moveClass",
-      "action_data_keys_to_consider": [
-        "content",
-        "file",
-        "uiState"
-      ],
-      "handler_search_token": "case\"moveClass\"",
-      "do_not_invent_parameters": true,
-      "visible_result_required": true,
-      "use_existing_action_before_new_action": true,
-      "temporary_demo_warning": "Temporary project mutations must currently be explicitly undone; automatic projectImpact=temporary behavior does not exist yet."
-    },
-    "implementation_evidence": {
-      "engine_source": "simulator/intellij/engine.js",
-      "handler_search_token": "case\"moveClass\"",
-      "handler_excerpt": "case\"moveClass\":if(d.uiState===\"moveDialog\"){showMoveRefactorSurface(d);break}if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;",
-      "ui_source": "simulator/intellij/index.html",
-      "polish_source": "simulator/intellij/ide-polish.css",
-      "shared_highlighter": "simulator/shared/highlighter.js",
-      "player_replay_source": "app.js#stepsThrough/sendSeekNow"
-    },
-    "verification": {
-      "engine_advertised": true,
-      "browser_regression": "feature_or_surface_covered_by_browser_regression",
-      "browser_test_sources": [
-        "scripts/test-intellij-ui.cjs"
-      ],
-      "deterministic_replay_required": true,
-      "hard_refresh_forbidden": true
-    },
-    "limitations_and_non_assumptions": [
-      "Catalog presence does not imply pixel-perfect parity with JetBrains IntelliJ IDEA.",
-      "Do not invent action.data keys not supported by the handler.",
-      "Do not assume projectImpact/checkpoints/semantic anchors exist yet.",
-      "Do not create a competing explanation box.",
-      "Do not use whole-screen blue overlays; control guidance is a persistent boundary, code/SQL uses shared line emphasis, and IntelliJ terminal current commands use yellow command emphasis."
-    ]
+    "projectImpact_runtime_enforced": false,
+    "checkpoint_support": false,
+    "semantic_anchor_support": false,
+    "textual_marker_support_for_typeCode": true
   },
   "transcript_matching": {
     "canonical_feature_id": "move-class",
@@ -129,17 +100,124 @@
       "gotoClass",
       "runJUnitClass"
     ],
-    "decision_rule": "Match the transcript's visible IntelliJ interaction/result. If canonical_actions is empty, inspect candidates and engine source before deciding support."
+    "decision_rule": "Match the visible interaction and expected UI result, then confirm the canonical action/handler."
+  },
+  "lesson_authoring": {
+    "required_capability_value": "move-class",
+    "feature_available": true,
+    "preferred_actions": [
+      "moveClass"
+    ],
+    "action_lookup_required": false,
+    "exact_action_data_keys": [
+      "content",
+      "file",
+      "uiState"
+    ],
+    "authoring_steps": [
+      "Confirm the transcript really uses this visible IntelliJ feature.",
+      "Read this exact feature file before writing action.data.",
+      "Use canonical actions when present and inspect the handler excerpt/search token.",
+      "Do not invent parameters not read by the handler.",
+      "Ensure the lesson produces a visible UI result.",
+      "Validate direct-jump replay from a clean load."
+    ],
+    "missing_feature_rule": "If the transcript requires behavior beyond this file and no engine action/UI supports it, mark it missing and upgrade the master simulator before building the downstream lesson."
+  },
+  "implementation": {
+    "engine_source": "simulator/intellij/engine.js",
+    "ui_source": "simulator/intellij/index.html",
+    "polish_source": "simulator/intellij/ide-polish.css",
+    "manifest_source": "simulator/adaptive-capabilities.json#simulators.intellij",
+    "action_contract_source": "simulator/action-contract.json#simulators.intellij",
+    "implementation_search_terms": [
+      "move-class",
+      "moveClass"
+    ],
+    "source_review_required": false,
+    "handler_search_token": "case\"moveClass\"",
+    "handler_excerpt": "case\"moveClass\":if(d.uiState===\"moveDialog\"){showMoveRefactorSurface(d);break}if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;"
+  },
+  "replay_and_quality": {
+    "direct_middle_jump_required": true,
+    "normal_reload_required": true,
+    "hard_refresh_forbidden": true,
+    "stale_screen_forbidden": true,
+    "historical_flicker_forbidden": true,
+    "duplicate_explanation_forbidden": true,
+    "giant_highlight_forbidden": true,
+    "checkpoint_note": "No checkpoint engine yet; current player replays all earlier IntelliJ actions.",
+    "semantic_target_note": "No class/method semantic anchor resolver yet; typeCode supports textual marker/position."
+  },
+  "validation": {
+    "manifest_feature_present": false,
+    "engine_action_present": true,
+    "exact_action_names": [
+      "moveClass"
+    ],
+    "catalog_generated_from_current_master": true,
+    "visual_browser_verification": "covered_by_existing_browser_surface_test",
+    "regression_expectations": [
+      "Feature file remains present while capability/action remains supported.",
+      "Canonical actions remain advertised.",
+      "Visible software-owned UI remains deterministic under replay.",
+      "No hard refresh is required."
+    ]
+  },
+  "microscopic_contract": {
+    "availability": "available_via_canonical_engine_action",
+    "behavior_summary": "Invokes moveClass on generic IntelliJ surface, editor tab, Move refactoring dialog. Reads action.data keys: content, file, uiState.",
+    "exact_action_data_keys": [
+      "content",
+      "file",
+      "uiState"
+    ],
+    "state_areas_touched": [],
+    "ui_refs_touched": [],
+    "helper_functions_called": [
+      "genericSurface",
+      "openFile",
+      "showMoveRefactorSurface"
+    ],
+    "visible_surfaces": [
+      "generic IntelliJ surface",
+      "editor tab",
+      "Move refactoring dialog"
+    ],
+    "project_effect_default": "project_mutation",
+    "project_effect_note": "Documentation classification only. projectImpact=build|temporary|inspect is NOT runtime-enforced yet.",
+    "replay_contract": {
+      "current_runtime": "app.js stepsThrough() collects all earlier IntelliJ actions and sendSeekNow() passes them via SIM_SEEK; IntelliJ seek() reset()s then replays them.",
+      "historical_action_behavior": "Earlier actions run with replayingHistory=true; final action is current.",
+      "focus_safety": "Historical fidelity inputs suppress autofocus; typeCode follows current focus lines.",
+      "checkpoint_support": "not_implemented",
+      "semantic_anchor_support": "not_implemented; textual marker available for typeCode"
+    },
+    "implementation_evidence": {
+      "handler_search_token": "case\"moveClass\"",
+      "handler_excerpt": "case\"moveClass\":if(d.uiState===\"moveDialog\"){showMoveRefactorSurface(d);break}if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;"
+    },
+    "verification": {
+      "browser_test_sources": [
+        "scripts/test-intellij-ui.cjs"
+      ]
+    },
+    "limitations_and_non_assumptions": [
+      "Catalog presence is not pixel-perfect JetBrains parity.",
+      "Do not invent action.data keys.",
+      "Do not assume projectImpact/checkpoints/semantic anchors exist yet.",
+      "Do not create a second explanation box."
+    ]
   },
   "maintenance": {
     "canonical_file": "simulator/intellij/features/move-class.json",
     "generated_by": "scripts/build-intellij-microscopic-features.cjs",
-    "regenerate_after": [
-      "engine action change",
-      "action.data parameter change",
-      "UI surface upgrade",
-      "browser regression coverage change",
-      "replay architecture change"
+    "update_when": [
+      "engine handler changes",
+      "action.data contract changes",
+      "visible UI changes",
+      "replay architecture changes",
+      "browser regression coverage changes"
     ]
   }
 }
