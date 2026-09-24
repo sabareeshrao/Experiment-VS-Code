@@ -86,7 +86,7 @@
     "before_state": "The simulator starts from the package baseline plus prior cumulative actions.",
     "interaction": "Invoke one of the canonical actions with data matching its engine handler.",
     "after_state": "The software must visibly reflect the result of the canonical action; hidden JavaScript state alone is insufficient.",
-    "focus_and_scroll": "Keep the active control/result visible without replay shaking.",
+    "focus_and_scroll": "Focus the current class chooser without scrolling. Historical replay must not focus inputs; delayed focus must be cancelled when the seek changes or the input is removed. Plain arrows edit the field; Alt+Arrow navigates lessons.",
     "highlight_rule": "Highlight only the precise control, row, field, tab, code line, command, or result relevant to this feature; never the whole application surface.",
     "explanation_rule": "Explanation UI is parent-owned and global; this feature must not create a competing explanation card."
   },
