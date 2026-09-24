@@ -47,7 +47,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null;
+var active=null,timer=0,visibleUntil=0;
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -56,7 +56,14 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(){
+function clean(force){
+ if(!force&&active&&Date.now()<visibleUntil){
+   clearTimeout(timer);
+   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
+   return;
+ }
+ clearTimeout(timer);
+ visibleUntil=0;
  if(active){
    active.classList.remove("simActionHighlight","simActionPulse");
    active=null;
@@ -92,7 +99,7 @@ function find(plan){
  return null;
 }
 function highlight(plan){
- clean();
+ clean(true);
  var el=find(plan||{});
  if(!el)return;
  var r=el.getBoundingClientRect();
@@ -103,12 +110,15 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- // Global guidance contract: keep the precise blue boundary until the player explicitly clears/replaces it.
+ // Preserve the latest stronger flat-blue UI treatment, but guarantee the
+ // learner a full five-second notice window before the action boundary clears.
+ visibleUntil=Date.now()+5000;
+ timer=setTimeout(function(){clean(true)},5000);
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};
  if(m.type==="SIM_HIGHLIGHT")highlight(m.plan||{});
- if(m.type==="SIM_HIGHLIGHT_CLEAR")clean();
+ if(m.type==="SIM_HIGHLIGHT_CLEAR")clean(!!m.force);
 });
 try{parent.postMessage({type:"SIM_HIGHLIGHT_READY"},"*");}catch(_){}
 })();

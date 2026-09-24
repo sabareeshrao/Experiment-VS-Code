@@ -94,11 +94,15 @@ const server=http.createServer((req,res)=>{
       assert(/rgb\(125, 203, 255\)/.test(lineStyle.markerColor),software+": code-line left marker is not bright enough: "+JSON.stringify(lineStyle));
       assert(lineStyle.markerShadow==="none",software+": code-line marker must not glow");
       if(checked.length===0){
-        await child.waitForTimeout(5300);
-        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary expired without an explicit clear");
+        await child.waitForTimeout(1100);
+        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
+        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary cleared before the five-second notice window");
+        await child.waitForTimeout(4100);
+        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": blue boundary did not clear after five seconds");
+      }else{
+        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR",force:true},"*"));
+        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": forced highlight clear did not remove the boundary");
       }
-      await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
-      assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": explicit highlight clear did not remove the boundary");
       await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());
       checked.push(software);
     }
