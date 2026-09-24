@@ -927,7 +927,7 @@
         const doc = frame.contentDocument;
         if (!doc || doc.__lessonNavBridgeInstalled) return;
         doc.__lessonNavBridgeInstalled = true;
-        doc.addEventListener("keydown", handleLessonKeydown);
+        doc.addEventListener("keydown", handleLessonKeydown, true);
       } catch (_) {}
     };
     frame.addEventListener("load", attach);
