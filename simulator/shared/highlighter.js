@@ -48,7 +48,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null;
+var active=null,timer=0,visibleUntil=0;
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -57,7 +57,14 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(){
+function clean(force){
+ if(!force&&active&&Date.now()<visibleUntil){
+   clearTimeout(timer);
+   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
+   return;
+ }
+ clearTimeout(timer);
+ visibleUntil=0;
  if(active){
    active.classList.remove("simActionHighlight","simActionPulse");
    active=null;
@@ -93,7 +100,7 @@ function find(plan){
  return null;
 }
 function highlight(plan){
- clean();
+ clean(true);
  var el=find(plan||{});
  if(!el)return;
  var r=el.getBoundingClientRect();
@@ -104,7 +111,10 @@ function highlight(plan){
  try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
  active=el;
  active.classList.add("simActionHighlight");
- // Persist until the player explicitly clears or replaces the guidance boundary.
+ // Keep the newest high-contrast lesson lighting, but guarantee a full
+ // five-second notice window before the action boundary is removed.
+ visibleUntil=Date.now()+5000;
+ timer=setTimeout(function(){clean(true)},5000);
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};

@@ -146,7 +146,7 @@
       );
       ensureScript(
         "/simulator/shared/highlighter.js",
-        "simulator/shared/highlighter.js?v=14",
+        "simulator/shared/highlighter.js?v=15",
         "globalHighlightRuntime"
       );
       ensureScript(
@@ -978,4 +978,3 @@
   } else {
     renderCurrentStep();
   }
-})();
