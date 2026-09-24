@@ -121,8 +121,8 @@
       },
       "enterprise_action_source": "simulator/intellij/enterprise-ui.js",
       "enterprise_microscopic_evidence": "simulator/intellij/features/enterprise/index.json",
-      "enterprise_microscopic_read_required": true,
-      "enterprise_microscopic_directory": "simulator/intellij/features/enterprise/"
+      "enterprise_microscopic_directory": "simulator/intellij/features/enterprise/",
+      "enterprise_microscopic_read_required": true
     },
     "vscode": {
       "display_name": "Visual Studio Code",
