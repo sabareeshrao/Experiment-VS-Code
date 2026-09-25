@@ -708,7 +708,7 @@ function renderBreadcrumbs(){
  if(!row&&refs.editorPane&&refs.editorWrap){
   row=document.createElement("div");
   row.className="ij-breadcrumbs-row hidden";
-  row.innerHTML='<div class="ij-breadcrumbs-spacer" aria-hidden="true"></div><div class="ij-breadcrumbs"></div>';
+  row.innerHTML='<div class="ij-breadcrumbs"></div>';
   refs.editorPane.insertBefore(row,refs.editorWrap);
  }
  const bar=row?.querySelector(".ij-breadcrumbs");

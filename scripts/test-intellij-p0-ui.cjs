@@ -145,17 +145,20 @@ const server=http.createServer((req,res)=>{
   assert(crumbs.includes("AeroTopo")&&crumbs.includes("ProjectService.java"),"Breadcrumb chain is incomplete: "+crumbs);
   const breadcrumbGeometry=await frame().evaluate(()=>{
     const crumb=document.querySelector(".ij-breadcrumbs").getBoundingClientRect();
-    const gutter=document.querySelector(".gutter").getBoundingClientRect();
+    const row=document.querySelector(".ij-breadcrumbs-row").getBoundingClientRect();
+    const tabs=document.querySelector("#tabs").getBoundingClientRect();
     const editor=document.querySelector("#editorWrap").getBoundingClientRect();
     const firstCode=document.querySelector(".codeLine")?.getBoundingClientRect();
     const firstGutter=document.querySelector(".gline")?.getBoundingClientRect();
     return {
-      crumbLeft:crumb.left,crumbRight:crumb.right,crumbBottom:crumb.bottom,
-      gutterRight:gutter.right,editorTop:editor.top,editorRight:editor.right,
+      crumbLeft:crumb.left,crumbRight:crumb.right,rowLeft:row.left,rowRight:row.right,
+      tabsLeft:tabs.left,tabsRight:tabs.right,crumbBottom:crumb.bottom,
+      editorTop:editor.top,editorRight:editor.right,
       firstCodeTop:firstCode?.top??null,firstGutterTop:firstGutter?.top??null
     };
   });
-  assert(Math.abs(breadcrumbGeometry.crumbLeft-breadcrumbGeometry.gutterRight)<=1.5,"Breadcrumb strip is misaligned with the editor gutter: "+JSON.stringify(breadcrumbGeometry));
+  assert(Math.abs(breadcrumbGeometry.rowLeft-breadcrumbGeometry.tabsLeft)<=1.5&&Math.abs(breadcrumbGeometry.rowRight-breadcrumbGeometry.tabsRight)<=1.5,"Breadcrumb row breaks editor/tab continuity: "+JSON.stringify(breadcrumbGeometry));
+  assert(Math.abs(breadcrumbGeometry.crumbLeft-breadcrumbGeometry.rowLeft)<=1.5&&Math.abs(breadcrumbGeometry.crumbRight-breadcrumbGeometry.rowRight)<=1.5,"Breadcrumb content does not fill its editor row: "+JSON.stringify(breadcrumbGeometry));
   assert(breadcrumbGeometry.crumbRight<=breadcrumbGeometry.editorRight+1,"Breadcrumb strip escapes the editor: "+JSON.stringify(breadcrumbGeometry));
   assert(breadcrumbGeometry.crumbBottom<=breadcrumbGeometry.editorTop+1.5,"Breadcrumb row overlaps the editor viewport: "+JSON.stringify(breadcrumbGeometry));
   assert(breadcrumbGeometry.firstCodeTop===null||breadcrumbGeometry.firstCodeTop>=breadcrumbGeometry.editorTop-1,"Breadcrumb row overlaps source line 1: "+JSON.stringify(breadcrumbGeometry));

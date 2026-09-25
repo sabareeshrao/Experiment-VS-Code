@@ -89,12 +89,14 @@ const server = http.createServer((req, res) => {
         return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height};
       };
       const crumb=document.querySelector(".ij-breadcrumbs");
+      const crumbRow=document.querySelector(".ij-breadcrumbs-row");
+      const tabs=document.querySelector("#tabs");
       const editor=document.querySelector("#editorWrap");
       const gutter=document.querySelector(".gutter");
       const firstCode=document.querySelector(".codeLine");
       const firstGutter=document.querySelector(".gline");
       return {
-        crumb:rect(crumb),editor:rect(editor),gutter:rect(gutter),
+        crumb:rect(crumb),crumbRow:rect(crumbRow),tabs:rect(tabs),editor:rect(editor),gutter:rect(gutter),
         firstCode:firstCode?rect(firstCode):null,
         firstGutter:firstGutter?rect(firstGutter):null,
         firstCodeText:firstCode?.textContent||"",
@@ -102,6 +104,8 @@ const server = http.createServer((req, res) => {
       };
     });
     assert(studentLayout.firstCodeText.includes("public class Student"), "Student.java line 1 is not rendered as the first source line: "+JSON.stringify(studentLayout));
+    assert(Math.abs(studentLayout.crumbRow.left-studentLayout.tabs.left)<=1.5&&Math.abs(studentLayout.crumbRow.right-studentLayout.tabs.right)<=1.5, "Student.java breadcrumb row creates a visual gap under the tabs: "+JSON.stringify(studentLayout));
+    assert(Math.abs(studentLayout.crumb.left-studentLayout.crumbRow.left)<=1.5&&Math.abs(studentLayout.crumb.right-studentLayout.crumbRow.right)<=1.5, "Student.java breadcrumb content leaves a dead gutter-sized block: "+JSON.stringify(studentLayout));
     assert(studentLayout.crumb.bottom<=studentLayout.editor.top+1.5, "Breadcrumbs overlap the Student.java editor viewport: "+JSON.stringify(studentLayout));
     assert(studentLayout.firstCode&&studentLayout.firstCode.top>=studentLayout.editor.top-1, "Student.java line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
     assert(studentLayout.firstGutter&&studentLayout.firstGutter.top>=studentLayout.editor.top-1, "Student.java gutter line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
