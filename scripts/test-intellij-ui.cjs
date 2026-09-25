@@ -279,15 +279,14 @@ const server = http.createServer((req, res) => {
     // and lesson navigation must not leave the editor horizontally scrolled to
     // the far right of a long source line. Re-open a code lesson first because
     // the preceding terminal-only synthetic seek intentionally has no editor tab.
-    await open(5);
-    const focusFile=await frame().evaluate(()=>document.querySelector(".tab.active")?.dataset.file);
-    assert(focusFile,"No active IntelliJ file available for code-focus regression");
+    const focusFile="src/FocusRegression.java";
     await frame().evaluate(file=>{
       const editor=document.querySelector("#editorWrap");
       editor.scrollLeft=editor.scrollWidth;
       window.postMessage({
         type:"SIM_SEEK",autoType:false,animateFinal:false,
         steps:[
+          {action:"createFile",data:{path:file,language:"java",content:""}},
           {action:"setCode",data:{file,code:"public class FocusRegression {\n    String veryLongValue = \""+"x".repeat(220)+"\";\n}\n"}},
           {action:"highlightTarget",data:{target:{type:"line",file,line:2}}}
         ]
