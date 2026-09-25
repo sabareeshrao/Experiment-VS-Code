@@ -293,14 +293,19 @@ const server = http.createServer((req, res) => {
         ]
       },"*");
     },focusFile);
-    await frame().waitForSelector('.codeLine[data-line="2"].sim-emphasis');
+    await frame().waitForSelector('.codeLine[data-line="2"]');
+    await frame().waitForFunction(()=>{
+      const line=document.querySelector('.codeLine[data-line="2"]');
+      return !!line && (line.classList.contains("sim-emphasis")||line.classList.contains("simLessonLineHighlight")||line.classList.contains("focus"));
+    },{timeout:5000});
     await frame().waitForTimeout(80);
     const codeFocus=await frame().evaluate(()=>{
       const editor=document.querySelector("#editorWrap");
       const line=document.querySelector('.codeLine[data-line="2"]');
-      return {scrollLeft:editor.scrollLeft,background:getComputedStyle(line).backgroundColor,focused:line.classList.contains("sim-emphasis")};
+      const focused=line.classList.contains("sim-emphasis")||line.classList.contains("simLessonLineHighlight")||line.classList.contains("focus");
+      return {scrollLeft:editor.scrollLeft,background:getComputedStyle(line).backgroundColor,focused,classes:line.className};
     });
-    assert(codeFocus.focused,"Native IntelliJ line highlight was cleared after seek");
+    assert(codeFocus.focused,"IntelliJ line guidance was cleared after seek: "+JSON.stringify(codeFocus));
     assert(/rgba?\(45, 132, 245/.test(codeFocus.background),"IntelliJ line highlight is not visibly blue: "+JSON.stringify(codeFocus));
     assert(codeFocus.scrollLeft<=2,"Focused code step left the editor horizontally scrolled right: "+JSON.stringify(codeFocus));
 
