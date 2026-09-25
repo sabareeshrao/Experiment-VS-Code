@@ -55,22 +55,21 @@ function flatten(course){
       await page.waitForFunction(step=>document.querySelector("#stepTitle")?.textContent?.startsWith(step+"."),n,{timeout:15000});
       const f=await frame();
       await f.waitForFunction(()=>{
-        const title=document.querySelector("[data-sim-explanation-title]")?.textContent||"";
-        const body=document.querySelector("[data-sim-explanation-text]")?.textContent||"";
         const guidance=document.querySelector(".simActionHighlight,.simActionPointer,.simLessonLineHighlight,.codeLine.focus,.sim-emphasis");
-        return !!guidance||title.startsWith("[no highlight]")||body.startsWith("[no highlight]");
+        return !!guidance;
       },{timeout:5000});
+      await page.waitForSelector("[data-sim-explanation-title]",{timeout:5000});
       const state=await f.evaluate(()=>{
-        const title=document.querySelector("[data-sim-explanation-title]")?.textContent||"";
-        const body=document.querySelector("[data-sim-explanation-text]")?.textContent||"";
         const highlighted=[...document.querySelectorAll(".simActionHighlight,.simActionPointer,.simLessonLineHighlight,.codeLine.focus,.sim-emphasis")].filter(el=>{
           const cs=getComputedStyle(el),r=el.getBoundingClientRect();
           return cs.display!=="none"&&cs.visibility!=="hidden"&&r.width>0&&r.height>0;
         });
-        return {title,body,guidance:highlighted.length,status:document.querySelector("#statusMessage")?.textContent||""};
+        return {guidance:highlighted.length,status:document.querySelector("#statusMessage")?.textContent||""};
       });
-      assert(!state.title.startsWith("[no highlight]"),"Power BI step "+n+" exposed [no highlight] in the title: "+state.title);
-      assert(!state.body.startsWith("[no highlight]"),"Power BI step "+n+" exposed [no highlight] in the body");
+      const title=(await page.locator("[data-sim-explanation-title]").innerText()).trim();
+      const body=(await page.locator("[data-sim-explanation-text]").innerText()).trim();
+      assert(!title.startsWith("[no highlight]"),"Power BI step "+n+" exposed [no highlight] in the title: "+title);
+      assert(!body.startsWith("[no highlight]"),"Power BI step "+n+" exposed [no highlight] in the body");
       assert(state.guidance>0,"Power BI step "+n+" has no visible highlight/pointer");
       return {f,state};
     }
