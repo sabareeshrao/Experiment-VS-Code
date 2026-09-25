@@ -277,7 +277,9 @@ const server = http.createServer((req, res) => {
 
     // Code-focus regression: a highlighted code line must remain visibly blue
     // and lesson navigation must not leave the editor horizontally scrolled to
-    // the far right of a long source line.
+    // the far right of a long source line. Re-open a code lesson first because
+    // the preceding terminal-only synthetic seek intentionally has no editor tab.
+    await open(5);
     const focusFile=await frame().evaluate(()=>document.querySelector(".tab.active")?.dataset.file);
     assert(focusFile,"No active IntelliJ file available for code-focus regression");
     await frame().evaluate(file=>{
