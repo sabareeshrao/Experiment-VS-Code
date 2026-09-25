@@ -10,10 +10,10 @@ style.textContent=[
 "@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
 /* Global editor-line safety: the lesson marker must live in the editor's
    left padding lane, never on top of column 1 text. */
-"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.42)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 "body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
-"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.42)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 "body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus *,body .line.focus *,body .lineFocus *,body .sqlLessonLine.active *,body pre .sim-emphasis *,body .code .sim-emphasis *,body .sql .sim-emphasis *,body .codeLine.sim-emphasis *,body .line.sim-emphasis *{text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 ".sim-line-text{position:relative;z-index:3}",
