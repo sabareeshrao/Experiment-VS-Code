@@ -589,6 +589,10 @@
   }
 
   function sendSeekNow(index, target, animateFinal) {
+    // Clear the PREVIOUS step's global control guidance before replaying the
+    // new step. Clearing after SIM_SEEK erases IntelliJ's native code-line
+    // emphasis created by highlightTarget/typeCode.
+    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR", force: true }, SIM_TARGET_ORIGIN);
     frames[target].contentWindow.postMessage({
       type: "SIM_SEEK",
       steps: stepsThrough(index, target),
@@ -599,7 +603,8 @@
 
   function highlightCurrentAction(index, target) {
     const plan = highlightPlanForStep(flat[index]);
-    frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR" }, SIM_TARGET_ORIGIN);
+    // The previous highlight was already cleared before SIM_SEEK. Never clear
+    // here: IntelliJ may have just created a native code-line highlight.
     if (!plan) return;
     setTimeout(() => {
       frames[target].contentWindow.postMessage({

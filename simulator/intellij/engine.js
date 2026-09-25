@@ -95,7 +95,11 @@ function renderTree(){
  if(state.externalLibrariesOpen){const libs=[...(state.maven?.dependencies||[]).map(x=>({name:(x.groupId?x.groupId+":":"")+(x.artifactId||x.name||"dependency"),kind:"Maven"})),{name:"JDK "+String(state.project?.sdk||"17").replace(/^Java\s*/,""),kind:"JDK"},{name:"java.lang",kind:"JDK source"},{name:"java.time",kind:"JDK source"},{name:"org.springframework.boot",kind:"Spring Boot"},{name:"org.apache.catalina",kind:"Embedded Tomcat"}];libs.forEach(x=>{const row=document.createElement("div");row.className="treeAux";row.style.paddingLeft="28px";row.innerHTML='<span class="twist"></span><span class="ico">·</span><span>'+esc(x.name)+'</span><span style="margin-left:8px;color:var(--muted);font-size:8px">'+esc(x.kind)+'</span>';refs.tree.appendChild(row)})}
  const scratch=document.createElement("div");scratch.className="treeAux";scratch.innerHTML='<span class="twist">▸</span><span class="ico">⌘</span><span>Scratches and Consoles</span>';refs.tree.appendChild(scratch)
 }
-function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))openTabs.push(p);renderAll()}
+function resetEditorHorizontalScroll(){
+ const targets=[refs.editorWrap,refs.editorPane,refs.code?.parentElement].filter(Boolean);
+ targets.forEach(el=>{try{el.scrollLeft=0}catch(_){}});
+}
+function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))openTabs.push(p);renderAll();requestAnimationFrame(resetEditorHorizontalScroll)}
 function renderTabs(){refs.tabs.innerHTML="";for(const p of openTabs){if(!files[p])continue;const t=document.createElement("div");t.className="tab"+(p===activeFile?" active":"");t.dataset.file=p;t.innerHTML='<span>'+esc(p.split("/").pop())+'</span>'+(files[p].pinned?'<span class="tabPin">PIN</span>':'')+'<span class="tabClose">×</span>';t.onclick=e=>{if(!e.target.classList.contains("tabClose")){activeFile=p;renderAll()}};t.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeFile(p)};refs.tabs.appendChild(t)}}
 function closeFile(p){openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;renderAll()}
 function renderSplitEditor(){const splitFile=state.editorSplit&&state.splitFile&&files[state.splitFile]?state.splitFile:(state.editorSplit?activeFile:null);const enabled=!!splitFile;refs.editorPane?.classList.toggle("editorSplit",enabled);refs.editorSplitWrap?.classList.toggle("hidden",!enabled);if(!enabled){if(refs.editorSplitCode)refs.editorSplitCode.innerHTML="";return}refs.editorSplitTitle.textContent=splitFile.split("/").pop();const sf=files[splitFile],lines=String(sf?.content??"").split("\n");refs.editorSplitCode.innerHTML=lines.map((line,i)=>'<div class="splitCodeLine"><span class="splitLineNo">'+(i+1)+'</span><span class="splitCodeText">'+syntax(line,sf?.language||"java")+'</span></div>').join("")}
@@ -552,7 +556,7 @@ function p0OpenResult(item){
  state.editorCaret={file:path,line,column:Number(item.column||0)};
  renderEditor();
  const el=refs.code.querySelector('[data-line="'+line+'"]');
- window.SIM_FOCUS?.follow(el,{block:"center"});
+ window.SIM_FOCUS?.follow(el,{block:"center",horizontal:"start"});
  actionStatus((item.name||path)+" · line "+line);
 }
 function p0DefaultSearchResults(kind){
@@ -785,14 +789,14 @@ function showFileStructure(path){
    focusRange={file,lines:[line]};
    renderEditor();
    const el=refs.code.querySelector('[data-line="'+line+'"]');
-   window.SIM_FOCUS?.follow(el,{block:"center"});
+   window.SIM_FOCUS?.follow(el,{block:"center",horizontal:"start"});
   };
  });
 }
 function findRun(name){return state.runConfigurations.find(x=>x.name===name)||state.runConfigurations[0]}
 function actionStatus(msg){refs.status.textContent=msg}
 function reset(){state=clone(baseline||{});normalize();terminalHighlightText="";clearTransient("");trackedBoundary=null;refs.boundary.classList.remove("show");refs.app.classList.remove("distraction");document.body.classList.remove("zen");renderAll()}
-function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);renderAll()}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
+function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="selector"&&t.selector){try{return document.querySelector(t.selector)}catch(_){return null}}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);focusRange={file:t.file,lines:[Number(t.line)]};renderAll();resetEditorHorizontalScroll()}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
 function clearBoundary(){if(trackedBoundary?.classList)trackedBoundary.classList.remove("sim-emphasis");trackedBoundary=null;refs.boundary.classList.remove("show")}
 function syncBoundary(){}
 function avoidAssistantOverlap(el){
@@ -814,7 +818,7 @@ function avoidAssistantOverlap(el){
  candidates.sort((a,b)=>score(a)-score(b));
  placeAssistant(candidates[0].left,candidates[0].top,false);
 }
-async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;clearBoundary();trackedBoundary=el;el.classList.add("sim-emphasis");avoidAssistantOverlap(el);await sleep(260);if(token!==seekToken)return}
+async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;clearBoundary();trackedBoundary=el;el.classList.add("sim-emphasis");avoidAssistantOverlap(el);if(t?.type==="line"){resetEditorHorizontalScroll();window.SIM_FOCUS?.follow(el,{block:"center",horizontal:"start"})}else window.SIM_FOCUS?.follow(el,{block:"nearest",horizontal:"nearest"});await sleep(260);if(token!==seekToken)return}
 function openMenu(name){const maps={File:["New","Open","Project Structure","Settings"],Edit:["Undo","Redo","Find","Replace"],View:["Tool Windows","Appearance","Distraction Free Mode"],Navigate:["Class","File","Symbol","Declaration","Implementation"],Code:["Completion","Reformat Code","Optimize Imports","Generate"],Refactor:["Rename","Extract","Inline","Move","Safe Delete"],Build:["Build Project","Rebuild Project"],Run:["Run","Debug","Edit Configurations"],Tools:["Terminal","Database","Maven"],VCS:["Commit","Push","Pull","Git"]};refs.menuPopup.innerHTML=(maps[name]||["Action"]).map(x=>"<div>"+x+"</div>").join("");refs.menuPopup.classList.add("show")}
 async function applyStep(st,animate,token){
  if(token!==seekToken)return;clearBoundary();clearTransient(st.action);const d=st.data||{},f=()=>files[d.file||activeFile];
@@ -838,7 +842,7 @@ async function applyStep(st,animate,token){
   case"saveFile":if(f())f().dirty=false;actionStatus("Saved "+(d.file||activeFile||"file"));renderTabs();break;
   case"saveAll":Object.values(files).forEach(x=>x.dirty=false);actionStatus("All files saved");renderTabs();break;
   case"setCode":{const file=d.file||activeFile;if(files[file]){activeFile=file;if(!openTabs.includes(file))openTabs.push(file);files[file].content=String(d.code??d.content??"");files[file].dirty=true;markGit(file,"M");focusRange=null;if(d.caretLine)state.editorCaret={file,line:Number(d.caretLine),column:Number(d.caretColumn||0)};if(d.selectionText||d.selection)state.editorSelection={file,line:Number(d.selectionLine||d.caretLine||1),text:d.selectionText||d.selection,start:d.selectionStart,end:d.selectionEnd};if(d.breadcrumbs!==undefined)state.breadcrumbsVisible=d.breadcrumbs!==false;renderAll()}break}
-  case"typeCode":{const file=d.file||activeFile;if(!files[file])break;const old=String(files[file].content||""),pos=d.position||"replace",snippet=String(d.code||"");const make=part=>pos==="end"?old+part:(pos==="start"?part+old:markerReplace(old,d.marker||"",part,pos));const final=make(snippet);if(final===null){notify("Code marker not found","error");break}activeFile=file;if(!openTabs.includes(file))openTabs.push(file);const markerIndex=pos==="end"?old.length:(pos==="start"?0:old.indexOf(d.marker||""));const before=old.slice(0,Math.max(0,markerIndex)).split("\n").length;const snippetLines=snippet.split("\n");const focusLines=snippetLines.map((line,idx)=>line.trim()?before+idx:null).filter(Boolean);if(!focusLines.length)focusLines.push(before);focusRange={file,lines:focusLines};await typeText(snippet,part=>{files[file].content=make(part)??old;renderEditor();requestAnimationFrame(()=>{const lines=[...refs.code.querySelectorAll(".codeLine.focus")];const target=lines[lines.length-1]||refs.code.querySelector('[data-line="'+focusLines[0]+'"]');window.SIM_FOCUS?.follow(target,{block:"center"})})},animate,token);files[file].content=final;files[file].dirty=true;markGit(file,"M");focusRange={file,lines:focusLines};renderAll();window.SIM_FOCUS?.follow(refs.code.querySelector('[data-line="'+focusLines.at(-1)+'"]'),{block:"center"});if(d.boundary!==false)await highlight({type:"line",file,line:focusLines[0]},token);break}
+  case"typeCode":{const file=d.file||activeFile;if(!files[file])break;const old=String(files[file].content||""),pos=d.position||"replace",snippet=String(d.code||"");const make=part=>pos==="end"?old+part:(pos==="start"?part+old:markerReplace(old,d.marker||"",part,pos));const final=make(snippet);if(final===null){notify("Code marker not found","error");break}activeFile=file;if(!openTabs.includes(file))openTabs.push(file);const markerIndex=pos==="end"?old.length:(pos==="start"?0:old.indexOf(d.marker||""));const before=old.slice(0,Math.max(0,markerIndex)).split("\n").length;const snippetLines=snippet.split("\n");const focusLines=snippetLines.map((line,idx)=>line.trim()?before+idx:null).filter(Boolean);if(!focusLines.length)focusLines.push(before);focusRange={file,lines:focusLines};await typeText(snippet,part=>{files[file].content=make(part)??old;renderEditor();requestAnimationFrame(()=>{const lines=[...refs.code.querySelectorAll(".codeLine.focus")];const target=lines[lines.length-1]||refs.code.querySelector('[data-line="'+focusLines[0]+'"]');window.SIM_FOCUS?.follow(target,{block:"center",horizontal:"start"})})},animate,token);files[file].content=final;files[file].dirty=true;markGit(file,"M");focusRange={file,lines:focusLines};renderAll();window.SIM_FOCUS?.follow(refs.code.querySelector('[data-line="'+focusLines.at(-1)+'"]'),{block:"center",horizontal:"start"});if(d.boundary!==false)await highlight({type:"line",file,line:focusLines[0]},token);break}
   case"replaceCode":if(f()){f().content=String(f().content).replace(String(d.find||""),String(d.replace||""));f().dirty=true;markGit(d.file||activeFile,"M");renderEditor()}break;
   case"formatCode":case"reformatFile":if(f()){f().content=String(f().content).split("\n").map(x=>x.replace(/\s+$/,"")).join("\n");renderEditor();actionStatus("Code reformatted")}break;
   case"optimizeImports":actionStatus("Imports optimized");break;
@@ -997,6 +1001,10 @@ async function applyStep(st,animate,token){
   case"installPlugin":state.plugins=state.plugins||[];if(!state.plugins.includes(d.name))state.plugins.push(d.name);genericSurface("Plugins",{installed:state.plugins});break;
   default:if(!window.INTELLIJ_ENTERPRISE_ACTIONS?.includes(st.action))notify("Unsupported IntelliJ action: "+st.action,"error")
  }
+ // Downstream lessons may attach one explicit visual target to any existing
+ // action. This keeps the action contract stable while guaranteeing that the
+ // learner sees exactly what the explanation refers to.
+ if(d.lessonFocus) await highlight(d.lessonFocus,token);
 }
 function showProjectStructureModal(){showProjectStructureSurface({sdk:state.project.sdk,jdkOpen:false})}
 async function seek(steps,animateFinal){

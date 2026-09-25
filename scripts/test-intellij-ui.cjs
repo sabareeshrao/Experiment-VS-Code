@@ -258,6 +258,34 @@ const server = http.createServer((req, res) => {
     }, "*"));
     await frame().waitForTimeout(80);
     assert.equal(await frame().locator(".terminalCommandFocus").count(), 0, "Historical IntelliJ terminal command remained highlighted");
+
+    // Code-focus regression: a highlighted code line must remain visibly blue
+    // and lesson navigation must not leave the editor horizontally scrolled to
+    // the far right of a long source line.
+    const focusFile=await frame().evaluate(()=>document.querySelector(".tab.active")?.dataset.file);
+    assert(focusFile,"No active IntelliJ file available for code-focus regression");
+    await frame().evaluate(file=>{
+      const editor=document.querySelector("#editorWrap");
+      editor.scrollLeft=editor.scrollWidth;
+      window.postMessage({
+        type:"SIM_SEEK",autoType:false,animateFinal:false,
+        steps:[
+          {action:"setCode",data:{file,code:"public class FocusRegression {\n    String veryLongValue = \""+"x".repeat(220)+"\";\n}\n"}},
+          {action:"highlightTarget",data:{target:{type:"line",file,line:2}}}
+        ]
+      },"*");
+    },focusFile);
+    await frame().waitForSelector('.codeLine[data-line="2"].sim-emphasis');
+    await frame().waitForTimeout(80);
+    const codeFocus=await frame().evaluate(()=>{
+      const editor=document.querySelector("#editorWrap");
+      const line=document.querySelector('.codeLine[data-line="2"]');
+      return {scrollLeft:editor.scrollLeft,background:getComputedStyle(line).backgroundColor,focused:line.classList.contains("sim-emphasis")};
+    });
+    assert(codeFocus.focused,"Native IntelliJ line highlight was cleared after seek");
+    assert(/rgba?\(45, 132, 245/.test(codeFocus.background),"IntelliJ line highlight is not visibly blue: "+JSON.stringify(codeFocus));
+    assert(codeFocus.scrollLeft<=2,"Focused code step left the editor horizontally scrolled right: "+JSON.stringify(codeFocus));
+
     assert.deepEqual(errors, [], "Browser JavaScript errors");
     console.log("IntelliJ browser regression checks passed: layout, completion, Run, focus, navigation, replay, reload, resize persistence, responsive views and normal mode.");
   } finally {

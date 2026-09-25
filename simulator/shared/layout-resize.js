@@ -535,6 +535,7 @@
     const terminalLike=isTerminalFocusTarget(el);
     const margin=Number(options.margin??(terminalLike?6:18));
     let block=options.block||(terminalLike?"end":"center");
+    const horizontal=options.horizontal||"nearest";
     // A command line should stay near the terminal bottom. Re-centering it
     // after every typed character is what caused the visible scroll shaking.
     if(terminalLike&&block==="center"&&options.forceCenter!==true) block="end";
@@ -553,14 +554,17 @@
         else scroller.scrollTop+=centerDelta;
       }
       const leftLimit=sr.left+margin,rightLimit=sr.right-margin;
-      if(er.left<leftLimit) scroller.scrollLeft+=er.left-leftLimit;
-      else if(er.right>rightLimit) scroller.scrollLeft+=er.right-rightLimit;
+      if(horizontal==="start") scroller.scrollLeft=0;
+      else if(horizontal!=="preserve"){
+        if(er.left<leftLimit) scroller.scrollLeft+=er.left-leftLimit;
+        else if(er.right>rightLimit) scroller.scrollLeft+=er.right-rightLimit;
+      }
     }
 
     // If no dedicated scrolling parent exists, keep the element inside the
     // iframe viewport without changing its layout.
     if(!parents.length){
-      try{el.scrollIntoView({block:block==="end"?"end":block==="start"?"start":"center",inline:"nearest",behavior:"auto"});}catch(_){}
+      try{el.scrollIntoView({block:block==="end"?"end":block==="start"?"start":"center",inline:horizontal==="start"?"start":"nearest",behavior:"auto"});}catch(_){}
     }
     return true;
   }
