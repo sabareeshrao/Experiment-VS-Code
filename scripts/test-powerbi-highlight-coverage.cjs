@@ -54,6 +54,9 @@ function flatten(course){
       const n=globalIndex+1;
       await page.waitForFunction(step=>document.querySelector("#stepTitle")?.textContent?.startsWith(step+"."),n,{timeout:15000});
       const f=await frame();
+      // Let the new seek clear the previous step's persistent guidance before
+      // waiting for this step's own highlight/pointer.
+      await f.waitForTimeout(180);
       await f.waitForFunction(()=>{
         const guidance=document.querySelector(".simActionHighlight,.simActionPointer,.simLessonLineHighlight,.codeLine.focus,.sim-emphasis");
         return !!guidance;
