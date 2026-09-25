@@ -110,6 +110,22 @@ const server = http.createServer((req, res) => {
     assert(studentLayout.firstCode&&studentLayout.firstCode.top>=studentLayout.editor.top-1, "Student.java line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
     assert(studentLayout.firstGutter&&studentLayout.firstGutter.top>=studentLayout.editor.top-1, "Student.java gutter line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
 
+    // Real lesson regression: the current code step must be visibly focused,
+    // and Next must keep the IntelliJ editor at the left edge instead of
+    // flinging horizontal scroll to the end of a long source line.
+    await open(4);
+    await frame().waitForSelector(".codeLine.focus, .simLessonLineHighlight");
+    await navigate(() => page.locator("#nextBtn").click(), 5);
+    await frame().waitForSelector(".codeLine.focus, .simLessonLineHighlight");
+    const lessonGuidance=await frame().evaluate(()=>{
+      const editor=document.querySelector("#editorWrap");
+      const lines=[...document.querySelectorAll(".codeLine.focus,.simLessonLineHighlight")].filter(el=>getComputedStyle(el).display!=="none");
+      return {scrollLeft:editor.scrollLeft,count:lines.length,text:lines.map(x=>x.textContent).join("\n")};
+    });
+    assert(lessonGuidance.count>0,"IntelliJ code step has no visible line guidance");
+    assert(lessonGuidance.text.includes("rollNo"),"IntelliJ highlighted the wrong code after Next: "+JSON.stringify(lessonGuidance));
+    assert(lessonGuidance.scrollLeft<=2,"Next flung IntelliJ horizontally: "+JSON.stringify(lessonGuidance));
+
     await open(495);
     await frame().evaluate(() => document.addEventListener("focusin", e => parent.ijFocuses.push(e.target.id)));
     await geometry();

@@ -19,3 +19,29 @@ node scripts/validate-repo.cjs
 ```
 
 The compiler preserves chapter order from `course.json`.
+
+
+## Mandatory visual-guidance field
+
+Every step must contain `highlight`.
+
+Examples:
+
+```json
+"highlight": { "kind": "target", "selectors": ["#runBtn"] }
+```
+
+```json
+"highlight": { "kind": "code", "lines": [12, 13, 14] }
+```
+
+```json
+"highlight": {
+  "kind": "none",
+  "reason": "Theory only; no software-owned visual target exists."
+}
+```
+
+`auto` is permitted when the final rendered action exposes a stable current/native target. If automatic resolution fails, the player visibly adds `[no highlight]` to the explanation. Do not tell the learner to inspect code without a `code` highlight.
+
+See `examples/highlight-contract.example.json`.

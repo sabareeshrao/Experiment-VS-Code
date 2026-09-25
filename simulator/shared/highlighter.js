@@ -7,35 +7,23 @@ var style=document.createElement("style");
 style.textContent=[
 ".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:4px solid #53a9ff!important;outline-offset:2px!important;box-shadow:none!important;border-radius:5px!important;transition:none!important}",
 ".simActionHighlight.simActionPulse{animation:none!important;filter:none!important}",
-"@keyframes simActionPulse{from{opacity:1}to{opacity:1}}",
-/* Global editor-line safety: the lesson marker must live in the editor's
-   left padding lane, never on top of column 1 text. */
-"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
-"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
-"body .codeLine.focus,body .line.focus,body .lineFocus{padding-left:0!important}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active,body .simLessonLineHighlight{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before,body .simLessonLineHighlight::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
+"body .codeLine.focus,body .line.focus,body .lineFocus,body .simLessonLineHighlight{padding-left:0!important}",
 "body pre .sim-emphasis,body .code .sim-emphasis,body .sql .sim-emphasis,body .codeLine.sim-emphasis,body .line.sim-emphasis{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 "body pre .sim-emphasis::before,body .code .sim-emphasis::before,body .sql .sim-emphasis::before,body .codeLine.sim-emphasis::before,body .line.sim-emphasis::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
-"body .codeLine.focus *,body .line.focus *,body .lineFocus *,body .sqlLessonLine.active *,body pre .sim-emphasis *,body .code .sim-emphasis *,body .sql .sim-emphasis *,body .codeLine.sim-emphasis *,body .line.sim-emphasis *{text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
+"body .codeLine.focus *,body .line.focus *,body .lineFocus *,body .sqlLessonLine.active *,body .simLessonLineHighlight *,body pre .sim-emphasis *,body .code .sim-emphasis *,body .sql .sim-emphasis *,body .codeLine.sim-emphasis *,body .line.sim-emphasis *{text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 ".sim-line-text{position:relative;z-index:3}",
-/* Global overflow + scrollbar safety.  Every simulator can expose long tree
-   paths, filenames, SQL/code lines, table rows, console output, etc.  Never
-   crop that content just because the pane is narrow. */
 "html body *{scrollbar-width:thin!important;scrollbar-color:rgba(126,136,148,.72) transparent!important}",
 "html body *::-webkit-scrollbar{width:10px!important;height:10px!important;display:block!important}",
 "html body *::-webkit-scrollbar-track{background:transparent!important}",
 "html body *::-webkit-scrollbar-thumb{background:rgba(126,136,148,.62)!important;border:2px solid transparent!important;background-clip:padding-box!important;border-radius:999px!important;min-width:28px!important;min-height:28px!important}",
 "html body *::-webkit-scrollbar-thumb:hover{background:rgba(154,165,178,.82)!important;background-clip:padding-box!important}",
 "html body *::-webkit-scrollbar-corner{background:transparent!important}",
-/* Explorer/tree panes: horizontal scrolling is deliberate.  Child rows keep
-   their natural width so the browser has something to scroll to. */
 "body .tree,body .objectTree,body .apiTreeSide,body .fileList{overflow:auto!important;overflow-x:auto!important;overflow-y:auto!important;scrollbar-gutter:stable}",
 "body .tree .treeRow,body .tree .row,body .objectTree .treeRow{width:max-content!important;min-width:100%!important}",
 "body .tree .nodeText,body .tree .node,body .tree .treeLabel,body .objectTree .treeLabel{overflow:visible!important;text-overflow:clip!important;max-width:none!important;flex:0 0 auto!important;white-space:nowrap!important}",
-/* Other long-content panes already support overflow; make horizontal access
-   explicit without changing their internal layout. */
 "body .terminalWrap,body .terminalViewport,body .codeViewport,body .resultBody,body .result-body,body .markdownPreviewBody,body .apiTreeMain,body .history{overflow-x:auto!important}",
-/* Lists that intentionally have minimum-width rows must be allowed to drive a
-   horizontal scrollbar rather than shrink their text into ellipses. */
 "body .fileList .fileRow{width:max-content!important;min-width:max(100%,560px)!important}",
 "body .fileList .fileName{overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important}",
 "body .sidebar .collection,body .sidebar .requestRow{min-width:max-content}",
@@ -48,7 +36,7 @@ style.textContent=[
 ].join("");
 document.head.appendChild(style);
 
-var active=null,timer=0,visibleUntil=0;
+var active=[];
 
 function visible(el){
  if(!el||!el.isConnected)return false;
@@ -57,69 +45,137 @@ function visible(el){
  var r=el.getBoundingClientRect();
  return r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth;
 }
-function clean(force){
- if(!force&&active&&Date.now()<visibleUntil){
-   clearTimeout(timer);
-   timer=setTimeout(function(){clean(true)},Math.max(0,visibleUntil-Date.now()));
-   return;
+function smallEnough(el){
+ if(!visible(el))return false;
+ var r=el.getBoundingClientRect(),vw=Math.max(1,innerWidth),vh=Math.max(1,innerHeight);
+ return !((r.width>vw*.68&&r.height>72)||(r.height>vh*.48&&r.width>180)||(r.width*r.height>vw*vh*.34));
+}
+function lineLike(el){
+ return !!el?.matches?.(".codeLine,.line,.lineFocus,.sqlLessonLine,.sim-emphasis,.simLessonLineHighlight")||
+   !!el?.closest?.("pre.code,pre.sql,.codeViewport,.editorWrap,.monaco-editor");
+}
+function terminalLike(el){
+ return !!el?.matches?.(".terminalCommandFocus,.terminalLine")||!!el?.closest?.(".terminal,.terminalWrap,.terminalViewport");
+}
+function scrollParents(el){
+ var out=[],p=el?.parentElement;
+ while(p&&p!==document.body&&p!==document.documentElement){
+  var s=getComputedStyle(p);
+  if(/auto|scroll|overlay/.test(String(s.overflowX)+String(s.overflowY)))out.push(p);
+  p=p.parentElement;
  }
- clearTimeout(timer);
- visibleUntil=0;
- if(active){
-   active.classList.remove("simActionHighlight","simActionPulse");
-   active=null;
+ return out;
+}
+function reveal(el,preserveHorizontal){
+ var parents=scrollParents(el);
+ var x=parents.map(function(p){return p.scrollLeft});
+ try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"})}catch(_){}
+ if(preserveHorizontal||lineLike(el)||terminalLike(el)){
+  parents.forEach(function(p,i){p.scrollLeft=x[i]});
  }
+}
+function clean(){
+ active.forEach(function(item){
+  if(!item?.el)return;
+  item.el.classList.remove("simActionHighlight","simActionPulse","simLessonLineHighlight");
+ });
+ active=[];
 }
 function findText(text,scope){
  if(!text)return null;
  var base=scope?document.querySelector(scope):document;
  if(!base)return null;
  var wanted=String(text).trim().toLowerCase();
- var nodes=base.querySelectorAll("button,[role=button],input,select,option,.treeRow,.row,.toolBtn,.resultTab,.tab,.menuTop,.ctxItem,[data-target],span,div");
+ if(!wanted)return null;
+ var nodes=base.querySelectorAll("button,[role=button],input,select,option,.treeRow,.row,.toolBtn,.resultTab,.tab,.menuTop,.ctxItem,[data-target],[aria-selected],span,div");
  var best=null,bestLen=1e9;
  Array.prototype.forEach.call(nodes,function(el){
-   if(!visible(el))return;
-   var t=(el.textContent||el.value||el.getAttribute("aria-label")||el.title||"").trim().toLowerCase();
-   if(!t||t.indexOf(wanted)<0)return;
-   if(t.length<bestLen){best=el;bestLen=t.length;}
+  if(!smallEnough(el))return;
+  var t=(el.textContent||el.value||el.getAttribute("aria-label")||el.title||"").trim().toLowerCase();
+  if(!t||t.indexOf(wanted)<0)return;
+  if(t.length<bestLen){best=el;bestLen=t.length}
  });
  return best;
 }
-function find(plan){
- if(plan&&plan.text){
-   var byText=findText(plan.text,plan.scope||null);
-   if(byText)return byText;
- }
- var selectors=Array.isArray(plan&&plan.selectors)?plan.selectors:[];
- for(var i=0;i<selectors.length;i++){
-   try{
-     var el=document.querySelector(selectors[i]);
-     if(el&&visible(el))return el;
-   }catch(_){}
- }
- return null;
+function selectorMatches(selectors,multiple){
+ var out=[];
+ (Array.isArray(selectors)?selectors:[]).forEach(function(sel){
+  try{
+   var list=multiple?document.querySelectorAll(sel):[document.querySelector(sel)];
+   Array.prototype.forEach.call(list,function(el){
+    if(el&&smallEnough(el)&&out.indexOf(el)<0)out.push(el);
+   });
+  }catch(_){}
+ });
+ return out;
 }
-function highlight(plan){
- clean(true);
- var el=find(plan||{});
- if(!el)return;
- var r=el.getBoundingClientRect();
- var vw=Math.max(1,innerWidth),vh=Math.max(1,innerHeight);
- // Never draw guidance around an entire editor, pane, modal, canvas or page.
- // Those huge rectangles look like bugs and obscure the actual software UI.
- if((r.width>vw*.68&&r.height>72)||(r.height>vh*.48&&r.width>180)||(r.width*r.height>vw*vh*.34))return;
- try{el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"auto"});}catch(_){}
- active=el;
- active.classList.add("simActionHighlight");
- // Keep the newest high-contrast lesson lighting, but guarantee a full
- // five-second notice window before the action boundary is removed.
- visibleUntil=Date.now()+5000;
- timer=setTimeout(function(){clean(true)},5000);
+function dataTexts(data){
+ var preferred=["file","path","name","key","tab","view","id","goal","command","query","title"];
+ var out=[];
+ if(!data||typeof data!=="object")return out;
+ preferred.forEach(function(k){
+  var v=data[k];
+  if(typeof v==="string"&&v.trim())out.push(v);
+ });
+ Object.keys(data).forEach(function(k){
+  var v=data[k];
+  if(typeof v==="string"&&v.trim()&&out.indexOf(v)<0&&v.length<120)out.push(v);
+ });
+ return out.map(function(v){
+  var clean=String(v).replace(/\\/g,"/");
+  return clean.includes("/")?clean.split("/").pop():clean;
+ }).filter(Boolean);
+}
+function autoFind(plan){
+ var code=selectorMatches([".codeLine.focus",".line.focus",".lineFocus",".sqlLessonLine.active",".sim-emphasis"],true);
+ if(code.length)return {elements:code,mode:"line"};
+ var terminal=selectorMatches([".terminalCommandFocus"],true);
+ if(terminal.length)return {elements:terminal,mode:"native"};
+ var focused=document.activeElement;
+ if(focused&&focused!==document.body&&smallEnough(focused))return {elements:[focused],mode:"control"};
+ var texts=dataTexts(plan&&plan.data);
+ for(var i=0;i<texts.length;i++){
+  var hit=findText(texts[i],null);
+  if(hit)return {elements:[hit],mode:lineLike(hit)?"line":"control"};
+ }
+ var contextual=selectorMatches([".treeRow.active",".tab.active","[aria-selected='true']", ".selected","button.active"],false);
+ if(contextual.length)return {elements:[contextual[0]],mode:lineLike(contextual[0])?"line":"control"};
+ return {elements:[],mode:"none"};
+}
+function resolve(plan){
+ if(plan&&plan.kind==="none")return {elements:[],mode:"none"};
+ if(plan&&plan.auto)return autoFind(plan);
+ if(plan&&plan.text){
+  var byText=findText(plan.text,plan.scope||null);
+  if(byText)return {elements:[byText],mode:plan.mode||(lineLike(byText)?"line":"control")};
+ }
+ var matches=selectorMatches(plan&&plan.selectors,!!(plan&&plan.multiple));
+ return {elements:matches,mode:(plan&&plan.mode)||((matches[0]&&lineLike(matches[0]))?"line":"control")};
+}
+function report(requestId,found,mode){
+ try{parent.postMessage({type:"SIM_HIGHLIGHT_RESULT",requestId:requestId||null,found:!!found,mode:mode||"none"},"*")}catch(_){}
+}
+function highlight(plan,requestId){
+ clean();
+ var resolved=resolve(plan||{});
+ var elements=resolved.elements||[];
+ if(!elements.length){report(requestId,false,resolved.mode);return}
+ elements.forEach(function(el){
+  reveal(el,!!(plan&&plan.preserveHorizontal));
+  if(resolved.mode==="native"){
+   active.push({el:el,mode:"native"});
+   return;
+  }
+  var cls=resolved.mode==="line"?"simLessonLineHighlight":"simActionHighlight";
+  el.classList.add(cls);
+  active.push({el:el,mode:resolved.mode});
+ });
+ report(requestId,true,resolved.mode);
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};
- if(m.type==="SIM_HIGHLIGHT")highlight(m.plan||{});
- if(m.type==="SIM_HIGHLIGHT_CLEAR")clean(!!m.force);
+ if(m.type==="SIM_HIGHLIGHT")highlight(m.plan||{},m.requestId);
+ if(m.type==="SIM_HIGHLIGHT_CLEAR")clean();
 });
-try{parent.postMessage({type:"SIM_HIGHLIGHT_READY"},"*");}catch(_){}
+try{parent.postMessage({type:"SIM_HIGHLIGHT_READY"},"*")}catch(_){}
 })();

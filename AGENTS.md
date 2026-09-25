@@ -69,3 +69,8 @@ For every transcript/video requirement:
 6. if no detailed feature file/UI/action supports the transcript behavior, upgrade the master first
 
 Do not mark a capability missing merely because it is absent from the short summary list in `AI_CAPABILITY_INDEX.json`. Engine action-level capabilities are also cataloged as separate feature files.
+
+
+## Lesson highlight guardrail
+
+Every lesson step must declare `highlight.kind`. A learner must either see a precise highlighted/pointed target or see `[no highlight]` at the top of the explanation. Use explicit `code` line highlights whenever the text asks the learner to inspect code. Do not accept a silent missing highlight. See `PROJECT_INTEGRATION_RULES.md` and `lesson-json/examples/highlight-contract.example.json`.

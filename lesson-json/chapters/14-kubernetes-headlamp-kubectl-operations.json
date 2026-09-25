@@ -10,6 +10,9 @@
       "action": {
         "action": "openOverview",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -22,6 +25,9 @@
           "cluster": "campus-platform-dev",
           "context": "campus-platform-dev"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -33,6 +39,9 @@
         "data": {
           "namespace": "__all__"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -44,6 +53,9 @@
         "data": {
           "namespace": "campus-dev"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -55,6 +67,9 @@
         "data": {
           "kind": "deployments"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -67,6 +82,9 @@
           "kind": "deployments",
           "name": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -78,6 +96,9 @@
         "data": {
           "tab": "Pods"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -90,6 +111,9 @@
           "name": "student-api",
           "replicas": 3
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -101,6 +125,9 @@
         "data": {
           "kind": "pods"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -113,6 +140,9 @@
           "kind": "pods",
           "name": "student-api-7d8c7b8b9f-9x2lm"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -125,6 +155,9 @@
           "name": "student-api-7d8c7b8b9f-9x2lm",
           "container": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -136,6 +169,9 @@
         "data": {
           "query": "GET"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -147,6 +183,9 @@
         "data": {
           "query": ""
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -158,6 +197,9 @@
         "data": {
           "name": "student-api-7d8c7b8b9f-9x2lm"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -169,6 +211,9 @@
         "data": {
           "command": "pwd"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -180,6 +225,9 @@
         "data": {
           "command": "ls"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -192,6 +240,9 @@
           "kind": "pods",
           "name": "student-api-7d8c7b8b9f-9x2lm"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -204,6 +255,9 @@
           "kind": "deployments",
           "name": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -217,6 +271,9 @@
           "name": "student-api",
           "yaml": "apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: student-api\\n  namespace: campus-dev\\nspec:\\n  replicas: 3\\n  selector:\\n    matchLabels:\\n      app: student-api\\n  template:\\n    metadata:\\n      labels:\\n        app: student-api\\n    spec:\\n      containers:\\n      - name: student-api\\n        image: ghcr.io/campus/student-api:1.8.4\\n        env:\\n        - name: SPRING_PROFILES_ACTIVE\\n          value: dev\\n"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -226,6 +283,9 @@
       "action": {
         "action": "applyYaml",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -235,6 +295,9 @@
       "action": {
         "action": "openEvents",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -246,6 +309,9 @@
         "data": {
           "type": "Warning"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -257,6 +323,9 @@
         "data": {
           "kind": "pods"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -269,6 +338,9 @@
           "kind": "pods",
           "name": "course-api-86dbf4d6c8-zr7qp"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -281,6 +353,9 @@
           "name": "course-api-86dbf4d6c8-zr7qp",
           "container": "course-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -292,6 +367,9 @@
         "data": {
           "query": "Connection"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -301,6 +379,9 @@
       "action": {
         "action": "openTerminal",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -312,6 +393,9 @@
         "data": {
           "command": "kubectl get pods -A"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -323,6 +407,9 @@
         "data": {
           "command": "kubectl config current-context"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -334,6 +421,9 @@
         "data": {
           "command": "kubectl config get-contexts"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -345,6 +435,9 @@
         "data": {
           "command": "kubectl config use-context staging-cluster"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -356,6 +449,9 @@
         "data": {
           "command": "kubectl config use-context campus-platform-dev"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -367,6 +463,9 @@
         "data": {
           "command": "kubectl get deployments"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -378,6 +477,9 @@
         "data": {
           "command": "kubectl describe deployment student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -389,6 +491,9 @@
         "data": {
           "command": "kubectl scale deployment/student-api --replicas=4"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -401,6 +506,9 @@
           "kind": "deployments",
           "name": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -412,6 +520,9 @@
         "data": {
           "command": "kubectl rollout restart deployment/student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -423,6 +534,9 @@
         "data": {
           "command": "kubectl rollout status deployment/student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -434,6 +548,9 @@
         "data": {
           "command": "kubectl rollout undo deployment/student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -445,6 +562,9 @@
         "data": {
           "kind": "services"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -457,6 +577,9 @@
           "kind": "services",
           "name": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -469,6 +592,9 @@
           "kind": "services",
           "name": "student-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -480,6 +606,9 @@
         "data": {
           "command": "kubectl get services"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -491,6 +620,9 @@
         "data": {
           "kind": "ingresses"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -503,6 +635,9 @@
           "kind": "ingresses",
           "name": "campus-ingress"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -514,6 +649,9 @@
         "data": {
           "kind": "networkpolicies"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -525,6 +663,9 @@
         "data": {
           "kind": "persistentvolumeclaims"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -537,6 +678,9 @@
           "kind": "persistentvolumeclaims",
           "name": "mysql-data-mysql-0"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -548,6 +692,9 @@
         "data": {
           "kind": "persistentvolumes"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -559,6 +706,9 @@
         "data": {
           "kind": "storageclasses"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -570,6 +720,9 @@
         "data": {
           "kind": "statefulsets"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -582,6 +735,9 @@
           "kind": "statefulsets",
           "name": "mysql"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -594,6 +750,9 @@
           "kind": "pods",
           "name": "mysql-0"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -605,6 +764,9 @@
         "data": {
           "kind": "configmaps"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -617,6 +779,9 @@
           "kind": "configmaps",
           "name": "student-api-config"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -631,6 +796,9 @@
             "COURSE_API_URL": "http://course-api:8081/api"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -642,6 +810,9 @@
         "data": {
           "kind": "secrets"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -654,6 +825,9 @@
           "kind": "secrets",
           "name": "db-credentials"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -665,6 +839,9 @@
         "data": {
           "kind": "serviceaccounts"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -676,6 +853,9 @@
         "data": {
           "kind": "roles"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -687,6 +867,9 @@
         "data": {
           "kind": "clusterroles"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -698,6 +881,9 @@
         "data": {
           "kind": "rolebindings"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -709,6 +895,9 @@
         "data": {
           "command": "kubectl auth can-i list pods"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -720,6 +909,9 @@
         "data": {
           "kind": "nodes"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -732,6 +924,9 @@
           "kind": "nodes",
           "name": "worker-b"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -743,6 +938,9 @@
         "data": {
           "command": "kubectl cordon worker-b"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -755,6 +953,9 @@
           "kind": "nodes",
           "name": "worker-b"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -766,6 +967,9 @@
         "data": {
           "command": "kubectl drain worker-b --ignore-daemonsets"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -777,6 +981,9 @@
         "data": {
           "command": "kubectl uncordon worker-b"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -786,6 +993,9 @@
       "action": {
         "action": "openMetrics",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -797,6 +1007,9 @@
         "data": {
           "command": "kubectl top pods"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -808,6 +1021,9 @@
         "data": {
           "command": "kubectl top nodes"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -817,6 +1033,9 @@
       "action": {
         "action": "openMapView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -826,6 +1045,9 @@
       "action": {
         "action": "openProjects",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -837,6 +1059,9 @@
         "data": {
           "name": "Campus Platform"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -848,6 +1073,9 @@
         "data": {
           "kind": "customresourcedefinitions"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -860,6 +1088,9 @@
           "kind": "customresourcedefinitions",
           "name": "servicemonitors.monitoring.coreos.com"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -869,6 +1100,9 @@
       "action": {
         "action": "openCommandPalette",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -878,6 +1112,9 @@
       "action": {
         "action": "openSettings",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -889,6 +1126,9 @@
         "data": {
           "theme": "dark"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -900,6 +1140,9 @@
         "data": {
           "theme": "light"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -911,6 +1154,9 @@
         "data": {
           "command": "kubectl api-resources"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -922,6 +1168,9 @@
         "data": {
           "command": "kubectl explain deployment.spec"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -933,6 +1182,9 @@
         "data": {
           "command": "kubectl get events"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -944,6 +1196,9 @@
         "data": {
           "command": "kubectl port-forward service/student-api 8080:8080"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -955,6 +1210,9 @@
         "data": {
           "command": "kubectl apply -f k8s/deployment.yaml"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -966,6 +1224,9 @@
         "data": {
           "command": "kubectl diff -f k8s/deployment.yaml"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -977,6 +1238,9 @@
         "data": {
           "kind": "cronjobs"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -989,6 +1253,9 @@
           "kind": "cronjobs",
           "name": "nightly-report"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1001,6 +1268,9 @@
           "name": "nightly-report",
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1012,6 +1282,9 @@
         "data": {
           "name": "nightly-report"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1023,6 +1296,9 @@
         "data": {
           "kind": "jobs"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1035,6 +1311,9 @@
           "kind": "pods",
           "query": "student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1047,6 +1326,9 @@
           "kind": "pods",
           "query": ""
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1056,6 +1338,9 @@
       "action": {
         "action": "openOverview",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

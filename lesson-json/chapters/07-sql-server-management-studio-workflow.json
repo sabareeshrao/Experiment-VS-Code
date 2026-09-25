@@ -13,6 +13,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -22,6 +25,9 @@
       "action": {
         "action": "openConnectDialog",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -34,6 +40,9 @@
           "field": "serverName",
           "value": "localhost"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
           "field": "authentication",
           "value": "Windows Authentication"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -60,6 +72,9 @@
           "expandDatabases": true,
           "statusText": "Ready"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -72,6 +87,9 @@
           "id": "db:JavaPracticeDb",
           "select": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -83,6 +101,9 @@
         "data": {
           "database": "JavaPracticeDb"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -96,6 +117,9 @@
           "title": "student_setup.sql",
           "database": "JavaPracticeDb"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -108,6 +132,9 @@
           "sql": "CREATE TABLE dbo.student (\n    roll_no INT PRIMARY KEY,\n    is_present BIT NOT NULL,\n    name NVARCHAR(100) NOT NULL\n);",
           "boundary": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -117,6 +144,9 @@
       "action": {
         "action": "executeQuery",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -126,6 +156,9 @@
       "action": {
         "action": "refreshObjectExplorer",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -138,6 +171,9 @@
           "id": "folder:JavaPracticeDb:Tables",
           "select": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -149,6 +185,9 @@
         "data": {
           "sql": "INSERT INTO dbo.student (roll_no, is_present, name)\nVALUES (101, 1, 'Ravi'),\n       (102, 1, 'Anita');"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -158,6 +197,9 @@
       "action": {
         "action": "executeQuery",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -169,6 +211,9 @@
         "data": {
           "sql": "SELECT roll_no, is_present, name\nFROM dbo.student\nWHERE roll_no = 101;"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -178,6 +223,9 @@
       "action": {
         "action": "executeQuery",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -189,6 +237,9 @@
         "data": {
           "table": "dbo.student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -198,6 +249,9 @@
       "action": {
         "action": "showClientStatistics",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -209,6 +263,9 @@
         "data": {
           "sql": "BEGIN TRAN;\nUPDATE dbo.student\nSET name = 'Ravi Kumar'\nWHERE roll_no = 101;\nROLLBACK;"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -218,6 +275,9 @@
       "action": {
         "action": "executeQuery",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -230,6 +290,9 @@
           "path": "C:\\JavaPractice\\sql\\student_setup.sql",
           "fileName": "student_setup.sql"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -239,6 +302,9 @@
       "action": {
         "action": "openActivityMonitor",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -256,6 +322,9 @@
           ],
           "unique": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -265,6 +334,9 @@
       "action": {
         "action": "showObjectExplorerDetails",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -279,6 +351,9 @@
           "path": "C:\\SQLBackups\\JavaPracticeDb_full.bak",
           "time": "13:30"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -296,6 +371,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -310,6 +388,9 @@
           "frequency": "Daily",
           "time": "02:00"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -323,6 +404,9 @@
           "time": "13:31",
           "duration": "00:00:02"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -332,6 +416,9 @@
       "action": {
         "action": "showAgentJobHistory",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -348,6 +435,9 @@
             "kind": "queryEditor"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -384,6 +474,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -395,6 +488,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

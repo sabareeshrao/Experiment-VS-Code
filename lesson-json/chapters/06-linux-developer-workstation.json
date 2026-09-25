@@ -13,6 +13,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -24,6 +27,9 @@
         "data": {
           "path": "/home/developer/JavaPractice"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -35,6 +41,9 @@
         "data": {
           "command": "pwd"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
         "data": {
           "command": "ls -la"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -57,6 +69,9 @@
         "data": {
           "command": "java -version"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -68,6 +83,9 @@
         "data": {
           "command": "echo $JAVA_HOME"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -79,6 +97,9 @@
         "data": {
           "command": "export APP_ENV=local && echo $APP_ENV"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -90,6 +111,9 @@
         "data": {
           "command": "mkdir -p build && touch build/status.txt"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -101,6 +125,9 @@
         "data": {
           "command": "echo build=verified > build/status.txt && cat build/status.txt"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -112,6 +139,9 @@
         "data": {
           "command": "cat README.md | grep Java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -123,6 +153,9 @@
         "data": {
           "command": "chmod +x scripts/health-check.sh"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -134,6 +167,9 @@
         "data": {
           "command": "./scripts/health-check.sh"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -145,6 +181,9 @@
         "data": {
           "command": "systemctl status java-practice.service"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -156,6 +195,9 @@
         "data": {
           "command": "sudo systemctl restart java-practice.service"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -167,6 +209,9 @@
         "data": {
           "command": "journalctl -u java-practice.service -n 5"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -178,6 +223,9 @@
         "data": {
           "command": "ip addr"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -189,6 +237,9 @@
         "data": {
           "command": "ss -tulpn"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -200,6 +251,9 @@
         "data": {
           "command": "df -h"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -211,6 +265,9 @@
         "data": {
           "command": "mvn test"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -222,6 +279,9 @@
         "data": {
           "command": "mvn spring-boot:run"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -233,6 +293,9 @@
         "data": {
           "output": "^C"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -244,6 +307,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

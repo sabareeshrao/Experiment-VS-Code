@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "highlight-contract-example",
+  "title": "Highlight Contract Examples",
+  "subtitle": "Reference only; not part of the course manifest.",
+  "steps": [
+    {
+      "title": "Point at a precise UI control",
+      "why": "The learner should see exactly which control the step is talking about.",
+      "software": "intellij",
+      "highlight": {
+        "kind": "target",
+        "selectors": [
+          "#runBtn"
+        ]
+      },
+      "action": {
+        "action": "runJavaMain",
+        "data": {
+          "file": "src/Main.java"
+        }
+      }
+    },
+    {
+      "title": "Focus relevant code lines",
+      "why": "When the explanation asks the learner to inspect code, identify the exact line or lines instead of merely opening the file.",
+      "software": "intellij",
+      "highlight": {
+        "kind": "code",
+        "lines": [
+          12,
+          13,
+          14
+        ]
+      },
+      "action": {
+        "action": "openFile",
+        "data": {
+          "path": "src/Main.java"
+        }
+      }
+    },
+    {
+      "title": "Explain theory with no visual target",
+      "why": "This is conceptual context and there is intentionally no software element to point at.",
+      "software": "intellij",
+      "highlight": {
+        "kind": "none",
+        "reason": "Pure theory; no software-owned visual target exists."
+      },
+      "action": {
+        "action": "showQuickDocumentation",
+        "data": {}
+      }
+    }
+  ]
+}

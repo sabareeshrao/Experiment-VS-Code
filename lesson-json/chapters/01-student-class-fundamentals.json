@@ -15,7 +15,10 @@
           "languageLevel": "21"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Create the src folder",
@@ -27,7 +30,10 @@
           "path": "src"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Create Student.java",
@@ -40,7 +46,10 @@
           "content": ""
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Declare the Student class",
@@ -53,7 +62,10 @@
           "code": "public class Student {\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add the rollNo field",
@@ -66,7 +78,10 @@
           "code": "\n    int rollNo;\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add the attendance field",
@@ -79,7 +94,10 @@
           "code": "    boolean isPresent;\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add the marks array",
@@ -92,7 +110,10 @@
           "code": "    float[] marks;\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add the name field",
@@ -105,7 +126,10 @@
           "code": "    String name;\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add getRollNo",
@@ -118,7 +142,10 @@
           "code": "\n    public int getRollNo() {\n        return rollNo;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add setRollNo",
@@ -131,7 +158,10 @@
           "code": "\n    public void setRollNo(int rollNo) {\n        this.rollNo = rollNo;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add the presence getter",
@@ -144,7 +174,10 @@
           "code": "\n    public boolean isPresent() {\n        return isPresent;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add setPresent",
@@ -157,7 +190,10 @@
           "code": "\n    public void setPresent(boolean present) {\n        isPresent = present;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add getMarks",
@@ -170,7 +206,10 @@
           "code": "\n    public float[] getMarks() {\n        return marks;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add setMarks",
@@ -183,7 +222,10 @@
           "code": "\n    public void setMarks(float[] marks) {\n        this.marks = marks;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add getName",
@@ -196,7 +238,10 @@
           "code": "\n    public String getName() {\n        return name;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Add setName",
@@ -209,7 +254,10 @@
           "code": "\n    public void setName(String name) {\n        this.name = name;\n    }\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Close the Student class",
@@ -222,7 +270,10 @@
           "code": "\n}\n"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Review the completed class structure",
@@ -233,7 +284,10 @@
           "file": "src/Student.java"
         }
       },
-      "software": "intellij"
+      "software": "intellij",
+      "highlight": {
+        "kind": "auto"
+      }
     },
     {
       "title": "Split the IntelliJ editor",
@@ -244,6 +298,9 @@
         "data": {
           "file": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -256,6 +313,9 @@
           "command": "java -version",
           "output": "openjdk version 21"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

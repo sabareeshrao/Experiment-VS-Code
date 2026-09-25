@@ -106,14 +106,33 @@ const server=http.createServer((req,res)=>{
       assert.equal(lineStyle.tokenColor,"rgb(255, 181, 110)",software+": highlight overrode syntax token color");
       assert(lineStyle.tokenShadow!=="none",software+": syntax token contrast was not improved");
       if(checked.length===0){
-        await child.waitForTimeout(1100);
+        await child.waitForTimeout(5200);
+        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": current-step guidance timed out before navigation");
+        const horizontal=await child.evaluate(async()=>{
+          const viewport=document.createElement("div");
+          viewport.id="highlightHorizontalViewport";
+          viewport.style.cssText="position:fixed;left:30px;top:160px;width:260px;height:70px;overflow:auto;background:#111";
+          const line=document.createElement("div");
+          line.id="highlightHorizontalLine";
+          line.className="codeLine";
+          line.dataset.line="99";
+          line.style.cssText="width:1400px;height:28px;line-height:28px";
+          line.textContent="public void extremelyWideCodeLineForScrollRegression() {}";
+          viewport.appendChild(line);
+          document.body.appendChild(viewport);
+          viewport.scrollLeft=37;
+          window.postMessage({type:"SIM_HIGHLIGHT",requestId:991,plan:{selectors:["#highlightHorizontalLine"],mode:"line",multiple:true,preserveHorizontal:true}},"*");
+          await new Promise(r=>setTimeout(r,80));
+          return {scrollLeft:viewport.scrollLeft,line:line.classList.contains("simLessonLineHighlight")};
+        });
+        assert(horizontal.line,software+": explicit line guidance did not activate");
+        assert.equal(horizontal.scrollLeft,37,software+": line guidance changed horizontal scroll: "+JSON.stringify(horizontal));
         await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
-        assert(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight")),software+": blue boundary cleared before the five-second notice window");
-        await child.waitForTimeout(4100);
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": blue boundary did not clear after five seconds");
+        assert(!(await child.locator("#highlightHorizontalLine").evaluate(el=>el.classList.contains("simLessonLineHighlight"))),software+": navigation clear did not remove line guidance");
+        await child.locator("#highlightHorizontalViewport").evaluate(el=>el.remove());
       }else{
-        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR",force:true},"*"));
-        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": forced highlight clear did not remove the boundary");
+        await child.evaluate(()=>window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*"));
+        assert(!(await child.locator("#globalHighlightProbe").evaluate(el=>el.classList.contains("simActionHighlight"))),software+": highlight clear did not remove the boundary");
       }
       await child.locator("#globalHighlightProbe").evaluate(el=>el.remove());
       checked.push(software);

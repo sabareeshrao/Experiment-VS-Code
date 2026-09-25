@@ -123,8 +123,12 @@ assert(!player.includes('player.html?software=redis'), "Simulator-specific softw
 assert(!app.includes('searchParams.get("software")'), "Simulator-specific software preview routing is forbidden in app.js");
 assert(!app.includes("softwarePreview"), "Simulator-specific software preview state is forbidden in app.js");
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
+assert(app.includes("SIM_HIGHLIGHT_RESULT"), "Player must consume shared highlight success/failure acknowledgements");
+assert(app.includes("[no highlight]"), "Player must visibly label steps whose highlight cannot be resolved");
+assert(app.includes("SIM_SEEK_DONE"), "Player must wait for final simulator render before applying lesson guidance");
+assert(exists("lesson-json/examples/highlight-contract.example.json"), "Missing lesson highlight contract example");
 assert(
-  app.includes("simulator/shared/highlighter.js?v=15"),
+  app.includes("simulator/shared/highlighter.js?v=16"),
   "Universal highlighter cache version is stale in app.js"
 );
 if (exists("simulator/shared/highlighter.js")) {
@@ -132,14 +136,15 @@ if (exists("simulator/shared/highlighter.js")) {
   assert(
     sharedHighlighter.includes("outline:4px solid #53a9ff") &&
     sharedHighlighter.includes("box-shadow:none") &&
-    sharedHighlighter.includes("visibleUntil=Date.now()+5000") &&
-    sharedHighlighter.includes("setTimeout(function(){clean(true)},5000)"),
-    "Five-second boundary-only shared action-highlight contract is missing"
+    sharedHighlighter.includes("simLessonLineHighlight") &&
+    sharedHighlighter.includes("SIM_HIGHLIGHT_RESULT") &&
+    !sharedHighlighter.includes("visibleUntil=Date.now()+5000"),
+    "Persistent per-step shared action/code-highlight contract is missing"
   );
   assert(
-    sharedHighlighter.includes("visibleUntil") &&
-    sharedHighlighter.includes("five-second notice window"),
-    "Shared highlight runtime must preserve the five-second notice window"
+    sharedHighlighter.includes("scrollLeft=x[i]") &&
+    sharedHighlighter.includes("preserveHorizontal"),
+    "Shared highlight runtime must not shove code/terminal views horizontally"
   );
   assert(
     sharedHighlighter.includes("width:6px") &&
@@ -289,6 +294,19 @@ if (contract && manifest && course) {
 
       assert(typeof step.title === "string" && step.title.trim(), where + ": missing title");
       assert(typeof step.why === "string" && step.why.trim(), where + ": missing explanation/why text");
+      const highlightKind = step.highlight && step.highlight.kind;
+      assert(["auto","code","target","none"].includes(highlightKind), where + ": every lesson must declare highlight.kind as auto, code, target, or none");
+      if (highlightKind === "none") {
+        assert(typeof step.highlight.reason === "string" && step.highlight.reason.trim(), where + ": highlight.kind=none requires a reason; runtime will show [no highlight]");
+      }
+      if (highlightKind === "code") {
+        const hasCodeTarget = Number.isInteger(step.highlight.line) || (Array.isArray(step.highlight.lines) && step.highlight.lines.length) || step.highlight.selector || step.highlight.text;
+        assert(!!hasCodeTarget, where + ": highlight.kind=code requires line, lines, selector, or text");
+      }
+      if (highlightKind === "target") {
+        const hasUiTarget = (Array.isArray(step.highlight.selectors) && step.highlight.selectors.length) || step.highlight.text;
+        assert(!!hasUiTarget, where + ": highlight.kind=target requires selectors[] or text");
+      }
       assert(typeof action === "string" && action.trim(), where + ": missing action.action");
       assert(Object.prototype.hasOwnProperty.call(simulators, software), where + ": unregistered software " + software);
 

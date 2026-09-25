@@ -42,6 +42,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -76,6 +79,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -106,6 +112,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -134,6 +143,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -164,6 +176,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

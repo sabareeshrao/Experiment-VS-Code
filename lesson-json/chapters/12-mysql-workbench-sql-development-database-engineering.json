@@ -10,6 +10,9 @@
       "action": {
         "action": "showHome",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -24,6 +27,9 @@
             "id": "local-mysql"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -33,6 +39,9 @@
       "action": {
         "action": "openConnectionDialog",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -42,6 +51,9 @@
       "action": {
         "action": "openConnectionParameters",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -51,6 +63,9 @@
       "action": {
         "action": "openConnectionSsl",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -60,6 +75,9 @@
       "action": {
         "action": "openConnectionAdvanced",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -71,6 +89,9 @@
         "data": {
           "id": "local-mysql"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -83,6 +104,9 @@
           "id": "sql-demo",
           "title": "analysis_demo.sql"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -95,6 +119,9 @@
           "queryId": "sql-demo",
           "sql": "SELECT\n    s.student_name,\n    c.course_name,\n    e.score,\n    e.grade\nFROM student s\nJOIN enrollment e ON e.student_id = s.student_id\nJOIN course c ON c.course_id = e.course_id\nWHERE e.score >= 80\nORDER BY e.score DESC;"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -115,6 +142,9 @@
           ],
           "selected": 1
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -171,6 +201,9 @@
             "editable": true
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -183,6 +216,9 @@
           "id": "r-demo",
           "pinned": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -195,6 +231,9 @@
           "column": "score",
           "direction": "desc"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -206,6 +245,9 @@
         "data": {
           "text": "Java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -220,6 +262,9 @@
           "column": "grade",
           "value": "A+"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -229,6 +274,9 @@
       "action": {
         "action": "applyGridChanges",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -240,6 +288,9 @@
         "data": {
           "tab": "output"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -249,6 +300,9 @@
       "action": {
         "action": "showTextOutput",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -258,6 +312,9 @@
       "action": {
         "action": "showHistoryOutput",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -267,6 +324,9 @@
       "action": {
         "action": "explainQuery",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -276,6 +336,9 @@
       "action": {
         "action": "showVisualExplain",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -285,6 +348,9 @@
       "action": {
         "action": "showQueryStatistics",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -294,6 +360,9 @@
       "action": {
         "action": "showQueryProfiler",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -307,6 +376,9 @@
           "name": "High Performing Students",
           "sql": "SELECT * FROM enrollment WHERE score >= 90 ORDER BY score DESC;"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -316,6 +388,9 @@
       "action": {
         "action": "showSnippets",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -325,6 +400,9 @@
       "action": {
         "action": "showContextHelp",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -334,6 +412,9 @@
       "action": {
         "action": "startTransaction",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -345,6 +426,9 @@
         "data": {
           "name": "before_update"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -357,6 +441,9 @@
           "sql": "UPDATE student SET risk_status='On Track' WHERE student_id=2;",
           "affectedRows": 1
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -368,6 +455,9 @@
         "data": {
           "name": "before_update"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -377,6 +467,9 @@
       "action": {
         "action": "commit",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -386,6 +479,9 @@
       "action": {
         "action": "showSchemas",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -397,6 +493,9 @@
         "data": {
           "path": "schemas/java_practice/tables/student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -408,6 +507,9 @@
         "data": {
           "path": "schemas/java_practice/tables/student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -422,6 +524,9 @@
           "dataLength": "16 KiB",
           "indexLength": "16 KiB"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -434,6 +539,9 @@
           "path": "schemas/java_practice/tables/student",
           "tab": "Columns"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -446,6 +554,9 @@
           "path": "schemas/java_practice/tables/student",
           "tab": "Indexes"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -458,6 +569,9 @@
           "path": "schemas/java_practice/tables/enrollment",
           "tab": "Foreign Keys"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -470,6 +584,9 @@
           "path": "schemas/java_practice/tables/student",
           "tab": "Triggers"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -482,6 +599,9 @@
           "path": "schemas/java_practice/tables/enrollment",
           "tab": "Partitioning"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -494,6 +614,9 @@
           "path": "schemas/java_practice/tables/student",
           "tab": "Options"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -505,6 +628,9 @@
         "data": {
           "path": "schemas/java_practice/tables/student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -518,6 +644,9 @@
           "kind": "select",
           "run": false
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -579,6 +708,9 @@
           ],
           "editable": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -592,6 +724,9 @@
           "schema": "java_practice",
           "table": "student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -605,6 +740,9 @@
           "table": "student",
           "rows": 25
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -617,6 +755,9 @@
           "table": "student",
           "file": "C:\\data\\students_export.csv"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -629,6 +770,9 @@
           "file": "C:\\data\\students_export.csv",
           "rows": 8
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -638,6 +782,9 @@
       "action": {
         "action": "openServerStatus",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -647,6 +794,9 @@
       "action": {
         "action": "openClientConnections",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -656,6 +806,9 @@
       "action": {
         "action": "openUsersPrivileges",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -665,6 +818,9 @@
       "action": {
         "action": "showServerVariables",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -674,6 +830,9 @@
       "action": {
         "action": "showServerLogs",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -683,6 +842,9 @@
       "action": {
         "action": "openServiceControl",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -692,6 +854,9 @@
       "action": {
         "action": "openOptionsFile",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -701,6 +866,9 @@
       "action": {
         "action": "openPerformanceDashboard",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -710,6 +878,9 @@
       "action": {
         "action": "openPerformanceReports",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -719,6 +890,9 @@
       "action": {
         "action": "openPerformanceSchema",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -728,6 +902,9 @@
       "action": {
         "action": "showInnoDBStatus",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -739,6 +916,9 @@
         "data": {
           "name": "Campus Analytics Model"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -750,6 +930,9 @@
         "data": {
           "name": "Campus Analytics Model"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -761,6 +944,9 @@
         "data": {
           "zoom": 125
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -770,6 +956,9 @@
       "action": {
         "action": "openModelNavigator",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -781,6 +970,9 @@
         "data": {
           "name": "Reverse Engineered java_practice"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -792,6 +984,9 @@
         "data": {
           "script": "Generated CREATE TABLE statements for 5 tables"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -803,6 +998,9 @@
         "data": {
           "changes": "1 column difference"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -821,6 +1019,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -832,6 +1033,9 @@
         "data": {
           "objects": 24
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -846,6 +1050,9 @@
             "host": "legacy-campus-db"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -860,6 +1067,9 @@
             "host": "localhost:3306"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -873,6 +1083,9 @@
           "step": 7,
           "status": "Migration completed successfully"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -884,6 +1097,9 @@
         "data": {
           "page": "SQL Editor"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -895,6 +1111,9 @@
         "data": {
           "page": "Modeling"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -904,6 +1123,9 @@
       "action": {
         "action": "showSchemas",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

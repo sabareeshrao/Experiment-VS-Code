@@ -382,3 +382,26 @@ Rules:
 - when new simulator actions/features are added, update this folder in the same master change
 
 Use `node scripts/build-feature-catalog.cjs` to bootstrap missing catalogs. Manual enrichment of individual files is allowed and encouraged.
+
+
+## 23. Highlight-or-label guardrail
+
+Every lesson step must end in one of two states:
+
+1. a precise visible target is highlighted/pointed at, or
+2. the explanation begins with `[no highlight]`.
+
+There is no silent third state.
+
+Lesson source must include `highlight.kind`:
+
+- `target` for exact controls/rows/tabs/fields,
+- `code` for exact source/SQL/text lines,
+- `auto` only when the final rendered action exposes a stable current/native target,
+- `none` for theory or an unbuilt target, with a required reason.
+
+If explanatory text asks the learner to inspect code, use `kind: "code"` and identify the relevant line(s); merely opening a file is not sufficient.
+
+The shared highlighter acknowledges whether it actually found the target. If resolution fails, the player visibly prefixes the explanation with `[no highlight]`.
+
+Final guidance is applied after `SIM_SEEK_DONE`, not on a guessed delay. Code/terminal line focus must preserve horizontal scroll; Next/Previous/Replay must never jump the editor to the far right. Current-step guidance persists until navigation/replay clears or replaces it.

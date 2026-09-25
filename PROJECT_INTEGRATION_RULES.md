@@ -364,7 +364,7 @@ Before a new project or master upgrade is considered complete, verify:
 - explanation height adapts to content
 - no duplicate explanation cards
 - no giant/blinking highlight
-- blue action guidance targets only the precise control/row/line, uses the master highlighter's enhanced visible glow, and remains visible for **5 seconds** so the learner has time to notice it
+- blue action guidance targets only the precise control/row, while code/text uses the flat line highlight; current-step guidance persists until navigation/replay clears or replaces it
 - user layout persistence does not get overwritten by replay
 - full-code/reference view is project-specific
 - downstream curriculum count/order remains unchanged by a runtime-only upgrade
@@ -444,3 +444,36 @@ A downstream integration is complete only when:
 - no duplicate simulator/runtime maintenance was introduced
 
 This is the required architecture for future projects.
+
+---
+
+## 19. Mandatory lesson highlight contract
+
+Every downstream lesson step must explicitly declare how the learner is visually guided.
+
+Required step field:
+
+```json
+"highlight": { "kind": "auto" }
+```
+
+Allowed kinds:
+
+- `target` — point at an exact button, tab, row, field, menu item, or other stable UI selector/text.
+- `code` — highlight the exact relevant source/SQL/text line(s). Use this whenever the explanation asks the learner to inspect or reason about code.
+- `auto` — allowed only when the master runtime can resolve a precise native/current target after the action finishes.
+- `none` — only for genuine theory or a capability that has no built visual target yet. A non-empty reason is mandatory.
+
+When `none` is used, or when an automatic target cannot actually be resolved at runtime, the explanation card must begin with:
+
+`[no highlight]`
+
+This is mandatory. Never write "look at the relevant code", "notice this line", "see the panel", or equivalent unless that exact code/element is highlighted or pointed at.
+
+The master applies final guidance only after `SIM_SEEK_DONE`. A step must never depend on a guessed fixed timer hoping that the target will exist.
+
+Code/terminal focus-follow must preserve horizontal scroll. Next/Previous/Replay must not shove the editor to the far right.
+
+Reference example:
+
+`lesson-json/examples/highlight-contract.example.json`

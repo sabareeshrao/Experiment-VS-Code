@@ -529,13 +529,19 @@
     return !!el.closest?.("[data-sim-terminal],.terminal,.terminalWrap,.terminalViewport,.console,.consoleBox,#terminal,#terminalWrap,#termWrap,#console");
   }
 
+  function isLineFocusTarget(el){
+    if(!el)return false;
+    if(el.matches?.(".codeLine,.line,.lineFocus,.sqlLessonLine,.terminalLine,.terminalCommandFocus"))return true;
+    return !!el.closest?.("pre.code,pre.sql,.codeViewport,.editorWrap,.terminalViewport");
+  }
+
   function revealFocus(target,options={}){
     const el=typeof target==="string"?document.querySelector(target):target;
     if(!el||!el.isConnected)return false;
     const terminalLike=isTerminalFocusTarget(el);
     const margin=Number(options.margin??(terminalLike?6:18));
     let block=options.block||(terminalLike?"end":"center");
-    const horizontal=options.horizontal||"nearest";
+    const horizontal=options.horizontal||(isLineFocusTarget(el)?"preserve":"nearest");
     // A command line should stay near the terminal bottom. Re-centering it
     // after every typed character is what caused the visible scroll shaking.
     if(terminalLike&&block==="center"&&options.forceCenter!==true) block="end";

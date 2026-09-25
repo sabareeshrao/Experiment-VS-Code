@@ -13,6 +13,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -22,6 +25,9 @@
       "action": {
         "action": "openBoard",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -34,6 +40,9 @@
           "key": "JAVA-101",
           "boundary": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
           "key": "JAVA-101",
           "assignee": "Developer"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -58,6 +70,9 @@
           "key": "JAVA-101",
           "status": "IN PROGRESS"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -70,6 +85,9 @@
           "key": "JAVA-101",
           "dueDate": "2026-09-28"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -84,6 +102,9 @@
           "minutes": 360,
           "remaining": "6h"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -101,6 +122,9 @@
           "comment": "Reviewed model and API contract",
           "date": "2026-09-22"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -115,6 +139,9 @@
           "time": "Today",
           "text": "Student model and database contract verified. Starting endpoint implementation."
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -127,6 +154,9 @@
           "key": "JAVA-101",
           "name": "feature/JAVA-101-student-get"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -140,6 +170,9 @@
           "id": "8f4c2ad",
           "message": "JAVA-101 implement student lookup endpoint"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -153,6 +186,9 @@
           "title": "JAVA-101 Student lookup endpoint",
           "status": "OPEN"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -167,6 +203,9 @@
           "status": "SUCCESS",
           "number": "184"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -181,6 +220,9 @@
           "status": "SUCCESS",
           "version": "1.2.0-rc1"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -194,6 +236,9 @@
           "version": "1.2.0",
           "replace": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -203,6 +248,9 @@
       "action": {
         "action": "openDevelopment",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -215,6 +263,9 @@
           "jql": "project = JAVA AND fixVersion = \"1.2.0\" AND assignee = currentUser() ORDER BY key ASC",
           "boundary": false
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -224,6 +275,9 @@
       "action": {
         "action": "openBacklog",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -239,6 +293,9 @@
           "action": "Transition work item",
           "targetStatus": "CODE REVIEW"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -254,6 +311,9 @@
           "result": "SUCCESS",
           "time": "Today"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -265,6 +325,9 @@
         "data": {
           "key": "JAVA-101"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -277,6 +340,9 @@
           "key": "JAVA-101",
           "to": "DONE"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -286,6 +352,9 @@
       "action": {
         "action": "openReleases",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -295,6 +364,9 @@
       "action": {
         "action": "openDashboard",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -306,6 +378,9 @@
         "data": {
           "report": "burndown"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -317,6 +392,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

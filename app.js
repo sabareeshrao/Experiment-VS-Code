@@ -146,7 +146,7 @@
       );
       ensureScript(
         "/simulator/shared/highlighter.js",
-        "simulator/shared/highlighter.js?v=15",
+        "simulator/shared/highlighter.js?v=16",
         "globalHighlightRuntime"
       );
       ensureScript(
@@ -189,12 +189,10 @@
         // Do not depend on a second readiness handshake here. The document has
         // already finished loading, so replay the cumulative state immediately.
         sendSeekNow(current, name, false);
-        if (name !== "kubernetes") highlightCurrentAction(current, name);
-        if (name !== "kubernetes") scheduleCurrentExplanation(140);
+        scheduleCurrentExplanation(140);
         if (name === "mysqlworkbench") {
           setTimeout(() => {
             if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === name) {
-              highlightCurrentAction(current, name);
               scheduleCurrentExplanation(20);
             }
           }, 320);
@@ -404,10 +402,38 @@
   }
 
   function highlightPlanForStep(step) {
-    if (!step?.action) return null;
+    if (!step?.action) return { kind: "none", reason: "No executable lesson action." };
     const software = normalizeSoftware(step.software);
     const action = step.action.action;
+    const hint = step.highlight || { kind: "auto" };
     const plan = (selectors, extra = {}) => ({ selectors, ...extra });
+
+    if (hint.kind === "none") {
+      return { kind: "none", reason: hint.reason || "This step is intentionally explanatory." };
+    }
+    if (hint.kind === "target") {
+      return plan(hint.selectors || [], {
+        text: hint.text || "",
+        scope: hint.scope || null,
+        preserveHorizontal: !!hint.preserveHorizontal
+      });
+    }
+    if (hint.kind === "code") {
+      const lines = Array.isArray(hint.lines) ? hint.lines : (Number.isFinite(Number(hint.line)) ? [Number(hint.line)] : []);
+      if (lines.length) {
+        return plan(lines.map(line => '[data-line="' + Number(line) + '"]'), {
+          mode: "line",
+          multiple: true,
+          preserveHorizontal: true
+        });
+      }
+      if (hint.selector) {
+        return plan([hint.selector], { mode: "line", multiple: true, preserveHorizontal: true });
+      }
+      if (hint.text) {
+        return plan([], { text: hint.text, scope: hint.scope || ".code", mode: "line", preserveHorizontal: true });
+      }
+    }
 
     // Blue guidance is only for controls the developer clicks.
     // Editors/terminals use their own native changed-line emphasis.
@@ -585,7 +611,12 @@
       if (action === "openTestResults") return plan(["#main"], { text: "Test Result", scope: "#main" });
       if (action === "openArtifacts") return plan(["#main"], { text: "Artifacts", scope: "#main" });
     }
-    return null;
+    return {
+      auto: true,
+      action,
+      data: step.action.data || {},
+      preserveHorizontal: true
+    };
   }
 
   function sendSeekNow(index, target, animateFinal) {
@@ -601,17 +632,40 @@
     }, SIM_TARGET_ORIGIN);
   }
 
+  let highlightRequestSeq = 0;
+  let currentHighlightResult = null;
+  const seekHighlightFallbacks = {};
+
+  function markNoHighlight(index) {
+    if (index !== current || fullCodeMode) return;
+    currentHighlightResult = { index, found: false };
+    explainCurrentStep();
+  }
+
   function highlightCurrentAction(index, target) {
     const plan = highlightPlanForStep(flat[index]);
-    // The previous highlight was already cleared before SIM_SEEK. Never clear
-    // here: IntelliJ may have just created a native code-line highlight.
-    if (!plan) return;
+    const requestId = ++highlightRequestSeq;
+    currentHighlightResult = null;
+
+    // The previous highlight is cleared before SIM_SEEK. Do not clear here:
+    // the simulator may have just rendered its native code/terminal emphasis.
+    if (plan?.kind === "none") {
+      currentHighlightResult = { index, found: false, explicit: true };
+      explainCurrentStep();
+      return;
+    }
+
+    frames[target].contentWindow.postMessage({
+      type: "SIM_HIGHLIGHT",
+      requestId,
+      plan
+    }, SIM_TARGET_ORIGIN);
+
     setTimeout(() => {
-      frames[target].contentWindow.postMessage({
-        type: "SIM_HIGHLIGHT",
-        plan
-      }, SIM_TARGET_ORIGIN);
-    }, 90);
+      if (!fullCodeMode && index === current && requestId === highlightRequestSeq && !currentHighlightResult) {
+        markNoHighlight(index);
+      }
+    }, 900);
   }
 
   function seekSoftware(index, software, animateFinal) {
@@ -619,15 +673,15 @@
     ensureFrameLoaded(target);
     if (!engineReady[target] || !flat.length) return;
 
-    // Never block navigation on visual guidance. The step state is rebuilt
-    // immediately, then the relevant control is highlighted independently.
+    // Rebuild first. Guidance is applied after SIM_SEEK_DONE so the exact
+    // current control/line exists and historical replay cannot steal focus.
+    clearTimeout(seekHighlightFallbacks[target]);
     sendSeekNow(index, target, animateFinal);
-    if (target !== "mysqlworkbench" && target !== "kubernetes") highlightCurrentAction(index, target);
-    if (target === "mysqlworkbench") {
-      setTimeout(() => {
-        if (!fullCodeMode && flat.length && normalizeSoftware(flat[current]?.software) === target) highlightCurrentAction(index, target);
-      }, 260);
-    }
+    seekHighlightFallbacks[target] = setTimeout(() => {
+      if (!fullCodeMode && index === current && normalizeSoftware(flat[current]?.software) === target) {
+        highlightCurrentAction(index, target);
+      }
+    }, 700);
   }
 
   function explainCurrentStep() {
@@ -637,7 +691,9 @@
     const payload = {
       type: "SIM_EXPLAIN",
       title: step.title,
-      text: step.why,
+      text: ((step.highlight?.kind === "none" || (currentHighlightResult?.index === current && currentHighlightResult?.found === false)) && !String(step.why || "").startsWith("[no highlight]"))
+        ? "[no highlight]\n\n" + step.why
+        : step.why,
       answer: step.answer || "",
       originalActionTranscript: step.originalActionTranscript || "",
       stage: stage.title
@@ -849,6 +905,7 @@
     fullCodeBtn.querySelector("span:last-child").textContent = "View Full Code";
 
     current = Math.max(0, Math.min(flat.length - 1, index));
+    currentHighlightResult = null;
     const software = normalizeSoftware(flat[current].software);
 
     if (wasFullCode) sendCoursePackageToAll();
@@ -884,12 +941,21 @@
       if (
         !fullCodeMode &&
         flat.length &&
-        (software === "mysqlworkbench" || software === "kubernetes") &&
         normalizeSoftware(flat[current].software) === software
       ) {
+        clearTimeout(seekHighlightFallbacks[software]);
         highlightCurrentAction(current, software);
         scheduleCurrentExplanation(20);
       }
+      return;
+    }
+
+    if (event.data?.type === "SIM_HIGHLIGHT_RESULT") {
+      if (fullCodeMode || !flat.length) return;
+      if (Number(event.data.requestId) !== highlightRequestSeq) return;
+      if (normalizeSoftware(flat[current].software) !== software) return;
+      currentHighlightResult = { index: current, found: event.data.found === true, mode: event.data.mode || "none" };
+      if (!currentHighlightResult.found) explainCurrentStep();
       return;
     }
 

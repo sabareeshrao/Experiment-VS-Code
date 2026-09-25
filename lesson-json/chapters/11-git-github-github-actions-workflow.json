@@ -15,6 +15,9 @@
           "path": "C:\\Users\\developer\\Java-Practice",
           "branch": "main"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -26,6 +29,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -37,6 +43,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
       "action": {
         "action": "openHistory",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -57,6 +69,9 @@
         "data": {
           "name": "Java-Practice"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -68,6 +83,9 @@
         "data": {
           "number": 2
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -77,6 +95,9 @@
       "action": {
         "action": "openSecurity",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -86,6 +107,9 @@
       "action": {
         "action": "openActions",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -97,6 +121,9 @@
         "data": {
           "id": "42"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -106,6 +133,9 @@
       "action": {
         "action": "openSecrets",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

@@ -13,6 +13,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -22,6 +25,9 @@
       "action": {
         "action": "openDashboard",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -34,6 +40,9 @@
           "text": "java-practice-api",
           "boundary": false
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -45,6 +54,9 @@
         "data": {
           "name": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -57,6 +69,9 @@
           "job": "java-practice-api",
           "number": 41
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -70,6 +85,9 @@
           "number": 41,
           "text": "Started by user developer\\nRunning on linux-java21-agent\\n[Pipeline] Checkout\\nChecking out main\\n[Pipeline] Build\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nERROR StudentApiIntegrationTest: expected 200 but received 500\\nFinished: FAILURE"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -82,6 +100,9 @@
           "job": "java-practice-api",
           "number": 41
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -91,6 +112,9 @@
       "action": {
         "action": "openNodes",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -102,6 +126,9 @@
         "data": {
           "name": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -113,6 +140,9 @@
         "data": {
           "job": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -127,6 +157,9 @@
           "branch": "*/main",
           "credentials": "github-token"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -139,6 +172,9 @@
           "job": "java-practice-api",
           "branch": "*/main"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -151,6 +187,9 @@
           "job": "java-practice-api",
           "credentials": "github-token"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -164,6 +203,9 @@
           "name": "JAVA_HOME",
           "value": "/usr/lib/jvm/java-21-openjdk-amd64"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -177,6 +219,9 @@
           "name": "MAVEN_OPTS",
           "value": "-Xmx1024m"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -189,6 +234,9 @@
           "job": "java-practice-api",
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -208,6 +256,9 @@
             "staging"
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -222,6 +273,9 @@
           "value": "H/15 * * * *",
           "enabled": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -235,6 +289,9 @@
           "definition": "Pipeline script from SCM",
           "scriptPath": "Jenkinsfile"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -248,6 +305,9 @@
           "text": "pipeline {\n    agent { label 'linux && java21' }\n    tools {\n        jdk 'JDK 21'\n        maven 'Maven 3.9'\n    }\n    parameters {\n        choice(name: 'TARGET_ENV', choices: ['qa', 'staging'], description: 'Deployment target')\n    }\n    stages {\n        stage('Checkout') { steps { checkout scm } }\n        stage('Build') { steps { sh 'mvn -B clean package -DskipTests' } }\n        stage('Test') {\n            parallel {\n                stage('Unit') { steps { sh 'mvn -B test' } }\n                stage('Integration') { steps { sh 'mvn -B verify -Pintegration' } }\n            }\n        }\n        stage('Package') { steps { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }\n        stage('Deploy QA') { steps { echo \"Deploying to ${params.TARGET_ENV}\" } }\n    }\n    post {\n        always { junit 'target/surefire-reports/*.xml' }\n    }\n}",
           "boundary": false
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -260,6 +320,9 @@
           "valid": true,
           "message": "Jenkinsfile syntax is valid"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -271,6 +334,9 @@
         "data": {
           "job": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -321,6 +387,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -334,6 +403,9 @@
           "number": 42,
           "text": "[Pipeline] Build\\nmvn -B clean package -DskipTests\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nStudent API integration tests passed"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -398,6 +470,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -429,6 +504,9 @@
             ]
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -441,6 +519,9 @@
           "job": "java-practice-api",
           "number": 42
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -456,6 +537,9 @@
           "size": "18.4 MB",
           "description": "Java Practice application artifact"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -468,6 +552,9 @@
           "job": "java-practice-api",
           "number": 42
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -479,6 +566,9 @@
         "data": {
           "job": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -490,6 +580,9 @@
         "data": {
           "job": "java-practice-api"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -501,6 +594,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

@@ -13,6 +13,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -24,6 +27,9 @@
         "data": {
           "id": "get-student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -35,6 +41,9 @@
         "data": {
           "name": "Local"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
         "data": {
           "method": "GET"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -58,6 +70,9 @@
           "url": "{{baseUrl}}/api/students/101",
           "boundary": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -71,6 +86,9 @@
             "Accept": "application/json"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -99,6 +117,9 @@
             "name": "Ravi"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -110,6 +131,9 @@
         "data": {
           "tab": "pretty"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -121,6 +145,9 @@
         "data": {
           "path": "src/Student.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

@@ -57,6 +57,9 @@
           ],
           "console": "Connected to target VM\nBreakpoint hit at ProjectService.java:27"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -92,6 +95,9 @@
           "passed": 2,
           "failed": 1
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -138,6 +144,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -164,6 +173,9 @@
           ],
           "console": "2026-09-24 16:18:11 INFO Started AeroTopoApplication\n2026-09-24 16:18:12 INFO Tomcat initialized on port 8080"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -223,6 +235,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

@@ -6012,7 +6012,10 @@ window.COURSE = {
               "languageLevel": "21"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Create the src folder",
@@ -6024,7 +6027,10 @@ window.COURSE = {
               "path": "src"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Create Student.java",
@@ -6037,7 +6043,10 @@ window.COURSE = {
               "content": ""
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Declare the Student class",
@@ -6050,7 +6059,10 @@ window.COURSE = {
               "code": "public class Student {\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add the rollNo field",
@@ -6063,7 +6075,10 @@ window.COURSE = {
               "code": "\n    int rollNo;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add the attendance field",
@@ -6076,7 +6091,10 @@ window.COURSE = {
               "code": "    boolean isPresent;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add the marks array",
@@ -6089,7 +6107,10 @@ window.COURSE = {
               "code": "    float[] marks;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add the name field",
@@ -6102,7 +6123,10 @@ window.COURSE = {
               "code": "    String name;\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add getRollNo",
@@ -6115,7 +6139,10 @@ window.COURSE = {
               "code": "\n    public int getRollNo() {\n        return rollNo;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add setRollNo",
@@ -6128,7 +6155,10 @@ window.COURSE = {
               "code": "\n    public void setRollNo(int rollNo) {\n        this.rollNo = rollNo;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add the presence getter",
@@ -6141,7 +6171,10 @@ window.COURSE = {
               "code": "\n    public boolean isPresent() {\n        return isPresent;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add setPresent",
@@ -6154,7 +6187,10 @@ window.COURSE = {
               "code": "\n    public void setPresent(boolean present) {\n        isPresent = present;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add getMarks",
@@ -6167,7 +6203,10 @@ window.COURSE = {
               "code": "\n    public float[] getMarks() {\n        return marks;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add setMarks",
@@ -6180,7 +6219,10 @@ window.COURSE = {
               "code": "\n    public void setMarks(float[] marks) {\n        this.marks = marks;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add getName",
@@ -6193,7 +6235,10 @@ window.COURSE = {
               "code": "\n    public String getName() {\n        return name;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Add setName",
@@ -6206,7 +6251,10 @@ window.COURSE = {
               "code": "\n    public void setName(String name) {\n        this.name = name;\n    }\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Close the Student class",
@@ -6219,7 +6267,10 @@ window.COURSE = {
               "code": "\n}\n"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Review the completed class structure",
@@ -6230,7 +6281,10 @@ window.COURSE = {
               "file": "src/Student.java"
             }
           },
-          "software": "intellij"
+          "software": "intellij",
+          "highlight": {
+            "kind": "auto"
+          }
         },
         {
           "title": "Split the IntelliJ editor",
@@ -6241,6 +6295,9 @@ window.COURSE = {
             "data": {
               "file": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6253,6 +6310,9 @@ window.COURSE = {
               "command": "java -version",
               "output": "openjdk version 21"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -6270,6 +6330,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6282,6 +6345,9 @@ window.COURSE = {
               "message": "DML statements manipulate data stored inside tables.\n\nINSERT — add rows\nUPDATE — change existing rows\nDELETE — remove rows",
               "statusText": "DML: INSERT, UPDATE, DELETE"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6294,6 +6360,9 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE table_name (\n    column_name data_type,\n    column_name data_type,\n    column_name data_type\n);"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6306,6 +6375,9 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE course (\n    course_number INTEGER,\n    name TEXT,\n    price NUMERIC\n);"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6319,6 +6391,9 @@ window.COURSE = {
               "message": "Query returned successfully in approximately 120 milliseconds.",
               "statusText": "course table created"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6342,6 +6417,9 @@ window.COURSE = {
                 "rows": []
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6354,6 +6432,9 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO table_name\nVALUES (value1, value2, value3);"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6375,6 +6456,9 @@ window.COURSE = {
               "message": "INSERT 0 1 — Query executed successfully in approximately 84 milliseconds.",
               "statusText": "1 row inserted"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6404,6 +6488,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6416,6 +6503,9 @@ window.COURSE = {
               "message": "Recommended INSERT syntax:\n\nINSERT INTO table_name (column1, column2, column3) VALUES (value1, value2, value3);\n\nExplicit column names make each destination clear and allow a different column order.",
               "statusText": "Recommended INSERT syntax"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6428,6 +6518,9 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nVALUES (2, 'MySQL', 100);"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6452,6 +6545,9 @@ window.COURSE = {
               "message": "INSERT 0 1",
               "statusText": "MySQL course inserted"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6486,6 +6582,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6517,6 +6616,9 @@ window.COURSE = {
               "message": "INSERT 0 1",
               "statusText": "MongoDB course inserted"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6556,6 +6658,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6568,6 +6673,9 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nVALUES\n    (4, 'PostgreSQL_new', 150),\n    (5, 'MySQL_new', 100),\n    (6, 'MongoDB_new', 100);"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6612,6 +6720,9 @@ window.COURSE = {
               "message": "INSERT 0 3",
               "statusText": "3 rows inserted"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6666,6 +6777,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6678,6 +6792,9 @@ window.COURSE = {
               "replace": true,
               "sql": "CREATE TABLE new_course AS\nSELECT * FROM course;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6723,6 +6840,9 @@ window.COURSE = {
               "message": "SELECT 6",
               "statusText": "new_course created with 6 rows"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6777,6 +6897,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6789,6 +6912,9 @@ window.COURSE = {
               "replace": true,
               "sql": "INSERT INTO course (course_number, name, price)\nSELECT course_number, name, price\nFROM new_course;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6863,6 +6989,9 @@ window.COURSE = {
               "message": "INSERT 0 6",
               "statusText": "6 rows copied into course"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6947,6 +7076,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6959,6 +7091,9 @@ window.COURSE = {
               "message": "DML classification\n\nINSERT — DML\nUPDATE — DML\nDELETE — DML\n\nINSERT changes the data stored in a table.",
               "statusText": "INSERT is DML"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6971,6 +7106,9 @@ window.COURSE = {
               "message": "PostgreSQL characteristics\n\n• Relational Database Management System\n• Open source\n• SQL compliant\n• Supports DML",
               "statusText": "PostgreSQL characteristics"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -6982,6 +7120,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -6999,6 +7140,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7010,6 +7154,9 @@ window.COURSE = {
             "data": {
               "id": "get-student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7021,6 +7168,9 @@ window.COURSE = {
             "data": {
               "name": "Local"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7032,6 +7182,9 @@ window.COURSE = {
             "data": {
               "method": "GET"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7044,6 +7197,9 @@ window.COURSE = {
               "url": "{{baseUrl}}/api/students/101",
               "boundary": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7057,6 +7213,9 @@ window.COURSE = {
                 "Accept": "application/json"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7085,6 +7244,9 @@ window.COURSE = {
                 "name": "Ravi"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7096,6 +7258,9 @@ window.COURSE = {
             "data": {
               "tab": "pretty"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7107,6 +7272,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -7124,6 +7292,9 @@ window.COURSE = {
             "data": {
               "path": "src/polymorphism/Calculator.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7136,6 +7307,9 @@ window.COURSE = {
               "path": "journey-notes.md",
               "content": "# Java Practice Journey\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7148,6 +7322,9 @@ window.COURSE = {
               "path": "journey-notes.md",
               "code": "VS Code integration started.\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7160,6 +7337,9 @@ window.COURSE = {
               "path": "README.md",
               "content": "# Java Practice\n\nDeveloper journey project.\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7172,6 +7352,9 @@ window.COURSE = {
               "path": "README.md",
               "code": "\n## Setup\nUse Java 21 for the exercises.\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7184,6 +7367,9 @@ window.COURSE = {
               "path": ".vscode/settings.json",
               "content": "{\n  \"editor.fontSize\": 14\n}\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7196,6 +7382,9 @@ window.COURSE = {
               "path": ".vscode/launch.json",
               "content": "{\n  \"version\": \"0.2.0\",\n  \"configurations\": []\n}\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7208,6 +7397,9 @@ window.COURSE = {
               "path": ".vscode/tasks.json",
               "content": "{\n  \"version\": \"2.0.0\",\n  \"tasks\": []\n}\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7220,6 +7412,9 @@ window.COURSE = {
               "command": "java -version",
               "output": "openjdk version \"21\""
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7232,6 +7427,9 @@ window.COURSE = {
               "command": "dir",
               "output": "README.md  journey-notes.md  .vscode"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7244,6 +7442,9 @@ window.COURSE = {
               "command": "git status",
               "output": "On branch main\nChanges not staged for commit"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7256,6 +7457,9 @@ window.COURSE = {
               "command": "git branch --show-current",
               "output": "main"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7268,6 +7472,9 @@ window.COURSE = {
               "path": "docs/architecture.md",
               "content": "# Architecture\n\nJava Practice project notes.\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7280,6 +7487,9 @@ window.COURSE = {
               "path": "docs/architecture.md",
               "code": "\nIntelliJ, VS Code, pgAdmin and Postman are part of the journey.\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7292,6 +7502,9 @@ window.COURSE = {
               "path": "docs/database.md",
               "content": "# Database\n\nDatabase: java_practice\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7304,6 +7517,9 @@ window.COURSE = {
               "path": "docs/database.md",
               "code": "Table: student\nColumns: roll_no, is_present, marks, name\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7316,6 +7532,9 @@ window.COURSE = {
               "path": ".gitignore",
               "content": "out/\n.idea/\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7328,6 +7547,9 @@ window.COURSE = {
               "command": "javac -version",
               "output": "javac 21"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7339,6 +7561,9 @@ window.COURSE = {
             "data": {
               "path": "journey-notes.md"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7350,6 +7575,9 @@ window.COURSE = {
             "data": {
               "file": "README.md"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7362,6 +7590,9 @@ window.COURSE = {
               "command": "echo Split editor and terminal ready",
               "output": "Split editor and terminal ready"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7374,6 +7605,9 @@ window.COURSE = {
               "command": "echo VS Code integration complete",
               "output": "VS Code integration complete"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -7391,6 +7625,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7402,6 +7639,9 @@ window.COURSE = {
             "data": {
               "cwd": "C:\\Users\\developer\\JavaPractice"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7413,6 +7653,9 @@ window.COURSE = {
             "data": {
               "command": "java -version"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7424,6 +7667,9 @@ window.COURSE = {
             "data": {
               "command": "echo %JAVA_HOME%"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7435,6 +7681,9 @@ window.COURSE = {
             "data": {
               "command": "dir /b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7446,6 +7695,9 @@ window.COURSE = {
             "data": {
               "command": "cd src"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7457,6 +7709,9 @@ window.COURSE = {
             "data": {
               "command": "dir /b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7468,6 +7723,9 @@ window.COURSE = {
             "data": {
               "command": "cd .."
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7479,6 +7737,9 @@ window.COURSE = {
             "data": {
               "command": "cd /d C:\\Users\\developer\\JavaPractice\\docs"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7490,6 +7751,9 @@ window.COURSE = {
             "data": {
               "command": "cd .."
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7501,6 +7765,9 @@ window.COURSE = {
             "data": {
               "command": "mkdir build"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7512,6 +7779,9 @@ window.COURSE = {
             "data": {
               "command": "set APP_ENV=local"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7523,6 +7793,9 @@ window.COURSE = {
             "data": {
               "command": "echo %APP_ENV%"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7534,6 +7807,9 @@ window.COURSE = {
             "data": {
               "command": "echo build=verified > build\\status.txt"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7545,6 +7821,9 @@ window.COURSE = {
             "data": {
               "command": "type build\\status.txt"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7556,6 +7835,9 @@ window.COURSE = {
             "data": {
               "command": "echo Java Practice | findstr Java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7567,6 +7849,9 @@ window.COURSE = {
             "data": {
               "command": "git status"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7578,6 +7863,9 @@ window.COURSE = {
             "data": {
               "command": "javac -version"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7589,6 +7877,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -7606,6 +7897,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7617,6 +7911,9 @@ window.COURSE = {
             "data": {
               "path": "/home/developer/JavaPractice"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7628,6 +7925,9 @@ window.COURSE = {
             "data": {
               "command": "pwd"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7639,6 +7939,9 @@ window.COURSE = {
             "data": {
               "command": "ls -la"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7650,6 +7953,9 @@ window.COURSE = {
             "data": {
               "command": "java -version"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7661,6 +7967,9 @@ window.COURSE = {
             "data": {
               "command": "echo $JAVA_HOME"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7672,6 +7981,9 @@ window.COURSE = {
             "data": {
               "command": "export APP_ENV=local && echo $APP_ENV"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7683,6 +7995,9 @@ window.COURSE = {
             "data": {
               "command": "mkdir -p build && touch build/status.txt"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7694,6 +8009,9 @@ window.COURSE = {
             "data": {
               "command": "echo build=verified > build/status.txt && cat build/status.txt"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7705,6 +8023,9 @@ window.COURSE = {
             "data": {
               "command": "cat README.md | grep Java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7716,6 +8037,9 @@ window.COURSE = {
             "data": {
               "command": "chmod +x scripts/health-check.sh"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7727,6 +8051,9 @@ window.COURSE = {
             "data": {
               "command": "./scripts/health-check.sh"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7738,6 +8065,9 @@ window.COURSE = {
             "data": {
               "command": "systemctl status java-practice.service"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7749,6 +8079,9 @@ window.COURSE = {
             "data": {
               "command": "sudo systemctl restart java-practice.service"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7760,6 +8093,9 @@ window.COURSE = {
             "data": {
               "command": "journalctl -u java-practice.service -n 5"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7771,6 +8107,9 @@ window.COURSE = {
             "data": {
               "command": "ip addr"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7782,6 +8121,9 @@ window.COURSE = {
             "data": {
               "command": "ss -tulpn"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7793,6 +8135,9 @@ window.COURSE = {
             "data": {
               "command": "df -h"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7804,6 +8149,9 @@ window.COURSE = {
             "data": {
               "command": "mvn test"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7815,6 +8163,9 @@ window.COURSE = {
             "data": {
               "command": "mvn spring-boot:run"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7826,6 +8177,9 @@ window.COURSE = {
             "data": {
               "output": "^C"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7837,6 +8191,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -7854,6 +8211,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7863,6 +8223,9 @@ window.COURSE = {
           "action": {
             "action": "openConnectDialog",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7875,6 +8238,9 @@ window.COURSE = {
               "field": "serverName",
               "value": "localhost"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7887,6 +8253,9 @@ window.COURSE = {
               "field": "authentication",
               "value": "Windows Authentication"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7901,6 +8270,9 @@ window.COURSE = {
               "expandDatabases": true,
               "statusText": "Ready"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7913,6 +8285,9 @@ window.COURSE = {
               "id": "db:JavaPracticeDb",
               "select": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7924,6 +8299,9 @@ window.COURSE = {
             "data": {
               "database": "JavaPracticeDb"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7937,6 +8315,9 @@ window.COURSE = {
               "title": "student_setup.sql",
               "database": "JavaPracticeDb"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7949,6 +8330,9 @@ window.COURSE = {
               "sql": "CREATE TABLE dbo.student (\n    roll_no INT PRIMARY KEY,\n    is_present BIT NOT NULL,\n    name NVARCHAR(100) NOT NULL\n);",
               "boundary": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7958,6 +8342,9 @@ window.COURSE = {
           "action": {
             "action": "executeQuery",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7967,6 +8354,9 @@ window.COURSE = {
           "action": {
             "action": "refreshObjectExplorer",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7979,6 +8369,9 @@ window.COURSE = {
               "id": "folder:JavaPracticeDb:Tables",
               "select": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7990,6 +8383,9 @@ window.COURSE = {
             "data": {
               "sql": "INSERT INTO dbo.student (roll_no, is_present, name)\nVALUES (101, 1, 'Ravi'),\n       (102, 1, 'Anita');"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -7999,6 +8395,9 @@ window.COURSE = {
           "action": {
             "action": "executeQuery",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8010,6 +8409,9 @@ window.COURSE = {
             "data": {
               "sql": "SELECT roll_no, is_present, name\nFROM dbo.student\nWHERE roll_no = 101;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8019,6 +8421,9 @@ window.COURSE = {
           "action": {
             "action": "executeQuery",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8030,6 +8435,9 @@ window.COURSE = {
             "data": {
               "table": "dbo.student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8039,6 +8447,9 @@ window.COURSE = {
           "action": {
             "action": "showClientStatistics",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8050,6 +8461,9 @@ window.COURSE = {
             "data": {
               "sql": "BEGIN TRAN;\nUPDATE dbo.student\nSET name = 'Ravi Kumar'\nWHERE roll_no = 101;\nROLLBACK;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8059,6 +8473,9 @@ window.COURSE = {
           "action": {
             "action": "executeQuery",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8071,6 +8488,9 @@ window.COURSE = {
               "path": "C:\\JavaPractice\\sql\\student_setup.sql",
               "fileName": "student_setup.sql"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8080,6 +8500,9 @@ window.COURSE = {
           "action": {
             "action": "openActivityMonitor",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8097,6 +8520,9 @@ window.COURSE = {
               ],
               "unique": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8106,6 +8532,9 @@ window.COURSE = {
           "action": {
             "action": "showObjectExplorerDetails",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8120,6 +8549,9 @@ window.COURSE = {
               "path": "C:\\SQLBackups\\JavaPracticeDb_full.bak",
               "time": "13:30"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8137,6 +8569,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8151,6 +8586,9 @@ window.COURSE = {
               "frequency": "Daily",
               "time": "02:00"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8164,6 +8602,9 @@ window.COURSE = {
               "time": "13:31",
               "duration": "00:00:02"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8173,6 +8614,9 @@ window.COURSE = {
           "action": {
             "action": "showAgentJobHistory",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8189,6 +8633,9 @@ window.COURSE = {
                 "kind": "queryEditor"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8225,6 +8672,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8236,6 +8686,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -8253,6 +8706,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8262,6 +8718,9 @@ window.COURSE = {
           "action": {
             "action": "openBoard",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8274,6 +8733,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "boundary": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8286,6 +8748,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "assignee": "Developer"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8298,6 +8763,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "status": "IN PROGRESS"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8310,6 +8778,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "dueDate": "2026-09-28"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8324,6 +8795,9 @@ window.COURSE = {
               "minutes": 360,
               "remaining": "6h"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8341,6 +8815,9 @@ window.COURSE = {
               "comment": "Reviewed model and API contract",
               "date": "2026-09-22"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8355,6 +8832,9 @@ window.COURSE = {
               "time": "Today",
               "text": "Student model and database contract verified. Starting endpoint implementation."
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8367,6 +8847,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "name": "feature/JAVA-101-student-get"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8380,6 +8863,9 @@ window.COURSE = {
               "id": "8f4c2ad",
               "message": "JAVA-101 implement student lookup endpoint"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8393,6 +8879,9 @@ window.COURSE = {
               "title": "JAVA-101 Student lookup endpoint",
               "status": "OPEN"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8407,6 +8896,9 @@ window.COURSE = {
               "status": "SUCCESS",
               "number": "184"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8421,6 +8913,9 @@ window.COURSE = {
               "status": "SUCCESS",
               "version": "1.2.0-rc1"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8434,6 +8929,9 @@ window.COURSE = {
               "version": "1.2.0",
               "replace": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8443,6 +8941,9 @@ window.COURSE = {
           "action": {
             "action": "openDevelopment",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8455,6 +8956,9 @@ window.COURSE = {
               "jql": "project = JAVA AND fixVersion = \"1.2.0\" AND assignee = currentUser() ORDER BY key ASC",
               "boundary": false
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8464,6 +8968,9 @@ window.COURSE = {
           "action": {
             "action": "openBacklog",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8479,6 +8986,9 @@ window.COURSE = {
               "action": "Transition work item",
               "targetStatus": "CODE REVIEW"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8494,6 +9004,9 @@ window.COURSE = {
               "result": "SUCCESS",
               "time": "Today"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8505,6 +9018,9 @@ window.COURSE = {
             "data": {
               "key": "JAVA-101"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8517,6 +9033,9 @@ window.COURSE = {
               "key": "JAVA-101",
               "to": "DONE"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8526,6 +9045,9 @@ window.COURSE = {
           "action": {
             "action": "openReleases",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8535,6 +9057,9 @@ window.COURSE = {
           "action": {
             "action": "openDashboard",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8546,6 +9071,9 @@ window.COURSE = {
             "data": {
               "report": "burndown"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8557,6 +9085,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -8574,6 +9105,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8583,6 +9117,9 @@ window.COURSE = {
           "action": {
             "action": "openDashboard",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8595,6 +9132,9 @@ window.COURSE = {
               "text": "java-practice-api",
               "boundary": false
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8606,6 +9146,9 @@ window.COURSE = {
             "data": {
               "name": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8618,6 +9161,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "number": 41
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8631,6 +9177,9 @@ window.COURSE = {
               "number": 41,
               "text": "Started by user developer\\nRunning on linux-java21-agent\\n[Pipeline] Checkout\\nChecking out main\\n[Pipeline] Build\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nERROR StudentApiIntegrationTest: expected 200 but received 500\\nFinished: FAILURE"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8643,6 +9192,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "number": 41
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8652,6 +9204,9 @@ window.COURSE = {
           "action": {
             "action": "openNodes",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8663,6 +9218,9 @@ window.COURSE = {
             "data": {
               "name": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8674,6 +9232,9 @@ window.COURSE = {
             "data": {
               "job": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8688,6 +9249,9 @@ window.COURSE = {
               "branch": "*/main",
               "credentials": "github-token"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8700,6 +9264,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "branch": "*/main"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8712,6 +9279,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "credentials": "github-token"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8725,6 +9295,9 @@ window.COURSE = {
               "name": "JAVA_HOME",
               "value": "/usr/lib/jvm/java-21-openjdk-amd64"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8738,6 +9311,9 @@ window.COURSE = {
               "name": "MAVEN_OPTS",
               "value": "-Xmx1024m"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8750,6 +9326,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8769,6 +9348,9 @@ window.COURSE = {
                 "staging"
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8783,6 +9365,9 @@ window.COURSE = {
               "value": "H/15 * * * *",
               "enabled": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8796,6 +9381,9 @@ window.COURSE = {
               "definition": "Pipeline script from SCM",
               "scriptPath": "Jenkinsfile"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8809,6 +9397,9 @@ window.COURSE = {
               "text": "pipeline {\n    agent { label 'linux && java21' }\n    tools {\n        jdk 'JDK 21'\n        maven 'Maven 3.9'\n    }\n    parameters {\n        choice(name: 'TARGET_ENV', choices: ['qa', 'staging'], description: 'Deployment target')\n    }\n    stages {\n        stage('Checkout') { steps { checkout scm } }\n        stage('Build') { steps { sh 'mvn -B clean package -DskipTests' } }\n        stage('Test') {\n            parallel {\n                stage('Unit') { steps { sh 'mvn -B test' } }\n                stage('Integration') { steps { sh 'mvn -B verify -Pintegration' } }\n            }\n        }\n        stage('Package') { steps { archiveArtifacts artifacts: 'target/*.jar', fingerprint: true } }\n        stage('Deploy QA') { steps { echo \"Deploying to ${params.TARGET_ENV}\" } }\n    }\n    post {\n        always { junit 'target/surefire-reports/*.xml' }\n    }\n}",
               "boundary": false
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8821,6 +9412,9 @@ window.COURSE = {
               "valid": true,
               "message": "Jenkinsfile syntax is valid"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8832,6 +9426,9 @@ window.COURSE = {
             "data": {
               "job": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8882,6 +9479,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8895,6 +9495,9 @@ window.COURSE = {
               "number": 42,
               "text": "[Pipeline] Build\\nmvn -B clean package -DskipTests\\nBUILD SUCCESS\\n[Pipeline] Test\\n42 unit tests passed\\nStudent API integration tests passed"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8959,6 +9562,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -8990,6 +9596,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9002,6 +9611,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "number": 42
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9017,6 +9629,9 @@ window.COURSE = {
               "size": "18.4 MB",
               "description": "Java Practice application artifact"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9029,6 +9644,9 @@ window.COURSE = {
               "job": "java-practice-api",
               "number": 42
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9040,6 +9658,9 @@ window.COURSE = {
             "data": {
               "job": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9051,6 +9672,9 @@ window.COURSE = {
             "data": {
               "job": "java-practice-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9062,6 +9686,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -9078,6 +9705,9 @@ window.COURSE = {
             "data": {
               "report": "Campus Performance Analytics"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9089,6 +9719,9 @@ window.COURSE = {
             "data": {
               "pageId": "page1"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9098,6 +9731,9 @@ window.COURSE = {
           "action": {
             "action": "openGetData",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9109,6 +9745,9 @@ window.COURSE = {
             "data": {
               "connector": "SQL Server"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9143,6 +9782,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9152,6 +9794,9 @@ window.COURSE = {
           "action": {
             "action": "openNavigator",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9163,6 +9808,9 @@ window.COURSE = {
             "data": {
               "name": "Student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9172,6 +9820,9 @@ window.COURSE = {
           "action": {
             "action": "cancelNavigator",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9181,6 +9832,9 @@ window.COURSE = {
           "action": {
             "action": "openRecentSources",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9190,6 +9844,9 @@ window.COURSE = {
           "action": {
             "action": "openDataSourceSettings",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9199,6 +9856,9 @@ window.COURSE = {
           "action": {
             "action": "openReportView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9210,6 +9870,9 @@ window.COURSE = {
             "data": {
               "id": "scoreByDept"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9221,6 +9884,9 @@ window.COURSE = {
             "data": {
               "id": "scoreByDept"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9232,6 +9898,9 @@ window.COURSE = {
             "data": {
               "id": "scoreByDept"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9243,6 +9912,9 @@ window.COURSE = {
             "data": {
               "id": "scoreByDept"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9254,6 +9926,9 @@ window.COURSE = {
             "data": {
               "id": "semesterSlicer"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9267,6 +9942,9 @@ window.COURSE = {
               "field": "Enrollment[semester]",
               "value": "Spring 2026"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9279,6 +9957,9 @@ window.COURSE = {
               "field": "Calendar[Year]",
               "value": "2026"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9288,6 +9969,9 @@ window.COURSE = {
           "action": {
             "action": "openSelectionPane",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9300,6 +9984,9 @@ window.COURSE = {
               "id": "bmExecLive",
               "name": "Executive Snapshot - Live"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9309,6 +9996,9 @@ window.COURSE = {
           "action": {
             "action": "openBookmarksPane",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9320,6 +10010,9 @@ window.COURSE = {
             "data": {
               "id": "bmExecutive"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9331,6 +10024,9 @@ window.COURSE = {
             "data": {
               "pageId": "page2"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9342,6 +10038,9 @@ window.COURSE = {
             "data": {
               "id": "courseScores"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9354,6 +10053,9 @@ window.COURSE = {
               "id": "courseScores",
               "type": "clusteredBar"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9367,6 +10069,9 @@ window.COURSE = {
               "well": "x",
               "field": "Course[course_name]"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9380,6 +10085,9 @@ window.COURSE = {
               "well": "values",
               "field": "Measures[Average Score]"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9393,6 +10101,9 @@ window.COURSE = {
               "field": "Measures[Average Score]",
               "rule": "color scale"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9408,6 +10119,9 @@ window.COURSE = {
                 "Measures[Average Score]"
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9421,6 +10135,9 @@ window.COURSE = {
               "target": "studentTable",
               "mode": "filter"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9432,6 +10149,9 @@ window.COURSE = {
             "data": {
               "id": "courseScores"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9443,6 +10163,9 @@ window.COURSE = {
             "data": {
               "id": "courseScores"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9454,6 +10177,9 @@ window.COURSE = {
             "data": {
               "id": "scoreScatter"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9465,6 +10191,9 @@ window.COURSE = {
             "data": {
               "id": "scoreScatter"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9476,6 +10205,9 @@ window.COURSE = {
             "data": {
               "pageId": "page4"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9487,6 +10219,9 @@ window.COURSE = {
             "data": {
               "id": "g3"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9498,6 +10233,9 @@ window.COURSE = {
             "data": {
               "id": "g4"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9509,6 +10247,9 @@ window.COURSE = {
             "data": {
               "id": "g5"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9520,6 +10261,9 @@ window.COURSE = {
             "data": {
               "id": "g6"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9531,6 +10275,9 @@ window.COURSE = {
             "data": {
               "id": "g9"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9542,6 +10289,9 @@ window.COURSE = {
             "data": {
               "id": "g10"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9553,6 +10303,9 @@ window.COURSE = {
             "data": {
               "id": "g11"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9564,6 +10317,9 @@ window.COURSE = {
             "data": {
               "id": "g12"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9575,6 +10331,9 @@ window.COURSE = {
             "data": {
               "table": "Student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9588,6 +10347,9 @@ window.COURSE = {
               "column": "Student Name",
               "direction": "asc"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9601,6 +10363,9 @@ window.COURSE = {
               "column": "risk_status",
               "value": "At Risk"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9614,6 +10379,9 @@ window.COURSE = {
               "column": "city",
               "value": "City"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9625,6 +10393,9 @@ window.COURSE = {
             "data": {
               "table": "Enrollment"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9638,6 +10409,9 @@ window.COURSE = {
               "column": "score",
               "value": "Average"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9647,6 +10421,9 @@ window.COURSE = {
           "action": {
             "action": "openModelView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9656,6 +10433,9 @@ window.COURSE = {
           "action": {
             "action": "openManageRelationships",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9673,6 +10453,9 @@ window.COURSE = {
                 "course_name"
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9685,6 +10468,9 @@ window.COURSE = {
               "table": "Calendar",
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9698,6 +10484,9 @@ window.COURSE = {
               "field": "gender",
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9710,6 +10499,9 @@ window.COURSE = {
               "table": "Enrollment",
               "mode": "Import"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9725,6 +10517,9 @@ window.COURSE = {
               "dax": "DIVIDE(CALCULATE(COUNTROWS(Enrollment), Enrollment[score] >= 70), COUNTROWS(Enrollment))",
               "format": "0.0%"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9737,6 +10532,9 @@ window.COURSE = {
               "name": "Pass Rate",
               "format": "0.0%"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9746,6 +10544,9 @@ window.COURSE = {
           "action": {
             "action": "openDaxQueryView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9758,6 +10559,9 @@ window.COURSE = {
               "id": "dax2",
               "name": "At Risk Analysis"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9769,6 +10573,9 @@ window.COURSE = {
             "data": {
               "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Student[risk_status],\n    \"Students\", [Total Students],\n    \"Average Score\", [Average Score]\n)"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9801,6 +10608,9 @@ window.COURSE = {
                 ]
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9810,6 +10620,9 @@ window.COURSE = {
           "action": {
             "action": "openTmdlView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9821,6 +10634,9 @@ window.COURSE = {
             "data": {
               "table": "Enrollment"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9832,6 +10648,9 @@ window.COURSE = {
             "data": {
               "text": "Preview ready: Enrollment model changes validated with 0 errors."
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9841,6 +10660,9 @@ window.COURSE = {
           "action": {
             "action": "applyTmdl",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9852,6 +10674,9 @@ window.COURSE = {
             "data": {
               "query": "Enrollment"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9863,6 +10688,9 @@ window.COURSE = {
             "data": {
               "query": "Enrollment"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9874,6 +10702,9 @@ window.COURSE = {
             "data": {
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9885,6 +10716,9 @@ window.COURSE = {
             "data": {
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9901,6 +10735,9 @@ window.COURSE = {
               "empty": 0,
               "error": 0
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9920,6 +10757,9 @@ window.COURSE = {
                 "else": "Standard"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9935,6 +10775,9 @@ window.COURSE = {
               ],
               "aggregation": "Count Rows"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9944,6 +10787,9 @@ window.COURSE = {
           "action": {
             "action": "closeAndApply",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9955,6 +10801,9 @@ window.COURSE = {
             "data": {
               "pageId": "page1"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9964,6 +10813,9 @@ window.COURSE = {
           "action": {
             "action": "openPerformanceAnalyzer",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9973,6 +10825,9 @@ window.COURSE = {
           "action": {
             "action": "startPerformanceRecording",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9984,6 +10839,9 @@ window.COURSE = {
             "data": {
               "durationBase": 31
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -9993,6 +10851,9 @@ window.COURSE = {
           "action": {
             "action": "stopPerformanceRecording",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10004,6 +10865,9 @@ window.COURSE = {
             "data": {
               "query": "EVALUATE SUMMARIZECOLUMNS(Course[course_name], \"Average Score\", [Average Score])"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10013,6 +10877,9 @@ window.COURSE = {
           "action": {
             "action": "openMobileLayout",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10028,6 +10895,9 @@ window.COURSE = {
               "w": 320,
               "h": 100
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10037,6 +10907,9 @@ window.COURSE = {
           "action": {
             "action": "publishReport",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10048,6 +10921,9 @@ window.COURSE = {
             "data": {
               "workspace": "Campus Analytics"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10057,6 +10933,9 @@ window.COURSE = {
           "action": {
             "action": "completePublish",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10066,6 +10945,9 @@ window.COURSE = {
           "action": {
             "action": "openPowerBIService",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10077,6 +10959,9 @@ window.COURSE = {
             "data": {
               "format": "PDF"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10088,6 +10973,9 @@ window.COURSE = {
             "data": {
               "channel": "Microsoft Teams"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10097,6 +10985,9 @@ window.COURSE = {
           "action": {
             "action": "openReportView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -10116,6 +11007,9 @@ window.COURSE = {
               "path": "C:\\Users\\developer\\Java-Practice",
               "branch": "main"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10127,6 +11021,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10138,6 +11035,9 @@ window.COURSE = {
             "data": {
               "path": "src/Student.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10147,6 +11047,9 @@ window.COURSE = {
           "action": {
             "action": "openHistory",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10158,6 +11061,9 @@ window.COURSE = {
             "data": {
               "name": "Java-Practice"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10169,6 +11075,9 @@ window.COURSE = {
             "data": {
               "number": 2
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10178,6 +11087,9 @@ window.COURSE = {
           "action": {
             "action": "openSecurity",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10187,6 +11099,9 @@ window.COURSE = {
           "action": {
             "action": "openActions",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10198,6 +11113,9 @@ window.COURSE = {
             "data": {
               "id": "42"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10207,6 +11125,9 @@ window.COURSE = {
           "action": {
             "action": "openSecrets",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -10221,6 +11142,9 @@ window.COURSE = {
           "action": {
             "action": "showHome",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10235,6 +11159,9 @@ window.COURSE = {
                 "id": "local-mysql"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10244,6 +11171,9 @@ window.COURSE = {
           "action": {
             "action": "openConnectionDialog",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10253,6 +11183,9 @@ window.COURSE = {
           "action": {
             "action": "openConnectionParameters",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10262,6 +11195,9 @@ window.COURSE = {
           "action": {
             "action": "openConnectionSsl",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10271,6 +11207,9 @@ window.COURSE = {
           "action": {
             "action": "openConnectionAdvanced",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10282,6 +11221,9 @@ window.COURSE = {
             "data": {
               "id": "local-mysql"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10294,6 +11236,9 @@ window.COURSE = {
               "id": "sql-demo",
               "title": "analysis_demo.sql"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10306,6 +11251,9 @@ window.COURSE = {
               "queryId": "sql-demo",
               "sql": "SELECT\n    s.student_name,\n    c.course_name,\n    e.score,\n    e.grade\nFROM student s\nJOIN enrollment e ON e.student_id = s.student_id\nJOIN course c ON c.course_id = e.course_id\nWHERE e.score >= 80\nORDER BY e.score DESC;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10326,6 +11274,9 @@ window.COURSE = {
               ],
               "selected": 1
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10382,6 +11333,9 @@ window.COURSE = {
                 "editable": true
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10394,6 +11348,9 @@ window.COURSE = {
               "id": "r-demo",
               "pinned": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10406,6 +11363,9 @@ window.COURSE = {
               "column": "score",
               "direction": "desc"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10417,6 +11377,9 @@ window.COURSE = {
             "data": {
               "text": "Java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10431,6 +11394,9 @@ window.COURSE = {
               "column": "grade",
               "value": "A+"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10440,6 +11406,9 @@ window.COURSE = {
           "action": {
             "action": "applyGridChanges",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10451,6 +11420,9 @@ window.COURSE = {
             "data": {
               "tab": "output"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10460,6 +11432,9 @@ window.COURSE = {
           "action": {
             "action": "showTextOutput",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10469,6 +11444,9 @@ window.COURSE = {
           "action": {
             "action": "showHistoryOutput",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10478,6 +11456,9 @@ window.COURSE = {
           "action": {
             "action": "explainQuery",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10487,6 +11468,9 @@ window.COURSE = {
           "action": {
             "action": "showVisualExplain",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10496,6 +11480,9 @@ window.COURSE = {
           "action": {
             "action": "showQueryStatistics",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10505,6 +11492,9 @@ window.COURSE = {
           "action": {
             "action": "showQueryProfiler",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10518,6 +11508,9 @@ window.COURSE = {
               "name": "High Performing Students",
               "sql": "SELECT * FROM enrollment WHERE score >= 90 ORDER BY score DESC;"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10527,6 +11520,9 @@ window.COURSE = {
           "action": {
             "action": "showSnippets",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10536,6 +11532,9 @@ window.COURSE = {
           "action": {
             "action": "showContextHelp",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10545,6 +11544,9 @@ window.COURSE = {
           "action": {
             "action": "startTransaction",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10556,6 +11558,9 @@ window.COURSE = {
             "data": {
               "name": "before_update"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10568,6 +11573,9 @@ window.COURSE = {
               "sql": "UPDATE student SET risk_status='On Track' WHERE student_id=2;",
               "affectedRows": 1
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10579,6 +11587,9 @@ window.COURSE = {
             "data": {
               "name": "before_update"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10588,6 +11599,9 @@ window.COURSE = {
           "action": {
             "action": "commit",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10597,6 +11611,9 @@ window.COURSE = {
           "action": {
             "action": "showSchemas",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10608,6 +11625,9 @@ window.COURSE = {
             "data": {
               "path": "schemas/java_practice/tables/student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10619,6 +11639,9 @@ window.COURSE = {
             "data": {
               "path": "schemas/java_practice/tables/student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10633,6 +11656,9 @@ window.COURSE = {
               "dataLength": "16 KiB",
               "indexLength": "16 KiB"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10645,6 +11671,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/student",
               "tab": "Columns"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10657,6 +11686,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/student",
               "tab": "Indexes"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10669,6 +11701,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/enrollment",
               "tab": "Foreign Keys"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10681,6 +11716,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/student",
               "tab": "Triggers"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10693,6 +11731,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/enrollment",
               "tab": "Partitioning"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10705,6 +11746,9 @@ window.COURSE = {
               "path": "schemas/java_practice/tables/student",
               "tab": "Options"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10716,6 +11760,9 @@ window.COURSE = {
             "data": {
               "path": "schemas/java_practice/tables/student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10729,6 +11776,9 @@ window.COURSE = {
               "kind": "select",
               "run": false
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10790,6 +11840,9 @@ window.COURSE = {
               ],
               "editable": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10803,6 +11856,9 @@ window.COURSE = {
               "schema": "java_practice",
               "table": "student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10816,6 +11872,9 @@ window.COURSE = {
               "table": "student",
               "rows": 25
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10828,6 +11887,9 @@ window.COURSE = {
               "table": "student",
               "file": "C:\\data\\students_export.csv"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10840,6 +11902,9 @@ window.COURSE = {
               "file": "C:\\data\\students_export.csv",
               "rows": 8
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10849,6 +11914,9 @@ window.COURSE = {
           "action": {
             "action": "openServerStatus",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10858,6 +11926,9 @@ window.COURSE = {
           "action": {
             "action": "openClientConnections",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10867,6 +11938,9 @@ window.COURSE = {
           "action": {
             "action": "openUsersPrivileges",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10876,6 +11950,9 @@ window.COURSE = {
           "action": {
             "action": "showServerVariables",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10885,6 +11962,9 @@ window.COURSE = {
           "action": {
             "action": "showServerLogs",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10894,6 +11974,9 @@ window.COURSE = {
           "action": {
             "action": "openServiceControl",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10903,6 +11986,9 @@ window.COURSE = {
           "action": {
             "action": "openOptionsFile",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10912,6 +11998,9 @@ window.COURSE = {
           "action": {
             "action": "openPerformanceDashboard",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10921,6 +12010,9 @@ window.COURSE = {
           "action": {
             "action": "openPerformanceReports",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10930,6 +12022,9 @@ window.COURSE = {
           "action": {
             "action": "openPerformanceSchema",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10939,6 +12034,9 @@ window.COURSE = {
           "action": {
             "action": "showInnoDBStatus",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10950,6 +12048,9 @@ window.COURSE = {
             "data": {
               "name": "Campus Analytics Model"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10961,6 +12062,9 @@ window.COURSE = {
             "data": {
               "name": "Campus Analytics Model"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10972,6 +12076,9 @@ window.COURSE = {
             "data": {
               "zoom": 125
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10981,6 +12088,9 @@ window.COURSE = {
           "action": {
             "action": "openModelNavigator",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -10992,6 +12102,9 @@ window.COURSE = {
             "data": {
               "name": "Reverse Engineered java_practice"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11003,6 +12116,9 @@ window.COURSE = {
             "data": {
               "script": "Generated CREATE TABLE statements for 5 tables"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11014,6 +12130,9 @@ window.COURSE = {
             "data": {
               "changes": "1 column difference"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11032,6 +12151,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11043,6 +12165,9 @@ window.COURSE = {
             "data": {
               "objects": 24
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11057,6 +12182,9 @@ window.COURSE = {
                 "host": "legacy-campus-db"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11071,6 +12199,9 @@ window.COURSE = {
                 "host": "localhost:3306"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11084,6 +12215,9 @@ window.COURSE = {
               "step": 7,
               "status": "Migration completed successfully"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11095,6 +12229,9 @@ window.COURSE = {
             "data": {
               "page": "SQL Editor"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11106,6 +12243,9 @@ window.COURSE = {
             "data": {
               "page": "Modeling"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11115,6 +12255,9 @@ window.COURSE = {
           "action": {
             "action": "showSchemas",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -11132,6 +12275,9 @@ window.COURSE = {
             "data": {
               "view": "browser"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11143,6 +12289,9 @@ window.COURSE = {
             "data": {
               "key": "user:1001"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11154,6 +12303,9 @@ window.COURSE = {
             "data": {
               "query": "user:"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11165,6 +12317,9 @@ window.COURSE = {
             "data": {
               "type": "hash"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11178,6 +12333,9 @@ window.COURSE = {
               "field": "status",
               "value": "active"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11189,6 +12347,9 @@ window.COURSE = {
             "data": {
               "view": "workbench"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11200,6 +12361,9 @@ window.COURSE = {
             "data": {
               "query": "HGETALL user:1001"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11211,6 +12375,9 @@ window.COURSE = {
             "data": {
               "result": "1) \"name\"\n2) \"Ava Carter\"\n3) \"email\"\n4) \"ava@example.com\"\n5) \"plan\"\n6) \"pro\"\n7) \"region\"\n8) \"us-east\"\n9) \"status\"\n10) \"active\""
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11220,6 +12387,9 @@ window.COURSE = {
           "action": {
             "action": "openCli",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11231,6 +12401,9 @@ window.COURSE = {
             "data": {
               "command": "DBSIZE"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11242,6 +12415,9 @@ window.COURSE = {
             "data": {
               "index": "idx:products"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11259,6 +12435,9 @@ window.COURSE = {
                 "inventory": 44
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11270,6 +12449,9 @@ window.COURSE = {
             "data": {
               "tab": "slowlog"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11279,6 +12461,9 @@ window.COURSE = {
           "action": {
             "action": "startProfiler",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11292,6 +12477,9 @@ window.COURSE = {
               "time": "now",
               "message": "{\"status\":\"chapter13-ok\"}"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -11306,6 +12494,9 @@ window.COURSE = {
           "action": {
             "action": "openOverview",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11318,6 +12509,9 @@ window.COURSE = {
               "cluster": "campus-platform-dev",
               "context": "campus-platform-dev"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11329,6 +12523,9 @@ window.COURSE = {
             "data": {
               "namespace": "__all__"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11340,6 +12537,9 @@ window.COURSE = {
             "data": {
               "namespace": "campus-dev"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11351,6 +12551,9 @@ window.COURSE = {
             "data": {
               "kind": "deployments"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11363,6 +12566,9 @@ window.COURSE = {
               "kind": "deployments",
               "name": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11374,6 +12580,9 @@ window.COURSE = {
             "data": {
               "tab": "Pods"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11386,6 +12595,9 @@ window.COURSE = {
               "name": "student-api",
               "replicas": 3
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11397,6 +12609,9 @@ window.COURSE = {
             "data": {
               "kind": "pods"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11409,6 +12624,9 @@ window.COURSE = {
               "kind": "pods",
               "name": "student-api-7d8c7b8b9f-9x2lm"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11421,6 +12639,9 @@ window.COURSE = {
               "name": "student-api-7d8c7b8b9f-9x2lm",
               "container": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11432,6 +12653,9 @@ window.COURSE = {
             "data": {
               "query": "GET"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11443,6 +12667,9 @@ window.COURSE = {
             "data": {
               "query": ""
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11454,6 +12681,9 @@ window.COURSE = {
             "data": {
               "name": "student-api-7d8c7b8b9f-9x2lm"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11465,6 +12695,9 @@ window.COURSE = {
             "data": {
               "command": "pwd"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11476,6 +12709,9 @@ window.COURSE = {
             "data": {
               "command": "ls"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11488,6 +12724,9 @@ window.COURSE = {
               "kind": "pods",
               "name": "student-api-7d8c7b8b9f-9x2lm"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11500,6 +12739,9 @@ window.COURSE = {
               "kind": "deployments",
               "name": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11513,6 +12755,9 @@ window.COURSE = {
               "name": "student-api",
               "yaml": "apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: student-api\\n  namespace: campus-dev\\nspec:\\n  replicas: 3\\n  selector:\\n    matchLabels:\\n      app: student-api\\n  template:\\n    metadata:\\n      labels:\\n        app: student-api\\n    spec:\\n      containers:\\n      - name: student-api\\n        image: ghcr.io/campus/student-api:1.8.4\\n        env:\\n        - name: SPRING_PROFILES_ACTIVE\\n          value: dev\\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11522,6 +12767,9 @@ window.COURSE = {
           "action": {
             "action": "applyYaml",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11531,6 +12779,9 @@ window.COURSE = {
           "action": {
             "action": "openEvents",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11542,6 +12793,9 @@ window.COURSE = {
             "data": {
               "type": "Warning"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11553,6 +12807,9 @@ window.COURSE = {
             "data": {
               "kind": "pods"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11565,6 +12822,9 @@ window.COURSE = {
               "kind": "pods",
               "name": "course-api-86dbf4d6c8-zr7qp"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11577,6 +12837,9 @@ window.COURSE = {
               "name": "course-api-86dbf4d6c8-zr7qp",
               "container": "course-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11588,6 +12851,9 @@ window.COURSE = {
             "data": {
               "query": "Connection"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11597,6 +12863,9 @@ window.COURSE = {
           "action": {
             "action": "openTerminal",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11608,6 +12877,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl get pods -A"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11619,6 +12891,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl config current-context"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11630,6 +12905,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl config get-contexts"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11641,6 +12919,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl config use-context staging-cluster"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11652,6 +12933,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl config use-context campus-platform-dev"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11663,6 +12947,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl get deployments"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11674,6 +12961,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl describe deployment student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11685,6 +12975,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl scale deployment/student-api --replicas=4"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11697,6 +12990,9 @@ window.COURSE = {
               "kind": "deployments",
               "name": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11708,6 +13004,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl rollout restart deployment/student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11719,6 +13018,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl rollout status deployment/student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11730,6 +13032,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl rollout undo deployment/student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11741,6 +13046,9 @@ window.COURSE = {
             "data": {
               "kind": "services"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11753,6 +13061,9 @@ window.COURSE = {
               "kind": "services",
               "name": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11765,6 +13076,9 @@ window.COURSE = {
               "kind": "services",
               "name": "student-api"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11776,6 +13090,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl get services"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11787,6 +13104,9 @@ window.COURSE = {
             "data": {
               "kind": "ingresses"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11799,6 +13119,9 @@ window.COURSE = {
               "kind": "ingresses",
               "name": "campus-ingress"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11810,6 +13133,9 @@ window.COURSE = {
             "data": {
               "kind": "networkpolicies"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11821,6 +13147,9 @@ window.COURSE = {
             "data": {
               "kind": "persistentvolumeclaims"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11833,6 +13162,9 @@ window.COURSE = {
               "kind": "persistentvolumeclaims",
               "name": "mysql-data-mysql-0"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11844,6 +13176,9 @@ window.COURSE = {
             "data": {
               "kind": "persistentvolumes"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11855,6 +13190,9 @@ window.COURSE = {
             "data": {
               "kind": "storageclasses"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11866,6 +13204,9 @@ window.COURSE = {
             "data": {
               "kind": "statefulsets"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11878,6 +13219,9 @@ window.COURSE = {
               "kind": "statefulsets",
               "name": "mysql"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11890,6 +13234,9 @@ window.COURSE = {
               "kind": "pods",
               "name": "mysql-0"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11901,6 +13248,9 @@ window.COURSE = {
             "data": {
               "kind": "configmaps"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11913,6 +13263,9 @@ window.COURSE = {
               "kind": "configmaps",
               "name": "student-api-config"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11927,6 +13280,9 @@ window.COURSE = {
                 "COURSE_API_URL": "http://course-api:8081/api"
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11938,6 +13294,9 @@ window.COURSE = {
             "data": {
               "kind": "secrets"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11950,6 +13309,9 @@ window.COURSE = {
               "kind": "secrets",
               "name": "db-credentials"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11961,6 +13323,9 @@ window.COURSE = {
             "data": {
               "kind": "serviceaccounts"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11972,6 +13337,9 @@ window.COURSE = {
             "data": {
               "kind": "roles"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11983,6 +13351,9 @@ window.COURSE = {
             "data": {
               "kind": "clusterroles"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -11994,6 +13365,9 @@ window.COURSE = {
             "data": {
               "kind": "rolebindings"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12005,6 +13379,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl auth can-i list pods"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12016,6 +13393,9 @@ window.COURSE = {
             "data": {
               "kind": "nodes"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12028,6 +13408,9 @@ window.COURSE = {
               "kind": "nodes",
               "name": "worker-b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12039,6 +13422,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl cordon worker-b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12051,6 +13437,9 @@ window.COURSE = {
               "kind": "nodes",
               "name": "worker-b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12062,6 +13451,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl drain worker-b --ignore-daemonsets"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12073,6 +13465,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl uncordon worker-b"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12082,6 +13477,9 @@ window.COURSE = {
           "action": {
             "action": "openMetrics",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12093,6 +13491,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl top pods"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12104,6 +13505,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl top nodes"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12113,6 +13517,9 @@ window.COURSE = {
           "action": {
             "action": "openMapView",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12122,6 +13529,9 @@ window.COURSE = {
           "action": {
             "action": "openProjects",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12133,6 +13543,9 @@ window.COURSE = {
             "data": {
               "name": "Campus Platform"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12144,6 +13557,9 @@ window.COURSE = {
             "data": {
               "kind": "customresourcedefinitions"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12156,6 +13572,9 @@ window.COURSE = {
               "kind": "customresourcedefinitions",
               "name": "servicemonitors.monitoring.coreos.com"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12165,6 +13584,9 @@ window.COURSE = {
           "action": {
             "action": "openCommandPalette",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12174,6 +13596,9 @@ window.COURSE = {
           "action": {
             "action": "openSettings",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12185,6 +13610,9 @@ window.COURSE = {
             "data": {
               "theme": "dark"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12196,6 +13624,9 @@ window.COURSE = {
             "data": {
               "theme": "light"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12207,6 +13638,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl api-resources"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12218,6 +13652,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl explain deployment.spec"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12229,6 +13666,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl get events"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12240,6 +13680,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl port-forward service/student-api 8080:8080"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12251,6 +13694,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl apply -f k8s/deployment.yaml"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12262,6 +13708,9 @@ window.COURSE = {
             "data": {
               "command": "kubectl diff -f k8s/deployment.yaml"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12273,6 +13722,9 @@ window.COURSE = {
             "data": {
               "kind": "cronjobs"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12285,6 +13737,9 @@ window.COURSE = {
               "kind": "cronjobs",
               "name": "nightly-report"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12297,6 +13752,9 @@ window.COURSE = {
               "name": "nightly-report",
               "value": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12308,6 +13766,9 @@ window.COURSE = {
             "data": {
               "name": "nightly-report"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12319,6 +13780,9 @@ window.COURSE = {
             "data": {
               "kind": "jobs"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12331,6 +13795,9 @@ window.COURSE = {
               "kind": "pods",
               "query": "student"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12343,6 +13810,9 @@ window.COURSE = {
               "kind": "pods",
               "query": ""
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12352,6 +13822,9 @@ window.COURSE = {
           "action": {
             "action": "openOverview",
             "data": {}
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -12369,6 +13842,9 @@ window.COURSE = {
             "data": {
               "uiState": "welcome"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12383,6 +13859,9 @@ window.COURSE = {
               "location": "~\\IdeaProjects",
               "sdk": "Oracle OpenJDK 21.0.11"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12397,6 +13876,9 @@ window.COURSE = {
               "location": "~\\Desktop\\Java_Codes",
               "sdk": "Oracle OpenJDK 21.0.11"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12439,6 +13921,9 @@ window.COURSE = {
                 }
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12450,6 +13935,9 @@ window.COURSE = {
             "data": {
               "uiState": "projectContextMenu"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12462,6 +13950,9 @@ window.COURSE = {
               "uiState": "newJavaClass",
               "name": "Test"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12475,6 +13966,9 @@ window.COURSE = {
               "language": "java",
               "content": "public class Test {\\n}\\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12489,6 +13983,9 @@ window.COURSE = {
               "file": "src/Test.java",
               "line": 1
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12500,6 +13997,9 @@ window.COURSE = {
             "data": {
               "sdk": "21 Oracle OpenJDK 21.0.11"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12512,6 +14012,9 @@ window.COURSE = {
               "sdk": "21 Oracle OpenJDK 21.0.11",
               "jdkOpen": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12524,6 +14027,9 @@ window.COURSE = {
               "file": "src/Test.java",
               "code": "public class Test {\n    public static void main(String[] args) {\n        System.out.println(\"Welcome to java \");\n    }\n}\n"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12536,6 +14042,9 @@ window.COURSE = {
               "uiState": "mainTemplate",
               "file": "src/Test.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12548,6 +14057,9 @@ window.COURSE = {
               "uiState": "soutTemplate",
               "file": "src/Test.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12561,6 +14073,9 @@ window.COURSE = {
               "name": "Test",
               "output": "Welcome to java "
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12573,6 +14088,9 @@ window.COURSE = {
               "uiState": "newPackage",
               "name": "pkg1"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12588,6 +14106,9 @@ window.COURSE = {
               ],
               "targetPackage": "pkg2"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12601,6 +14122,9 @@ window.COURSE = {
               "file": "src/Test.java",
               "text": "System.out.println(\"Welcome to java \");"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12613,6 +14137,9 @@ window.COURSE = {
               "uiState": "tabContextMenu",
               "file": "src/Test.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12626,6 +14153,9 @@ window.COURSE = {
               "package": "pkg1",
               "className": "Hello1"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -12672,6 +14202,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12706,6 +14239,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12736,6 +14272,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12764,6 +14303,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12794,6 +14336,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -12855,6 +14400,9 @@ window.COURSE = {
               ],
               "console": "Connected to target VM\nBreakpoint hit at ProjectService.java:27"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12890,6 +14438,9 @@ window.COURSE = {
               "passed": 2,
               "failed": 1
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12936,6 +14487,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -12962,6 +14516,9 @@ window.COURSE = {
               ],
               "console": "2026-09-24 16:18:11 INFO Started AeroTopoApplication\n2026-09-24 16:18:12 INFO Tomcat initialized on port 8080"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -13021,6 +14578,9 @@ window.COURSE = {
                 }
               ]
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]
@@ -13237,6 +14797,9 @@ window.COURSE = {
                 ]
               }
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -13254,6 +14817,9 @@ window.COURSE = {
               "selectionText": "repository.findById(id)",
               "breadcrumbs": true
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -13265,6 +14831,9 @@ window.COURSE = {
             "data": {
               "path": "src/main/java/com/aerotopo/service/ProjectService.java"
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         },
         {
@@ -13281,6 +14850,9 @@ window.COURSE = {
               "output": "[INFO] Scanning for projects...\n[INFO] Starting AeroTopoApplication\n[INFO] BUILD SUCCESS",
               "exitCode": 0
             }
+          },
+          "highlight": {
+            "kind": "auto"
           }
         }
       ]

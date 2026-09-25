@@ -13,6 +13,9 @@
         "data": {
           "view": "browser"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -24,6 +27,9 @@
         "data": {
           "key": "user:1001"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -35,6 +41,9 @@
         "data": {
           "query": "user:"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -46,6 +55,9 @@
         "data": {
           "type": "hash"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -59,6 +71,9 @@
           "field": "status",
           "value": "active"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -70,6 +85,9 @@
         "data": {
           "view": "workbench"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -81,6 +99,9 @@
         "data": {
           "query": "HGETALL user:1001"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -92,6 +113,9 @@
         "data": {
           "result": "1) \"name\"\n2) \"Ava Carter\"\n3) \"email\"\n4) \"ava@example.com\"\n5) \"plan\"\n6) \"pro\"\n7) \"region\"\n8) \"us-east\"\n9) \"status\"\n10) \"active\""
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -101,6 +125,9 @@
       "action": {
         "action": "openCli",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -112,6 +139,9 @@
         "data": {
           "command": "DBSIZE"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -123,6 +153,9 @@
         "data": {
           "index": "idx:products"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -140,6 +173,9 @@
             "inventory": 44
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -151,6 +187,9 @@
         "data": {
           "tab": "slowlog"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -160,6 +199,9 @@
       "action": {
         "action": "startProfiler",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -173,6 +215,9 @@
           "time": "now",
           "message": "{\"status\":\"chapter13-ok\"}"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

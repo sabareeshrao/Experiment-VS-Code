@@ -32,6 +32,7 @@
         "required": [
           "title",
           "why",
+          "highlight",
           "action"
         ],
         "properties": {
@@ -46,6 +47,62 @@
           "software": {
             "type": "string",
             "minLength": 1
+          },
+          "highlight": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "auto",
+                  "code",
+                  "target",
+                  "none"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "lines": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "selector": {
+                "type": "string",
+                "minLength": 1
+              },
+              "selectors": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              },
+              "preserveHorizontal": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
           },
           "action": {
             "type": "object",

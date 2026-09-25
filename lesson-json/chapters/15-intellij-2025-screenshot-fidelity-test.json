@@ -13,6 +13,9 @@
         "data": {
           "uiState": "welcome"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -27,6 +30,9 @@
           "location": "~\\IdeaProjects",
           "sdk": "Oracle OpenJDK 21.0.11"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -41,6 +47,9 @@
           "location": "~\\Desktop\\Java_Codes",
           "sdk": "Oracle OpenJDK 21.0.11"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -83,6 +92,9 @@
             }
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -94,6 +106,9 @@
         "data": {
           "uiState": "projectContextMenu"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -106,6 +121,9 @@
           "uiState": "newJavaClass",
           "name": "Test"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -119,6 +137,9 @@
           "language": "java",
           "content": "public class Test {\\n}\\n"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -133,6 +154,9 @@
           "file": "src/Test.java",
           "line": 1
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -144,6 +168,9 @@
         "data": {
           "sdk": "21 Oracle OpenJDK 21.0.11"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -156,6 +183,9 @@
           "sdk": "21 Oracle OpenJDK 21.0.11",
           "jdkOpen": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -168,6 +198,9 @@
           "file": "src/Test.java",
           "code": "public class Test {\n    public static void main(String[] args) {\n        System.out.println(\"Welcome to java \");\n    }\n}\n"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -180,6 +213,9 @@
           "uiState": "mainTemplate",
           "file": "src/Test.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -192,6 +228,9 @@
           "uiState": "soutTemplate",
           "file": "src/Test.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -205,6 +244,9 @@
           "name": "Test",
           "output": "Welcome to java "
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -217,6 +259,9 @@
           "uiState": "newPackage",
           "name": "pkg1"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -232,6 +277,9 @@
           ],
           "targetPackage": "pkg2"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -245,6 +293,9 @@
           "file": "src/Test.java",
           "text": "System.out.println(\"Welcome to java \");"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -257,6 +308,9 @@
           "uiState": "tabContextMenu",
           "file": "src/Test.java"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -270,6 +324,9 @@
           "package": "pkg1",
           "className": "Hello1"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]

@@ -12,6 +12,9 @@
         "data": {
           "report": "Campus Performance Analytics"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -23,6 +26,9 @@
         "data": {
           "pageId": "page1"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -32,6 +38,9 @@
       "action": {
         "action": "openGetData",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -43,6 +52,9 @@
         "data": {
           "connector": "SQL Server"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -77,6 +89,9 @@
             }
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -86,6 +101,9 @@
       "action": {
         "action": "openNavigator",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -97,6 +115,9 @@
         "data": {
           "name": "Student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -106,6 +127,9 @@
       "action": {
         "action": "cancelNavigator",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -115,6 +139,9 @@
       "action": {
         "action": "openRecentSources",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -124,6 +151,9 @@
       "action": {
         "action": "openDataSourceSettings",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -133,6 +163,9 @@
       "action": {
         "action": "openReportView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -144,6 +177,9 @@
         "data": {
           "id": "scoreByDept"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -155,6 +191,9 @@
         "data": {
           "id": "scoreByDept"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -166,6 +205,9 @@
         "data": {
           "id": "scoreByDept"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -177,6 +219,9 @@
         "data": {
           "id": "scoreByDept"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -188,6 +233,9 @@
         "data": {
           "id": "semesterSlicer"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -201,6 +249,9 @@
           "field": "Enrollment[semester]",
           "value": "Spring 2026"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -213,6 +264,9 @@
           "field": "Calendar[Year]",
           "value": "2026"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -222,6 +276,9 @@
       "action": {
         "action": "openSelectionPane",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -234,6 +291,9 @@
           "id": "bmExecLive",
           "name": "Executive Snapshot - Live"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -243,6 +303,9 @@
       "action": {
         "action": "openBookmarksPane",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -254,6 +317,9 @@
         "data": {
           "id": "bmExecutive"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -265,6 +331,9 @@
         "data": {
           "pageId": "page2"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -276,6 +345,9 @@
         "data": {
           "id": "courseScores"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -288,6 +360,9 @@
           "id": "courseScores",
           "type": "clusteredBar"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -301,6 +376,9 @@
           "well": "x",
           "field": "Course[course_name]"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -314,6 +392,9 @@
           "well": "values",
           "field": "Measures[Average Score]"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -327,6 +408,9 @@
           "field": "Measures[Average Score]",
           "rule": "color scale"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -342,6 +426,9 @@
             "Measures[Average Score]"
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -355,6 +442,9 @@
           "target": "studentTable",
           "mode": "filter"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -366,6 +456,9 @@
         "data": {
           "id": "courseScores"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -377,6 +470,9 @@
         "data": {
           "id": "courseScores"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -388,6 +484,9 @@
         "data": {
           "id": "scoreScatter"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -399,6 +498,9 @@
         "data": {
           "id": "scoreScatter"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -410,6 +512,9 @@
         "data": {
           "pageId": "page4"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -421,6 +526,9 @@
         "data": {
           "id": "g3"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -432,6 +540,9 @@
         "data": {
           "id": "g4"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -443,6 +554,9 @@
         "data": {
           "id": "g5"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -454,6 +568,9 @@
         "data": {
           "id": "g6"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -465,6 +582,9 @@
         "data": {
           "id": "g9"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -476,6 +596,9 @@
         "data": {
           "id": "g10"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -487,6 +610,9 @@
         "data": {
           "id": "g11"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -498,6 +624,9 @@
         "data": {
           "id": "g12"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -509,6 +638,9 @@
         "data": {
           "table": "Student"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -522,6 +654,9 @@
           "column": "Student Name",
           "direction": "asc"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -535,6 +670,9 @@
           "column": "risk_status",
           "value": "At Risk"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -548,6 +686,9 @@
           "column": "city",
           "value": "City"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -559,6 +700,9 @@
         "data": {
           "table": "Enrollment"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -572,6 +716,9 @@
           "column": "score",
           "value": "Average"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -581,6 +728,9 @@
       "action": {
         "action": "openModelView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -590,6 +740,9 @@
       "action": {
         "action": "openManageRelationships",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -607,6 +760,9 @@
             "course_name"
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -619,6 +775,9 @@
           "table": "Calendar",
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -632,6 +791,9 @@
           "field": "gender",
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -644,6 +806,9 @@
           "table": "Enrollment",
           "mode": "Import"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -659,6 +824,9 @@
           "dax": "DIVIDE(CALCULATE(COUNTROWS(Enrollment), Enrollment[score] >= 70), COUNTROWS(Enrollment))",
           "format": "0.0%"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -671,6 +839,9 @@
           "name": "Pass Rate",
           "format": "0.0%"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -680,6 +851,9 @@
       "action": {
         "action": "openDaxQueryView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -692,6 +866,9 @@
           "id": "dax2",
           "name": "At Risk Analysis"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -703,6 +880,9 @@
         "data": {
           "text": "EVALUATE\nSUMMARIZECOLUMNS(\n    Student[risk_status],\n    \"Students\", [Total Students],\n    \"Average Score\", [Average Score]\n)"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -735,6 +915,9 @@
             ]
           ]
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -744,6 +927,9 @@
       "action": {
         "action": "openTmdlView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -755,6 +941,9 @@
         "data": {
           "table": "Enrollment"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -766,6 +955,9 @@
         "data": {
           "text": "Preview ready: Enrollment model changes validated with 0 errors."
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -775,6 +967,9 @@
       "action": {
         "action": "applyTmdl",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -786,6 +981,9 @@
         "data": {
           "query": "Enrollment"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -797,6 +995,9 @@
         "data": {
           "query": "Enrollment"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -808,6 +1009,9 @@
         "data": {
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -819,6 +1023,9 @@
         "data": {
           "value": true
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -835,6 +1042,9 @@
           "empty": 0,
           "error": 0
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -854,6 +1064,9 @@
             "else": "Standard"
           }
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -869,6 +1082,9 @@
           ],
           "aggregation": "Count Rows"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -878,6 +1094,9 @@
       "action": {
         "action": "closeAndApply",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -889,6 +1108,9 @@
         "data": {
           "pageId": "page1"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -898,6 +1120,9 @@
       "action": {
         "action": "openPerformanceAnalyzer",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -907,6 +1132,9 @@
       "action": {
         "action": "startPerformanceRecording",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -918,6 +1146,9 @@
         "data": {
           "durationBase": 31
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -927,6 +1158,9 @@
       "action": {
         "action": "stopPerformanceRecording",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -938,6 +1172,9 @@
         "data": {
           "query": "EVALUATE SUMMARIZECOLUMNS(Course[course_name], \"Average Score\", [Average Score])"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -947,6 +1184,9 @@
       "action": {
         "action": "openMobileLayout",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -962,6 +1202,9 @@
           "w": 320,
           "h": 100
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -971,6 +1214,9 @@
       "action": {
         "action": "publishReport",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -982,6 +1228,9 @@
         "data": {
           "workspace": "Campus Analytics"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -991,6 +1240,9 @@
       "action": {
         "action": "completePublish",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1000,6 +1252,9 @@
       "action": {
         "action": "openPowerBIService",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1011,6 +1266,9 @@
         "data": {
           "format": "PDF"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1022,6 +1280,9 @@
         "data": {
           "channel": "Microsoft Teams"
         }
+      },
+      "highlight": {
+        "kind": "auto"
       }
     },
     {
@@ -1031,6 +1292,9 @@
       "action": {
         "action": "openReportView",
         "data": {}
+      },
+      "highlight": {
+        "kind": "auto"
       }
     }
   ]
