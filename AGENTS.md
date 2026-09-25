@@ -73,4 +73,4 @@ Do not mark a capability missing merely because it is absent from the short summ
 
 ## Lesson highlight guardrail
 
-Every lesson step must declare `highlight.kind`. A learner must either see a precise highlighted/pointed target or see `[no highlight]` at the top of the explanation. Use explicit `code` line highlights whenever the text asks the learner to inspect code. Do not accept a silent missing highlight. See `PROJECT_INTEGRATION_RULES.md` and `lesson-json/examples/highlight-contract.example.json`.
+Every lesson step must declare an explicit `highlight.kind` of `target`, `code`, or justified `none`; committed `auto` highlights are forbidden. A learner must either see a precise highlighted/pointed target or see `[no highlight]` in both the explanation title and body. Use explicit `code` line highlights whenever the text asks the learner to inspect code. Do not accept a silent missing highlight. See `PROJECT_INTEGRATION_RULES.md` and `lesson-json/examples/highlight-contract.example.json`.

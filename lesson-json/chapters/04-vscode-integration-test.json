@@ -15,7 +15,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          "#editor",
+          ".activity"
+        ]
       }
     },
     {
@@ -30,7 +35,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -45,7 +54,8 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -60,7 +70,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -75,7 +89,8 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -90,7 +105,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -105,7 +124,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -120,7 +143,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -135,7 +162,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -150,7 +182,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -165,7 +202,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -180,7 +222,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -195,7 +242,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -210,7 +261,8 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -225,7 +277,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -240,7 +296,8 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -255,7 +312,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newFileBtn",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -270,7 +331,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -284,7 +350,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          "#editor",
+          ".activity"
+        ]
       }
     },
     {
@@ -298,7 +369,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#editorSplitPane",
+          ".tab.active"
+        ]
       }
     },
     {
@@ -313,7 +388,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     },
     {
@@ -328,7 +408,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          ".terminalLine:last-child",
+          "#terminal"
+        ]
       }
     }
   ]

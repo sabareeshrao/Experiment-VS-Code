@@ -7,6 +7,7 @@ var style=document.createElement("style");
 style.textContent=[
 ".simActionHighlight{position:relative!important;z-index:2147480000!important;outline:4px solid #53a9ff!important;outline-offset:2px!important;box-shadow:none!important;border-radius:5px!important;transition:none!important}",
 ".simActionHighlight.simActionPulse{animation:none!important;filter:none!important}",
+".simActionPointer{position:fixed!important;z-index:2147483000!important;color:#53a9ff!important;font:700 28px/1 sans-serif!important;width:30px!important;height:30px!important;display:grid!important;place-items:center!important;pointer-events:none!important;filter:none!important;text-shadow:none!important}",
 "body .codeLine.focus,body .line.focus,body .lineFocus,body .sqlLessonLine.active,body .simLessonLineHighlight{position:relative!important;box-shadow:none!important;border-left:0!important;outline:none!important;background-color:rgba(45,132,245,.34)!important;text-shadow:0 1px 1px rgba(0,0,0,.95)!important}",
 "body .codeLine.focus::before,body .line.focus::before,body .lineFocus::before,body .sqlLessonLine.active::before,body .simLessonLineHighlight::before{content:'';position:absolute;left:-7px;top:0;bottom:0;width:6px;border-radius:2px;background:#8bd3ff;box-shadow:none;pointer-events:none;z-index:2}",
 "body .codeLine.focus,body .line.focus,body .lineFocus,body .simLessonLineHighlight{padding-left:0!important}",
@@ -76,10 +77,24 @@ function reveal(el,preserveHorizontal){
 }
 function clean(){
  active.forEach(function(item){
+  if(item?.pointer){try{item.pointer.remove()}catch(_){};return}
   if(!item?.el)return;
   item.el.classList.remove("simActionHighlight","simActionPulse","simLessonLineHighlight");
  });
  active=[];
+}
+function pointAt(el){
+ var r=el.getBoundingClientRect();
+ var p=document.createElement("div");
+ p.className="simActionPointer";
+ p.textContent="➜";
+ var left=Math.max(2,Math.min(innerWidth-32,r.left+8));
+ var top=Math.max(2,Math.min(innerHeight-32,r.top+8));
+ p.style.left=left+"px";
+ p.style.top=top+"px";
+ document.body.appendChild(p);
+ active.push({pointer:p,el:el,mode:"pointer"});
+ return p;
 }
 function findText(text,scope){
  if(!text)return null;
@@ -97,16 +112,19 @@ function findText(text,scope){
  });
  return best;
 }
-function selectorMatches(selectors,multiple){
+function selectorMatches(selectors,multiple,allowLarge){
  var out=[];
- (Array.isArray(selectors)?selectors:[]).forEach(function(sel){
+ var listOfSelectors=Array.isArray(selectors)?selectors:[];
+ for(var i=0;i<listOfSelectors.length;i++){
+  var sel=listOfSelectors[i];
   try{
    var list=multiple?document.querySelectorAll(sel):[document.querySelector(sel)];
    Array.prototype.forEach.call(list,function(el){
-    if(el&&smallEnough(el)&&out.indexOf(el)<0)out.push(el);
+    if(el&&(allowLarge?visible(el):smallEnough(el))&&out.indexOf(el)<0)out.push(el);
    });
+   if(!multiple&&out.length)break;
   }catch(_){}
- });
+ }
  return out;
 }
 function dataTexts(data){
@@ -149,8 +167,9 @@ function resolve(plan){
   var byText=findText(plan.text,plan.scope||null);
   if(byText)return {elements:[byText],mode:plan.mode||(lineLike(byText)?"line":"control")};
  }
- var matches=selectorMatches(plan&&plan.selectors,!!(plan&&plan.multiple));
- return {elements:matches,mode:(plan&&plan.mode)||((matches[0]&&lineLike(matches[0]))?"line":"control")};
+ var matches=selectorMatches(plan&&plan.selectors,!!(plan&&plan.multiple),true);
+ var explicitMode=(plan&&plan.mode)||((matches[0]&&lineLike(matches[0]))?"line":"control");
+ return {elements:matches,mode:explicitMode};
 }
 function report(requestId,found,mode){
  try{parent.postMessage({type:"SIM_HIGHLIGHT_RESULT",requestId:requestId||null,found:!!found,mode:mode||"none"},"*")}catch(_){}
@@ -166,11 +185,16 @@ function highlight(plan,requestId){
    active.push({el:el,mode:"native"});
    return;
   }
+  if(resolved.mode==="control"&&!smallEnough(el)){
+   pointAt(el);
+   return;
+  }
   var cls=resolved.mode==="line"?"simLessonLineHighlight":"simActionHighlight";
   el.classList.add(cls);
   active.push({el:el,mode:resolved.mode});
  });
- report(requestId,true,resolved.mode);
+ var actualMode=active.some(function(x){return x.mode==="pointer"})?"pointer":resolved.mode;
+ report(requestId,true,actualMode);
 }
 window.addEventListener("message",function(e){
  var m=e.data||{};

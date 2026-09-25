@@ -15,7 +15,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus"
+        ]
       }
     },
     {
@@ -29,7 +33,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#sendBtn",
+          "#reqTabs"
+        ]
       }
     },
     {
@@ -43,7 +51,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#envName"
+        ]
       }
     },
     {
@@ -57,7 +68,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#methodBox"
+        ]
       }
     },
     {
@@ -72,7 +86,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "input[type=url]",
+          "input[type=text]"
+        ],
+        "text": "{{baseUrl}}/api/students/101"
       }
     },
     {
@@ -88,7 +107,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#reqTabs"
+        ],
+        "text": "Headers",
+        "scope": "#reqTabs"
       }
     },
     {
@@ -119,7 +143,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#sendBtn"
+        ]
       }
     },
     {
@@ -133,7 +160,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#respTabs"
+        ]
       }
     },
     {
@@ -147,7 +177,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus"
+        ]
       }
     }
   ]

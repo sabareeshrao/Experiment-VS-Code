@@ -17,7 +17,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#mainView",
+          "#detailsBody",
+          "#pushBtn",
+          "#pullBtn",
+          "#fetchBtn"
+        ]
       }
     },
     {
@@ -31,7 +38,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#mainView",
+          "#detailsBody",
+          "#pushBtn",
+          "#pullBtn",
+          "#fetchBtn"
+        ]
       }
     },
     {
@@ -45,7 +59,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#mainView",
+          "#detailsBody",
+          "#pushBtn",
+          "#pullBtn",
+          "#fetchBtn"
+        ]
       }
     },
     {
@@ -57,7 +78,14 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#mainView",
+          "#detailsBody",
+          "#pushBtn",
+          "#pullBtn",
+          "#fetchBtn"
+        ]
       }
     },
     {
@@ -71,7 +99,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     },
     {
@@ -85,7 +116,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     },
     {
@@ -97,7 +131,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     },
     {
@@ -109,7 +146,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     },
     {
@@ -123,7 +163,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     },
     {
@@ -135,7 +178,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#content"
+        ]
       }
     }
   ]

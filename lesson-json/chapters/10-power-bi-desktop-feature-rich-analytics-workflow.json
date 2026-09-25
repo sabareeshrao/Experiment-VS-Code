@@ -14,7 +14,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#reportName",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -28,7 +32,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageTab.active",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -40,7 +48,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -54,7 +66,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".connector.selected",
+          "#modalTitle"
+        ]
       }
     },
     {
@@ -91,7 +107,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".modeCard.active",
+          "#modalTitle"
+        ]
       }
     },
     {
@@ -103,7 +123,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -117,7 +141,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".navItem",
+          "#modalTitle"
+        ],
+        "text": "Student",
+        "scope": "#modalBody"
       }
     },
     {
@@ -129,7 +159,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#reportName",
+          "#reportViewBtn"
+        ]
       }
     },
     {
@@ -141,7 +175,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -153,7 +191,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -165,7 +207,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#reportViewBtn",
+          "#reportName"
+        ]
       }
     },
     {
@@ -179,7 +225,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"scoreByDept\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -193,7 +243,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#onObjectMenu"
+        ]
       }
     },
     {
@@ -207,7 +260,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-pbi-highlight=\"format-pane\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -221,7 +278,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -235,7 +296,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"semesterSlicer\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -251,7 +316,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"semesterSlicer\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -266,7 +335,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#filtersPane",
+          "#statusMessage"
+        ],
+        "text": "Filters on all pages",
+        "scope": "#filtersPane"
       }
     },
     {
@@ -278,7 +353,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -293,7 +372,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -305,7 +387,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -319,7 +405,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -333,7 +422,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageTab.active",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -347,7 +440,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -362,7 +459,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-vtype=\"clusteredBar\"].active",
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -378,7 +480,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-well=\"x\"]",
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -394,7 +501,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-well=\"values\"]",
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -410,7 +522,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -428,7 +544,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -444,7 +564,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"riskSlicer\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -458,7 +582,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -472,7 +600,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"courseScores\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -486,7 +618,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"scoreScatter\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -500,7 +636,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-pbi-highlight=\"analytics-pane\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -514,7 +654,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageTab.active",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -528,7 +672,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g3\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -542,7 +690,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g4\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -556,7 +708,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g5\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -570,7 +726,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g6\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -584,7 +744,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g9\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -598,7 +762,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g10\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -612,7 +780,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g11\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -626,7 +798,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-visual-id=\"g12\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -640,7 +816,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataViewBtn",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -656,7 +836,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataGrid [data-field=\"Student Name\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -672,7 +856,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataGrid [data-field=\"risk_status\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -688,7 +876,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataGrid [data-field=\"city\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -702,7 +894,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#dataToolbar"
+        ]
       }
     },
     {
@@ -718,7 +914,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataGrid [data-field=\"score\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -730,7 +930,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modelViewBtn",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -742,7 +946,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -762,7 +970,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#modelCanvas"
+        ]
       }
     },
     {
@@ -777,7 +989,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#modelCanvas"
+        ]
       }
     },
     {
@@ -793,7 +1009,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".modelField[data-field=\"gender\"]",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -808,7 +1028,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#modelCanvas"
+        ]
       }
     },
     {
@@ -826,7 +1050,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#dataPane",
+          "#statusMessage"
+        ],
+        "text": "Pass Rate",
+        "scope": "#dataPane"
       }
     },
     {
@@ -841,7 +1071,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#dataPane"
+        ]
       }
     },
     {
@@ -853,7 +1087,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#daxViewBtn"
+        ]
       }
     },
     {
@@ -868,7 +1105,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#newDaxBtn",
+          ".codeTab.active"
+        ]
       }
     },
     {
@@ -882,7 +1123,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#daxEditor"
+        ]
       }
     },
     {
@@ -917,7 +1161,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#daxResults",
+          "#runDaxBtn"
+        ]
       }
     },
     {
@@ -929,7 +1177,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#tmdlViewBtn"
+        ]
       }
     },
     {
@@ -943,7 +1194,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#tmdlEditor",
+          "#scriptTmdlBtn"
+        ]
       }
     },
     {
@@ -957,7 +1212,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#tmdlPreview",
+          "#previewTmdlBtn"
+        ]
       }
     },
     {
@@ -969,7 +1228,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#applyTmdlBtn",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -983,7 +1246,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#pqStatus",
+          ".pqQuery.active"
+        ]
       }
     },
     {
@@ -997,7 +1264,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-query-id=\"Enrollment\"]",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1011,7 +1282,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#pqProfilingStrip",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1025,7 +1300,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#pqProfilingStrip",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1044,7 +1323,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#pqProfilingStrip",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1066,7 +1349,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#appliedSteps .step.active",
+          "#pqGrid",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1084,7 +1372,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#appliedSteps .step.active",
+          "#pqGrid",
+          "#pqStatus"
+        ]
       }
     },
     {
@@ -1096,7 +1389,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#dataPane"
+        ]
       }
     },
     {
@@ -1110,7 +1407,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageTab.active",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1122,7 +1423,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1134,7 +1439,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#toast"
+        ]
       }
     },
     {
@@ -1148,7 +1457,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#toast"
+        ]
       }
     },
     {
@@ -1160,7 +1473,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#toast"
+        ]
       }
     },
     {
@@ -1174,7 +1491,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#statusMessage",
+          "#toast"
+        ]
       }
     },
     {
@@ -1186,7 +1507,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1204,7 +1529,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1216,7 +1545,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1230,7 +1563,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1242,7 +1579,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#toast",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1254,7 +1595,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#serviceHero",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1268,7 +1613,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1282,7 +1631,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalTitle",
+          "#statusMessage"
+        ]
       }
     },
     {
@@ -1294,7 +1647,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#reportViewBtn",
+          "#reportName"
+        ]
       }
     }
   ]

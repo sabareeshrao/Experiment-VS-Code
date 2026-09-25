@@ -56,7 +56,6 @@
             "properties": {
               "kind": {
                 "enum": [
-                  "auto",
                   "code",
                   "target",
                   "none"

@@ -12,7 +12,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#homeOverlay"
+        ]
       }
     },
     {
@@ -29,7 +32,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -41,7 +49,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#btnManageConnections"
+        ]
       }
     },
     {
@@ -53,7 +64,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#btnManageConnections"
+        ]
       }
     },
     {
@@ -65,7 +79,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#btnManageConnections"
+        ]
       }
     },
     {
@@ -77,7 +94,10 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#btnManageConnections"
+        ]
       }
     },
     {
@@ -91,7 +111,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#connectionPill"
+        ]
       }
     },
     {
@@ -106,7 +129,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#btnNewSql"
+        ]
       }
     },
     {
@@ -121,7 +147,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -144,7 +176,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -203,7 +240,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -218,7 +258,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -233,7 +278,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -247,7 +297,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -264,7 +319,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -276,7 +336,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -290,7 +355,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -302,7 +372,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -314,7 +389,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -326,7 +406,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -338,7 +423,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -350,7 +440,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -362,7 +457,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -378,7 +478,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -390,7 +495,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -402,7 +512,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -414,7 +529,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -428,7 +548,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -443,7 +568,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -457,7 +585,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -469,7 +602,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -481,7 +619,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -495,7 +638,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -509,7 +657,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -526,7 +679,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -541,7 +699,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -556,7 +719,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -571,7 +739,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -586,7 +759,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -601,7 +779,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -616,7 +799,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -630,7 +818,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -646,7 +839,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -710,7 +908,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -726,7 +929,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -742,7 +950,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -757,7 +970,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -772,7 +990,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -784,7 +1007,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -796,7 +1024,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -808,7 +1041,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -820,7 +1058,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -832,7 +1075,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -844,7 +1092,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -856,7 +1109,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -868,7 +1126,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -880,7 +1143,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -892,7 +1160,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -904,7 +1177,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -918,7 +1196,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -932,7 +1215,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -946,7 +1234,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -958,7 +1251,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -972,7 +1270,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -986,7 +1289,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1000,7 +1308,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1021,7 +1334,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1035,7 +1353,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1052,7 +1375,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1069,7 +1397,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1085,7 +1418,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1099,7 +1437,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1113,7 +1456,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     },
     {
@@ -1125,7 +1473,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#workbenchSurfaceTitle",
+          "#connectionPill",
+          "#qExecCurrent"
+        ]
       }
     }
   ]

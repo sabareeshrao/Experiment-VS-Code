@@ -214,7 +214,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".treeRoot",
+          "#newBtn"
+        ]
       }
     },
     {
@@ -234,7 +238,8 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -248,7 +253,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus"
+        ]
       }
     },
     {
@@ -267,7 +276,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#terminal"
+        ]
       }
     }
   ]

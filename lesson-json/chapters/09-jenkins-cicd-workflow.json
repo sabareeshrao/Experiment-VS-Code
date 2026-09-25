@@ -15,7 +15,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus",
+          ".treeRoot"
+        ]
       }
     },
     {
@@ -27,7 +32,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -42,7 +51,10 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#search"
+        ]
       }
     },
     {
@@ -56,7 +68,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "java-practice-api",
+        "scope": "#main"
       }
     },
     {
@@ -71,7 +88,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -87,7 +108,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -102,7 +127,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "Test Result",
+        "scope": "#main"
       }
     },
     {
@@ -114,7 +144,11 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -128,7 +162,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "java-practice-api",
+        "scope": "#main"
       }
     },
     {
@@ -142,7 +181,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "Configure",
+        "scope": "#main"
       }
     },
     {
@@ -159,7 +203,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -174,7 +222,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -189,7 +241,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -205,7 +261,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -221,7 +281,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -236,7 +300,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -258,7 +326,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -275,7 +347,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -291,7 +367,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -307,7 +387,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -322,7 +406,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -336,7 +424,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "Build with Parameters",
+        "scope": "#main"
       }
     },
     {
@@ -389,7 +482,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -405,7 +502,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -472,7 +573,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -506,7 +611,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -521,7 +630,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "Test Result",
+        "scope": "#main"
       }
     },
     {
@@ -539,7 +653,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -554,7 +672,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main"
+        ],
+        "text": "Artifacts",
+        "scope": "#main"
       }
     },
     {
@@ -568,7 +691,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -582,7 +709,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          "#search"
+        ]
       }
     },
     {
@@ -596,7 +727,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus",
+          ".treeRoot"
+        ]
       }
     }
   ]

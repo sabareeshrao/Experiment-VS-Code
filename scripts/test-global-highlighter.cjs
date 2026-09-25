@@ -68,6 +68,23 @@ const server=http.createServer((req,res)=>{
       assert.equal(result.boxShadow,"none",software+": blue guidance must be boundary-only, not a glow");
       assert.equal(result.filter,"none",software+": blue guidance must not brighten/pulse the control");
       assert(/rgb\(83, 169, 255\)|rgba\(83, 169, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
+      const largePointer=await child.evaluate(async()=>{
+        const large=document.createElement("div");
+        large.id="globalLargeHighlightProbe";
+        large.style.cssText="position:fixed;left:12px;top:120px;width:82vw;height:110px;background:rgba(10,10,10,.2);z-index:2147479998";
+        document.body.appendChild(large);
+        window.postMessage({type:"SIM_HIGHLIGHT",requestId:7001,plan:{selectors:["#globalLargeHighlightProbe"]}},"*");
+        await new Promise(r=>setTimeout(r,80));
+        return {pointer:!!document.querySelector(".simActionPointer"),outlined:large.classList.contains("simActionHighlight")};
+      });
+      assert(largePointer.pointer,software+": large target did not receive a pointer");
+      assert(!largePointer.outlined,software+": large target received a giant rectangle instead of a pointer");
+      await child.evaluate(async()=>{
+        window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*");
+        document.querySelector("#globalLargeHighlightProbe")?.remove();
+        window.postMessage({type:"SIM_HIGHLIGHT",requestId:7002,plan:{selectors:["#globalHighlightProbe"]}},"*");
+        await new Promise(r=>setTimeout(r,60));
+      });
       const lineStyle=await child.evaluate(()=>{
         const line=document.createElement("div");
         line.id="globalLineHighlightProbe";

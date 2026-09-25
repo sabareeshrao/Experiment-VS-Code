@@ -15,7 +15,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus"
+        ]
       }
     },
     {
@@ -30,7 +34,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -45,7 +55,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -60,7 +76,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -76,7 +98,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#run",
+          "[data-result-tab=\"data\"]",
+          ".resultTab.active"
+        ]
       }
     },
     {
@@ -102,7 +129,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -117,7 +150,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -141,7 +180,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -173,7 +218,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -188,7 +239,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -203,7 +260,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -230,7 +293,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#run",
+          "[data-result-tab=\"data\"]",
+          ".resultTab.active"
+        ]
       }
     },
     {
@@ -267,7 +335,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -301,7 +375,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -343,7 +423,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -358,7 +444,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -405,7 +497,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#run",
+          "[data-result-tab=\"data\"]",
+          ".resultTab.active"
+        ]
       }
     },
     {
@@ -462,7 +559,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -477,7 +580,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -525,7 +634,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#run",
+          "[data-result-tab=\"data\"]",
+          ".resultTab.active"
+        ]
       }
     },
     {
@@ -582,7 +696,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -597,7 +717,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -674,7 +800,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#run",
+          "[data-result-tab=\"data\"]",
+          ".resultTab.active"
+        ]
       }
     },
     {
@@ -761,7 +892,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -776,7 +913,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -791,7 +934,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".sqlLessonLine.active",
+          ".sim-emphasis",
+          "#sqlEditor",
+          "#queryEditor"
+        ]
       }
     },
     {
@@ -805,7 +954,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus"
+        ]
       }
     }
   ]

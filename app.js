@@ -146,7 +146,7 @@
       );
       ensureScript(
         "/simulator/shared/highlighter.js",
-        "simulator/shared/highlighter.js?v=16",
+        "simulator/shared/highlighter.js?v=17",
         "globalHighlightRuntime"
       );
       ensureScript(
@@ -403,23 +403,34 @@
 
   function highlightPlanForStep(step) {
     if (!step?.action) return { kind: "none", reason: "No executable lesson action." };
-    const software = normalizeSoftware(step.software);
-    const action = step.action.action;
-    const hint = step.highlight || { kind: "auto" };
+    const hint = step.highlight;
     const plan = (selectors, extra = {}) => ({ selectors, ...extra });
+
+    // Committed lesson source must be explicit. Runtime guessing is intentionally
+    // forbidden so missing mappings cannot masquerade as successful guidance.
+    if (!hint) return { kind: "none", reason: "Missing explicit highlight contract." };
 
     if (hint.kind === "none") {
       return { kind: "none", reason: hint.reason || "This step is intentionally explanatory." };
     }
+
     if (hint.kind === "target") {
-      return plan(hint.selectors || [], {
+      const selectors = Array.isArray(hint.selectors) ? hint.selectors.filter(Boolean) : [];
+      if (!selectors.length && !hint.text) {
+        return { kind: "none", reason: "Target highlight has no selector or text." };
+      }
+      return plan(selectors, {
         text: hint.text || "",
         scope: hint.scope || null,
         preserveHorizontal: !!hint.preserveHorizontal
       });
     }
+
     if (hint.kind === "code") {
-      const lines = Array.isArray(hint.lines) ? hint.lines : (Number.isFinite(Number(hint.line)) ? [Number(hint.line)] : []);
+      const lines = Array.isArray(hint.lines)
+        ? hint.lines
+        : (Number.isFinite(Number(hint.line)) ? [Number(hint.line)] : []);
+
       if (lines.length) {
         return plan(lines.map(line => '[data-line="' + Number(line) + '"]'), {
           mode: "line",
@@ -427,196 +438,28 @@
           preserveHorizontal: true
         });
       }
+
       if (hint.selector) {
-        return plan([hint.selector], { mode: "line", multiple: true, preserveHorizontal: true });
+        return plan([hint.selector], {
+          mode: "line",
+          multiple: true,
+          preserveHorizontal: true
+        });
       }
+
       if (hint.text) {
-        return plan([], { text: hint.text, scope: hint.scope || ".code", mode: "line", preserveHorizontal: true });
+        return plan([], {
+          text: hint.text,
+          scope: hint.scope || ".code",
+          mode: "line",
+          preserveHorizontal: true
+        });
       }
+
+      return { kind: "none", reason: "Code highlight has no line, selector, or text." };
     }
 
-    // Blue guidance is only for controls the developer clicks.
-    // Editors/terminals use their own native changed-line emphasis.
-    if (software === "eclipse") {
-      if (action === "openProject" || action === "createPackage" || action === "createJavaFile") return plan(["#newBtn"]);
-      if (action === "openFile") return plan(["#projectTree"]);
-      if (action === "runApplication") return plan(["#runBtn"]);
-      if (action === "showConsole" || action === "showBytecode") return plan(["#consoleTab"]);
-      if (action === "showProblems" || action === "showDialog") return plan(["#problemsTab"]);
-    }
-    if (software === "powershell") {
-      if (action === "runCommand") return plan(["#commandInput"]);
-      if (action === "clearTerminal") return plan(["#clearBtn"]);
-      if (action === "showExitCode") return plan(["#exitBadge"]);
-    }
-    if (software === "intellij") {
-      if (action === "newProject" || action === "openNewMavenProjectWizard" || action === "createMavenProject" || action === "createPackage" || action === "createFile") return plan(["#newBtn"]);
-      if (action === "runJavaMain" || action === "runConfiguration") return plan(["#runBtn"]);
-      if (action === "restartApplication" || action === "restartSpringBootApp") return plan(["#restartBtn"]);
-      if (action === "clearRunConsole") return plan(["#clearConsoleBtn"]);
-      if (action === "openIntegratedTerminal" || action === "openTerminal") return plan(["#terminalBtn"]);
-      if (action === "showExternalLibraries") return plan(['[data-external-libraries="1"]']);
-    }
-    if (software === "vscode") {
-      if (action === "createFile") return plan(["#newFileBtn"]);
-    }
-    if (software === "pgadmin") {
-      if (action === "openQueryTool") return plan(["#newQuery"]);
-      if (action === "executeQuery") return plan(["#run"]);
-      if (action === "refreshTree") return plan(["#pgRefresh"]);
-      if (action === "showResultTab") return plan([`[data-result-tab="${step.action.data?.tab || "data"}"]`]);
-      if (action === "showExplain") return plan(['[data-result-tab="explain"]']);
-    }
-    if (software === "postman") {
-      if (action === "setEnvironment") return plan(["#envName"]);
-      if (action === "setMethod") return plan(["#methodBox"]);
-      if (action === "setHeaders") return plan(["#reqTabs"], { text: "Headers", scope: "#reqTabs" });
-      if (action === "sendRequest") return plan(["#sendBtn"]);
-      if (action === "selectResponseTab") return plan(["#respTabs"]);
-    }
-    if (software === "ssms") {
-      if (action === "openConnectDialog") return plan(['[data-target="connect"]']);
-      if (action === "connectServer") return plan(['[data-target="connectDialogButton"]']);
-      if (action === "changeDatabase") return plan(["#dbSelect"]);
-      if (action === "newQuery") return plan(['[data-target="newQuery"]']);
-      if (action === "executeQuery") return plan(['[data-target="execute"]']);
-      if (action === "refreshObjectExplorer") return plan(['[data-target="refreshObjectExplorer"]']);
-      if (action === "showActualExecutionPlan") return plan(['[data-resulttab="plan"]']);
-      if (action === "showClientStatistics") return plan(['[data-resulttab="stats"]']);
-      if (action === "saveQuery") return plan(['[data-target="save"]']);
-    }
-    if (software === "powerbi") {
-      if (action === "openGetData") return plan(['[data-target="getData"]']);
-      if (action === "openPowerQuery") return plan(["#powerQuery"]);
-      if (action === "openModelView") return plan(["#modelViewBtn"]);
-      if (action === "openDaxQueryView") return plan(["#daxViewBtn"]);
-      if (action === "runDaxQuery") return plan(["#runDaxBtn"]);
-      if (action === "openTmdlView") return plan(["#tmdlViewBtn"]);
-      if (action === "scriptTmdlObject") return plan(["#scriptTmdlBtn"]);
-      if (action === "openReportView") return plan(["#reportViewBtn"]);
-      if (action === "selectPage") return plan([`[data-page-id="${step.action.data?.id || step.action.data?.page || ""}"]`, ".pageTab"]);
-      if (action === "selectVisual") return plan([`[data-visual-id="${step.action.data?.id || ""}"]`, "#reportCanvas"]);
-      if (action === "openOnObjectBuild") return plan(["#onObjectMenu"]);
-      if (action === "openFormatPane" || action === "openAnalyticsPane") return plan(["#visualizationsPane"]);
-      if (action === "openSelectionPane" || action === "openBookmarksPane" || action === "openManageRelationships") return plan(["#modalShade .modal"]);
-      if (action === "openPerformanceAnalyzer") return plan(["#visualizationsPane", ".sidePanes"]);
-    }
-    if (software === "git") {
-      if (action === "stageFile" || action === "unstageFile") return plan(["#mainView"]);
-      if (action === "commit" || action === "setCommitMessage") return plan(["#detailsBody"]);
-      if (action === "push") return plan(["#pushBtn"]);
-      if (action === "pull") return plan(["#pullBtn"]);
-      if (action === "fetch") return plan(["#fetchBtn"]);
-    }
-    if (software === "github") {
-      if (action === "openFile") return plan(["#content"]);
-      if (action === "createIssue" || action === "openIssue") return plan(["#content"]);
-      if (action === "createPullRequest" || action === "openPullRequest") return plan(["#content"]);
-      if (action === "showClone") return plan(["#content"]);
-    }
-    if (software === "github_actions") {
-      if (action === "openNewWorkflow" || action === "openWorkflowFile") return plan(["#content"]);
-      if (action === "triggerRun" || action === "openRun") return plan(["#content"]);
-      if (action === "openSecrets" || action === "openCaches" || action === "openRunners") return plan(["#content"]);
-    }
-    if (software === "redis") {
-      if (action === "setView") return plan([`[data-view="${step.action.data?.view || "browser"}"]`]);
-      if (action === "selectKey") return plan([`[data-key="${String(step.action.data?.key || step.action.data?.name || "").replace(/"/g, '\\"')}"]`, "#keyList"]);
-      if (action === "searchKeys") return plan(["#keySearch"]);
-      if (action === "filterKeyType") return plan(["#typeFilter"]);
-      if (action === "createKey") return plan(["#addKeyBtn"]);
-      if (action === "deleteKey") return plan(["#deleteKeyBtn"]);
-      if (action === "editKey" || action === "setKeyValue" || action === "setHashField" || action === "pushListItem" || action === "addSetMember" || action === "addSortedSetMember") return plan(["#editKeyBtn"]);
-      if (action === "setWorkbenchQuery") return plan(["#wbEditor"]);
-      if (action === "runWorkbench") return plan(["#runWb"]);
-      if (action === "openCli") return plan(["#cliToggle"]);
-      if (action === "runCliCommand") return plan(["#cliInput"]);
-      if (action === "clearCli") return plan(["#clearCli"]);
-      if (action === "openSearchIndex") return plan(['[data-view="search"]']);
-      if (action === "runSearchQuery") return plan(["#runSearch"]);
-      if (action === "showExplain") return plan(["#explainSearch"]);
-      if (action === "showProfile") return plan(["#profileSearch"]);
-      if (action === "openAnalysisTab") return plan([`[data-atab="${step.action.data?.tab || "memory"}"]`, '[data-view="analysis"]']);
-      if (action === "startProfiler" || action === "stopProfiler") return plan(["#profilerBtn"]);
-      if (action === "subscribeChannel") return plan(["#subscribeBtn"]);
-      if (action === "publishMessage") return plan(["#publishBtn"]);
-      if (action === "openSettings") return plan(["#settingsBtn"]);
-      if (action === "openDatabaseDialog") return plan(["#dbSwitcher"]);
-    }
-    if (software === "kubernetes") {
-      if (action === "selectCluster") return plan(["#clusterSelect"]);
-      if (action === "selectNamespace") return plan(["#namespaceSelect"]);
-      if (action === "openOverview") return plan(['[data-nav="overview"]']);
-      if (action === "openResourceList") return plan([`[data-nav="${step.action.data?.kind || "pods"}"]`]);
-      if (action === "selectResource") return plan([`[data-row="${step.action.data?.name || ""}"]`, ".pageHead h1"]);
-      if (action === "openResourceTab") return plan([`[data-tab="${step.action.data?.tab || "Overview"}"]`]);
-      if (action === "openLogs") return plan(['[data-tab="Logs"]', ".logToolbar"]);
-      if (action === "openExec") return plan(['[data-tab="Exec"]', "#execInput"]);
-      if (action === "openTerminal") return plan(["#terminalToggle"]);
-      if (action === "runKubectl" || action === "clearTerminal") return plan(["#termInput"]);
-      if (action === "openYaml" || action === "editYaml" || action === "applyYaml") return plan(['[data-tab="YAML"]', "#yamlView"]);
-      if (action === "scaleDeployment") return plan(["[data-scale]", ".pageHead h1"]);
-      if (action === "restartDeployment") return plan(["[data-restart]", ".pageHead h1"]);
-      if (action === "openMapView") return plan(['[data-nav="map"]']);
-      if (action === "openProjects" || action === "openProject") return plan(['[data-nav="projects"]', ".projectGrid"]);
-      if (action === "openMetrics") return plan(['[data-nav="metrics"]']);
-      if (action === "openEvents" || action === "filterEvents") return plan(['[data-nav="events"]', "#eventFilter"]);
-      if (action === "openSettings" || action === "openPlugins") return plan(['[data-nav="settings"]']);
-      if (action === "searchResources") return plan(["#globalSearch"]);
-      if (action === "toggleTheme") return plan(["#themeToggle"]);
-      if (action === "openCommandPalette") return plan(["#modalShade .modalHead"]);
-    }
-    if (software === "mysqlworkbench") {
-      if (action === "showHome") return plan(["#homeOverlay"]);
-      if (action === "openConnectionDialog" || action === "openConnectionParameters" || action === "openConnectionSsl" || action === "openConnectionAdvanced") return plan(["#btnManageConnections"]);
-      if (action === "connect") return plan(["#connectionPill"]);
-      if (action === "openSQLTab") return plan(["#btnNewSql"]);
-      if (action === "executeQuery" || action === "executeCurrent" || action === "executeAll" || action === "executeSelection") return plan(["#qExecCurrent"]);
-      if (action === "schemaRefresh" || action === "refreshSchemas") return plan(["#btnRefresh"]);
-      if (action === "showResult" || action === "showTableData") return plan(['[data-bottom="results"]']);
-      if (action === "openTableEditor" || action === "openTableEditorTab") return plan(["#workbenchSurfaceTitle"]);
-      if (action === "openServerStatus" || action === "openClientConnections" || action === "openPerformanceDashboard" || action === "openPerformanceReports" || action === "openUsersPrivileges" || action === "openOptionsFile" || action === "openServiceControl") return plan(["#workbenchSurfaceTitle"]);
-      if (action === "openModel" || action === "createEERDiagram" || action === "reverseEngineer" || action === "forwardEngineer" || action === "synchronizeModel" || action === "compareSchemas") return plan(["#workbenchSurfaceTitle"]);
-      if (action === "openMigrationWizard" || action === "configureMigrationSource" || action === "configureMigrationTarget" || action === "runMigration") return plan(["#workbenchSurfaceTitle"]);
-      if (action === "openPreferences") return plan(["#workbenchSurfaceTitle"]);
-    }
-    if (software === "spring_initializer") {
-      const v = String(step.action.data?.value ?? step.action.data?.projectType ?? step.action.data?.language ?? step.action.data?.version ?? step.action.data?.packaging ?? step.action.data?.format ?? "");
-      const q = value => String(value).replace(/\\/g,"\\\\").replace(/"/g,'\\"');
-      if (action === "setProjectType") return plan([`#projectType [data-value="${q(v || "Maven")}"]`]);
-      if (action === "setLanguage") return plan([`#language [data-value="${q(v || "Java")}"]`]);
-      if (action === "setBootVersion") return plan(["#bootVersion"]);
-      if (action === "setGroup") return plan(["#group"]);
-      if (action === "setArtifact") return plan(["#artifact"]);
-      if (action === "setPackaging") return plan([`#packaging [data-value="${q(v || "Jar")}"]`]);
-      if (action === "setJavaVersion") return plan([`#javaVersion [data-value="${q(v || "17")}"]`]);
-      if (action === "setConfigFormat") return plan([`#configFormat [data-value="${q(v || "Properties")}"]`]);
-      if (action === "openDependencies" || action === "searchDependencies" || action === "addDependency") return plan(["#addDependencyBtn"]);
-      if (action === "generateProject") return plan(["#generateBtn"]);
-    }
-    if (software === "maven_central") {
-      if (action === "searchDependency" || action === "setSearch") return plan(["#searchBtn"]);
-      if (action === "openArtifact") return plan(["#artifactDetail"]);
-      if (action === "selectVersion") return plan(["#versions"]);
-      if (action === "showMavenSnippet") return plan(["#snippetCard"]);
-      if (action === "copyMavenSnippet") return plan(["#copySnippetBtn"]);
-    }
-    if (software === "jenkins") {
-      if (action === "typeSearch") return plan(["#search"]);
-      if (action === "openJob") return plan(["#main"], { text: step.action.data?.name || "", scope: "#main" });
-      if (action === "pressBuildNow") return plan(["#main"], { text: "Build Now", scope: "#main" });
-      if (action === "openBuildWithParameters") return plan(["#main"], { text: "Build with Parameters", scope: "#main" });
-      if (action === "openConfigureJob") return plan(["#main"], { text: "Configure", scope: "#main" });
-      if (action === "validateJenkinsfile") return plan(["#main"], { text: "Jenkinsfile", scope: "#main" });
-      if (action === "openTestResults") return plan(["#main"], { text: "Test Result", scope: "#main" });
-      if (action === "openArtifacts") return plan(["#main"], { text: "Artifacts", scope: "#main" });
-    }
-    return {
-      auto: true,
-      action,
-      data: step.action.data || {},
-      preserveHorizontal: true
-    };
+    return { kind: "none", reason: "Unsupported highlight kind: " + String(hint.kind || "missing") };
   }
 
   function sendSeekNow(index, target, animateFinal) {
@@ -688,10 +531,13 @@
     if (!flat.length || fullCodeMode) return;
     const step = flat[current];
     const stage = course.stages[step.stageIndex];
+    const noHighlight = step.highlight?.kind === "none" || (currentHighlightResult?.index === current && currentHighlightResult?.found === false);
     const payload = {
       type: "SIM_EXPLAIN",
-      title: step.title,
-      text: ((step.highlight?.kind === "none" || (currentHighlightResult?.index === current && currentHighlightResult?.found === false)) && !String(step.why || "").startsWith("[no highlight]"))
+      title: noHighlight && !String(step.title || "").startsWith("[no highlight]")
+        ? "[no highlight] " + step.title
+        : step.title,
+      text: noHighlight && !String(step.why || "").startsWith("[no highlight]")
         ? "[no highlight]\n\n" + step.why
         : step.why,
       answer: step.answer || "",

@@ -17,7 +17,11 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".treeRoot",
+          "#newBtn"
+        ]
       }
     },
     {
@@ -32,7 +36,11 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".treeRoot",
+          "#newBtn"
+        ]
       }
     },
     {
@@ -48,7 +56,11 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".treeRoot",
+          "#newBtn"
+        ]
       }
     },
     {
@@ -64,7 +76,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -80,7 +93,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -96,7 +110,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -112,7 +127,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -128,7 +144,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -144,7 +161,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -160,7 +178,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -176,7 +195,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -192,7 +212,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -208,7 +229,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -224,7 +246,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -240,7 +263,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -256,7 +280,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -272,7 +297,8 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "code",
+        "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
       }
     },
     {
@@ -286,7 +312,12 @@
       },
       "software": "intellij",
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".treeRoot",
+          "#runBtn"
+        ]
       }
     },
     {
@@ -300,7 +331,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#editorSplitTitle",
+          "#editorSplitWrap"
+        ]
       }
     },
     {
@@ -315,7 +350,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#terminal"
+        ]
       }
     }
   ]

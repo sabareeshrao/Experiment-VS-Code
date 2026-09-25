@@ -454,23 +454,23 @@ Every downstream lesson step must explicitly declare how the learner is visually
 Required step field:
 
 ```json
-"highlight": { "kind": "auto" }
+"highlight": { "kind": "target", "selectors": ["#exactControl"] }
 ```
 
 Allowed kinds:
 
 - `target` — point at an exact button, tab, row, field, menu item, or other stable UI selector/text.
 - `code` — highlight the exact relevant source/SQL/text line(s). Use this whenever the explanation asks the learner to inspect or reason about code.
-- `auto` — allowed only when the master runtime can resolve a precise native/current target after the action finishes.
+- `auto` is **forbidden** in committed lesson source. Every existing and future step must name a concrete `target`, `code`, or justified `none` contract.
 - `none` — only for genuine theory or a capability that has no built visual target yet. A non-empty reason is mandatory.
 
-When `none` is used, or when an automatic target cannot actually be resolved at runtime, the explanation card must begin with:
+When `none` is used, or when a declared target unexpectedly cannot be resolved at runtime, the explanation card title and body must begin with:
 
 `[no highlight]`
 
 This is mandatory. Never write "look at the relevant code", "notice this line", "see the panel", or equivalent unless that exact code/element is highlighted or pointed at.
 
-The master applies final guidance only after `SIM_SEEK_DONE`. A step must never depend on a guessed fixed timer hoping that the target will exist.
+The master applies final guidance only after `SIM_SEEK_DONE`. A step must never depend on a guessed fixed timer hoping that the target will exist. Run `node scripts/apply-step-highlights.cjs` only as a migration/helper, then review the generated selectors; CI rejects committed `auto` highlights.
 
 Code/terminal focus-follow must preserve horizontal scroll. Next/Previous/Replay must not shove the editor to the far right.
 

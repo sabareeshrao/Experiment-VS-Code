@@ -15,7 +15,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-view=\"browser\"]",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -29,7 +34,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-key=\"user:1001\"]",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -43,7 +53,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#keySearch",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -57,7 +72,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#typeFilter",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -73,7 +93,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#editKeyBtn",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -87,7 +112,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-view=\"workbench\"]",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -101,7 +131,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#wbEditor",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -115,7 +150,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#runWb",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -127,7 +167,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#cliToggle",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -141,7 +186,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#cliInput",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -155,7 +205,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-view=\"search\"]",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -175,7 +230,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#runSearch",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -189,7 +249,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -201,7 +265,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#profilerBtn",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     },
     {
@@ -217,7 +286,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#publishBtn",
+          "#keyList",
+          "#cliInput"
+        ]
       }
     }
   ]

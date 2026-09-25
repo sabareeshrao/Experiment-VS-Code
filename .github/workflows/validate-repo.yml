@@ -68,6 +68,8 @@ jobs:
         run: node scripts/test-intellij-ui.cjs
       - name: Verify shared highlighter across every simulator
         run: node scripts/test-global-highlighter.cjs
+      - name: Verify all Power BI lesson highlights and active feature surfaces
+        run: node scripts/test-powerbi-highlight-coverage.cjs
       - name: Verify IntelliJ P0 interaction fidelity surfaces
         run: node scripts/test-intellij-p0-ui.cjs
       - name: Verify lesson navigation survives live text focus

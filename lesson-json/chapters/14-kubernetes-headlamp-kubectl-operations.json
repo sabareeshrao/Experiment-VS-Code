@@ -12,7 +12,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"overview\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -27,7 +32,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#clusterSelect",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -41,7 +51,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#namespaceSelect",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -55,7 +70,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#namespaceSelect",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -69,7 +89,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"deployments\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -84,7 +108,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"student-api\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -98,7 +126,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"Pods\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -113,7 +145,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -127,7 +163,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"pods\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -142,7 +182,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"student-api-7d8c7b8b9f-9x2lm\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -157,7 +201,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"Logs\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -171,7 +220,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -185,7 +238,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -199,7 +256,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"Exec\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -213,7 +275,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -227,7 +293,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -242,7 +312,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"YAML\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -257,7 +332,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"YAML\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -273,7 +353,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#yamlView",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -285,7 +370,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#yamlView",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -297,7 +387,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"events\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -311,7 +406,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#eventFilter",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -325,7 +425,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"pods\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -340,7 +444,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"course-api-86dbf4d6c8-zr7qp\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -355,7 +463,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"Logs\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -369,7 +482,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -381,7 +498,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#terminalToggle",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -395,7 +517,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -409,7 +536,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -423,7 +555,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -437,7 +574,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -451,7 +593,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -465,7 +612,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -479,7 +631,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -493,7 +650,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -508,7 +670,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"student-api\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -522,7 +688,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -536,7 +707,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -550,7 +726,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -564,7 +745,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"services\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -579,7 +764,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"student-api\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -594,7 +783,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-tab=\"YAML\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -608,7 +802,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -622,7 +821,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"ingresses\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -637,7 +840,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"campus-ingress\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -651,7 +858,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"networkpolicies\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -665,7 +876,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"persistentvolumeclaims\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -680,7 +895,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"mysql-data-mysql-0\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -694,7 +913,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"persistentvolumes\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -708,7 +931,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"storageclasses\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -722,7 +949,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"statefulsets\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -737,7 +968,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"mysql\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -752,7 +987,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"mysql-0\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -766,7 +1005,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"configmaps\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -781,7 +1024,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"student-api-config\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -798,7 +1045,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -812,7 +1063,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"secrets\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -827,7 +1082,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"db-credentials\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -841,7 +1100,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"serviceaccounts\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -855,7 +1118,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"roles\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -869,7 +1136,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"clusterroles\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -883,7 +1154,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"rolebindings\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -897,7 +1172,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -911,7 +1191,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"nodes\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -926,7 +1210,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"worker-b\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -940,7 +1228,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -955,7 +1248,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"worker-b\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -969,7 +1266,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -983,7 +1285,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -995,7 +1302,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"metrics\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1009,7 +1321,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1023,7 +1340,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1035,7 +1357,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"map\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1047,7 +1374,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"projects\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1061,7 +1393,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"projects\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1075,7 +1412,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"customresourcedefinitions\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -1090,7 +1431,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"servicemonitors.monitoring.coreos.com\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -1102,7 +1447,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#modalShade .modalHead",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1114,7 +1464,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"settings\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1128,7 +1483,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#themeToggle",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1142,7 +1502,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#themeToggle",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1156,7 +1521,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1170,7 +1540,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1184,7 +1559,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1198,7 +1578,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1212,7 +1597,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1226,7 +1616,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#termInput",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1240,7 +1635,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"cronjobs\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -1255,7 +1654,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-row=\"nightly-report\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -1270,7 +1673,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1284,7 +1691,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1298,7 +1709,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"jobs\"]",
+          ".pageHead h1"
+        ]
       }
     },
     {
@@ -1313,7 +1728,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#globalSearch",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1328,7 +1748,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#globalSearch",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     },
     {
@@ -1340,7 +1765,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "[data-nav=\"overview\"]",
+          ".pageHead h1",
+          "#termInput"
+        ]
       }
     }
   ]

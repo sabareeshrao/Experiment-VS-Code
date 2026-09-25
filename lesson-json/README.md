@@ -42,6 +42,8 @@ Examples:
 }
 ```
 
-`auto` is permitted when the final rendered action exposes a stable current/native target. If automatic resolution fails, the player visibly adds `[no highlight]` to the explanation. Do not tell the learner to inspect code without a `code` highlight.
+`auto` is forbidden in committed lesson source. Every step must use an explicit `target`, `code`, or justified `none`. If a declared target unexpectedly cannot resolve at runtime, the player visibly adds `[no highlight]` to both the explanation title and body. Do not tell the learner to inspect code without a `code` highlight.
 
 See `examples/highlight-contract.example.json`.
+
+Run `node scripts/apply-step-highlights.cjs` only as a migration/helper and review its generated selectors before committing. Repository validation rejects `highlight.kind: "auto"`.

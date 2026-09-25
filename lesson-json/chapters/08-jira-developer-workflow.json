@@ -15,7 +15,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus",
+          ".treeRoot"
+        ]
       }
     },
     {
@@ -27,7 +32,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -42,7 +52,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -57,7 +73,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -72,7 +94,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -87,7 +115,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -104,7 +138,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -124,7 +164,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -141,7 +187,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -156,7 +208,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -172,7 +230,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -188,7 +252,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -205,7 +275,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -222,7 +298,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -238,7 +320,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -250,7 +338,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -265,7 +358,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -277,7 +375,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -295,7 +398,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101 Ready for review"
       }
     },
     {
@@ -313,7 +422,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -327,7 +442,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -342,7 +463,13 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ],
+        "text": "JAVA-101"
       }
     },
     {
@@ -354,7 +481,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -366,7 +498,12 @@
         "data": {}
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -380,7 +517,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#main",
+          ".issue",
+          ".board"
+        ]
       }
     },
     {
@@ -394,7 +536,12 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".tab.active",
+          ".codeLine.focus",
+          ".treeRoot"
+        ]
       }
     }
   ]

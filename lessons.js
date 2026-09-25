@@ -6014,7 +6014,11 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -6029,7 +6033,11 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -6045,7 +6053,11 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -6061,7 +6073,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6077,7 +6090,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6093,7 +6107,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6109,7 +6124,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6125,7 +6141,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6141,7 +6158,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6157,7 +6175,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6173,7 +6192,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6189,7 +6209,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6205,7 +6226,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6221,7 +6243,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6237,7 +6260,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6253,7 +6277,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6269,7 +6294,8 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -6283,7 +6309,12 @@ window.COURSE = {
           },
           "software": "intellij",
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".treeRoot",
+              "#runBtn"
+            ]
           }
         },
         {
@@ -6297,7 +6328,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#editorSplitTitle",
+              "#editorSplitWrap"
+            ]
           }
         },
         {
@@ -6312,7 +6347,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#terminal"
+            ]
           }
         }
       ]
@@ -6332,7 +6371,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus"
+            ]
           }
         },
         {
@@ -6347,7 +6390,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6362,7 +6411,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6377,7 +6432,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6393,7 +6454,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#run",
+              "[data-result-tab=\"data\"]",
+              ".resultTab.active"
+            ]
           }
         },
         {
@@ -6419,7 +6485,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6434,7 +6506,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6458,7 +6536,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6490,7 +6574,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6505,7 +6595,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6520,7 +6616,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6547,7 +6649,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#run",
+              "[data-result-tab=\"data\"]",
+              ".resultTab.active"
+            ]
           }
         },
         {
@@ -6584,7 +6691,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6618,7 +6731,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6660,7 +6779,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6675,7 +6800,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6722,7 +6853,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#run",
+              "[data-result-tab=\"data\"]",
+              ".resultTab.active"
+            ]
           }
         },
         {
@@ -6779,7 +6915,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6794,7 +6936,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6842,7 +6990,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#run",
+              "[data-result-tab=\"data\"]",
+              ".resultTab.active"
+            ]
           }
         },
         {
@@ -6899,7 +7052,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6914,7 +7073,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -6991,7 +7156,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#run",
+              "[data-result-tab=\"data\"]",
+              ".resultTab.active"
+            ]
           }
         },
         {
@@ -7078,7 +7248,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -7093,7 +7269,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -7108,7 +7290,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -7122,7 +7310,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus"
+            ]
           }
         }
       ]
@@ -7142,7 +7334,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus"
+            ]
           }
         },
         {
@@ -7156,7 +7352,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#sendBtn",
+              "#reqTabs"
+            ]
           }
         },
         {
@@ -7170,7 +7370,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#envName"
+            ]
           }
         },
         {
@@ -7184,7 +7387,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#methodBox"
+            ]
           }
         },
         {
@@ -7199,7 +7405,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "input[type=url]",
+              "input[type=text]"
+            ],
+            "text": "{{baseUrl}}/api/students/101"
           }
         },
         {
@@ -7215,7 +7426,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#reqTabs"
+            ],
+            "text": "Headers",
+            "scope": "#reqTabs"
           }
         },
         {
@@ -7246,7 +7462,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#sendBtn"
+            ]
           }
         },
         {
@@ -7260,7 +7479,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#respTabs"
+            ]
           }
         },
         {
@@ -7274,7 +7496,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus"
+            ]
           }
         }
       ]
@@ -7294,7 +7520,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#editor",
+              ".activity"
+            ]
           }
         },
         {
@@ -7309,7 +7540,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7324,7 +7559,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -7339,7 +7575,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7354,7 +7594,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -7369,7 +7610,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7384,7 +7629,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7399,7 +7648,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7414,7 +7667,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7429,7 +7687,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7444,7 +7707,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7459,7 +7727,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7474,7 +7747,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7489,7 +7766,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -7504,7 +7782,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7519,7 +7801,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".line.focus,.codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -7534,7 +7817,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newFileBtn",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7549,7 +7836,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7563,7 +7855,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#editor",
+              ".activity"
+            ]
           }
         },
         {
@@ -7577,7 +7874,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#editorSplitPane",
+              ".tab.active"
+            ]
           }
         },
         {
@@ -7592,7 +7893,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         },
         {
@@ -7607,7 +7913,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              ".terminalLine:last-child",
+              "#terminal"
+            ]
           }
         }
       ]
@@ -7627,7 +7938,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7641,7 +7959,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7655,7 +7980,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7669,7 +8001,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7683,7 +8022,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7697,7 +8043,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7711,7 +8064,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7725,7 +8085,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7739,7 +8106,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7753,7 +8127,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7767,7 +8148,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7781,7 +8169,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7795,7 +8190,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7809,7 +8211,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7823,7 +8232,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7837,7 +8253,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7851,7 +8274,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7865,7 +8295,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7879,7 +8316,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         }
       ]
@@ -7899,7 +8343,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7913,7 +8364,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7927,7 +8385,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7941,7 +8406,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7955,7 +8427,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7969,7 +8448,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7983,7 +8469,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -7997,7 +8490,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8011,7 +8511,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8025,7 +8532,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8039,7 +8553,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8053,7 +8574,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8067,7 +8595,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8081,7 +8616,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8095,7 +8637,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8109,7 +8658,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8123,7 +8679,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8137,7 +8700,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8151,7 +8721,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8165,7 +8742,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8179,7 +8763,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         },
         {
@@ -8193,7 +8784,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#commandInput",
+              "#termInput",
+              "input[type=text]",
+              ".terminalLine:last-child"
+            ]
           }
         }
       ]
@@ -8213,7 +8811,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         },
         {
@@ -8225,7 +8828,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"connect\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8240,7 +8848,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8255,7 +8867,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8272,7 +8888,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"connectDialogButton\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8287,7 +8908,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8301,7 +8926,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dbSelect",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8317,7 +8947,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"newQuery\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8332,7 +8967,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor"
+            ]
           }
         },
         {
@@ -8344,7 +8984,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"execute\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8356,7 +9001,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"refreshObjectExplorer\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8371,7 +9021,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8385,7 +9039,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor"
+            ]
           }
         },
         {
@@ -8397,7 +9056,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"execute\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8411,7 +9075,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor"
+            ]
           }
         },
         {
@@ -8423,7 +9092,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"execute\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8437,7 +9111,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-resulttab=\"plan\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8449,7 +9128,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-resulttab=\"stats\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8463,7 +9147,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor"
+            ]
           }
         },
         {
@@ -8475,7 +9164,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"execute\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8490,7 +9184,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-target=\"save\"]",
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8502,7 +9201,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8522,7 +9225,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8534,7 +9241,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8551,7 +9262,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8571,7 +9286,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8588,7 +9307,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8604,7 +9327,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8616,7 +9343,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8635,7 +9366,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8674,7 +9409,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              "#status"
+            ]
           }
         },
         {
@@ -8688,7 +9427,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         }
       ]
@@ -8708,7 +9452,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         },
         {
@@ -8720,7 +9469,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -8735,7 +9489,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8750,7 +9510,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8765,7 +9531,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8780,7 +9552,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8797,7 +9575,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8817,7 +9601,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8834,7 +9624,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8849,7 +9645,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8865,7 +9667,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8881,7 +9689,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8898,7 +9712,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8915,7 +9735,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8931,7 +9757,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -8943,7 +9775,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -8958,7 +9795,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -8970,7 +9812,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -8988,7 +9835,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101 Ready for review"
           }
         },
         {
@@ -9006,7 +9859,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -9020,7 +9879,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -9035,7 +9900,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ],
+            "text": "JAVA-101"
           }
         },
         {
@@ -9047,7 +9918,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -9059,7 +9935,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -9073,7 +9954,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              ".issue",
+              ".board"
+            ]
           }
         },
         {
@@ -9087,7 +9973,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         }
       ]
@@ -9107,7 +9998,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         },
         {
@@ -9119,7 +10015,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9134,7 +10034,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#search"
+            ]
           }
         },
         {
@@ -9148,7 +10051,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "java-practice-api",
+            "scope": "#main"
           }
         },
         {
@@ -9163,7 +10071,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9179,7 +10091,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9194,7 +10110,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "Test Result",
+            "scope": "#main"
           }
         },
         {
@@ -9206,7 +10127,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9220,7 +10145,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "java-practice-api",
+            "scope": "#main"
           }
         },
         {
@@ -9234,7 +10164,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "Configure",
+            "scope": "#main"
           }
         },
         {
@@ -9251,7 +10186,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9266,7 +10205,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9281,7 +10224,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9297,7 +10244,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9313,7 +10264,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9328,7 +10283,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9350,7 +10309,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9367,7 +10330,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9383,7 +10350,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9399,7 +10370,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9414,7 +10389,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9428,7 +10407,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "Build with Parameters",
+            "scope": "#main"
           }
         },
         {
@@ -9481,7 +10465,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9497,7 +10485,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9564,7 +10556,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9598,7 +10594,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9613,7 +10613,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "Test Result",
+            "scope": "#main"
           }
         },
         {
@@ -9631,7 +10636,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9646,7 +10655,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main"
+            ],
+            "text": "Artifacts",
+            "scope": "#main"
           }
         },
         {
@@ -9660,7 +10674,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9674,7 +10692,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#main",
+              "#search"
+            ]
           }
         },
         {
@@ -9688,7 +10710,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus",
+              ".treeRoot"
+            ]
           }
         }
       ]
@@ -9707,7 +10734,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#reportName",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9721,7 +10752,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageTab.active",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9733,7 +10768,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9747,7 +10786,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".connector.selected",
+              "#modalTitle"
+            ]
           }
         },
         {
@@ -9784,7 +10827,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".modeCard.active",
+              "#modalTitle"
+            ]
           }
         },
         {
@@ -9796,7 +10843,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9810,7 +10861,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".navItem",
+              "#modalTitle"
+            ],
+            "text": "Student",
+            "scope": "#modalBody"
           }
         },
         {
@@ -9822,7 +10879,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#reportName",
+              "#reportViewBtn"
+            ]
           }
         },
         {
@@ -9834,7 +10895,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9846,7 +10911,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9858,7 +10927,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#reportViewBtn",
+              "#reportName"
+            ]
           }
         },
         {
@@ -9872,7 +10945,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"scoreByDept\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9886,7 +10963,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#onObjectMenu"
+            ]
           }
         },
         {
@@ -9900,7 +10980,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-pbi-highlight=\"format-pane\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9914,7 +10998,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9928,7 +11016,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"semesterSlicer\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9944,7 +11036,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"semesterSlicer\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9959,7 +11055,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#filtersPane",
+              "#statusMessage"
+            ],
+            "text": "Filters on all pages",
+            "scope": "#filtersPane"
           }
         },
         {
@@ -9971,7 +11073,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9986,7 +11092,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -9998,7 +11107,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10012,7 +11125,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10026,7 +11142,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageTab.active",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10040,7 +11160,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10055,7 +11179,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-vtype=\"clusteredBar\"].active",
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10071,7 +11200,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-well=\"x\"]",
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10087,7 +11221,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-well=\"values\"]",
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10103,7 +11242,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10121,7 +11264,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10137,7 +11284,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"riskSlicer\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10151,7 +11302,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10165,7 +11320,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"courseScores\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10179,7 +11338,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"scoreScatter\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10193,7 +11356,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-pbi-highlight=\"analytics-pane\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10207,7 +11374,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageTab.active",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10221,7 +11392,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g3\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10235,7 +11410,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g4\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10249,7 +11428,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g5\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10263,7 +11446,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g6\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10277,7 +11464,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g9\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10291,7 +11482,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g10\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10305,7 +11500,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g11\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10319,7 +11518,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-visual-id=\"g12\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10333,7 +11536,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataViewBtn",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10349,7 +11556,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataGrid [data-field=\"Student Name\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10365,7 +11576,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataGrid [data-field=\"risk_status\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10381,7 +11596,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataGrid [data-field=\"city\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10395,7 +11614,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#dataToolbar"
+            ]
           }
         },
         {
@@ -10411,7 +11634,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataGrid [data-field=\"score\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10423,7 +11650,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modelViewBtn",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10435,7 +11666,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10455,7 +11690,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#modelCanvas"
+            ]
           }
         },
         {
@@ -10470,7 +11709,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#modelCanvas"
+            ]
           }
         },
         {
@@ -10486,7 +11729,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".modelField[data-field=\"gender\"]",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10501,7 +11748,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#modelCanvas"
+            ]
           }
         },
         {
@@ -10519,7 +11770,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#dataPane",
+              "#statusMessage"
+            ],
+            "text": "Pass Rate",
+            "scope": "#dataPane"
           }
         },
         {
@@ -10534,7 +11791,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#dataPane"
+            ]
           }
         },
         {
@@ -10546,7 +11807,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#daxViewBtn"
+            ]
           }
         },
         {
@@ -10561,7 +11825,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#newDaxBtn",
+              ".codeTab.active"
+            ]
           }
         },
         {
@@ -10575,7 +11843,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#daxEditor"
+            ]
           }
         },
         {
@@ -10610,7 +11881,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#daxResults",
+              "#runDaxBtn"
+            ]
           }
         },
         {
@@ -10622,7 +11897,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#tmdlViewBtn"
+            ]
           }
         },
         {
@@ -10636,7 +11914,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#tmdlEditor",
+              "#scriptTmdlBtn"
+            ]
           }
         },
         {
@@ -10650,7 +11932,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#tmdlPreview",
+              "#previewTmdlBtn"
+            ]
           }
         },
         {
@@ -10662,7 +11948,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#applyTmdlBtn",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10676,7 +11966,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#pqStatus",
+              ".pqQuery.active"
+            ]
           }
         },
         {
@@ -10690,7 +11984,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-query-id=\"Enrollment\"]",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10704,7 +12002,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#pqProfilingStrip",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10718,7 +12020,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#pqProfilingStrip",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10737,7 +12043,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#pqProfilingStrip",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10759,7 +12069,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#appliedSteps .step.active",
+              "#pqGrid",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10777,7 +12092,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#appliedSteps .step.active",
+              "#pqGrid",
+              "#pqStatus"
+            ]
           }
         },
         {
@@ -10789,7 +12109,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#dataPane"
+            ]
           }
         },
         {
@@ -10803,7 +12127,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageTab.active",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10815,7 +12143,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10827,7 +12159,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#toast"
+            ]
           }
         },
         {
@@ -10841,7 +12177,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#toast"
+            ]
           }
         },
         {
@@ -10853,7 +12193,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#toast"
+            ]
           }
         },
         {
@@ -10867,7 +12211,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#statusMessage",
+              "#toast"
+            ]
           }
         },
         {
@@ -10879,7 +12227,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10897,7 +12249,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10909,7 +12265,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10923,7 +12283,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10935,7 +12299,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#toast",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10947,7 +12315,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#serviceHero",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10961,7 +12333,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10975,7 +12351,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalTitle",
+              "#statusMessage"
+            ]
           }
         },
         {
@@ -10987,7 +12367,11 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#reportViewBtn",
+              "#reportName"
+            ]
           }
         }
       ]
@@ -11009,7 +12393,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#mainView",
+              "#detailsBody",
+              "#pushBtn",
+              "#pullBtn",
+              "#fetchBtn"
+            ]
           }
         },
         {
@@ -11023,7 +12414,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#mainView",
+              "#detailsBody",
+              "#pushBtn",
+              "#pullBtn",
+              "#fetchBtn"
+            ]
           }
         },
         {
@@ -11037,7 +12435,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#mainView",
+              "#detailsBody",
+              "#pushBtn",
+              "#pullBtn",
+              "#fetchBtn"
+            ]
           }
         },
         {
@@ -11049,7 +12454,14 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#mainView",
+              "#detailsBody",
+              "#pushBtn",
+              "#pullBtn",
+              "#fetchBtn"
+            ]
           }
         },
         {
@@ -11063,7 +12475,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         },
         {
@@ -11077,7 +12492,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         },
         {
@@ -11089,7 +12507,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         },
         {
@@ -11101,7 +12522,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         },
         {
@@ -11115,7 +12539,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         },
         {
@@ -11127,7 +12554,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#content"
+            ]
           }
         }
       ]
@@ -11144,7 +12574,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#homeOverlay"
+            ]
           }
         },
         {
@@ -11161,7 +12594,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11173,7 +12611,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#btnManageConnections"
+            ]
           }
         },
         {
@@ -11185,7 +12626,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#btnManageConnections"
+            ]
           }
         },
         {
@@ -11197,7 +12641,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#btnManageConnections"
+            ]
           }
         },
         {
@@ -11209,7 +12656,10 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#btnManageConnections"
+            ]
           }
         },
         {
@@ -11223,7 +12673,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#connectionPill"
+            ]
           }
         },
         {
@@ -11238,7 +12691,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#btnNewSql"
+            ]
           }
         },
         {
@@ -11253,7 +12709,13 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".sqlLessonLine.active",
+              ".sim-emphasis",
+              "#sqlEditor",
+              "#queryEditor"
+            ]
           }
         },
         {
@@ -11276,7 +12738,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11335,7 +12802,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11350,7 +12820,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11365,7 +12840,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11379,7 +12859,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11396,7 +12881,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11408,7 +12898,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11422,7 +12917,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11434,7 +12934,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11446,7 +12951,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11458,7 +12968,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11470,7 +12985,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11482,7 +13002,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11494,7 +13019,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11510,7 +13040,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11522,7 +13057,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11534,7 +13074,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11546,7 +13091,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11560,7 +13110,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11575,7 +13130,10 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11589,7 +13147,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11601,7 +13164,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11613,7 +13181,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11627,7 +13200,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11641,7 +13219,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11658,7 +13241,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11673,7 +13261,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11688,7 +13281,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11703,7 +13301,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11718,7 +13321,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11733,7 +13341,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11748,7 +13361,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11762,7 +13380,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11778,7 +13401,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11842,7 +13470,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11858,7 +13491,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11874,7 +13512,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11889,7 +13532,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11904,7 +13552,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11916,7 +13569,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11928,7 +13586,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11940,7 +13603,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11952,7 +13620,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11964,7 +13637,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11976,7 +13654,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -11988,7 +13671,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12000,7 +13688,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12012,7 +13705,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12024,7 +13722,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12036,7 +13739,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12050,7 +13758,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12064,7 +13777,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12078,7 +13796,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12090,7 +13813,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12104,7 +13832,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12118,7 +13851,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12132,7 +13870,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12153,7 +13896,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12167,7 +13915,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12184,7 +13937,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12201,7 +13959,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12217,7 +13980,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12231,7 +13999,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12245,7 +14018,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         },
         {
@@ -12257,7 +14035,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#workbenchSurfaceTitle",
+              "#connectionPill",
+              "#qExecCurrent"
+            ]
           }
         }
       ]
@@ -12277,7 +14060,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-view=\"browser\"]",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12291,7 +14079,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-key=\"user:1001\"]",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12305,7 +14098,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#keySearch",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12319,7 +14117,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#typeFilter",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12335,7 +14138,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#editKeyBtn",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12349,7 +14157,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-view=\"workbench\"]",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12363,7 +14176,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#wbEditor",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12377,7 +14195,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#runWb",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12389,7 +14212,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#cliToggle",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12403,7 +14231,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#cliInput",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12417,7 +14250,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-view=\"search\"]",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12437,7 +14275,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#runSearch",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12451,7 +14294,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12463,7 +14310,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#profilerBtn",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         },
         {
@@ -12479,7 +14331,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#publishBtn",
+              "#keyList",
+              "#cliInput"
+            ]
           }
         }
       ]
@@ -12496,7 +14353,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"overview\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12511,7 +14373,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#clusterSelect",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12525,7 +14392,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#namespaceSelect",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12539,7 +14411,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#namespaceSelect",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12553,7 +14430,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"deployments\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12568,7 +14449,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"student-api\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12582,7 +14467,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"Pods\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12597,7 +14486,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12611,7 +14504,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"pods\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12626,7 +14523,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"student-api-7d8c7b8b9f-9x2lm\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12641,7 +14542,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"Logs\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12655,7 +14561,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12669,7 +14579,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12683,7 +14597,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"Exec\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12697,7 +14616,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12711,7 +14634,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12726,7 +14653,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"YAML\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12741,7 +14673,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"YAML\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12757,7 +14694,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#yamlView",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12769,7 +14711,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#yamlView",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12781,7 +14728,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"events\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12795,7 +14747,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#eventFilter",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12809,7 +14766,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"pods\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12824,7 +14785,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"course-api-86dbf4d6c8-zr7qp\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -12839,7 +14804,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"Logs\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12853,7 +14823,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12865,7 +14839,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#terminalToggle",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12879,7 +14858,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12893,7 +14877,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12907,7 +14896,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12921,7 +14915,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12935,7 +14934,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12949,7 +14953,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12963,7 +14972,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12977,7 +14991,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -12992,7 +15011,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"student-api\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13006,7 +15029,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13020,7 +15048,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13034,7 +15067,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13048,7 +15086,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"services\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13063,7 +15105,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"student-api\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13078,7 +15124,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-tab=\"YAML\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13092,7 +15143,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13106,7 +15162,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"ingresses\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13121,7 +15181,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"campus-ingress\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13135,7 +15199,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"networkpolicies\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13149,7 +15217,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"persistentvolumeclaims\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13164,7 +15236,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"mysql-data-mysql-0\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13178,7 +15254,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"persistentvolumes\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13192,7 +15272,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"storageclasses\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13206,7 +15290,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"statefulsets\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13221,7 +15309,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"mysql\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13236,7 +15328,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"mysql-0\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13250,7 +15346,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"configmaps\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13265,7 +15365,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"student-api-config\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13282,7 +15386,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13296,7 +15404,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"secrets\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13311,7 +15423,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"db-credentials\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13325,7 +15441,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"serviceaccounts\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13339,7 +15459,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"roles\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13353,7 +15477,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"clusterroles\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13367,7 +15495,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"rolebindings\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13381,7 +15513,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13395,7 +15532,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"nodes\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13410,7 +15551,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"worker-b\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13424,7 +15569,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13439,7 +15589,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"worker-b\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13453,7 +15607,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13467,7 +15626,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13479,7 +15643,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"metrics\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13493,7 +15662,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13507,7 +15681,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13519,7 +15698,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"map\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13531,7 +15715,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"projects\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13545,7 +15734,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"projects\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13559,7 +15753,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"customresourcedefinitions\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13574,7 +15772,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"servicemonitors.monitoring.coreos.com\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13586,7 +15788,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#modalShade .modalHead",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13598,7 +15805,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"settings\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13612,7 +15824,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#themeToggle",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13626,7 +15843,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#themeToggle",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13640,7 +15862,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13654,7 +15881,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13668,7 +15900,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13682,7 +15919,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13696,7 +15938,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13710,7 +15957,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#termInput",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13724,7 +15976,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"cronjobs\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13739,7 +15995,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-row=\"nightly-report\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13754,7 +16014,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13768,7 +16032,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13782,7 +16050,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"jobs\"]",
+              ".pageHead h1"
+            ]
           }
         },
         {
@@ -13797,7 +16069,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#globalSearch",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13812,7 +16089,12 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#globalSearch",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         },
         {
@@ -13824,7 +16106,12 @@ window.COURSE = {
             "data": {}
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "[data-nav=\"overview\"]",
+              ".pageHead h1",
+              "#termInput"
+            ]
           }
         }
       ]
@@ -13844,7 +16131,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13861,7 +16152,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13878,7 +16173,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13923,7 +16222,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13937,7 +16240,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13952,7 +16259,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13968,7 +16279,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -13985,7 +16300,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -13999,7 +16321,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -14014,7 +16340,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -14029,7 +16359,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -14044,7 +16375,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14059,7 +16397,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14075,7 +16420,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14090,7 +16442,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -14108,7 +16464,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14124,7 +16487,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14139,7 +16509,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#editorSplitTitle",
+              "#editorSplitWrap"
+            ]
           }
         },
         {
@@ -14155,7 +16529,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         }
       ]
@@ -14204,7 +16585,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14241,7 +16629,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14274,7 +16669,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14305,7 +16707,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14338,7 +16747,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         }
       ]
@@ -14402,7 +16818,14 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".codeLine.focus",
+              ".tab.active",
+              "#status",
+              "#runBtn",
+              "#project"
+            ]
           }
         },
         {
@@ -14440,7 +16863,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#runBtn",
+              "#bottomPanel"
+            ]
           }
         },
         {
@@ -14489,7 +16916,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#rightTabs",
+              "#right"
+            ]
           }
         },
         {
@@ -14518,7 +16949,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#rightTabs",
+              "#right"
+            ]
           }
         },
         {
@@ -14580,7 +17015,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              "#rightTabs",
+              "#right"
+            ]
           }
         }
       ]
@@ -14799,7 +17238,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".treeRoot",
+              "#newBtn"
+            ]
           }
         },
         {
@@ -14819,7 +17262,8 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "code",
+            "selector": ".codeLine.focus,.sim-emphasis,.simLessonLineHighlight"
           }
         },
         {
@@ -14833,7 +17277,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".tab.active",
+              ".codeLine.focus"
+            ]
           }
         },
         {
@@ -14852,7 +17300,11 @@ window.COURSE = {
             }
           },
           "highlight": {
-            "kind": "auto"
+            "kind": "target",
+            "selectors": [
+              ".terminalCommandFocus",
+              "#terminal"
+            ]
           }
         }
       ]

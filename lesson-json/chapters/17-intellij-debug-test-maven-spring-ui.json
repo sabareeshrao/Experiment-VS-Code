@@ -59,7 +59,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".codeLine.focus",
+          ".tab.active",
+          "#status",
+          "#runBtn",
+          "#project"
+        ]
       }
     },
     {
@@ -97,7 +104,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#runBtn",
+          "#bottomPanel"
+        ]
       }
     },
     {
@@ -146,7 +157,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#rightTabs",
+          "#right"
+        ]
       }
     },
     {
@@ -175,7 +190,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#rightTabs",
+          "#right"
+        ]
       }
     },
     {
@@ -237,7 +256,11 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          "#rightTabs",
+          "#right"
+        ]
       }
     }
   ]

@@ -326,7 +326,7 @@ function visualTypeIcon(t){
 }
 
 function renderVisualPane(){
- const v=currentVisual();refs.visualizationsPane.innerHTML=`<div class="paneTitle">Build visual</div><div class="visualGallery">${visualTypes.map(t=>`<button class="visualTypeBtn ${v?.type===t?"active":""}" title="${esc(prettyType(t))}" data-vtype="${t}">${visualTypeIcon(t)}</button>`).join("")}</div><div class="paneTitle">Field wells</div>${["x","y","legend","values","tooltips"].map(w=>`<div class="well"><div class="wellLabel">${w.toUpperCase()}</div>${arr(v?.fields?.[w]).map(f=>`<div class="chip">${esc(f)}</div>`).join("")}</div>`).join("")}<div class="paneTitle">Format visual</div><div class="filterCard">Title • Background • Border • Shadow • Data colors • Labels • Axes • Legend</div>`;
+ const v=currentVisual();const formatCard=state.formatPane?'<div class="filterCard" data-pbi-highlight="format-pane"><b>Format visual active</b><br>Title • Background • Border • Shadow • Data colors • Labels • Axes • Legend</div>':'<div class="filterCard">Title • Background • Border • Shadow • Data colors • Labels • Axes • Legend</div>';const analyticsCard=state.analyticsOpen?'<div class="paneTitle" data-pbi-highlight="analytics-pane">Analytics</div><div class="filterCard">Trend line • Constant line • Forecast • Find anomalies</div>':'';refs.visualizationsPane.innerHTML=`<div class="paneTitle">Build visual</div><div class="visualGallery">${visualTypes.map(t=>`<button class="visualTypeBtn ${v?.type===t?"active":""}" title="${esc(prettyType(t))}" data-vtype="${t}">${visualTypeIcon(t)}</button>`).join("")}</div><div class="paneTitle">Field wells</div>${["x","y","legend","values","tooltips"].map(w=>`<div class="well" data-well="${w}"><div class="wellLabel">${w.toUpperCase()}</div>${arr(v?.fields?.[w]).map(f=>`<div class="chip">${esc(f)}</div>`).join("")}</div>`).join("")}<div class="paneTitle">Format visual</div>${formatCard}${analyticsCard}`;
  refs.visualizationsPane.querySelectorAll("[data-vtype]").forEach(b=>b.onclick=()=>{if(v){v.type=b.dataset.vtype;renderAll();}});
 }
 function renderDataPane(){
@@ -338,6 +338,8 @@ function renderPowerQuery(){
  refs.pqRibbon.innerHTML=["Close & Apply","New Source","Recent Sources","Enter Data","Manage Parameters","Choose Columns","Remove Columns","Keep Rows","Remove Rows","Split Column","Group By","Merge Queries","Append Queries"].map(x=>`<button class="btn">${x}</button>`).join("");
  refs.pqQueries.innerHTML=state.queries.map(x=>`<div class="pqQuery ${q&&x.name===q.name?"active":""}" data-query-id="${esc(x.name)}">${esc(x.name)}${x.enableLoad===false?" ◌":""}</div>`).join("");
  refs.pqQueries.querySelectorAll("[data-query-id]").forEach(el=>el.onclick=()=>{state.selectedQuery=el.dataset.queryId;renderPowerQuery();});
+ let profileStrip=document.getElementById("pqProfilingStrip");if(!profileStrip){profileStrip=document.createElement("div");profileStrip.id="pqProfilingStrip";profileStrip.className="filterCard";refs.formulaBar.insertAdjacentElement("afterend",profileStrip);}
+ const profileBits=[];if(state.columnQuality)profileBits.push("Column quality ON");if(state.columnDistribution)profileBits.push("Column distribution ON");if(state.columnProfile||state.profile)profileBits.push("Column profile"+(state.profile?.column?" • "+state.profile.column:""));profileStrip.textContent=profileBits.join(" • ")||"Profiling indicators off";profileStrip.style.display=profileBits.length?"block":"none";
  if(!q){refs.pqGrid.innerHTML="";refs.appliedSteps.innerHTML="";refs.formulaBar.textContent="fx =";return}
  refs.formulaBar.textContent="fx = "+(q.formula||q.steps?.[q.activeStep??(q.steps?.length-1)]?.formula||"Source");
  const cols=arr(q.columns).map(c=>typeof c==="string"?{name:c}:c);refs.pqGrid.innerHTML=`<thead><tr>${cols.map(c=>`<th data-field="${esc(c.name)}">${esc(c.name)}<div style="font-size:8px;color:var(--muted)">${esc(c.type||"Any")}</div></th>`).join("")}</tr></thead><tbody>${arr(q.rows).map(r=>`<tr>${cols.map((c,i)=>`<td>${esc(Array.isArray(r)?r[i]:r[c.name])}</td>`).join("")}</tr>`).join("")}</tbody>`;
@@ -347,7 +349,8 @@ function addStep(q,name,action,data={}){q.steps=arr(q.steps);q.steps.push({name,
 function transformQuery(action,d){
  const q=getQuery(d.query||state.selectedQuery)||state.queries[0];if(!q)return;state.selectedQuery=q.name;q.columns=arr(q.columns).map(c=>typeof c==="string"?{name:c,type:"Any"}:c);q.rows=arr(q.rows);
  const colIndex=name=>q.columns.findIndex(c=>c.name===name);
- const ci=colIndex(d.column);
+ const condition=d.condition||{},sourceColumn=d.column||condition.column||arr(d.columns)[0];
+ const ci=colIndex(sourceColumn);
  if(action==="removeColumn"&&ci>=0){q.columns.splice(ci,1);q.rows=q.rows.map(r=>Array.isArray(r)?r.filter((_,i)=>i!==ci):Object.fromEntries(Object.entries(r).filter(([k])=>k!==d.column)));}
  else if(action==="chooseColumns"){const keep=arr(d.columns);const idx=q.columns.map((c,i)=>keep.includes(c.name)?i:-1).filter(i=>i>=0);q.columns=q.columns.filter(c=>keep.includes(c.name));q.rows=q.rows.map(r=>Array.isArray(r)?idx.map(i=>r[i]):Object.fromEntries(keep.map(k=>[k,r[k]])));}
  else if(action==="renameColumn"&&ci>=0){const old=q.columns[ci].name;q.columns[ci].name=d.newName;q.rows=q.rows.map(r=>Array.isArray(r)?r:Object.fromEntries(Object.entries(r).map(([k,v])=>[k===old?d.newName:k,v])));}
@@ -373,8 +376,8 @@ function transformQuery(action,d){
  else if(action==="demoteHeaders"){q.rows.unshift(q.columns.map(c=>c.name));q.columns=q.columns.map((_,i)=>({name:`Column${i+1}`,type:"Any"}));}
  else if(action==="transposeTable"){const matrix=[q.columns.map(c=>c.name),...q.rows.map(r=>Array.isArray(r)?r:Object.values(r))];const tr=matrix[0].map((_,i)=>matrix.map(row=>row[i]));q.columns=tr.shift().map((_,i)=>({name:`Column${i+1}`,type:"Any"}));q.rows=tr;}
  else if(action==="reverseRows")q.rows.reverse();
- else if(action==="addCustomColumn"||action==="addConditionalColumn"||action==="addIndexColumn"||action==="duplicateColumn"){const name=d.newName||d.name||(action==="addIndexColumn"?"Index":"Custom");q.columns.push({name,type:d.type||"Any"});q.rows=q.rows.map((r,i)=>{const rr=Array.isArray(r)?r.slice():Object.values(r);let v=d.value??"";if(action==="addIndexColumn")v=(d.start||0)+i*(d.increment||1);if(action==="duplicateColumn"&&ci>=0)v=rr[ci];if(action==="addConditionalColumn"&&ci>=0)v=(rr[ci]===d.equals?d.then:d.else);rr.push(v);return rr});}
- else if(action==="groupBy"&&ci>=0){const groups=new Map();q.rows.forEach(r=>{const v=Array.isArray(r)?r[ci]:r[d.column];groups.set(v,(groups.get(v)||0)+1)});q.columns=[{name:d.column,type:q.columns[ci].type},{name:d.newColumn||"Count",type:"Whole Number"}];q.rows=[...groups.entries()];}
+ else if(action==="addCustomColumn"||action==="addConditionalColumn"||action==="addIndexColumn"||action==="duplicateColumn"){const name=d.newName||d.name||(action==="addIndexColumn"?"Index":"Custom");q.columns.push({name,type:d.type||"Any"});q.rows=q.rows.map((r,i)=>{const rr=Array.isArray(r)?r.slice():Object.values(r);let v=d.value??"";if(action==="addIndexColumn")v=(d.start||0)+i*(d.increment||1);if(action==="duplicateColumn"&&ci>=0)v=rr[ci];if(action==="addConditionalColumn"&&ci>=0){const cv=rr[ci],op=condition.operator||"equals",rhs=condition.value??d.equals;const pass=op===">="?Number(cv)>=Number(rhs):op===">"?Number(cv)>Number(rhs):op==="<="?Number(cv)<=Number(rhs):op==="<"?Number(cv)<Number(rhs):cv===rhs;v=pass?(condition.then??d.then):(condition.else??d.else);}rr.push(v);return rr});}
+ else if(action==="groupBy"&&ci>=0){const groupColumn=sourceColumn;const groups=new Map();q.rows.forEach(r=>{const v=Array.isArray(r)?r[ci]:r[groupColumn];groups.set(v,(groups.get(v)||0)+1)});q.columns=[{name:groupColumn,type:q.columns[ci].type},{name:d.newColumn||"Count",type:"Whole Number"}];q.rows=[...groups.entries()];}
  else if(action==="pivotColumn"||action==="unpivotColumns"){q.formula=action==="pivotColumn"?"Table.Pivot(...)":"Table.Unpivot(...)";}
  addStep(q,d.stepName||prettyType(action),action,d);state.statusText=prettyType(action)+" applied";
 }
@@ -433,7 +436,7 @@ async function applyStep(step,animate,token){
  else if(a==="enterData"){const t=clone(d.table||{name:d.name||"Table1",columns:d.columns||[],rows:d.rows||[]});state.tables.push(t);state.queries.push({id:t.id||t.name,name:t.name,columns:clone(t.columns),rows:clone(t.rows),steps:[{name:"Source",action:"source"}]});state.selectedTable=t.name;}
  else if(a==="openDataSourceSettings")showModal("Data source settings",`<div>${state.sources.map(s=>`<div class="filterCard">${esc(s.name||s.connector)}</div>`).join("")||"No data sources"}</div>`);
  else if(a==="openPowerQuery"){state.powerQueryOpen=true;state.selectedQuery=d.query||state.selectedQuery||state.queries[0]?.name;}
- else if(a==="selectQuery")state.selectedQuery=d.query||d.name;
+ else if(a==="selectQuery"){state.selectedQuery=d.query||d.name;state.statusText="Selected query: "+(state.selectedQuery||"");}
  else if(a==="refreshPreview"){state.statusText="Preview refreshed";const q=getQuery(d.query||state.selectedQuery);if(q&&d.rows)q.rows=clone(d.rows);}
  else if(a==="toggleFormulaBar")state.formulaBar=d.value!==undefined?!!d.value:!state.formulaBar;
  else if(a==="openAdvancedEditor"){const q=getQuery(d.query||state.selectedQuery);showModal("Advanced Editor",`<textarea class="codeArea" id="advancedEditorBox">${esc(d.m||q?.m||"let\n    Source = ...\nin\n    Source")}</textarea>`,[{label:"Cancel"},{label:"Done",primary:true}]);if(d.m&&animate&&autoType)await maybeType($("advancedEditorBox"),d.m,true,token);}
@@ -445,38 +448,38 @@ async function applyStep(step,animate,token){
  else if(a==="selectAppliedStep"){const q=getQuery(d.query||state.selectedQuery);if(q)q.activeStep=d.index??0;}
  else if(a==="deleteAppliedStep"){const q=getQuery(d.query||state.selectedQuery);if(q){q.steps.splice(d.index??q.steps.length-1,1);q.activeStep=Math.max(0,q.steps.length-1);}}
  else if(a==="moveAppliedStep"){const q=getQuery(d.query||state.selectedQuery);if(q){const from=d.from??q.steps.length-1,to=Math.max(0,Math.min(d.to??0,q.steps.length-1));const [s]=q.steps.splice(from,1);if(s)q.steps.splice(to,0,s);q.activeStep=to;}}
- else if(a==="toggleColumnQuality")state.columnQuality=d.value!==undefined?!!d.value:!state.columnQuality;
- else if(a==="toggleColumnDistribution")state.columnDistribution=d.value!==undefined?!!d.value:!state.columnDistribution;
+ else if(a==="toggleColumnQuality"){state.columnQuality=d.value!==undefined?!!d.value:!state.columnQuality;state.statusText="Column quality "+(state.columnQuality?"enabled":"disabled");}
+ else if(a==="toggleColumnDistribution"){state.columnDistribution=d.value!==undefined?!!d.value:!state.columnDistribution;state.statusText="Column distribution "+(state.columnDistribution?"enabled":"disabled");}
  else if(a==="toggleColumnProfile")state.columnProfile=d.value!==undefined?!!d.value:!state.columnProfile;
- else if(a==="profileColumn"){state.profile={column:d.column,distinct:d.distinct,unique:d.unique,empty:d.empty,error:d.error};state.statusText="Column profile ready";}
+ else if(a==="profileColumn"){state.columnProfile=true;state.profile={column:d.column,distinct:d.distinct,unique:d.unique,empty:d.empty,error:d.error};state.statusText="Column profile ready: "+(d.column||"column");}
  else if(a==="closeAndApply"){state.powerQueryOpen=false;if(d.tables)state.tables=clone(d.tables);else state.queries.forEach(q=>{let t=getTable(q.name);if(t){t.columns=clone(q.columns);t.rows=clone(q.rows);}else state.tables.push({name:q.name,columns:clone(q.columns),rows:clone(q.rows)});});state.activeView="report";state.selectedTable=state.tables[0]?.name||null;state.paneTab="data";state.statusText="Changes applied • "+state.tables.length+" tables loaded";showToast("Changes applied to the model");}
  else if(a==="discardQueryChanges"){state.powerQueryOpen=false;state.queries=clone(baseline?.queries||[]);}
  else if(a==="openDataView"){state.activeView="data";state.serviceOpen=false;state.selectedTable=d.table||state.selectedTable||state.tables[0]?.name;}
- else if(a==="selectDataTable")state.selectedTable=d.table||d.name;
+ else if(a==="selectDataTable"){state.selectedTable=d.table||d.name;state.statusText="Selected table: "+(state.selectedTable||"");}
  else if(a==="sortDataColumn"){const t=getTable(d.table||state.selectedTable);if(t){const cols=arr(t.columns).map(c=>typeof c==="string"?c:c.name),i=cols.indexOf(d.column);t.rows.sort((a,b)=>{const av=Array.isArray(a)?a[i]:a[d.column],bv=Array.isArray(b)?b[i]:b[d.column];return(av>bv?1:av<bv?-1:0)*(d.direction==="desc"?-1:1)});}}
- else if(a==="filterDataColumn")state.dataFilter=clone(d);
- else if(["setColumnFormat","setSummarization","setDataCategory"].includes(a)){const t=getTable(d.table||state.selectedTable);if(t){const c=arr(t.columns).find(x=>(typeof x==="string"?x:x.name)===d.column);if(c&&typeof c==="object")c[a==="setColumnFormat"?"format":a==="setSummarization"?"summarization":"dataCategory"]=d.value;}}
+ else if(a==="filterDataColumn"){state.dataFilter=clone(d);state.statusText="Filtered "+(d.column||"column")+": "+String(d.value??"");}
+ else if(["setColumnFormat","setSummarization","setDataCategory"].includes(a)){const t=getTable(d.table||state.selectedTable);if(t){const c=arr(t.columns).find(x=>(typeof x==="string"?x:x.name)===d.column);if(c&&typeof c==="object"){c[a==="setColumnFormat"?"format":a==="setSummarization"?"summarization":"dataCategory"]=d.value;state.statusText=prettyType(a)+": "+d.column+" → "+String(d.value??"");}}}
  else if(a==="openModelView"){state.activeView="model";state.serviceOpen=false;}
  else if(a==="addRelationship")state.relationships.push(clone(d.relationship||d));
  else if(["editRelationship","setRelationshipCardinality","setCrossFilterDirection","setRelationshipActive"].includes(a)){const r=state.relationships.find(x=>x.id===d.id||(`${x.fromTable}.${x.fromColumn}>${x.toTable}.${x.toColumn}`===d.id));if(r){if(a==="editRelationship")Object.assign(r,clone(d.values||d.relationship||{}));if(a==="setRelationshipCardinality")r.cardinality=d.value;if(a==="setCrossFilterDirection")r.crossFilter=d.value;if(a==="setRelationshipActive")r.active=!!d.value;}}
  else if(a==="deleteRelationship")state.relationships=state.relationships.filter(r=>r.id!==d.id);
  else if(a==="openManageRelationships")showRelationships();
  else if(a==="hideTable"){const t=getTable(d.table);if(t)t.hidden=d.value!==false;}
- else if(a==="hideField"){const t=getTable(d.table);if(t){const c=t.columns.find(x=>(x.name||x)===d.field);if(c&&typeof c==="object")c.hidden=d.value!==false;}}
+ else if(a==="hideField"){const t=getTable(d.table);if(t){const c=t.columns.find(x=>(x.name||x)===d.field);if(c&&typeof c==="object"){c.hidden=d.value!==false;state.statusText=(d.field||"Field")+(c.hidden?" hidden":" visible");}}}
  else if(a==="sortByColumn"){const t=getTable(d.table);if(t)t.sortBy=t.sortBy||{},t.sortBy[d.column]=d.by;}
- else if(a==="markDateTable"){const t=getTable(d.table);if(t)t.dateTable=!!(d.value??true);}
+ else if(a==="markDateTable"){const t=getTable(d.table);if(t){t.dateTable=!!(d.value??true);state.statusText=(d.table||"Table")+" marked as date table";}}
  else if(a==="setTableProperty"){const t=getTable(d.table);if(t)t.properties=Object.assign(t.properties||{},{[d.property]:d.value});}
  else if(a==="setFieldProperty"){const t=getTable(d.table);if(t){const c=t.columns.find(x=>(x.name||x)===d.field);if(c&&typeof c==="object")c[d.property]=d.value;}}
- else if(a==="createHierarchy")state.hierarchies.push({id:d.id||uid("hier"),name:d.name,table:d.table,levels:arr(d.levels)});
+ else if(a==="createHierarchy"){state.hierarchies.push({id:d.id||uid("hier"),name:d.name,table:d.table,levels:arr(d.levels)});state.statusText="Hierarchy created: "+(d.name||"Hierarchy");}
  else if(a==="addHierarchyLevel"){const h=state.hierarchies.find(x=>x.id===d.id||x.name===d.hierarchy);if(h)h.levels.push(d.field);}
  else if(a==="renameHierarchy"){const h=state.hierarchies.find(x=>x.id===d.id||x.name===d.hierarchy);if(h)h.name=d.newName;}
- else if(a==="setTableStorageMode"){const t=getTable(d.table);if(t)t.storageMode=d.mode;state.storageMode=d.mode||state.storageMode;}
- else if(a==="createMeasure"){const m={id:d.id||uid("m"),name:d.name||"Measure",table:d.table||"Measures",dax:d.dax||"",format:d.format||"",folder:d.folder||""};state.measures.push(m);state.selectedMeasure=m.name;if(d.dax&&animate&&autoType){showModal("New measure",`<textarea class="codeArea" id="daxBox"></textarea>`);await maybeType($("daxBox"),d.dax,true,token);}}
+ else if(a==="setTableStorageMode"){const t=getTable(d.table);if(t)t.storageMode=d.mode;state.storageMode=d.mode||state.storageMode;state.statusText=(d.table||"Table")+" storage mode: "+(d.mode||state.storageMode);}
+ else if(a==="createMeasure"){const m={id:d.id||uid("m"),name:d.name||"Measure",table:d.table||"Measures",dax:d.dax||"",format:d.format||"",folder:d.folder||""};state.measures.push(m);state.selectedMeasure=m.name;state.paneTab="data";state.statusText="Measure created: "+m.name;if(d.dax&&animate&&autoType){showModal("New measure",`<textarea class="codeArea" id="daxBox"></textarea>`);await maybeType($("daxBox"),d.dax,true,token);}}
  else if(a==="editDax"){const m=getMeasure(d.name||d.measure);if(m)m.dax=d.dax||"";if(d.dax&&animate&&autoType){showModal("Formula bar",`<textarea class="codeArea" id="daxBox"></textarea>`);await maybeType($("daxBox"),d.dax,true,token);}}
  else if(a==="deleteMeasure")state.measures=state.measures.filter(m=>m.name!==(d.name||d.measure));
  else if(a==="createCalculatedColumn")state.calculatedColumns.push(clone({id:d.id||uid("cc"),...d}));
  else if(a==="createCalculatedTable"){state.calculatedTables.push(clone({id:d.id||uid("ct"),...d}));if(d.table)state.tables.push(clone(d.table));}
- else if(a==="formatMeasure"){const m=getMeasure(d.name||d.measure);if(m)m.format=d.format;}
+ else if(a==="formatMeasure"){const m=getMeasure(d.name||d.measure);if(m){m.format=d.format;state.paneTab="data";state.statusText=(m.name||"Measure")+" format: "+(d.format||"");}}
  else if(a==="setMeasureDisplayFolder"){const m=getMeasure(d.name||d.measure);if(m)m.folder=d.folder;}
  else if(a==="validateDax"){state.daxValidation={dax:d.dax,valid:d.valid!==false,message:d.message||"Expression is valid"};state.statusText=state.daxValidation.message;}
  else if(a==="openReportView"){state.activeView="report";state.serviceOpen=false;}
@@ -485,7 +488,7 @@ async function applyStep(step,animate,token){
  else if(a==="duplicatePage"){const p=state.pages.find(x=>x.id===(d.id||state.activePageId));if(p){const n=clone(p);n.id=d.newId||uid("page");n.name=d.name||p.name+" Copy";n.visuals=n.visuals.map(v=>Object.assign(v,{id:uid("vis")}));state.pages.push(n);state.activePageId=n.id;}}
  else if(a==="deletePage"){const id=d.id||state.activePageId;state.pages=state.pages.filter(p=>p.id!==id);if(!state.pages.length)state.pages.push(emptyState().pages[0]);state.activePageId=state.pages[0].id;}
  else if(a==="hidePage"){const p=state.pages.find(x=>x.id===(d.id||state.activePageId));if(p)p.hidden=d.value!==false;}
- else if(a==="selectPage"){state.activePageId=d.id;state.selectedVisualId=null;}
+ else if(a==="selectPage"){state.activePageId=d.id||d.pageId||d.page;state.selectedVisualId=null;const p=currentPage();state.statusText="Page: "+(p?.name||state.activePageId||"");}
  else if(a==="setCanvasZoom")state.canvasZoom=d.value||d.zoom||100;
  else if(a==="setCanvasFit")state.canvasFit=d.value||"Fit to page";
  else if(a==="setPageSize"){const p=currentPage();if(p)p.size={width:d.width||960,height:d.height||540};}
@@ -495,43 +498,43 @@ async function applyStep(step,animate,token){
  else if(a==="toggleSnapToGrid")state.snapToGrid=d.value!==undefined?!!d.value:!state.snapToGrid;
  else if(a==="toggleLockObjects")state.lockObjects=d.value!==undefined?!!d.value:!state.lockObjects;
  else if(a==="addVisual")addVisualState(d);
- else if(a==="selectVisual")state.selectedVisualId=d.id;
+ else if(a==="selectVisual"){state.selectedVisualId=d.id;const v=getVisual(d.id);state.statusText="Selected visual: "+(v?.title||prettyType(v?.type||"visual"));}
  else if(a==="deleteVisual"){const p=currentPage(),id=d.id||state.selectedVisualId;p.visuals=p.visuals.filter(v=>v.id!==id);state.selectedVisualId=null;}
  else if(a==="duplicateVisual"||a==="copyVisual"||a==="pasteVisual"){const p=currentPage();if(a==="copyVisual")clipboardVisual=clone(getVisual(d.id||state.selectedVisualId));else if(a==="pasteVisual"&&clipboardVisual){const n=clone(clipboardVisual);n.id=d.id||uid("vis");const pos=smartVisualPosition(p,n.w||300,n.h||180,(n.x||0)+24,(n.y||0)+24);n.x=pos.x;n.y=pos.y;n.z=Math.max(1,...p.visuals.map(v=>v.z||1))+1;p.visuals.push(n);state.selectedVisualId=n.id;}else{const v=getVisual(d.id||state.selectedVisualId);if(v){const n=clone(v);n.id=d.newId||uid("vis");const pos=smartVisualPosition(p,n.w||300,n.h||180,(n.x||0)+24,(n.y||0)+24);n.x=pos.x;n.y=pos.y;n.z=Math.max(1,...p.visuals.map(v=>v.z||1))+1;p.visuals.push(n);state.selectedVisualId=n.id;}}}
  else if(a==="moveVisual"){const v=getVisual(d.id||state.selectedVisualId),p=currentPage();if(v&&p){const w=v.w||300,h=v.h||180,pw=p.size?.width||960,ph=p.size?.height||540;v.x=clamp(d.x??v.x??0,0,Math.max(0,pw-w));v.y=clamp(d.y??v.y??0,0,Math.max(0,ph-h));}}
  else if(a==="resizeVisual"){const v=getVisual(d.id||state.selectedVisualId),p=currentPage();if(v&&p){const pw=p.size?.width||960,ph=p.size?.height||540;v.w=clamp(d.w??d.width??v.w,90,Math.max(90,pw-(v.x||0)));v.h=clamp(d.h??d.height??v.h,60,Math.max(60,ph-(v.y||0)));}}
- else if(a==="setVisualType"){const v=getVisual(d.id||state.selectedVisualId);if(v)v.type=d.type;}
- else if(a==="addFieldToWell"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.fields=v.fields||{};v.fields[d.well]=arr(v.fields[d.well]);if(!v.fields[d.well].includes(d.field))v.fields[d.well].push(d.field);}}
+ else if(a==="setVisualType"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.type=d.type;state.statusText="Visual type: "+prettyType(d.type);}}
+ else if(a==="addFieldToWell"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.fields=v.fields||{};v.fields[d.well]=arr(v.fields[d.well]);if(!v.fields[d.well].includes(d.field))v.fields[d.well].push(d.field);state.paneTab="visualizations";state.statusText=d.field+" added to "+d.well;}}
  else if(a==="removeFieldFromWell"){const v=getVisual(d.id||state.selectedVisualId);if(v&&v.fields?.[d.well])v.fields[d.well]=v.fields[d.well].filter(x=>x!==d.field);}
  else if(a==="reorderFieldWell"){const v=getVisual(d.id||state.selectedVisualId);if(v&&v.fields?.[d.well]){const ar=v.fields[d.well],from=d.from??0,to=d.to??0,[x]=ar.splice(from,1);if(x!==undefined)ar.splice(to,0,x);}}
  else if(a==="setVisualData"){const v=getVisual(d.id||state.selectedVisualId);if(v)v.data=clone(d.data||{});}
- else if(a==="formatVisual"||a==="setConditionalFormatting"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.format=Object.assign(v.format||{},clone(d.properties||d.format||{}));if(a==="setConditionalFormatting")v.conditionalFormatting=clone(d);}}
+ else if(a==="formatVisual"||a==="setConditionalFormatting"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.format=Object.assign(v.format||{},clone(d.properties||d.format||{}));if(a==="setConditionalFormatting")v.conditionalFormatting=clone(d);state.paneTab="visualizations";state.formatPane=true;state.statusText=prettyType(a)+" applied";}}
  else if(["bringForward","sendBackward"].includes(a)){const v=getVisual(d.id||state.selectedVisualId);if(v)v.z=(v.z||1)+(a==="bringForward"?1:-1);}
  else if(a==="alignVisuals"||a==="distributeVisuals"||a==="groupVisuals"||a==="ungroupVisuals")state.lastLayoutAction={action:a,ids:arr(d.ids)};
- else if(a==="setVisualTooltip"){const v=getVisual(d.id||state.selectedVisualId);if(v)v.tooltip=d.tooltip;}
+ else if(a==="setVisualTooltip"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.tooltip=clone(d.tooltip??d.fields??[]);state.statusText="Tooltip configured";}}
  else if(a==="setFilter")addOrReplaceFilter(d.scope||"visual",d);
  else if(a==="clearFilter"){if(d.scope==="report")state.filters.report=[];else if(d.scope==="page")state.filters.page[currentPage().id]=[];else if(currentVisual())state.filters.visual[currentVisual().id]=[];}
  else if(a==="setVisualFilter")addOrReplaceFilter("visual",d);
  else if(a==="setPageFilter")addOrReplaceFilter("page",d);
- else if(a==="setReportFilter")addOrReplaceFilter("report",d);
+ else if(a==="setReportFilter"){addOrReplaceFilter("report",d);state.paneTab="filters";state.statusText="Report filter: "+d.field+" = "+String(d.value??"");}
  else if(a==="setFilterMode")state.filterMode=d.mode;
- else if(a==="addSlicerSelection"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.data=v.data||{};v.data.items=arr(v.data.items);v.data.items.forEach(x=>{if((x.label??x)===d.value&&typeof x==="object")x.selected=true});state.crossFilter={field:d.field,value:d.value};}}
+ else if(a==="addSlicerSelection"){const v=getVisual(d.id||state.selectedVisualId);if(v){v.data=v.data||{};v.data.items=arr(v.data.items);v.data.items.forEach(x=>{if((x.label??x)===d.value&&typeof x==="object")x.selected=true});state.crossFilter={field:d.field,value:d.value};state.statusText="Slicer: "+String(d.value??"selected");}}
  else if(a==="clearSlicer"){const v=getVisual(d.id||state.selectedVisualId);if(v)arr(v.data?.items).forEach(x=>{if(typeof x==="object")x.selected=false});state.crossFilter=null;}
  else if(a==="syncSlicer")state.syncSlicers=Object.assign(state.syncSlicers||{},{[d.id||state.selectedVisualId]:arr(d.pages)});
- else if(a==="setInteraction"){state.interactions=state.interactions.filter(x=>!(x.source===d.source&&x.target===d.target));state.interactions.push(clone(d));}
- else if(["drillDown","drillUp","expandHierarchy","nextHierarchyLevel"].includes(a)){const v=getVisual(d.id||state.selectedVisualId);if(v)v.drillLevel=Math.max(0,(v.drillLevel||0)+(a==="drillUp"?-1:1));}
+ else if(a==="setInteraction"){state.interactions=state.interactions.filter(x=>!(x.source===d.source&&x.target===d.target));state.interactions.push(clone(d));state.statusText="Interaction: "+(d.source||"source")+" → "+(d.target||"target")+" ("+(d.mode||"filter")+")";}
+ else if(["drillDown","drillUp","expandHierarchy","nextHierarchyLevel"].includes(a)){const v=getVisual(d.id||state.selectedVisualId);if(v){v.drillLevel=Math.max(0,(v.drillLevel||0)+(a==="drillUp"?-1:1));state.statusText=prettyType(a)+" • level "+v.drillLevel;}}
  else if(a==="setDrillthrough")state.drillthrough=clone(d);
  else if(a==="drillthrough"){state.navigationStack=arr(state.navigationStack);state.navigationStack.push(state.activePageId);state.activePageId=d.pageId;state.drillthroughFilter=clone(d.filter||{});}
  else if(a==="goBack"){const s=arr(state.navigationStack);if(s.length)state.activePageId=s.pop();}
- else if(a==="addBookmark")state.bookmarks.push({id:d.id||uid("bm"),name:d.name||"Bookmark",snapshot:clone({activePageId:state.activePageId,filters:state.filters,selectedVisualId:state.selectedVisualId})});
+ else if(a==="addBookmark"){state.bookmarks.push({id:d.id||uid("bm"),name:d.name||"Bookmark",snapshot:clone({activePageId:state.activePageId,filters:state.filters,selectedVisualId:state.selectedVisualId})});state.statusText="Bookmark added: "+(d.name||"Bookmark");}
  else if(a==="applyBookmark"){const b=state.bookmarks.find(x=>x.id===d.id||x.name===d.name);if(b)Object.assign(state,clone(b.snapshot));}
- else if(a==="openAnalyticsPane"){state.paneTab="visualizations";state.analyticsOpen=true;}
- else if(["addTrendLine","addConstantLine","addForecast","findAnomalies","runKeyInfluencers","expandDecomposition","askQnA"].includes(a)){const v=getVisual(d.id||state.selectedVisualId);if(v){v.analytics=v.analytics||[];v.analytics.push({type:a,...clone(d)});if(a==="askQnA"){v.type="qna";v.data={value:d.answer||"Q&A result"};}}}
+ else if(a==="openAnalyticsPane"){state.paneTab="visualizations";state.analyticsOpen=true;state.statusText="Analytics pane opened";}
+ else if(["addTrendLine","addConstantLine","addForecast","findAnomalies","runKeyInfluencers","expandDecomposition","askQnA"].includes(a)){const v=getVisual(d.id||state.selectedVisualId);if(v){v.analytics=v.analytics||[];v.analytics.push({type:a,...clone(d)});if(a==="askQnA"){v.type="qna";v.data={value:d.answer||"Q&A result"};}state.statusText=prettyType(a)+" applied";}}
  else if(a==="openPerformanceAnalyzer")showModal("Performance Analyzer",`<p>Measure how long each visual takes to render.</p><div>${state.performance.events.map(e=>`<div class="filterCard">${esc(e.name)} — ${esc(e.duration)} ms</div>`).join("")}</div>`);
  else if(a==="startPerformanceRecording"){state.performance.recording=true;state.performance.events=[];state.statusText="Performance recording";}
  else if(a==="stopPerformanceRecording"){state.performance.recording=false;state.statusText="Performance recording stopped";}
  else if(a==="refreshVisuals"){if(state.performance.recording)currentPage().visuals.forEach((v,i)=>state.performance.events.push({name:v.title||prettyType(v.type),duration:d.durationBase?d.durationBase+i*7:40+i*9}));state.statusText="Visuals refreshed";}
- else if(a==="copyPerformanceQuery"){state.performance.copied=d.query||"DAX query copied";showToast("Performance query copied");}
+ else if(a==="copyPerformanceQuery"){state.performance.copied=d.query||"DAX query copied";state.statusText="Performance query copied";showToast("Performance query copied");}
  else if(a==="publishReport"){state.publish.status="Choose workspace";showPublish();}
  else if(a==="selectWorkspace"){state.publish.workspace=d.workspace||"My workspace";state.publish.status="Ready to publish";}
  else if(a==="completePublish"){state.publish.status="Published";refs.modalShade.classList.remove("show");showToast("Published successfully");}
@@ -540,8 +543,8 @@ async function applyStep(step,animate,token){
  else if(a==="shareReport")showModal("Share report",`<p>Share via ${esc(d.channel||"email")}.</p>`);
  else if(a==="embedReport")showModal("Embed report",`<p>${esc(d.destination||"SharePoint Online")}</p>`);
  else if(a==="applyReportTheme"||a==="importTheme"){state.reportTheme=clone(d.theme||d);showToast("Report theme applied");}
- else if(a==="openMobileLayout"){state.mobile.enabled=true;state.statusText="Mobile layout";}
- else if(a==="setMobileVisualPosition"){state.mobile.visuals=state.mobile.visuals.filter(x=>x.id!==d.id);state.mobile.visuals.push(clone(d));}
+ else if(a==="openMobileLayout"){state.mobile.enabled=true;state.statusText="Mobile layout opened";showModal("Mobile layout","<div class=\"filterCard\">Phone canvas • Drag report visuals here to optimize mobile reading.</div>");}
+ else if(a==="setMobileVisualPosition"){state.mobile.visuals=state.mobile.visuals.filter(x=>x.id!==d.id);state.mobile.visuals.push(clone(d));state.statusText="Mobile visual positioned: "+(d.id||"visual");showModal("Mobile layout","<div class=\"filterCard\">"+esc(d.id||"Visual")+" • x "+Number(d.x||0)+" • y "+Number(d.y||0)+" • "+Number(d.w||0)+"×"+Number(d.h||0)+"</div>");}
  else if(a==="refreshData"||a==="refreshAll"){if(d.tables)state.tables=clone(d.tables);state.statusText="Refresh completed";showToast("Refresh completed");}
  else if(a==="configureIncrementalRefresh")state.incrementalRefresh=clone(d);
  else if(a==="openDaxQueryView"){state.activeView="dax";state.serviceOpen=false;state.statusText="DAX query view";}
@@ -558,7 +561,7 @@ async function applyStep(step,animate,token){
  else if(a==="togglePane"){const n=d.pane||d.name;if(n){state.openPanes=arr(state.openPanes);state.openPanes.includes(n)?state.openPanes=state.openPanes.filter(x=>x!==n):state.openPanes.push(n);}}
  else if(a==="openPaneSwitcher"){state.paneSwitcherOpen=true;}
  else if(a==="openOnObjectBuild"){state.activeView="report";const v=getVisual(d.id||state.selectedVisualId);if(v){state.selectedVisualId=v.id;setTimeout(()=>showOnObjectMenu(v.id),0);}}
- else if(a==="openFormatPane"){state.paneTab="visualizations";state.formatPane=true;}
+ else if(a==="openFormatPane"){state.paneTab="visualizations";state.formatPane=true;state.statusText="Format visual opened";}
  else if(a==="showVisualTable"){showModal("Visual table","<p>Underlying data for the selected visual.</p><div class=\"filterCard\">Visual table • Data point table</div>");}
  else if(a==="openSelectionPane"){showModal("Selection",currentPage().visuals.map(v=>'<div class="filterCard">'+esc(v.title||prettyType(v.type))+'</div>').join("")||"No visuals");}
  else if(a==="openBookmarksPane"){showModal("Bookmarks",state.bookmarks.map(b=>'<div class="filterCard">'+esc(b.name)+'</div>').join("")||"No bookmarks");}
@@ -580,6 +583,7 @@ async function seek(steps,animateFinal){
  const token=++seekToken;clearTransient();state=normalize(baseline||{});applyTheme(state.theme||"light");
  for(let i=0;i<steps.length;i++){if(steps[i].app&&steps[i].app!==APP_ID)continue;allowBoundary=i===steps.length-1;await applyStep(steps[i],animateFinal&&i===steps.length-1,token);if(token!==seekToken)return;}
  allowBoundary=true;renderAll();
+ parent.postMessage({type:"SIM_SEEK_DONE",app:APP_ID},"*");
 }
 refs.reportViewBtn.onclick=()=>{state.activeView="report";state.serviceOpen=false;renderAll();};
 refs.dataViewBtn.onclick=()=>{state.activeView="data";state.serviceOpen=false;renderAll();};

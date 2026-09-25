@@ -125,10 +125,13 @@ assert(!app.includes("softwarePreview"), "Simulator-specific software preview st
 assert(app.includes("simulator/shared/highlighter.js"), "Universal highlighter injection is missing from app.js");
 assert(app.includes("SIM_HIGHLIGHT_RESULT"), "Player must consume shared highlight success/failure acknowledgements");
 assert(app.includes("[no highlight]"), "Player must visibly label steps whose highlight cannot be resolved");
+assert(app.includes('"[no highlight] " + step.title'), "Unresolved guidance must visibly prefix the explanation title");
 assert(app.includes("SIM_SEEK_DONE"), "Player must wait for final simulator render before applying lesson guidance");
 assert(exists("lesson-json/examples/highlight-contract.example.json"), "Missing lesson highlight contract example");
+assert(exists("scripts/apply-step-highlights.cjs"), "Missing canonical explicit highlight mapper");
+assert(exists("scripts/test-powerbi-highlight-coverage.cjs"), "Missing Power BI highlight coverage regression");
 assert(
-  app.includes("simulator/shared/highlighter.js?v=16"),
+  app.includes("simulator/shared/highlighter.js?v=17"),
   "Universal highlighter cache version is stale in app.js"
 );
 if (exists("simulator/shared/highlighter.js")) {
@@ -137,9 +140,10 @@ if (exists("simulator/shared/highlighter.js")) {
     sharedHighlighter.includes("outline:4px solid #53a9ff") &&
     sharedHighlighter.includes("box-shadow:none") &&
     sharedHighlighter.includes("simLessonLineHighlight") &&
+    sharedHighlighter.includes("simActionPointer") &&
     sharedHighlighter.includes("SIM_HIGHLIGHT_RESULT") &&
     !sharedHighlighter.includes("visibleUntil=Date.now()+5000"),
-    "Persistent per-step shared action/code-highlight contract is missing"
+    "Persistent per-step shared action/code/pointer highlight contract is missing"
   );
   assert(
     sharedHighlighter.includes("scrollLeft=x[i]") &&
@@ -225,6 +229,16 @@ if (manifest) {
 if (exists("simulator/powerbi/index.html")) {
   const pbiIndex = read("simulator/powerbi/index.html");
   assert(pbiIndex.includes('id="onObjectClose"'), "Power BI on-object menu has no close control");
+  assert(pbiIndex.includes("engine.js?v=9"), "Power BI index must load the current engine v9");
+  assert(player.includes('data-src="simulator/powerbi/index.html?v=9"'), "Player is not loading the current Power BI simulator v9");
+}
+if (exists("simulator/powerbi/engine.js")) {
+  const pbiEngine = read("simulator/powerbi/engine.js");
+  assert(pbiEngine.includes("d.id||d.pageId||d.page"), "Power BI selectPage must accept pageId/page lesson data");
+  assert(pbiEngine.includes("pqProfilingStrip"), "Power BI column quality/distribution/profile surface is dormant");
+  assert(pbiEngine.includes('data-pbi-highlight="format-pane"') && pbiEngine.includes('data-pbi-highlight="analytics-pane"'), "Power BI format/analytics highlight anchors are missing");
+  assert(pbiEngine.includes("condition=d.condition||{}") && pbiEngine.includes("arr(d.columns)[0]"), "Power BI conditional-column/group-by lesson data adapters are missing");
+  assert(pbiEngine.includes('type:"SIM_SEEK_DONE",app:APP_ID'), "Power BI must acknowledge final replay render before highlighting");
 }
 
 if (contract && manifest && course) {
@@ -295,7 +309,7 @@ if (contract && manifest && course) {
       assert(typeof step.title === "string" && step.title.trim(), where + ": missing title");
       assert(typeof step.why === "string" && step.why.trim(), where + ": missing explanation/why text");
       const highlightKind = step.highlight && step.highlight.kind;
-      assert(["auto","code","target","none"].includes(highlightKind), where + ": every lesson must declare highlight.kind as auto, code, target, or none");
+      assert(["code","target","none"].includes(highlightKind), where + ": highlight.kind must be explicit code, target, or none; auto is forbidden");
       if (highlightKind === "none") {
         assert(typeof step.highlight.reason === "string" && step.highlight.reason.trim(), where + ": highlight.kind=none requires a reason; runtime will show [no highlight]");
       }
@@ -429,6 +443,18 @@ if (contract && course) {
 // Global layout runtime rule.
 // Every simulator loads the common resize/persistence mechanics. Product visuals
 // remain isolated in the simulator itself.
+if (contract) {
+  for (const [software, spec] of Object.entries(contract.simulators || {})) {
+    const indexPath = "simulator/" + spec.directory + "/index.html";
+    if (!exists(indexPath)) continue;
+    const html = read(indexPath);
+    assert(
+      html.includes("../shared/highlighter.js?v=17"),
+      software + ": simulator is not loading the current shared highlighter v17"
+    );
+  }
+}
+
 if (contract && contract.layoutPolicy?.requiredForEverySimulator) {
   for (const [software, spec] of Object.entries(contract.simulators || {})) {
     const indexPath = "simulator/" + spec.directory + "/index.html";

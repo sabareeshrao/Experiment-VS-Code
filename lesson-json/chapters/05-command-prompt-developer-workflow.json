@@ -15,7 +15,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -29,7 +36,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -43,7 +57,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -57,7 +78,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -71,7 +99,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -85,7 +120,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -99,7 +141,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -113,7 +162,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -127,7 +183,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -141,7 +204,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -155,7 +225,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -169,7 +246,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -183,7 +267,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -197,7 +288,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -211,7 +309,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -225,7 +330,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -239,7 +351,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -253,7 +372,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     },
     {
@@ -267,7 +393,14 @@
         }
       },
       "highlight": {
-        "kind": "auto"
+        "kind": "target",
+        "selectors": [
+          ".terminalCommandFocus",
+          "#commandInput",
+          "#termInput",
+          "input[type=text]",
+          ".terminalLine:last-child"
+        ]
       }
     }
   ]

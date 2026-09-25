@@ -397,11 +397,11 @@ Lesson source must include `highlight.kind`:
 
 - `target` for exact controls/rows/tabs/fields,
 - `code` for exact source/SQL/text lines,
-- `auto` only when the final rendered action exposes a stable current/native target,
+- `auto` is forbidden in committed lesson source; use a concrete `target`, `code`, or justified `none`,
 - `none` for theory or an unbuilt target, with a required reason.
 
 If explanatory text asks the learner to inspect code, use `kind: "code"` and identify the relevant line(s); merely opening a file is not sufficient.
 
-The shared highlighter acknowledges whether it actually found the target. If resolution fails, the player visibly prefixes the explanation with `[no highlight]`.
+The shared highlighter acknowledges whether it actually found the target. If resolution fails, the player visibly prefixes both the explanation title and body with `[no highlight]`. CI rejects `auto` so missing mappings cannot hide behind runtime guessing.
 
 Final guidance is applied after `SIM_SEEK_DONE`, not on a guessed delay. Code/terminal line focus must preserve horizontal scroll; Next/Previous/Replay must never jump the editor to the far right. Current-step guidance persists until navigation/replay clears or replaces it.
