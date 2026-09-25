@@ -149,6 +149,27 @@ const server = http.createServer((req, res) => {
       await page.setViewportSize(viewport);
       await open(504);
       await completion();
+      const responsive = await frame().evaluate(() => {
+        const left=document.querySelector("#leftPanel"),right=document.querySelector("#rightPanel");
+        const lr=left.getBoundingClientRect(),rr=right.getBoundingClientRect();
+        return {
+          leftVisible:getComputedStyle(left).display!=="none",
+          rightVisible:getComputedStyle(right).display!=="none",
+          leftWidth:lr.width,
+          rightWidth:rr.width,
+          leftVar:getComputedStyle(document.documentElement).getPropertyValue("--leftW").trim(),
+          rightVar:getComputedStyle(document.documentElement).getPropertyValue("--rightW").trim()
+        };
+      });
+      if(viewport.width<=1100&&viewport.width>650){
+        assert(responsive.leftVisible&&responsive.leftWidth<=225, "Saved desktop Project width overrode compact IntelliJ layout: "+JSON.stringify({viewport,responsive}));
+      }
+      if(viewport.width<=950){
+        assert(!responsive.rightVisible, "Right tool window stayed visible below IntelliJ compact breakpoint: "+JSON.stringify({viewport,responsive}));
+      }
+      if(viewport.width<=650){
+        assert(!responsive.leftVisible, "Project pane stayed visible on mobile IntelliJ layout: "+JSON.stringify({viewport,responsive}));
+      }
       await navigate(() => page.locator("#nextBtn").click(), 505);
       await geometry();
       assert((await frame().locator("#bottomPanel").boundingBox()).height > 60);

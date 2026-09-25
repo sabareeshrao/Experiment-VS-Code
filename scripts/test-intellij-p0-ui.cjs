@@ -97,6 +97,20 @@ const server=http.createServer((req,res)=>{
   await next(518);
   assert(await frame().locator(".ij-maven-head").isVisible());
   assert(await frame().locator("[data-maven-section='Dependencies']").isVisible());
+  const mavenLayout=await frame().evaluate(()=>{
+    const body=document.querySelector("#rightBody").getBoundingClientRect();
+    const rows=[...document.querySelectorAll(".ij-maven-row")].map(row=>{
+      const r=row.getBoundingClientRect();
+      return {left:r.left,right:r.right,height:r.height};
+    });
+    const dependencyLabels=[...document.querySelectorAll(".ij-maven-section [data-maven-section='Dependencies'] + div .ij-maven-row span:nth-child(2)")].map(el=>{
+      const cs=getComputedStyle(el),r=el.getBoundingClientRect();
+      return {whiteSpace:cs.whiteSpace,overflow:cs.overflow,textOverflow:cs.textOverflow,height:r.height};
+    });
+    return {body:{left:body.left,right:body.right},rows,dependencyLabels};
+  });
+  assert(mavenLayout.rows.every(r=>r.left>=mavenLayout.body.left-1&&r.right<=mavenLayout.body.right+1&&r.height<=31),"Maven rows overflow/wrap outside the tool window: "+JSON.stringify(mavenLayout));
+  assert(mavenLayout.dependencyLabels.length>0&&mavenLayout.dependencyLabels.every(x=>x.whiteSpace==="nowrap"&&x.overflow==="hidden"),"Maven dependency labels are allowed to crumble/wrap: "+JSON.stringify(mavenLayout));
   await frame().locator("[data-maven-goal='test']").click();
   assert((await frame().locator("#bottomBody").innerText()).includes("BUILD SUCCESS"));
 
@@ -129,6 +143,14 @@ const server=http.createServer((req,res)=>{
   assert(await frame().locator(".ij-breadcrumbs").isVisible());
   const crumbs=await frame().locator(".ij-breadcrumbs").innerText();
   assert(crumbs.includes("AeroTopo")&&crumbs.includes("ProjectService.java"),"Breadcrumb chain is incomplete: "+crumbs);
+  const breadcrumbGeometry=await frame().evaluate(()=>{
+    const crumb=document.querySelector(".ij-breadcrumbs").getBoundingClientRect();
+    const gutter=document.querySelector(".gutter").getBoundingClientRect();
+    const editor=document.querySelector("#editorWrap").getBoundingClientRect();
+    return {crumbLeft:crumb.left,crumbRight:crumb.right,gutterRight:gutter.right,editorRight:editor.right};
+  });
+  assert(Math.abs(breadcrumbGeometry.crumbLeft-breadcrumbGeometry.gutterRight)<=1.5,"Breadcrumb strip is misaligned with the editor gutter: "+JSON.stringify(breadcrumbGeometry));
+  assert(breadcrumbGeometry.crumbRight<=breadcrumbGeometry.editorRight+1,"Breadcrumb strip escapes the editor: "+JSON.stringify(breadcrumbGeometry));
 
   await next(524);
   assert(await frame().locator(".ij-terminal-tabs").isVisible());

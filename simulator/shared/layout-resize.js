@@ -143,10 +143,30 @@
     });
   }
 
+  function applyIntelliJStoredLayout(){
+    // Saved desktop splitter sizes must not override IntelliJ's responsive CSS.
+    // Inline custom properties outrank @media :root rules, which previously left
+    // a 300-420px Project pane active on compact lesson/player viewports.
+    const compact=innerWidth<=1100;
+    const mobile=innerWidth<=650;
+    if(compact){
+      root.style.removeProperty("--leftW");
+      root.style.removeProperty("--rightW");
+    }else{
+      if(saved.leftW) root.style.setProperty("--leftW",px(clamp(get("leftW",250),170,420)));
+      if(saved.rightW) root.style.setProperty("--rightW",px(clamp(get("rightW",270),170,420)));
+    }
+    if(mobile){
+      root.style.removeProperty("--bottomH");
+    }else if(saved.bottomH){
+      const work=document.getElementById("work");
+      const maxBottom=Math.max(90,Math.min(460,(work?.clientHeight||innerHeight)-160));
+      root.style.setProperty("--bottomH",px(clamp(get("bottomH",190),80,maxBottom)));
+    }
+  }
+
   function setupIntelliJ(){
-    if(saved.leftW) root.style.setProperty("--leftW", px(get("leftW",250)));
-    if(saved.rightW) root.style.setProperty("--rightW", px(get("rightW",270)));
-    if(saved.bottomH) root.style.setProperty("--bottomH", px(get("bottomH",190)));
+    applyIntelliJStoredLayout();
     const l=document.getElementById("splitL"),r=document.getElementById("splitR"),h=document.getElementById("splitH");
     // IntelliJ engine owns pointer interaction. This layer only persists it.
     rememberExisting(l,()=>({leftW:readCssNumber(root,"--leftW",250)}));
@@ -643,9 +663,7 @@
     if(root.classList.contains("sim-layout-dragging")) return;
 
     if(app==="intellij"){
-      if(saved.leftW) root.style.setProperty("--leftW",px(get("leftW",250)));
-      if(saved.rightW) root.style.setProperty("--rightW",px(get("rightW",270)));
-      if(saved.bottomH) root.style.setProperty("--bottomH",px(get("bottomH",190)));
+      applyIntelliJStoredLayout();
     }
 
     if(app==="postman"){
