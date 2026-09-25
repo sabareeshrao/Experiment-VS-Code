@@ -147,10 +147,19 @@ const server=http.createServer((req,res)=>{
     const crumb=document.querySelector(".ij-breadcrumbs").getBoundingClientRect();
     const gutter=document.querySelector(".gutter").getBoundingClientRect();
     const editor=document.querySelector("#editorWrap").getBoundingClientRect();
-    return {crumbLeft:crumb.left,crumbRight:crumb.right,gutterRight:gutter.right,editorRight:editor.right};
+    const firstCode=document.querySelector(".codeLine")?.getBoundingClientRect();
+    const firstGutter=document.querySelector(".gline")?.getBoundingClientRect();
+    return {
+      crumbLeft:crumb.left,crumbRight:crumb.right,crumbBottom:crumb.bottom,
+      gutterRight:gutter.right,editorTop:editor.top,editorRight:editor.right,
+      firstCodeTop:firstCode?.top??null,firstGutterTop:firstGutter?.top??null
+    };
   });
   assert(Math.abs(breadcrumbGeometry.crumbLeft-breadcrumbGeometry.gutterRight)<=1.5,"Breadcrumb strip is misaligned with the editor gutter: "+JSON.stringify(breadcrumbGeometry));
   assert(breadcrumbGeometry.crumbRight<=breadcrumbGeometry.editorRight+1,"Breadcrumb strip escapes the editor: "+JSON.stringify(breadcrumbGeometry));
+  assert(breadcrumbGeometry.crumbBottom<=breadcrumbGeometry.editorTop+1.5,"Breadcrumb row overlaps the editor viewport: "+JSON.stringify(breadcrumbGeometry));
+  assert(breadcrumbGeometry.firstCodeTop===null||breadcrumbGeometry.firstCodeTop>=breadcrumbGeometry.editorTop-1,"Breadcrumb row overlaps source line 1: "+JSON.stringify(breadcrumbGeometry));
+  assert(breadcrumbGeometry.firstGutterTop===null||breadcrumbGeometry.firstGutterTop>=breadcrumbGeometry.editorTop-1,"Breadcrumb row overlaps gutter line 1: "+JSON.stringify(breadcrumbGeometry));
 
   await next(524);
   assert(await frame().locator(".ij-terminal-tabs").isVisible());

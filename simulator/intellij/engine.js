@@ -704,13 +704,19 @@ function showP0SpringView(tab,d={}){
  refs.fidelity.querySelectorAll("[data-spring-source]").forEach(row=>row.addEventListener("click",()=>{const src=(tab==="beans"?beans:mappings)[Number(row.dataset.springSource)];if(src?.file)p0OpenResult(src);else fidelityNotice((src?.name||src?.path||"Spring item")+" selected")}));
 }
 function renderBreadcrumbs(){
- let bar=refs.editorWrap?.querySelector(".ij-breadcrumbs");
- if(!bar&&refs.editorWrap){bar=document.createElement("div");bar.className="ij-breadcrumbs";refs.editorWrap.appendChild(bar)}
+ let row=refs.editorPane?.querySelector(".ij-breadcrumbs-row");
+ if(!row&&refs.editorPane&&refs.editorWrap){
+  row=document.createElement("div");
+  row.className="ij-breadcrumbs-row hidden";
+  row.innerHTML='<div class="ij-breadcrumbs-spacer" aria-hidden="true"></div><div class="ij-breadcrumbs"></div>';
+  refs.editorPane.insertBefore(row,refs.editorWrap);
+ }
+ const bar=row?.querySelector(".ij-breadcrumbs");
  const show=!!activeFile&&state.breadcrumbsVisible!==false&&!state.fidelityMode;
- refs.editorWrap?.classList.toggle("hasBreadcrumbs",show);
- if(!bar)return;
- bar.classList.toggle("hidden",!show);
- if(!show){bar.innerHTML="";return}
+ refs.editorPane?.classList.toggle("hasBreadcrumbs",show);
+ if(!row||!bar)return;
+ row.classList.toggle("hidden",!show);
+ if(!show){bar.innerHTML="";bar.scrollLeft=0;return}
  const parts=activeFile.split("/").filter(Boolean);
  const content=String(files[activeFile]?.content||"");
  const cls=content.match(/\b(class|interface|record|enum)\s+(\w+)/)?.[2];
@@ -718,6 +724,7 @@ function renderBreadcrumbs(){
  const crumbs=[state.project.name||"Project",...parts];
  if(cls)crumbs.push(cls);if(method)crumbs.push(method+"()");
  bar.innerHTML=crumbs.map((c,i)=>'<button type="button" data-crumb-index="'+i+'">'+esc(c)+'</button>').join('<span>›</span>');
+ bar.scrollLeft=0;
  bar.querySelectorAll("[data-crumb-index]").forEach(btn=>btn.addEventListener("click",()=>fidelityNotice("Navigate to "+btn.textContent)));
 }
 function editorLineMarkup(line,language,no){

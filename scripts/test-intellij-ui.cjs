@@ -79,6 +79,33 @@ const server = http.createServer((req, res) => {
       assert(!g.split, "Previous chapter leaked split-editor state");
     }
 
+    // Regression for the original Student.java corruption: breadcrumbs must
+    // occupy their own row and never cover line 1 or the gutter.
+    await open(5);
+    await frame().waitForSelector(".ij-breadcrumbs");
+    const studentLayout = await frame().evaluate(() => {
+      const rect = el => {
+        const r=el.getBoundingClientRect();
+        return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height};
+      };
+      const crumb=document.querySelector(".ij-breadcrumbs");
+      const editor=document.querySelector("#editorWrap");
+      const gutter=document.querySelector(".gutter");
+      const firstCode=document.querySelector(".codeLine");
+      const firstGutter=document.querySelector(".gline");
+      return {
+        crumb:rect(crumb),editor:rect(editor),gutter:rect(gutter),
+        firstCode:firstCode?rect(firstCode):null,
+        firstGutter:firstGutter?rect(firstGutter):null,
+        firstCodeText:firstCode?.textContent||"",
+        editorScrollLeft:editor.scrollLeft
+      };
+    });
+    assert(studentLayout.firstCodeText.includes("public class Student"), "Student.java line 1 is not rendered as the first source line: "+JSON.stringify(studentLayout));
+    assert(studentLayout.crumb.bottom<=studentLayout.editor.top+1.5, "Breadcrumbs overlap the Student.java editor viewport: "+JSON.stringify(studentLayout));
+    assert(studentLayout.firstCode&&studentLayout.firstCode.top>=studentLayout.editor.top-1, "Student.java line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
+    assert(studentLayout.firstGutter&&studentLayout.firstGutter.top>=studentLayout.editor.top-1, "Student.java gutter line 1 is hidden under breadcrumbs: "+JSON.stringify(studentLayout));
+
     await open(495);
     await frame().evaluate(() => document.addEventListener("focusin", e => parent.ijFocuses.push(e.target.id)));
     await geometry();
