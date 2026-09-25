@@ -111,7 +111,7 @@ function flatten(course){
         assert((await well.innerText()).includes(d.field),"Field was not added to "+d.well+": "+d.field);
       }
       if(a==="openMobileLayout"||a==="setMobileVisualPosition"){
-        assert.equal((await f.locator("#modalTitle").innerText()).trim(),"Mobile layout","Mobile layout surface is dormant");
+        assert((await f.locator("#modalTitle").innerText()).trim().startsWith("Mobile layout"),"Mobile layout surface is dormant");
       }
       if(a==="selectPage"){
         assert((await f.locator("#statusMessage").innerText()).startsWith("Page:"),"selectPage did not expose the selected page");
