@@ -871,7 +871,10 @@ function avoidAssistantOverlap(el){
 async function highlight(t,token){if(!allowBoundary)return;const el=targetEl(t);if(!el)return;clearBoundary();trackedBoundary=el;el.classList.add("sim-emphasis");avoidAssistantOverlap(el);if(t?.type==="line"){resetEditorHorizontalScroll();window.SIM_FOCUS?.follow(el,{block:"center",horizontal:"start"})}else window.SIM_FOCUS?.follow(el,{block:"nearest",horizontal:"nearest"});await sleep(260);if(token!==seekToken)return}
 function openMenu(name){const maps={File:["New","Open","Project Structure","Settings"],Edit:["Undo","Redo","Find","Replace"],View:["Tool Windows","Appearance","Distraction Free Mode"],Navigate:["Class","File","Symbol","Declaration","Implementation"],Code:["Completion","Reformat Code","Optimize Imports","Generate"],Refactor:["Rename","Extract","Inline","Move","Safe Delete"],Build:["Build Project","Rebuild Project"],Run:["Run","Debug","Edit Configurations"],Tools:["Terminal","Database","Maven"],VCS:["Commit","Push","Pull","Git"]};refs.menuPopup.innerHTML=(maps[name]||["Action"]).map(x=>"<div>"+x+"</div>").join("");refs.menuPopup.classList.add("show")}
 async function applyStep(st,animate,token){
- if(token!==seekToken)return;clearBoundary();clearTransient(st.action);const d=st.data||{},f=()=>files[d.file||activeFile];
+ if(token!==seekToken)return;
+ if(focusRange){focusRange=null;refs.code.querySelectorAll(".codeLine.focus").forEach(el=>el.classList.remove("focus"))}
+ if(st.action!=="typeTerminal"&&terminalHighlightText){terminalHighlightText="";if(activeBottom==="terminal")renderBottom()}
+ clearBoundary();clearTransient(st.action);const d=st.data||{},f=()=>files[d.file||activeFile];
  switch(st.action){
   case"enableFeature":{const name=d.feature||d.name;if(name&&!state.visibleFeatures.includes(name))state.visibleFeatures.push(name);renderAll();break}
   case"disableFeature":{const name=d.feature||d.name;state.visibleFeatures=(state.visibleFeatures||[]).filter(x=>x!==name);renderAll();break}
