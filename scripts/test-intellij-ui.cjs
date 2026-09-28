@@ -246,6 +246,42 @@ const server = http.createServer((req, res) => {
     assert.equal(treeScroll.whiteSpace, "nowrap", "Project tree row is allowed to wrap");
     assert(treeScroll.scrollLeft > 0, "Project tree horizontal scrollbar is not functional");
 
+    // Active-file reveal regression: opening a deep file must expand every
+    // ancestor package/folder so the selected file is visible in Project view.
+    const revealFile="src/main/java/com/aerotopo/deep/RevealMe.java";
+    await frame().evaluate(file=>{
+      const leaf={name:"RevealMe.java",path:file,type:"file",language:"java"};
+      const deep={name:"deep",path:"src/main/java/com/aerotopo/deep",type:"package",open:false,children:[leaf]};
+      const aero={name:"aerotopo",path:"src/main/java/com/aerotopo",type:"package",open:false,children:[deep]};
+      const com={name:"com",path:"src/main/java/com",type:"package",open:false,children:[aero]};
+      const java={name:"java",path:"src/main/java",type:"package",open:false,children:[com]};
+      const main={name:"main",path:"src/main",type:"folder",open:false,children:[java]};
+      const src={name:"src",path:"src",type:"folder",open:false,children:[main]};
+      window.postMessage({
+        type:"SIM_PACKAGE",
+        package:{apps:{intellij_idea:{
+          project:{name:"Reveal Regression",sdk:"Java 21",languageLevel:"21"},
+          tree:[src],
+          files:{[file]:{language:"java",content:"package com.aerotopo.deep;\npublic class RevealMe {}\n"}},
+          visibleFeatures:[],
+          git:{branch:"main",changes:[],history:[]}
+        }}}
+      },"*");
+      window.postMessage({type:"SIM_SEEK",autoType:false,animateFinal:false,steps:[{action:"openFile",data:{file}}]},"*");
+    },revealFile);
+    await frame().waitForSelector('.treeRow.active[data-path="'+revealFile+'"]');
+    const activeReveal=await frame().evaluate(file=>{
+      const row=document.querySelector('.treeRow.active[data-path="'+file+'"]');
+      const expected=["src","src/main","src/main/java","src/main/java/com","src/main/java/com/aerotopo","src/main/java/com/aerotopo/deep",file];
+      return {
+        active:!!row,
+        visible:!!row&&row.getClientRects().length>0,
+        present:expected.every(path=>!!document.querySelector('.treeRow[data-path="'+path+'"]')),
+        text:row?.textContent||""
+      };
+    },revealFile);
+    assert(activeReveal.active&&activeReveal.visible&&activeReveal.present,"Opening a deep file did not reveal its active Project-tree row: "+JSON.stringify(activeReveal));
+
     // IntelliJ terminal command rectangle regression: current command gets the
     // VS Code-style yellow outline, historical replay commands do not.
     await frame().evaluate(() => window.postMessage({

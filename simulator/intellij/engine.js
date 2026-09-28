@@ -99,7 +99,31 @@ function resetEditorHorizontalScroll(){
  const targets=[refs.editorWrap,refs.editorPane,refs.code?.parentElement].filter(Boolean);
  targets.forEach(el=>{try{el.scrollLeft=0}catch(_){}});
 }
-function openFile(p){if(!files[p])return;activeFile=p;if(!openTabs.includes(p))openTabs.push(p);renderAll();requestAnimationFrame(resetEditorHorizontalScroll)}
+function revealTreePath(path){
+ const parts=String(path||"").split("/"),last=Math.max(0,parts.length-1);
+ let nodes=state.tree||[],acc="";
+ for(let i=0;i<last;i++){
+  acc=acc?acc+"/"+parts[i]:parts[i];
+  const node=nodes.find(x=>(x.path||x.name)===acc);
+  if(!node)return;
+  if(node.children){node.open=true;nodes=node.children}else return;
+ }
+}
+function keepActiveTreeRowVisible(path){
+ const row=treeMap.get(path),tree=refs.tree;
+ if(!row||!tree)return;
+ const rr=row.getBoundingClientRect(),tr=tree.getBoundingClientRect();
+ if(rr.top<tr.top)tree.scrollTop=Math.max(0,tree.scrollTop-(tr.top-rr.top)-4);
+ else if(rr.bottom>tr.bottom)tree.scrollTop+=rr.bottom-tr.bottom+4;
+}
+function openFile(p){
+ if(!files[p])return;
+ activeFile=p;
+ revealTreePath(p);
+ if(!openTabs.includes(p))openTabs.push(p);
+ renderAll();
+ requestAnimationFrame(()=>{resetEditorHorizontalScroll();keepActiveTreeRowVisible(p)});
+}
 function renderTabs(){refs.tabs.innerHTML="";for(const p of openTabs){if(!files[p])continue;const t=document.createElement("div");t.className="tab"+(p===activeFile?" active":"");t.dataset.file=p;t.innerHTML='<span>'+esc(p.split("/").pop())+'</span>'+(files[p].pinned?'<span class="tabPin">PIN</span>':'')+'<span class="tabClose">×</span>';t.onclick=e=>{if(!e.target.classList.contains("tabClose")){activeFile=p;renderAll()}};t.querySelector(".tabClose").onclick=e=>{e.stopPropagation();closeFile(p)};refs.tabs.appendChild(t)}}
 function closeFile(p){openTabs=openTabs.filter(x=>x!==p);if(activeFile===p)activeFile=openTabs.at(-1)||null;renderAll()}
 function renderSplitEditor(){const splitFile=state.editorSplit&&state.splitFile&&files[state.splitFile]?state.splitFile:(state.editorSplit?activeFile:null);const enabled=!!splitFile;refs.editorPane?.classList.toggle("editorSplit",enabled);refs.editorSplitWrap?.classList.toggle("hidden",!enabled);if(!enabled){if(refs.editorSplitCode)refs.editorSplitCode.innerHTML="";return}refs.editorSplitTitle.textContent=splitFile.split("/").pop();const sf=files[splitFile],lines=String(sf?.content??"").split("\n");refs.editorSplitCode.innerHTML=lines.map((line,i)=>'<div class="splitCodeLine"><span class="splitLineNo">'+(i+1)+'</span><span class="splitCodeText">'+syntax(line,sf?.language||"java")+'</span></div>').join("")}
