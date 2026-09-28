@@ -499,6 +499,7 @@
       target === "intellij" &&
       !forceFull &&
       !pendingSeekKeys[target] &&
+      keys.length > completed.length &&
       isKeyPrefix(completed, keys);
 
     const payload = canAppend ? history.slice(completed.length) : history;

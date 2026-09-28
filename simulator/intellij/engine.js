@@ -846,7 +846,7 @@ function showFileStructure(path){
 function findRun(name){return state.runConfigurations.find(x=>x.name===name)||state.runConfigurations[0]}
 function actionStatus(msg){refs.status.textContent=msg}
 function reset(){state=clone(baseline||{});normalize();terminalHighlightText="";clearTransient("");trackedBoundary=null;refs.boundary.classList.remove("show");refs.app.classList.remove("distraction");document.body.classList.remove("zen");renderAll()}
-function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="selector"&&t.selector){try{return document.querySelector(t.selector)}catch(_){return null}}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){const needsRender=activeFile!==t.file||!openTabs.includes(t.file);activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);focusRange={file:t.file,lines:[Number(t.line)]};if(needsRender){renderAll();resetEditorHorizontalScroll()}}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
+function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="selector"&&t.selector){try{return document.querySelector(t.selector)}catch(_){return null}}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){const line=Number(t.line),needsRender=activeFile!==t.file||!openTabs.includes(t.file);activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);focusRange={file:t.file,lines:[line]};if(needsRender){renderAll();resetEditorHorizontalScroll()}else{refs.code.querySelectorAll(".codeLine.focus").forEach(el=>el.classList.remove("focus"));refs.code.querySelector('[data-line="'+line+'"]')?.classList.add("focus")}}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
 function clearBoundary(){if(trackedBoundary?.classList)trackedBoundary.classList.remove("sim-emphasis");trackedBoundary=null;refs.boundary.classList.remove("show")}
 function syncBoundary(){}
 function avoidAssistantOverlap(el){
@@ -1130,7 +1130,7 @@ function bestReplayCheckpoint(hashes,targetCount){
  }
  return best;
 }
-async function applyReplayRange(steps,start,animateFinal,token,keys,hashes){
+async function applyReplayRange(steps,start,animateFinal,token,keys,hashes,countOffset=0){
  let applied=0;
  for(let i=start;i<steps.length;i++){
   allowBoundary=i===steps.length-1;
@@ -1138,7 +1138,7 @@ async function applyReplayRange(steps,start,animateFinal,token,keys,hashes){
   await applyStep(steps[i],animateFinal&&allowBoundary,token);
   if(token!==seekToken)return applied;
   applied++;
-  const count=i+1;
+  const count=countOffset+i+1;
   if(count%REPLAY_FINE_INTERVAL===0)rememberReplayCheckpoint(count,hashes);
  }
  replayActionKeys=keys;
@@ -1169,7 +1169,7 @@ async function seek(steps,animateFinal,mode="replace",meta={}){
    for(const key of suffixKeys)hashes.push(replayHashNext(hashes.at(-1),key));
    replayStats.incrementalSeeks++;
    replayStats.lastMode="incremental";
-   await applyReplayRange(steps,0,animateFinal,token,keys,hashes);
+   await applyReplayRange(steps,0,animateFinal,token,keys,hashes,baseCount);
   }else{
    const keys=steps.map(replayActionKey);
    const hashes=buildReplayHashes(keys);
