@@ -356,10 +356,31 @@
       .map(step => step.action);
   }
 
+  const completedSeekKeys = {};
+  const pendingSeekKeys = {};
+
+  function actionKey(action) {
+    return JSON.stringify(action ?? null);
+  }
+
+  function resetSeekSynchronization(target) {
+    completedSeekKeys[target] = [];
+    pendingSeekKeys[target] = null;
+  }
+
+  function isKeyPrefix(prefix, full) {
+    if (!Array.isArray(prefix) || prefix.length > full.length) return false;
+    for (let i = 0; i < prefix.length; i++) {
+      if (prefix[i] !== full[i]) return false;
+    }
+    return true;
+  }
+
   function sendCoursePackage(software) {
     const target = normalizeSoftware(software);
     if (!engineReady[target] || !course.package) return;
 
+    resetSeekSynchronization(target);
     let packageForApp = course.package;
 
     // VS Code uses the same Java Practice source snapshot as IntelliJ so the
@@ -465,14 +486,31 @@
     return { kind: "none", reason: "Unsupported highlight kind: " + String(hint.kind || "missing") };
   }
 
-  function sendSeekNow(index, target, animateFinal) {
+  function sendSeekNow(index, target, animateFinal, forceFull = false) {
     // Clear the PREVIOUS step's global control guidance before replaying the
     // new step. Clearing after SIM_SEEK erases IntelliJ's native code-line
     // emphasis created by highlightTarget/typeCode.
     frames[target].contentWindow.postMessage({ type: "SIM_HIGHLIGHT_CLEAR", force: true }, SIM_TARGET_ORIGIN);
+
+    const history = stepsThrough(index, target);
+    const keys = history.map(actionKey);
+    const completed = completedSeekKeys[target] || [];
+    const canAppend =
+      target === "intellij" &&
+      !forceFull &&
+      !pendingSeekKeys[target] &&
+      isKeyPrefix(completed, keys);
+
+    const payload = canAppend ? history.slice(completed.length) : history;
+    pendingSeekKeys[target] = { keys, index };
+
     frames[target].contentWindow.postMessage({
       type: "SIM_SEEK",
-      steps: stepsThrough(index, target),
+      steps: payload,
+      mode: canAppend ? "append" : "replace",
+      baseCount: canAppend ? completed.length : 0,
+      baseKey: canAppend && completed.length ? completed.at(-1) : null,
+      targetCount: keys.length,
       animateFinal: !!animateFinal,
       autoType: true
     }, SIM_TARGET_ORIGIN);
@@ -587,6 +625,7 @@
       : null;
 
     stageList.innerHTML = "";
+    stageList.dataset.renderedQuery = q;
     if (!flat.length) return;
 
     let global = 0;
@@ -609,6 +648,7 @@
       if (q && !stageTextMatch && !stepMatches) return;
 
       const block = document.createElement("section");
+      block.dataset.stageIndex = String(stageIndex);
       const isCurrent =
         !fullCodeMode &&
         flat[current]?.stageIndex === stageIndex;
@@ -662,6 +702,7 @@
         }
 
         const button = document.createElement("button");
+        button.dataset.stepIndex = String(gi);
         button.className =
           "step-link" +
           (!fullCodeMode && gi === current ? " active" : "") +
@@ -678,6 +719,33 @@
       block.appendChild(wrap);
       stageList.appendChild(block);
     });
+  }
+
+  function syncSidebarNavigation() {
+    const q = stepSearch.value.trim().toLowerCase();
+    if (stageList.dataset.renderedQuery !== q || !stageList.children.length) {
+      renderSidebar();
+      return;
+    }
+
+    const currentStage = !fullCodeMode && flat.length ? flat[current]?.stageIndex : -1;
+    stageList.querySelectorAll(".stage-block[data-stage-index]").forEach(block => {
+      const stageIndex = Number(block.dataset.stageIndex);
+      const isCurrent = stageIndex === currentStage;
+      const isOpen = openStages.has(stageIndex) || !!q;
+      block.classList.toggle("current", isCurrent);
+      block.classList.toggle("open", isOpen);
+      const chevron = block.querySelector(".stage-chevron");
+      if (chevron) chevron.textContent = isOpen ? "⌃" : "⌄";
+    });
+
+    stageList.querySelectorAll(".step-link[data-step-index]").forEach(button => {
+      const index = Number(button.dataset.stepIndex);
+      button.classList.toggle("active", !fullCodeMode && index === current);
+      button.classList.toggle("done", !fullCodeMode && index < current);
+    });
+
+    stageList.querySelector('.step-link.active')?.scrollIntoView?.({ block: "nearest" });
   }
 
   function loadFullCode() {
@@ -738,7 +806,7 @@
     nextBtn.disabled = current === flat.length - 1;
 
     setPlaybackVisibility();
-    renderSidebar();
+    syncSidebarNavigation();
     updateUrlForStep();
     try { localStorage.setItem("developerJourney.lastStep.v1", String(current + 1)); } catch (_) {}
     explainCurrentStep();
@@ -786,7 +854,21 @@
       return;
     }
 
+    if (event.data?.type === "SIM_RESYNC_REQUIRED") {
+      pendingSeekKeys[software] = null;
+      completedSeekKeys[software] = [];
+      if (!fullCodeMode && flat.length && normalizeSoftware(flat[current].software) === software) {
+        sendSeekNow(current, software, false, true);
+      }
+      return;
+    }
+
     if (event.data?.type === "SIM_SEEK_DONE") {
+      const pending = pendingSeekKeys[software];
+      if (pending) {
+        completedSeekKeys[software] = pending.keys;
+        pendingSeekKeys[software] = null;
+      }
       if (
         !fullCodeMode &&
         flat.length &&

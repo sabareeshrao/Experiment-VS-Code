@@ -7,6 +7,24 @@ const refs={editorPane:$("editorPane"),editorWrap:$("editorWrap"),editorSplitWra
 let baseline=null,state=null,files={},activeFile=null,openTabs=[],activeBottom="run",activeRight="structure",autoType=true,seekToken=0,allowBoundary=true,treeMap=new Map(),focusRange=null,popupKind="",modalKind="",notificationTimer=0,trackedBoundary=null,terminalHighlightText="";
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let replayingHistory=false;
+const REPLAY_FINE_INTERVAL=20;
+const REPLAY_LANDMARK_INTERVAL=200;
+const REPLAY_MAX_CHECKPOINTS=96;
+const REPLAY_HASH_SEED=2166136261;
+let replayActionKeys=[];
+let replayHashes=[REPLAY_HASH_SEED];
+let replayCheckpoints=new Map();
+const replayStats=window.__INTELLIJ_REPLAY_STATS__={
+ incrementalSeeks:0,
+ checkpointSeeks:0,
+ resyncRequests:0,
+ checkpointRestores:0,
+ redundantOpenFileSkips:0,
+ lastMode:"idle",
+ lastAppliedActions:0,
+ maxAppliedActions:0,
+ historyCount:0
+};
 const LESSON_EDITABLE_SELECTOR='input, textarea, select, [contenteditable="true"], [role="textbox"], [role="combobox"], [role="slider"], [role="menu"], [role="listbox"]';
 let lessonUserEditTarget=null,lessonTabArmed=false;
 function lessonEditableTarget(target){
@@ -101,13 +119,14 @@ function resetEditorHorizontalScroll(){
 }
 function revealTreePath(path){
  const parts=String(path||"").split("/"),last=Math.max(0,parts.length-1);
- let nodes=state.tree||[],acc="";
+ let nodes=state.tree||[],acc="",changed=false;
  for(let i=0;i<last;i++){
   acc=acc?acc+"/"+parts[i]:parts[i];
   const node=nodes.find(x=>(x.path||x.name)===acc);
-  if(!node)return;
-  if(node.children){node.open=true;nodes=node.children}else return;
+  if(!node)return changed;
+  if(node.children){if(!node.open){node.open=true;changed=true}nodes=node.children}else return changed;
  }
+ return changed;
 }
 function keepActiveTreeRowVisible(path){
  const row=treeMap.get(path),tree=refs.tree;
@@ -118,9 +137,16 @@ function keepActiveTreeRowVisible(path){
 }
 function openFile(p){
  if(!files[p])return;
+ const sameFile=activeFile===p;
+ const alreadyOpen=openTabs.includes(p);
+ const treeChanged=revealTreePath(p);
  activeFile=p;
- revealTreePath(p);
- if(!openTabs.includes(p))openTabs.push(p);
+ if(!alreadyOpen)openTabs.push(p);
+ if(sameFile&&alreadyOpen&&!treeChanged){
+  replayStats.redundantOpenFileSkips++;
+  requestAnimationFrame(()=>{resetEditorHorizontalScroll();keepActiveTreeRowVisible(p)});
+  return;
+ }
  renderAll();
  requestAnimationFrame(()=>{resetEditorHorizontalScroll();keepActiveTreeRowVisible(p)});
 }
@@ -820,7 +846,7 @@ function showFileStructure(path){
 function findRun(name){return state.runConfigurations.find(x=>x.name===name)||state.runConfigurations[0]}
 function actionStatus(msg){refs.status.textContent=msg}
 function reset(){state=clone(baseline||{});normalize();terminalHighlightText="";clearTransient("");trackedBoundary=null;refs.boundary.classList.remove("show");refs.app.classList.remove("distraction");document.body.classList.remove("zen");renderAll()}
-function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="selector"&&t.selector){try{return document.querySelector(t.selector)}catch(_){return null}}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);focusRange={file:t.file,lines:[Number(t.line)]};renderAll();resetEditorHorizontalScroll()}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
+function targetEl(t){if(!t)return null;if(typeof t==="string"){const map={project:refs.tree,editor:refs.code,run:refs.runBtn,debug:refs.debugBtn,save:refs.saveBtn,git:refs.gitBtn,terminal:refs.terminalBtn,search:refs.searchBtn,runConfig:refs.runConfig,problems:refs.bottomTabs.querySelector('[data-bottom="problems"]')};if(map[t])return map[t];if(treeMap.has(t))return treeMap.get(t);const tab=refs.tabs.querySelector('[data-file="'+CSS.escape(t)+'"]');if(tab)return tab}if(t.type==="selector"&&t.selector){try{return document.querySelector(t.selector)}catch(_){return null}}if(t.type==="file")return treeMap.get(t.path)||refs.tabs.querySelector('[data-file="'+CSS.escape(t.path)+'"]');if(t.type==="line"){if(t.file&&files[t.file]){const needsRender=activeFile!==t.file||!openTabs.includes(t.file);activeFile=t.file;if(!openTabs.includes(t.file))openTabs.push(t.file);focusRange={file:t.file,lines:[Number(t.line)]};if(needsRender){renderAll();resetEditorHorizontalScroll()}}return refs.code.querySelector('[data-line="'+Number(t.line)+'"]')}return null}
 function clearBoundary(){if(trackedBoundary?.classList)trackedBoundary.classList.remove("sim-emphasis");trackedBoundary=null;refs.boundary.classList.remove("show")}
 function syncBoundary(){}
 function avoidAssistantOverlap(el){
@@ -1031,25 +1057,157 @@ async function applyStep(st,animate,token){
  if(d.lessonFocus) await highlight(d.lessonFocus,token);
 }
 function showProjectStructureModal(){showProjectStructureSurface({sdk:state.project.sdk,jdkOpen:false})}
-async function seek(steps,animateFinal){
+function replayActionKey(step){return JSON.stringify(step??null)}
+function replayHashNext(previous,key){
+ let hash=previous>>>0;
+ const text=String(key);
+ for(let i=0;i<text.length;i++){hash^=text.charCodeAt(i);hash=Math.imul(hash,16777619)>>>0}
+ return hash>>>0;
+}
+function buildReplayHashes(keys){
+ const hashes=[REPLAY_HASH_SEED];
+ for(const key of keys)hashes.push(replayHashNext(hashes.at(-1),key));
+ return hashes;
+}
+function captureReplayState(){
+ const stateCopy=clone(state||{});
+ delete stateCopy.files;
+ return {
+  state:stateCopy,
+  files:clone(files),
+  activeFile,
+  openTabs:clone(openTabs),
+  activeBottom,
+  activeRight
+ };
+}
+function restoreReplayState(snapshot){
+ state=clone(snapshot.state||{});
+ files=clone(snapshot.files||{});
+ state.files=clone(files);
+ activeFile=snapshot.activeFile&&files[snapshot.activeFile]?snapshot.activeFile:(Object.keys(files)[0]||null);
+ openTabs=(snapshot.openTabs||[]).filter(path=>files[path]);
+ if(activeFile&&!openTabs.includes(activeFile))openTabs.push(activeFile);
+ activeBottom=snapshot.activeBottom||"run";
+ activeRight=snapshot.activeRight||"structure";
+ focusRange=null;popupKind="";modalKind="";terminalHighlightText="";
+ clearTransient("");
+ trackedBoundary=null;
+ refs.boundary.classList.remove("show");
+ refs.app.classList.remove("distraction");
+ document.body.classList.remove("zen");
+ renderAll();
+ replayStats.checkpointRestores++;
+}
+function trimReplayCheckpoints(){
+ if(replayCheckpoints.size<=REPLAY_MAX_CHECKPOINTS)return;
+ const removable=[...replayCheckpoints.keys()]
+  .filter(count=>count!==0&&count%REPLAY_LANDMARK_INTERVAL!==0)
+  .sort((a,b)=>a-b);
+ while(replayCheckpoints.size>REPLAY_MAX_CHECKPOINTS&&removable.length)replayCheckpoints.delete(removable.shift());
+ const landmarks=[...replayCheckpoints.keys()].filter(count=>count!==0).sort((a,b)=>a-b);
+ while(replayCheckpoints.size>REPLAY_MAX_CHECKPOINTS&&landmarks.length)replayCheckpoints.delete(landmarks.shift());
+}
+function rememberReplayCheckpoint(count,hashes){
+ if(count!==0&&count%REPLAY_FINE_INTERVAL!==0)return;
+ replayCheckpoints.set(count,{hash:hashes[count],snapshot:captureReplayState()});
+ trimReplayCheckpoints();
+}
+function resetReplayHistory(){
+ replayActionKeys=[];
+ replayHashes=[REPLAY_HASH_SEED];
+ replayCheckpoints=new Map([[0,{hash:REPLAY_HASH_SEED,snapshot:captureReplayState()}]]);
+ replayStats.lastMode="package";
+ replayStats.lastAppliedActions=0;
+ replayStats.historyCount=0;
+}
+function bestReplayCheckpoint(hashes,targetCount){
+ let best=0;
+ for(const [count,checkpoint] of replayCheckpoints){
+  if(count>=targetCount)continue;
+  if(hashes[count]!==checkpoint.hash)continue;
+  if(count>best)best=count;
+ }
+ return best;
+}
+async function applyReplayRange(steps,start,animateFinal,token,keys,hashes){
+ let applied=0;
+ for(let i=start;i<steps.length;i++){
+  allowBoundary=i===steps.length-1;
+  replayingHistory=!allowBoundary;
+  await applyStep(steps[i],animateFinal&&allowBoundary,token);
+  if(token!==seekToken)return applied;
+  applied++;
+  const count=i+1;
+  if(count%REPLAY_FINE_INTERVAL===0)rememberReplayCheckpoint(count,hashes);
+ }
+ replayActionKeys=keys;
+ replayHashes=hashes;
+ state.files=clone(files);
+ replayStats.lastAppliedActions=applied;
+ replayStats.maxAppliedActions=Math.max(replayStats.maxAppliedActions,applied);
+ replayStats.historyCount=keys.length;
+ return applied;
+}
+async function seek(steps,animateFinal,mode="replace",meta={}){
  clearLessonEditIntent();
  const token=++seekToken;
  try{
-  replayingHistory=true;
-  reset();
-  for(let i=0;i<steps.length;i++){
-   allowBoundary=i===steps.length-1;
-   replayingHistory=!allowBoundary;
-   await applyStep(steps[i],animateFinal&&allowBoundary,token);
-   if(token!==seekToken)return;
+  if(mode==="append"){
+   const baseCount=Number(meta.baseCount||0);
+   const baseKey=meta.baseKey??null;
+   const currentKey=replayActionKeys.length?replayActionKeys.at(-1):null;
+   if(replayActionKeys.length!==baseCount||currentKey!==baseKey){
+    replayStats.resyncRequests++;
+    replayStats.lastMode="resync";
+    parent.postMessage({type:"SIM_RESYNC_REQUIRED",app:APP_ID},location.origin==="null"?"*":location.origin);
+    return;
+   }
+   const suffixKeys=steps.map(replayActionKey);
+   const keys=replayActionKeys.concat(suffixKeys);
+   const hashes=replayHashes.slice();
+   for(const key of suffixKeys)hashes.push(replayHashNext(hashes.at(-1),key));
+   replayStats.incrementalSeeks++;
+   replayStats.lastMode="incremental";
+   await applyReplayRange(steps,0,animateFinal,token,keys,hashes);
+  }else{
+   const keys=steps.map(replayActionKey);
+   const hashes=buildReplayHashes(keys);
+   const targetCount=keys.length;
+   const currentCount=replayActionKeys.length;
+   const samePrefix=currentCount<=targetCount&&replayHashes[currentCount]===hashes[currentCount];
+   const bestCheckpoint=bestReplayCheckpoint(hashes,targetCount);
+   const incrementalCost=samePrefix?targetCount-currentCount:Number.POSITIVE_INFINITY;
+   const checkpointCost=targetCount-bestCheckpoint;
+   const replaySame=animateFinal&&samePrefix&&currentCount===targetCount&&targetCount>0;
+
+   if(!replaySame&&samePrefix&&incrementalCost<=checkpointCost){
+    replayStats.incrementalSeeks++;
+    replayStats.lastMode=incrementalCost===0?"already-synced":"incremental";
+    if(incrementalCost===0){
+     replayStats.lastAppliedActions=0;
+     replayStats.historyCount=targetCount;
+    }else{
+     await applyReplayRange(steps,currentCount,animateFinal,token,keys,hashes);
+    }
+   }else{
+    const checkpointCount=bestReplayCheckpoint(hashes,targetCount);
+    const checkpoint=replayCheckpoints.get(checkpointCount)||replayCheckpoints.get(0);
+    restoreReplayState(checkpoint.snapshot);
+    replayActionKeys=keys.slice(0,checkpointCount);
+    replayHashes=hashes.slice(0,checkpointCount+1);
+    replayStats.checkpointSeeks++;
+    replayStats.lastMode=checkpointCount===0?"baseline-checkpoint":"checkpoint";
+    await applyReplayRange(steps,checkpointCount,animateFinal,token,keys,hashes);
+   }
   }
   await new Promise(requestAnimationFrame);
-  if(token===seekToken)parent.postMessage({type:"SIM_SEEK_DONE",app:APP_ID},location.origin==="null"?"*":location.origin);
+  if(token===seekToken)parent.postMessage({type:"SIM_SEEK_DONE",app:APP_ID,historyCount:replayActionKeys.length},location.origin==="null"?"*":location.origin);
  }finally{
   if(token===seekToken){replayingHistory=false;allowBoundary=true}
  }
 }
-function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});assistantUserPlaced=false;reset()}
+function loadPackage(p){baseline=clone(p.apps?.[APP_ID]||{});assistantUserPlaced=false;reset();resetReplayHistory()}
 refs.modalClose.onclick=closeModal;refs.modalLayer.onclick=e=>{if(e.target===refs.modalLayer)closeModal()};
 document.querySelectorAll(".menuItem").forEach(m=>m.onclick=()=>openMenu(m.dataset.menu));
 document.querySelectorAll(".bottomTab").forEach(t=>t.onclick=()=>{activeBottom=t.dataset.bottom;renderBottom()});
@@ -1196,7 +1354,7 @@ document.addEventListener("pointerup",e=>{
 });
 refs.assistantMin.onclick=()=>refs.assistant.classList.toggle("minimized");
 refs.assistantClose.onclick=()=>refs.assistant.classList.add("hidden");
-window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;theme(m.theme||"dark");loadPackage(m.package)}if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal)}if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")theme(m.value)}if(m.type==="SIM_EXPLAIN")showAssistant(m)}); 
+window.addEventListener("message",e=>{const m=e.data||{};if(m.type==="SIM_PACKAGE"){autoType=m.autoType!==false;theme(m.theme||"dark");loadPackage(m.package)}if(m.type==="SIM_SEEK"){autoType=m.autoType!==false;seek(Array.isArray(m.steps)?m.steps:[],!!m.animateFinal,m.mode||"replace",{baseCount:m.baseCount,baseKey:m.baseKey,targetCount:m.targetCount})}if(m.type==="SIM_SETTING"){if(m.key==="autoType")autoType=!!m.value;if(m.key==="theme")theme(m.value)}if(m.type==="SIM_EXPLAIN")showAssistant(m)}); 
 refs.tree.innerHTML='<div style="padding:10px;color:var(--muted);font-size:10px">Waiting for IntelliJ IDEA package...</div>';
 parent.postMessage({type:"ENGINE_READY",app:APP_ID,actions:SUPPORTED_ACTIONS},"*");
 })();

@@ -66,6 +66,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Exercise the IntelliJ player in Chromium
         run: node scripts/test-intellij-ui.cjs
+      - name: Verify incremental IntelliJ navigation has no replay blink
+        run: node scripts/test-intellij-navigation-performance.cjs
       - name: Verify shared highlighter across every simulator
         run: node scripts/test-global-highlighter.cjs
       - name: Verify all Power BI lesson highlights and active feature surfaces
