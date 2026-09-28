@@ -68,6 +68,23 @@ const server=http.createServer((req,res)=>{
       assert.equal(result.boxShadow,"none",software+": blue guidance must be boundary-only, not a glow");
       assert.equal(result.filter,"none",software+": blue guidance must not brighten/pulse the control");
       assert(/rgb\(83, 169, 255\)|rgba\(83, 169, 255/.test(result.outlineColor),software+": expected blue boundary: "+result.outlineColor);
+      const multi=await child.evaluate(async()=>{
+        const a=document.createElement("button"),b=document.createElement("button");
+        a.id="globalMultiProbeA";b.id="globalMultiProbeB";
+        a.textContent="Web starter";b.textContent="Validation starter";
+        a.style.cssText="position:fixed;left:190px;top:36px;width:132px;height:38px;z-index:2147479999";
+        b.style.cssText="position:fixed;left:336px;top:36px;width:150px;height:38px;z-index:2147479999";
+        document.body.append(a,b);
+        window.postMessage({type:"SIM_HIGHLIGHT",requestId:6999,plan:{texts:["Web starter","Validation starter"],multiple:true}},"*");
+        await new Promise(r=>setTimeout(r,80));
+        return {a:a.classList.contains("simActionHighlight"),b:b.classList.contains("simActionHighlight")};
+      });
+      assert(multi.a&&multi.b,software+": multi-target text guidance highlighted only part of the requested set: "+JSON.stringify(multi));
+      await child.evaluate(()=>{
+        window.postMessage({type:"SIM_HIGHLIGHT_CLEAR"},"*");
+        document.querySelector("#globalMultiProbeA")?.remove();
+        document.querySelector("#globalMultiProbeB")?.remove();
+      });
       const largePointer=await child.evaluate(async()=>{
         const large=document.createElement("div");
         large.id="globalLargeHighlightProbe";

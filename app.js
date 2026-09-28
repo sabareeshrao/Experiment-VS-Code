@@ -416,12 +416,15 @@
 
     if (hint.kind === "target") {
       const selectors = Array.isArray(hint.selectors) ? hint.selectors.filter(Boolean) : [];
-      if (!selectors.length && !hint.text) {
+      const texts = Array.isArray(hint.texts) ? hint.texts.filter(Boolean) : [];
+      if (!selectors.length && !hint.text && !texts.length) {
         return { kind: "none", reason: "Target highlight has no selector or text." };
       }
       return plan(selectors, {
         text: hint.text || "",
+        texts,
         scope: hint.scope || null,
+        multiple: hint.multiple === true || texts.length > 1,
         preserveHorizontal: !!hint.preserveHorizontal
       });
     }

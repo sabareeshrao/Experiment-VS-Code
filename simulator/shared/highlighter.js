@@ -163,6 +163,17 @@ function autoFind(plan){
 function resolve(plan){
  if(plan&&plan.kind==="none")return {elements:[],mode:"none"};
  if(plan&&plan.auto)return autoFind(plan);
+ if(plan&&Array.isArray(plan.texts)&&plan.texts.length){
+  var textHits=[];
+  plan.texts.forEach(function(text){
+   var hit=findText(text,plan.scope||null);
+   if(hit&&textHits.indexOf(hit)<0)textHits.push(hit);
+  });
+  if(textHits.length){
+   var textMode=(plan&&plan.mode)||((textHits[0]&&lineLike(textHits[0]))?"line":"control");
+   return {elements:textHits,mode:textMode};
+  }
+ }
  if(plan&&plan.text){
   var byText=findText(plan.text,plan.scope||null);
   if(byText)return {elements:[byText],mode:plan.mode||(lineLike(byText)?"line":"control")};
