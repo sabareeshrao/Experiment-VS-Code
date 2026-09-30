@@ -184,8 +184,18 @@ function setBottom(name,content,html=false){
    const focused=refs.bottom.querySelector(".terminalCommandFocus");
    if(focused)requestAnimationFrame(()=>window.SIM_FOCUS?.follow(focused,{block:"center"}));
    if(v)v.scrollTop=v.scrollHeight;
- }else if(html)refs.bottom.innerHTML=content||"";
- else refs.bottom.textContent=content||""
+ }else if(html){
+   refs.bottom.innerHTML=content||"";
+ }else if(name==="run"){
+   const label=state.runConsoleName||state.activeRunConfiguration||(state.maven?.lastGoal?("Maven "+state.maven.lastGoal):"Run");
+   refs.bottom.innerHTML='<div class="processBar"><span class="processName">▣ '+esc(label)+'</span><span class="grow"></span><button type="button" id="ijRunRerun" title="Rerun">↻</button><button type="button" id="ijRunStop" title="Stop">■</button></div><pre class="toolConsole">'+esc(content||"")+'</pre>';
+   const consoleEl=refs.bottom.querySelector(".toolConsole");
+   if(consoleEl)consoleEl.scrollTop=consoleEl.scrollHeight;
+ }else{
+   refs.bottom.innerHTML='<pre class="toolConsole">'+esc(content||"")+'</pre>';
+   const consoleEl=refs.bottom.querySelector(".toolConsole");
+   if(consoleEl)consoleEl.scrollTop=consoleEl.scrollHeight;
+ }
 }
 function renderBottom(){
  const b=state.bottomCache?.[activeBottom];if(b){setBottom(activeBottom,b.content,b.html);return}
@@ -936,9 +946,9 @@ async function applyStep(st,animate,token){
   case"setVmOptions":{const r=findRun(d.name);if(r)r.vmOptions=d.value||d.options||"";break}
   case"setEnvironmentVariables":{const r=findRun(d.name);if(r)r.env=clone(d.variables||d.env||{});break}
   case"setWorkingDirectory":{const r=findRun(d.name);if(r)r.workingDirectory=d.path||"";break}
-  case"runJavaMain":case"runConfiguration":state.activeRunConfiguration=d.name||d.mainClass||state.activeRunConfiguration;state.console=d.console||("Running "+state.activeRunConfiguration+"\nProcess finished with exit code 0");activeBottom="run";renderAll();break;
-  case"stopProcess":state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom();break;
-  case"showRunConsole":if(d.uiState==="screenshot"){showRunConsoleScreenshot(d);break}activeBottom="run";if(d.text!==undefined)state.console=String(d.text);renderBottom();break;case"clearRunConsole":state.console="";activeBottom="run";renderBottom();break;case"restartApplication":state.console=d.console||("Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started");activeBottom="run";renderBottom();break;
+  case"runJavaMain":case"runConfiguration":state.activeRunConfiguration=d.name||d.mainClass||state.activeRunConfiguration;state.runConsoleName=state.activeRunConfiguration||"Application";state.console=d.console||("Running "+state.activeRunConfiguration+"\nProcess finished with exit code 0");if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
+  case"stopProcess":state.console+=(state.console?"\n":"")+"Process terminated";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
+  case"showRunConsole":if(d.uiState==="screenshot"){showRunConsoleScreenshot(d);break}if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";if(d.text!==undefined)state.console=String(d.text);renderFeatureVisibility();renderBottom();break;case"clearRunConsole":state.console="";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;case"restartApplication":state.console=d.console||("Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started");if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
 
   case"debugConfiguration":state.debug={...state.debug,...clone(d),running:d.running!==false,config:d.name||state.activeRunConfiguration,frames:clone(d.frames||[]),variables:clone(d.variables||[]),watches:clone(d.watches||state.debug?.watches||[]),console:d.console||"Debugger attached",currentFile:d.file||d.currentFile,currentLine:Number(d.line||d.currentLine||1)};if(!state.visibleFeatures.includes("debug"))state.visibleFeatures.push("debug");activeBottom="debug";if(state.debug.currentFile&&files[state.debug.currentFile]){activeFile=state.debug.currentFile;if(!openTabs.includes(activeFile))openTabs.push(activeFile);focusRange={file:activeFile,lines:[state.debug.currentLine]}}renderAll();break;
   case"setBreakpoint":if(!state.breakpoints.some(b=>b.file===d.file&&Number(b.line)===Number(d.line)))state.breakpoints.push({file:d.file,line:Number(d.line),condition:d.condition||""});renderEditor();break;
@@ -960,7 +970,7 @@ async function applyStep(st,animate,token){
 
   case"openMavenToolWindow":state.maven={...state.maven,...clone(d)};if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();break;
   case"reloadMavenProject":state.maven.status="Reloaded";activeRight="maven";renderRight();break;
-  case"runMavenGoal":state.maven.lastGoal=d.goal||"test";state.maven.status=d.status||"BUILD SUCCESS";ensureMavenArtifacts(state.maven.lastGoal);activeBottom="run";setBottom("run",d.console||`[INFO] --- ${state.maven.lastGoal}\n[INFO] BUILD SUCCESS`);renderRight();break;
+  case"runMavenGoal":state.maven.lastGoal=d.goal||"test";state.maven.status=d.status||"BUILD SUCCESS";state.runConsoleName="Maven "+state.maven.lastGoal;ensureMavenArtifacts(state.maven.lastGoal);if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";state.console=d.console||`[INFO] --- ${state.maven.lastGoal}\n[INFO] BUILD SUCCESS`;renderFeatureVisibility();renderBottom();renderRight();break;
   case"showMavenLifecycle":case"showMavenDependencies":case"showMavenDependencyTree":case"showEffectivePom":genericSurface(st.action,d);break;
   case"addMavenDependency":state.maven.dependencies=state.maven.dependencies||[];state.maven.dependencies.push(clone(d.dependency||d));renderRight();break;
   case"removeMavenDependency":state.maven.dependencies=(state.maven.dependencies||[]).filter(x=>(x.artifactId||x.name)!==(d.artifactId||d.name));renderRight();break;
@@ -1012,8 +1022,8 @@ async function applyStep(st,animate,token){
 
   case"openIntegratedTerminal":case"openTerminal":if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";renderAll();break;
   case"typeTerminal":{if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";state.terminalSessions=state.terminalSessions||[];const sessionId=d.sessionId||"local";let session=state.terminalSessions.find(x=>x.id===sessionId);if(!session){session={id:sessionId,name:d.session||d.shell||"Local",shell:d.shell||"Terminal"};state.terminalSessions.push(session)}session.name=d.session||session.name;session.shell=d.shell||session.shell;state.activeTerminalSession=sessionId;state.terminalExitCode=d.exitCode;renderFeatureVisibility();const cmd=String(d.command||d.text||"");const prefix=state.terminal?(state.terminal+"\n"):"";const emphasize=!replayingHistory&&!!cmd;terminalHighlightText=emphasize?cmd:"";await typeText(cmd,part=>{if(emphasize)terminalHighlightText=part;setBottom("terminal",prefix+"$ "+part)},animate,token);terminalHighlightText=emphasize?cmd:"";state.terminal=prefix+"$ "+cmd+(d.output!==undefined?"\n"+d.output:"");renderBottom();break}
-  case"appendTerminal":state.terminal+=(state.terminal?"\n":"")+String(d.text||"");activeBottom="terminal";renderBottom();break;
-  case"clearTerminal":state.terminal="";terminalHighlightText="";activeBottom="terminal";renderBottom();break;
+  case"appendTerminal":if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");state.terminal+=(state.terminal?"\n":"")+String(d.text||"");activeBottom="terminal";renderFeatureVisibility();renderBottom();break;
+  case"clearTerminal":if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");state.terminal="";terminalHighlightText="";activeBottom="terminal";renderFeatureVisibility();renderBottom();break;
 
   case"showExternalLibraries":state.externalLibrariesOpen=true;renderTree();break;
   case"openImportProjectWizard":showModal("importProject","New Project from Existing Sources",'<div class="kv"><span>Project folder</span><input value="'+esc(d.path||"C:/projects/demo")+'"><span>Detected build</span><span>Maven pom.xml</span><span>Open in</span><span>Current window</span></div>');break;
@@ -1250,9 +1260,9 @@ refs.branch?.addEventListener("click",()=>genericSurface("Git Branches",{current
 
 refs.newBtn.onclick=()=>{const p="src/main/java/NewClass.java";files[p]={language:"java",content:"public class NewClass {\\n}\\n"};state.files=clone(files);addTreePath(p,"java");openFile(p)};
 refs.saveBtn.onclick=()=>{if(activeFile)files[activeFile].dirty=false;actionStatus("Saved")};
-refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";activeBottom="run";renderBottom()};
-refs.debugBtn.onclick=()=>{activeBottom="debug";setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+=(state.console?"\n":"")+"Process terminated";activeBottom="run";renderBottom()};refs.restartBtn.onclick=()=>{state.console="Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started";activeBottom="run";renderBottom()};refs.clearConsoleBtn.onclick=()=>{state.console="";activeBottom="run";renderBottom()};
-refs.editorSplitClose.onclick=()=>{state.editorSplit=false;state.splitFile=null;renderAll()};refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{activeBottom="git";renderBottom()};refs.terminalBtn.onclick=()=>{activeBottom="terminal";renderBottom()};
+refs.runBtn.onclick=()=>{state.console="Running "+(state.activeRunConfiguration||"Current File")+"\nProcess finished with exit code 0";state.runConsoleName=state.activeRunConfiguration||"Current File";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom()};
+refs.debugBtn.onclick=()=>{if(!state.visibleFeatures.includes("debug"))state.visibleFeatures.push("debug");activeBottom="debug";renderFeatureVisibility();setBottom("debug","Debugger attached")};refs.stopBtn.onclick=()=>{state.console+=(state.console?"\n":"")+"Process terminated";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom()};refs.restartBtn.onclick=()=>{state.console="Restarting "+(state.activeRunConfiguration||"Application")+"\nApplication started";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom()};refs.clearConsoleBtn.onclick=()=>{state.console="";if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";renderFeatureVisibility();renderBottom()};
+refs.editorSplitClose.onclick=()=>{state.editorSplit=false;state.splitFile=null;renderAll()};refs.searchBtn.onclick=()=>genericSurface("Search Everywhere",{query:""});refs.gitBtn.onclick=()=>{if(!state.visibleFeatures.includes("git"))state.visibleFeatures.push("git");activeBottom="git";renderFeatureVisibility();renderBottom()};refs.terminalBtn.onclick=()=>{if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";renderFeatureVisibility();renderBottom()};
 // IntelliJ owns its native splitters. Shared layout-resize only restores/persists their sizes.
 let dl=false,dr=false,dh=false;
 const projectResizeHit=document.createElement("div");
