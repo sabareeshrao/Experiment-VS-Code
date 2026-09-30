@@ -1009,7 +1009,9 @@ async function applyStep(st,animate,token){
   case"openMavenToolWindow":state.maven={...state.maven,...clone(d)};if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();break;
   case"reloadMavenProject":state.maven.status="Reloaded";activeRight="maven";renderRight();break;
   case"runMavenGoal":state.maven.lastGoal=d.goal||"test";state.maven.status=d.status||"BUILD SUCCESS";state.runConsoleName="Maven "+state.maven.lastGoal;ensureMavenArtifacts(state.maven.lastGoal);if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";state.console=d.console||`[INFO] --- ${state.maven.lastGoal}\n[INFO] BUILD SUCCESS`;renderFeatureVisibility();renderBottom();renderRight();break;
-  case"showMavenLifecycle":case"showMavenDependencies":case"showMavenDependencyTree":case"showEffectivePom":genericSurface(st.action,d);break;
+  case"showMavenLifecycle":state.maven=state.maven||{};state.maven.sections={...(state.maven.sections||{}),Lifecycle:true};if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();renderP0MavenTool();break;
+  case"showMavenDependencies":case"showMavenDependencyTree":state.maven=state.maven||{};state.maven.sections={...(state.maven.sections||{}),Dependencies:true};if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();renderP0MavenTool();break;
+  case"showEffectivePom":genericSurface("Effective POM",d);break;
   case"addMavenDependency":state.maven.dependencies=state.maven.dependencies||[];state.maven.dependencies.push(clone(d.dependency||d));renderRight();break;
   case"removeMavenDependency":state.maven.dependencies=(state.maven.dependencies||[]).filter(x=>(x.artifactId||x.name)!==(d.artifactId||d.name));renderRight();break;
   case"setMavenProfile":state.maven.profile=d.profile||"default";renderRight();break;
