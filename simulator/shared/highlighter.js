@@ -179,7 +179,8 @@ function resolve(plan){
   if(byText)return {elements:[byText],mode:plan.mode||(lineLike(byText)?"line":"control")};
  }
  var matches=selectorMatches(plan&&plan.selectors,!!(plan&&plan.multiple),true);
- var explicitMode=(plan&&plan.mode)||((matches[0]&&lineLike(matches[0]))?"line":"control");
+ var nativeTerminal=matches.length&&matches.every(function(el){return el.classList&&el.classList.contains("terminalCommandFocus")});
+ var explicitMode=nativeTerminal?"native":((plan&&plan.mode)||((matches[0]&&lineLike(matches[0]))?"line":"control"));
  return {elements:matches,mode:explicitMode};
 }
 function report(requestId,found,mode){
