@@ -60,7 +60,7 @@ body.ijScreenshotMode .app{grid-template-rows:42px 42px minmax(0,1fr) 24px;min-h
 body.ijScreenshotMode .work{min-height:0;overflow:hidden;grid-template-rows:minmax(0,1fr) 3px min(var(--bottomH),45%)}
 body.ijScreenshotMode .work.noBottom{grid-template-rows:minmax(0,1fr) 0 0}
 body.ijScreenshotMode .left,body.ijScreenshotMode .tree,body.ijScreenshotMode .editorWrap{min-height:0;min-width:0}
-.ij-completion-shot{left:24%;top:66px;width:min(690px,72%);min-width:0;max-height:min(330px,calc(100% - 78px));border-radius:6px;overflow:auto}
+.ij-completion-shot{left:24%;top:clamp(12px,18%,66px);width:min(690px,72%);min-width:0;max-height:min(330px,calc(100% - 28px));border-radius:6px;overflow:auto}
 .ij-completion-shot .popupRow{width:100%;display:grid;grid-template-columns:minmax(50px,1fr) minmax(0,2fr);align-items:center;border:0;background:transparent;color:#d8dbe1;text-align:left;padding:7px 12px;gap:20px}
 .ij-completion-shot .popupRow strong{color:#a8c7ff}.ij-completion-shot .popupRow span{color:#858a94;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ij-completion-shot .popupRow.active,.ij-completion-shot .popupRow:hover{background:#3b3e44}.ij-completion-tip{border-top:1px solid #3b3d42;padding:7px 12px;color:#80848c;font-size:11px}.ij-completion-tip span{color:#6f8acb}
 .ij-console-selection{background:#315a9c;color:#e9edf5;padding:1px 2px}
