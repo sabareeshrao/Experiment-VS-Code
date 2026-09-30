@@ -495,6 +495,23 @@ function showScreenshotCompletion(kind,d={}){
     {label:"soutp",desc:"Prints method parameter names and values",insert:'System.out.println("args = " + args);'}
   ];
  refs.completion.innerHTML=mainItems.map((it,i)=>'<button type="button" class="popupRow '+(i===0?'active':'')+'" data-completion-index="'+i+'"><strong>'+esc(it.label)+'</strong><span>'+esc(it.desc)+'</span></button>').join("")+'<div class="ij-completion-tip">Press Ctrl+Space to see non-imported classes <span>Next Tip</span> 💡 ⋮</div>';
+ requestAnimationFrame(()=>{
+   const editor=refs.editorWrap?.getBoundingClientRect();
+   if(!editor)return;
+   const pad=8;
+   refs.completion.style.maxHeight=Math.max(84,Math.min(330,editor.height-pad*2))+"px";
+   refs.completion.style.top=Math.max(pad,Math.min(66,editor.height*.18))+"px";
+   let popup=refs.completion.getBoundingClientRect();
+   if(popup.bottom>editor.bottom-pad){
+     const overflow=popup.bottom-(editor.bottom-pad);
+     const current=parseFloat(refs.completion.style.top)||pad;
+     refs.completion.style.top=Math.max(pad,current-overflow)+"px";
+     popup=refs.completion.getBoundingClientRect();
+     if(popup.bottom>editor.bottom-pad){
+       refs.completion.style.maxHeight=Math.max(84,editor.bottom-pad-popup.top)+"px";
+     }
+   }
+ });
  refs.completion.querySelectorAll("[data-completion-index]").forEach(btn=>btn.addEventListener("click",()=>{
    const it=mainItems[Number(btn.dataset.completionIndex)]||mainItems[0];
    const current=String(files[file]?.content||"");
