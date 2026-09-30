@@ -226,6 +226,111 @@ const server = http.createServer((req, res) => {
     assert(!await frame().locator("body").evaluate(e => e.classList.contains("ijScreenshotMode")), "Normal IntelliJ inherited screenshot mode");
     await geometry();
 
+    // Tool-window ownership regression: a previous JUnit run must never leave
+    // Spring Boot output under the Tests tab, and multiline console output must
+    // stay inside the correct Run / Services / Terminal surfaces.
+    await frame().evaluate(() => {
+      window.postMessage({
+        type:"SIM_PACKAGE",
+        package:{apps:{intellij_idea:{
+          project:{name:"GeoOps",sdk:"Java 17",languageLevel:"17"},
+          tree:[],
+          files:{},
+          visibleFeatures:["tests"],
+          tests:{results:[{name:"contextLoads",status:"PASS",duration:"30 ms"}],total:1,passed:1,failed:0},
+          spring:{apps:[{name:"GeoOpsApplication",status:"Stopped",port:8080,profile:"default"}]},
+          maven:{},
+          git:{branch:"main",changes:[],history:[]}
+        }}}
+      }, "*");
+    });
+    await frame().waitForTimeout(80);
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[
+        {action:"runJUnit",data:{suite:"GeoOpsApplicationTests",tests:[{name:"contextLoads",status:"PASS",duration:"30 ms"}],total:1,passed:1,failed:0}},
+        {action:"runSpringBootApp",data:{name:"GeoOpsApplication",port:8080,profile:"default",console:"INFO Starting GeoOpsApplication using Java 17\nINFO Tomcat started on port 8080 (http)\nINFO Started GeoOpsApplication"}}
+      ]
+    }, "*"));
+    await frame().waitForSelector(".ij-services-tool");
+    const springSurface=await frame().evaluate(()=>{
+      const active=document.querySelector(".bottomTab.active")?.dataset.bottom;
+      const console=document.querySelector(".ij-service-console");
+      const card=document.querySelector(".ij-service-card");
+      return {
+        active,
+        servicesVisible:!!document.querySelector(".ij-services-tool"),
+        testsActive:document.querySelector('[data-bottom="tests"]')?.classList.contains("active")||false,
+        consoleText:console?.innerText||"",
+        consoleWhiteSpace:console?getComputedStyle(console).whiteSpace:"",
+        cardText:card?.innerText||""
+      };
+    });
+    assert.equal(springSurface.active,"services","Spring Boot run did not own the Services tool window: "+JSON.stringify(springSurface));
+    assert(!springSurface.testsActive,"Spring Boot output remained under Tests: "+JSON.stringify(springSurface));
+    assert(springSurface.servicesVisible&&springSurface.cardText.includes("GeoOpsApplication")&&springSurface.cardText.includes("Running"),"Spring service card is not realistic: "+JSON.stringify(springSurface));
+    assert(springSurface.consoleText.includes("Starting GeoOpsApplication\n")&&springSurface.consoleText.includes("Tomcat started on port 8080"),"Spring logs lost their line structure: "+JSON.stringify(springSurface));
+    assert(["pre","pre-wrap"].includes(springSurface.consoleWhiteSpace),"Spring service console is not preformatted: "+JSON.stringify(springSurface));
+
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[{action:"stopSpringBootApp",data:{name:"GeoOpsApplication"}}]
+    }, "*"));
+    await frame().waitForTimeout(80);
+    const stoppedSurface=await frame().evaluate(()=>({
+      active:document.querySelector(".bottomTab.active")?.dataset.bottom,
+      card:document.querySelector(".ij-service-card")?.innerText||"",
+      console:document.querySelector(".ij-service-console")?.innerText||""
+    }));
+    assert.equal(stoppedSurface.active,"services","Spring stop left the Services surface: "+JSON.stringify(stoppedSurface));
+    assert(stoppedSurface.card.includes("Stopped"),"Spring service card did not show Stopped: "+JSON.stringify(stoppedSurface));
+    assert(stoppedSurface.console.includes("Spring Boot application stopped"),"Spring stop message is missing from the Services console: "+JSON.stringify(stoppedSurface));
+
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[{action:"runMavenGoal",data:{goal:"clean verify",status:"BUILD SUCCESS",console:"[INFO] Compiling GeoOps\n[INFO] Tests run: 5, Failures: 0\n[INFO] BUILD SUCCESS"}}]
+    }, "*"));
+    await frame().waitForSelector(".processBar");
+    const runSurface=await frame().evaluate(()=>({
+      active:document.querySelector(".bottomTab.active")?.dataset.bottom,
+      label:document.querySelector(".processName")?.innerText||"",
+      console:document.querySelector(".toolConsole")?.innerText||"",
+      whiteSpace:document.querySelector(".toolConsole")?getComputedStyle(document.querySelector(".toolConsole")).whiteSpace:""
+    }));
+    assert.equal(runSurface.active,"run","Maven goal did not activate Run: "+JSON.stringify(runSurface));
+    assert(runSurface.label.includes("Maven clean verify"),"Run process label is not meaningful: "+JSON.stringify(runSurface));
+    assert(runSurface.console.includes("Compiling GeoOps\n")&&runSurface.console.includes("BUILD SUCCESS"),"Run console collapsed multiline Maven output: "+JSON.stringify(runSurface));
+    assert(["pre","pre-wrap"].includes(runSurface.whiteSpace),"Run console is not preformatted: "+JSON.stringify(runSurface));
+
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_SEEK",
+      autoType:false,
+      animateFinal:false,
+      steps:[{action:"typeTerminal",data:{command:"java -version",output:'openjdk version "17"',exitCode:0,session:"Local"}}]
+    }, "*"));
+    await frame().waitForSelector(".terminalCommandFocus");
+    const terminalSurface=await frame().evaluate(()=>{
+      const focus=document.querySelector(".terminalCommandFocus");
+      const cs=getComputedStyle(focus);
+      return {
+        active:document.querySelector(".bottomTab.active")?.dataset.bottom,
+        command:focus?.innerText||"",
+        outlineColor:cs.outlineColor,
+        outlineWidth:parseFloat(cs.outlineWidth)||0,
+        exit:document.querySelector(".ij-exit-code")?.innerText||""
+      };
+    });
+    assert.equal(terminalSurface.active,"terminal","Terminal command did not own Terminal: "+JSON.stringify(terminalSurface));
+    assert(terminalSurface.command.includes("java -version"),"Current terminal command is not focused: "+JSON.stringify(terminalSurface));
+    assert(terminalSurface.outlineWidth>=2&&/rgb\(255, 212, 0\)/.test(terminalSurface.outlineColor),"Terminal command lost the yellow boundary: "+JSON.stringify(terminalSurface));
+    assert(terminalSurface.exit.includes("exit 0"),"Terminal process exit status is missing: "+JSON.stringify(terminalSurface));
+
     // Project tree horizontal overflow regression: long labels must remain one line,
     // increase intrinsic content width, and be reachable with horizontal scrolling.
     const treeScroll = await frame().evaluate(() => {
