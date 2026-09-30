@@ -165,6 +165,8 @@ const server = http.createServer((req, res) => {
       steps: [...steps, { action: "mergePullRequest", data: { number: 1 } }]
     }, "*"), {steps: baseSteps});
     await page.waitForFunction(() => document.querySelector(".view .toolbar .pill")?.textContent.trim() === "Merged");
+    assert.equal(await page.locator("#mergeBtn").count(), 0, "Merged PR still exposes a merge button");
+    assert((await page.locator(".cardHead").allInnerTexts()).some(x => x.includes("successfully merged")), "Merged confirmation is missing");
 
     assert.deepEqual(errors, [], "GitHub simulator page errors: " + JSON.stringify(errors));
     console.log("GitHub collaboration UI fidelity passed.");
