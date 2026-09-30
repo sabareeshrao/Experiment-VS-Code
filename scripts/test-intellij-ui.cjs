@@ -271,7 +271,7 @@ const server = http.createServer((req, res) => {
     assert.equal(springSurface.active,"services","Spring Boot run did not own the Services tool window: "+JSON.stringify(springSurface));
     assert(!springSurface.testsActive,"Spring Boot output remained under Tests: "+JSON.stringify(springSurface));
     assert(springSurface.servicesVisible&&springSurface.cardText.includes("GeoOpsApplication")&&springSurface.cardText.includes("Running"),"Spring service card is not realistic: "+JSON.stringify(springSurface));
-    assert(springSurface.consoleText.includes("Starting GeoOpsApplication\n")&&springSurface.consoleText.includes("Tomcat started on port 8080"),"Spring logs lost their line structure: "+JSON.stringify(springSurface));
+    assert(springSurface.consoleText.includes("using Java 17\nINFO Tomcat started on port 8080")&&springSurface.consoleText.includes("\nINFO Started GeoOpsApplication"),"Spring logs lost their line structure: "+JSON.stringify(springSurface));
     assert(["pre","pre-wrap"].includes(springSurface.consoleWhiteSpace),"Spring service console is not preformatted: "+JSON.stringify(springSurface));
 
     await frame().evaluate(() => window.postMessage({
