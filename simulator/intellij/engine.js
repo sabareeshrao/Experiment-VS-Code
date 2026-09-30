@@ -208,6 +208,15 @@ function renderBottom(){
  else setBottom(activeBottom,state.console||"")
 }
 
+function ensureBottomFeature(name){
+ const feature={run:"run",debug:"debug",tests:"tests",terminal:"terminal",problems:"problems",git:"git",services:"spring"}[name];
+ if(feature&&!state.visibleFeatures.includes(feature))state.visibleFeatures.push(feature);
+}
+function activateBottom(name){
+ ensureBottomFeature(name);
+ activeBottom=name;
+ renderFeatureVisibility();
+}
 function markGit(file,status="M"){
  state.git=state.git||{};state.git.changes=state.git.changes||[];
  let c=state.git.changes.find(x=>x.file===file);
@@ -888,7 +897,7 @@ async function applyStep(st,animate,token){
  switch(st.action){
   case"enableFeature":{const name=d.feature||d.name;if(name&&!state.visibleFeatures.includes(name))state.visibleFeatures.push(name);renderAll();break}
   case"disableFeature":{const name=d.feature||d.name;state.visibleFeatures=(state.visibleFeatures||[]).filter(x=>x!==name);renderAll();break}
-  case"setView":activeBottom=d.bottom||activeBottom;activeRight=d.right||activeRight;renderAll();break;
+  case"setView":if(d.bottom){ensureBottomFeature(d.bottom);activeBottom=d.bottom}activeRight=d.right||activeRight;renderAll();break;
   case"openMenu":openMenu(d.menu||"File");break;
   case"pressButton":if(d.target)await highlight(d.target,token);actionStatus("Pressed "+(d.target||"button"));break;
   case"highlightTarget":await highlight(d.target,token);break;
@@ -927,9 +936,9 @@ async function applyStep(st,animate,token){
   case"showJavaDocumentation":case"showQuickDocumentation":if(d.uiState==="symbolCard"){showSymbolInfoSurface(d);break}genericSurface("JDK Documentation",d);break;
   case"showQuickFixes":case"showIntentionActions":showPopup("intentions",d.items||["Add exception to method signature","Import class","Replace with modern API","Refactor expression"]);break;
   case"applyQuickFix":if(d.file&&d.find!==undefined&&files[d.file])files[d.file].content=String(files[d.file].content).replace(String(d.find),String(d.replace||""));actionStatus("Quick fix applied");renderAll();break;
-  case"showEditorDiagnostics":case"runInspection":if(d.problems)state.problems=clone(d.problems);else if(!state.problems.length)state.problems=[{severity:"error",message:"Cannot resolve method",file:activeFile,line:1},{severity:"warning",message:"Type or declaration should be reviewed",file:activeFile,line:2}];activeBottom="problems";renderEditor();setBottom("problems",state.problems.map(p=>p.severity+": "+p.message).join("\n"));break;
-  case"showProblems":activeBottom="problems";renderBottom();break;
-  case"addProblem":addProblem(d);activeBottom="problems";renderBottom();break;
+  case"showEditorDiagnostics":case"runInspection":if(d.problems)state.problems=clone(d.problems);else if(!state.problems.length)state.problems=[{severity:"error",message:"Cannot resolve method",file:activeFile,line:1},{severity:"warning",message:"Type or declaration should be reviewed",file:activeFile,line:2}];ensureBottomFeature("problems");activeBottom="problems";renderEditor();renderFeatureVisibility();renderBottom();break;
+  case"showProblems":activateBottom("problems");renderBottom();break;
+  case"addProblem":addProblem(d);activateBottom("problems");renderBottom();break;
   case"suppressInspection":state.problems=state.problems.filter(p=>p.message!==d.message);renderBottom();break;
 
   case"moveClass":if(d.uiState==="moveDialog"){showMoveRefactorSurface(d);break}if(d.file&&files[d.file]&&d.content!==undefined){files[d.file].content=String(d.content);files[d.file].dirty=true;openFile(d.file)}else genericSurface(st.action,d);break;
@@ -956,17 +965,17 @@ async function applyStep(st,animate,token){
   case"setConditionalBreakpoint":{let b=state.breakpoints.find(x=>x.file===d.file&&Number(x.line)===Number(d.line));if(!b){b={file:d.file,line:Number(d.line)};state.breakpoints.push(b)}b.condition=d.condition||"true";renderEditor();break}
   case"setExceptionBreakpoint":state.exceptionBreakpoint=d.exception||"Exception";actionStatus("Exception breakpoint: "+state.exceptionBreakpoint);break;
   case"resumeDebug":case"pauseDebug":case"stepOver":case"stepInto":case"stepOut":case"runToCursor":if(!state.visibleFeatures.includes("debug"))state.visibleFeatures.push("debug");activeBottom="debug";actionStatus(st.action);if(st.action==="resumeDebug")state.debug.running=true;if(st.action==="pauseDebug")state.debug.running=false;renderFeatureVisibility();renderBottom();break;
-  case"evaluateExpression":activeBottom="debug";setBottom("debug",(state.bottomCache?.debug?.content||"")+"\nEvaluate: "+(d.expression||"")+" = "+(d.result??""));break;
-  case"addWatch":state.debug=state.debug||{};state.debug.watches=state.debug.watches||[];state.debug.watches.push({expression:d.expression,result:d.result});activeBottom="debug";setBottom("debug",state.debug.watches.map(x=>`${x.expression} = ${x.result}`).join("\n"));break;
-  case"showVariables":activeBottom="debug";setBottom("debug",(d.variables||state.debug?.variables||[]).map(x=>`${x.name} = ${x.value}`).join("\n"));break;
+  case"evaluateExpression":state.debug=state.debug||{};state.debug.console=(state.debug.console?state.debug.console+"\n":"")+"Evaluate: "+(d.expression||"")+" = "+(d.result??"");ensureBottomFeature("debug");activeBottom="debug";renderFeatureVisibility();renderP0DebuggerTool();break;
+  case"addWatch":state.debug=state.debug||{};state.debug.watches=state.debug.watches||[];state.debug.watches.push({expression:d.expression,result:d.result});ensureBottomFeature("debug");activeBottom="debug";renderFeatureVisibility();renderP0DebuggerTool();break;
+  case"showVariables":state.debug=state.debug||{};state.debug.variables=clone(d.variables||state.debug.variables||[]);ensureBottomFeature("debug");activeBottom="debug";renderFeatureVisibility();renderP0DebuggerTool();break;
 
   case"runJUnit":case"runJUnitMethod":case"runJUnitClass":state.tests={...state.tests,...clone(d),total:d.total??d.tests?.length??1,passed:d.passed??(d.tests||[]).filter(x=>String(x.status||"PASS").toUpperCase()==="PASS").length??1,failed:d.failed??(d.tests||[]).filter(x=>String(x.status||"PASS").toUpperCase()!=="PASS").length??0,results:clone(d.tests||[]),selectedIndex:0};if(!state.visibleFeatures.includes("tests"))state.visibleFeatures.push("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();break;
-  case"showTestResults":activeBottom="tests";renderBottom();break;
-  case"showFailureTrace":activeBottom="tests";setBottom("tests",d.trace||"AssertionError");break;
-  case"rerunFailedTests":activeBottom="tests";setBottom("tests",d.console||"Rerun failed tests: PASS");break;
-  case"runWithCoverage":state.tests.coverage=d.coverage||{};activeBottom="tests";setBottom("tests","Run with Coverage\n"+JSON.stringify(state.tests.coverage,null,2));break;
+  case"showTestResults":ensureBottomFeature("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();break;
+  case"showFailureTrace":{state.tests=state.tests||{};state.tests.results=state.tests.results||[{name:d.name||"Test",status:"FAIL",trace:d.trace||"AssertionError"}];const i=Number(state.tests.selectedIndex||0);if(state.tests.results[i]){state.tests.results[i].status="FAIL";state.tests.results[i].trace=d.trace||state.tests.results[i].trace||"AssertionError"}state.tests.failed=Math.max(1,Number(state.tests.failed||0));ensureBottomFeature("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();break}
+  case"rerunFailedTests":{state.tests=state.tests||{};(state.tests.results||[]).forEach(x=>{if(String(x.status||"").toUpperCase()!=="PASS")x.status="PASS"});state.tests.passed=(state.tests.results||[]).length;state.tests.failed=0;ensureBottomFeature("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();break}
+  case"runWithCoverage":state.tests=state.tests||{};state.tests.coverage=d.coverage||{};ensureBottomFeature("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();fidelityNotice("Coverage collected");break;
   case"showCoverage":genericSurface("Code Coverage",d.coverage||state.tests.coverage||{});break;
-  case"mockitoVerifyInteraction":activeBottom="tests";setBottom("tests",d.text||"Mockito verify(repository).save(entity)  PASS");break;
+  case"mockitoVerifyInteraction":state.tests=state.tests||{};state.tests.results=state.tests.results?.length?state.tests.results:[{name:"Mockito verification",status:"PASS",duration:""}];state.tests.passed=Math.max(1,Number(state.tests.passed||1));state.tests.failed=0;ensureBottomFeature("tests");activeBottom="tests";renderFeatureVisibility();renderP0JUnitTool();break;
 
   case"openMavenToolWindow":state.maven={...state.maven,...clone(d)};if(!state.visibleFeatures.includes("maven"))state.visibleFeatures.push("maven");activeRight="maven";renderAll();break;
   case"reloadMavenProject":state.maven.status="Reloaded";activeRight="maven";renderRight();break;
@@ -993,32 +1002,32 @@ async function applyStep(st,animate,token){
   case"showJpaRepositories":genericSurface("Spring Data Repositories",{repositories:state.jpa.repositories||[]});break;
   case"showEntityMapping":case"showRepositoryMethods":genericSurface(st.action,d);break;
   case"generateJpaRepository":if(d.path){files[d.path]={language:"java",content:d.content||`public interface ${d.name||"Repository"} extends JpaRepository<Entity, Long> {}`};state.files=clone(files);addTreePath(d.path,"java");openFile(d.path)}break;
-  case"runJpql":activeBottom="run";setBottom("run",d.console||("JPQL: "+(d.query||"")+"\n"+JSON.stringify(d.rows||[],null,2)));break;
-  case"showHibernateSql":activeBottom="run";setBottom("run",d.sql||"Hibernate: select ...");break;
+  case"runJpql":state.runConsoleName="JPQL Console";state.console=d.console||("JPQL: "+(d.query||"")+"\n"+JSON.stringify(d.rows||[],null,2));ensureBottomFeature("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
+  case"showHibernateSql":state.runConsoleName="Hibernate SQL";state.console=d.sql||"Hibernate: select ...";ensureBottomFeature("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
   case"showHibernateStatistics":genericSurface("Hibernate Statistics",d.statistics||d);break;
   case"showHibernateSpatial":genericSurface("Hibernate Spatial",d);break;
 
-  case"openGitToolWindow":activeBottom="git";renderBottom();break;
-  case"showLocalChanges":activeBottom="git";renderBottom();break;
+  case"openGitToolWindow":activateBottom("git");renderBottom();break;
+  case"showLocalChanges":activateBottom("git");renderBottom();break;
   case"stageFile":{const c=(state.git.changes||[]).find(x=>x.file===d.file);if(c)c.staged=true;renderTree();renderBottom();break}
   case"unstageFile":{const c=(state.git.changes||[]).find(x=>x.file===d.file);if(c)c.staged=false;renderBottom();break}
-  case"commitChanges":state.git.history=state.git.history||[];state.git.history.unshift({hash:d.hash||"abc1234",message:d.message||"Commit",author:d.author||"Developer"});state.git.changes=(state.git.changes||[]).filter(x=>!x.staged);activeBottom="git";setBottom("git","Committed: "+(d.message||"Commit"));renderTree();break;
-  case"pushGit":case"pullGit":case"fetchGit":activeBottom="git";setBottom("git",d.console||st.action+" completed");break;
+  case"commitChanges":state.git.history=state.git.history||[];state.git.history.unshift({hash:d.hash||"abc1234",message:d.message||"Commit",author:d.author||"Developer"});state.git.changes=(state.git.changes||[]).filter(x=>!x.staged);ensureBottomFeature("git");activeBottom="git";renderFeatureVisibility();setBottom("git","Committed: "+(d.message||"Commit"));renderTree();break;
+  case"pushGit":case"pullGit":case"fetchGit":ensureBottomFeature("git");activeBottom="git";renderFeatureVisibility();setBottom("git",d.console||st.action+" completed");break;
   case"createBranch":state.git.branches=state.git.branches||[];if(!state.git.branches.includes(d.name))state.git.branches.push(d.name);break;
   case"checkoutBranch":state.git.branch=d.name||state.git.branch;renderAll();break;
-  case"mergeBranch":activeBottom="git";setBottom("git",d.console||("Merged "+(d.name||"branch")));break;
+  case"mergeBranch":ensureBottomFeature("git");activeBottom="git";renderFeatureVisibility();setBottom("git",d.console||("Merged "+(d.name||"branch")));break;
   case"showGitHistory":genericSurface("Git Log",{history:state.git.history||[]});break;
   case"showGitDiff":genericSurface("Git Diff",d);break;
-  case"showMergeConflict":state.git.conflicts=clone(d.conflicts||[]);activeBottom="git";setBottom("git","Merge conflicts:\n"+state.git.conflicts.map(x=>x.file).join("\n"));break;
-  case"resolveMergeConflict":state.git.conflicts=(state.git.conflicts||[]).filter(x=>x.file!==d.file);activeBottom="git";setBottom("git","Resolved "+(d.file||"conflict"));break;
+  case"showMergeConflict":state.git.conflicts=clone(d.conflicts||[]);ensureBottomFeature("git");activeBottom="git";renderFeatureVisibility();setBottom("git","Merge conflicts:\n"+state.git.conflicts.map(x=>x.file).join("\n"));break;
+  case"resolveMergeConflict":state.git.conflicts=(state.git.conflicts||[]).filter(x=>x.file!==d.file);ensureBottomFeature("git");activeBottom="git";renderFeatureVisibility();setBottom("git","Resolved "+(d.file||"conflict"));break;
 
   case"openDatabaseToolWindow":activeRight="database";renderRight();break;
   case"addDataSource":state.database.dataSources=state.database.dataSources||[];state.database.dataSources.push(clone(d));activeRight="database";renderRight();break;
   case"testDataSource":notify(d.success===false?"Connection failed":"Connection successful",d.success===false?"error":"");break;
-  case"openDatabaseConsole":activeBottom="run";setBottom("run",d.text||"Database Console");break;
-  case"executeSql":activeBottom="run";setBottom("run",d.sql||"SELECT 1;");if(d.rows)state.database.lastResult={columns:d.columns||Object.keys(d.rows[0]||{}),rows:clone(d.rows)};break;
-  case"showQueryResult":{const r=d.result||state.database.lastResult||{columns:[],rows:[]};activeBottom="run";setBottom("run",resultTable(r.columns||[],r.rows||[]),true);break}
-  case"showTableData":{const r={columns:d.columns||Object.keys(d.rows?.[0]||{}),rows:d.rows||[]};activeBottom="run";setBottom("run",resultTable(r.columns,r.rows),true);break}
+  case"openDatabaseConsole":state.runConsoleName="Database Console";state.console=d.text||"Database Console";ensureBottomFeature("run");activeBottom="run";renderFeatureVisibility();renderBottom();break;
+  case"executeSql":state.runConsoleName="Database Console";state.console=d.sql||"SELECT 1;";ensureBottomFeature("run");activeBottom="run";if(d.rows)state.database.lastResult={columns:d.columns||Object.keys(d.rows[0]||{}),rows:clone(d.rows)};renderFeatureVisibility();renderBottom();break;
+  case"showQueryResult":{const r=d.result||state.database.lastResult||{columns:[],rows:[]};ensureBottomFeature("run");activeBottom="run";renderFeatureVisibility();setBottom("run",resultTable(r.columns||[],r.rows||[]),true);break}
+  case"showTableData":{const r={columns:d.columns||Object.keys(d.rows?.[0]||{}),rows:d.rows||[]};ensureBottomFeature("run");activeBottom="run";renderFeatureVisibility();setBottom("run",resultTable(r.columns,r.rows),true);break}
 
   case"openIntegratedTerminal":case"openTerminal":if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";renderAll();break;
   case"typeTerminal":{if(!state.visibleFeatures.includes("terminal"))state.visibleFeatures.push("terminal");activeBottom="terminal";state.terminalSessions=state.terminalSessions||[];const sessionId=d.sessionId||"local";let session=state.terminalSessions.find(x=>x.id===sessionId);if(!session){session={id:sessionId,name:d.session||d.shell||"Local",shell:d.shell||"Terminal"};state.terminalSessions.push(session)}session.name=d.session||session.name;session.shell=d.shell||session.shell;state.activeTerminalSession=sessionId;state.terminalExitCode=d.exitCode;renderFeatureVisibility();const cmd=String(d.command||d.text||"");const prefix=state.terminal?(state.terminal+"\n"):"";const emphasize=!replayingHistory&&!!cmd;terminalHighlightText=emphasize?cmd:"";await typeText(cmd,part=>{if(emphasize)terminalHighlightText=part;setBottom("terminal",prefix+"$ "+part)},animate,token);terminalHighlightText=emphasize?cmd:"";state.terminal=prefix+"$ "+cmd+(d.output!==undefined?"\n"+d.output:"");renderBottom();break}
