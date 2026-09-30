@@ -331,6 +331,24 @@ const server = http.createServer((req, res) => {
     assert(terminalSurface.outlineWidth>=2&&/rgb\(255, 212, 0\)/.test(terminalSurface.outlineColor),"Terminal command lost the yellow boundary: "+JSON.stringify(terminalSurface));
     assert(terminalSurface.exit.includes("exit 0"),"Terminal process exit status is missing: "+JSON.stringify(terminalSurface));
 
+    await frame().evaluate(() => window.postMessage({
+      type:"SIM_HIGHLIGHT",
+      requestId:9091,
+      plan:{kind:"target",selectors:[".terminalCommandFocus"],mode:"control"}
+    }, "*"));
+    await frame().waitForTimeout(50);
+    const guidedTerminal=await frame().evaluate(()=>{
+      const focus=document.querySelector(".terminalCommandFocus");
+      const cs=getComputedStyle(focus);
+      return {
+        blueClass:focus?.classList.contains("simActionHighlight")||false,
+        outlineColor:cs.outlineColor,
+        outlineWidth:parseFloat(cs.outlineWidth)||0
+      };
+    });
+    assert(!guidedTerminal.blueClass,"Shared lesson guidance overrode terminal native emphasis: "+JSON.stringify(guidedTerminal));
+    assert(guidedTerminal.outlineWidth>=2&&/rgb\(255, 212, 0\)/.test(guidedTerminal.outlineColor),"Shared lesson highlight changed terminal yellow boundary: "+JSON.stringify(guidedTerminal));
+
     // Project tree horizontal overflow regression: long labels must remain one line,
     // increase intrinsic content width, and be reachable with horizontal scrolling.
     const treeScroll = await frame().evaluate(() => {
