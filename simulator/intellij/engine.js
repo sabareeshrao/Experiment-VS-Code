@@ -760,8 +760,20 @@ function renderP0MavenTool(){
  refs.right.querySelectorAll("[data-maven-goal]").forEach(btn=>btn.addEventListener("click",()=>{state.maven.lastGoal=btn.dataset.mavenGoal;state.maven.status="BUILD SUCCESS";ensureMavenArtifacts(btn.dataset.mavenGoal);if(!state.visibleFeatures.includes("run"))state.visibleFeatures.push("run");activeBottom="run";state.console="[INFO] --- "+btn.dataset.mavenGoal+"\n[INFO] BUILD SUCCESS";renderFeatureVisibility();renderBottom();renderP0MavenTool()}));
  refs.right.querySelectorAll('input[name="ijMavenProfile"]').forEach(r=>r.addEventListener("change",()=>{state.maven.profile=r.value;actionStatus("Maven profile: "+r.value)}));
 }
+function ensureSpringApp(d={}){
+ state.spring=state.spring||{};
+ state.spring.apps=state.spring.apps||[];
+ let app=state.spring.apps.find(x=>x.name===(d.name||state.spring.appName));
+ if(!app){
+   const name=d.name||state.spring.appName||((state.project?.name||"Spring Boot").replace(/\s+/g,"")+"Application");
+   app={name,status:"Stopped",port:d.port||8080,profile:d.profile||state.spring.activeProfile||"default"};
+   state.spring.apps.push(app);
+ }
+ state.spring.appName=app.name;
+ return app;
+}
 function renderP0ServicesTool(){
- const apps=state.spring?.apps||[{name:"AeroTopoApplication",status:"Running",port:8080,profile:"dev"}];
+ const apps=(state.spring?.apps&&state.spring.apps.length)?state.spring.apps:[{name:state.spring?.appName||((state.project?.name||"Spring Boot").replace(/\s+/g,"")+"Application"),status:"Stopped",port:8080,profile:state.spring?.activeProfile||"default"}];
  setBottom("services",'<div class="ij-services-tool"><div class="ij-services-head"><strong>Services</strong><button id="ijServicesExpand">▾</button><span class="grow"></span><button id="ijServicesAdd">＋</button></div><div class="ij-services-body">'+apps.map((a,i)=>'<div class="ij-service-card"><span class="ij-service-dot '+(a.status==="Running"?"run":"stop")+'"></span><div><strong>'+esc(a.name)+'</strong><small>'+esc(a.status||"Stopped")+' · localhost:'+esc(a.port||8080)+' · '+esc(a.profile||state.spring.activeProfile||"default")+'</small></div><div class="ij-service-actions"><button type="button" data-service-action="run" data-service-index="'+i+'">▶</button><button type="button" data-service-action="debug" data-service-index="'+i+'">🐞</button><button type="button" data-service-action="restart" data-service-index="'+i+'">↻</button><button type="button" data-service-action="stop" data-service-index="'+i+'">■</button><button type="button" data-service-action="console" data-service-index="'+i+'">▤</button></div></div>').join("")+'<pre class="ij-service-console">'+esc(state.spring.console||"Started "+(apps[0]?.name||"Spring Boot application")+"\nTomcat initialized on port "+(apps[0]?.port||8080))+'</pre></div></div>',true);
  refs.bottom.querySelectorAll("[data-service-action]").forEach(btn=>btn.addEventListener("click",()=>{const a=apps[Number(btn.dataset.serviceIndex)],cmd=btn.dataset.serviceAction;if(!a)return;if(cmd==="stop")a.status="Stopped";if(cmd==="run"||cmd==="restart"||cmd==="debug")a.status="Running";if(cmd==="debug")state.spring.console=(state.spring.console||"")+"\nDebugger attached";if(cmd==="restart")state.spring.console=(state.spring.console||"")+"\nApplication restarted";if(cmd==="console")fidelityNotice("Service console selected");renderP0ServicesTool()}));
 }
@@ -986,9 +998,9 @@ async function applyStep(st,animate,token){
   case"setMavenProfile":state.maven.profile=d.profile||"default";renderRight();break;
 
   case"openSpringToolWindow":case"showSpringBootDashboard":state.spring={...state.spring,...clone(d)};if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");activeBottom="services";renderAll();break;
-  case"runSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app){app.status="Running";app.profile=d.profile||app.profile;app.port=d.port||app.port}if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=d.console||"Started Spring Boot application";state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
-  case"stopSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app)app.status="Stopped";if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=(state.spring.console?state.spring.console+"\n":"")+"Spring Boot application stopped";state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
-  case"restartSpringBootApp":{const app=(state.spring.apps||[]).find(x=>x.name===d.name)||(state.spring.apps||[])[0];if(app)app.status="Running";if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=(d.console||((state.spring.console?state.spring.console+"\n":"")+"Spring Boot application restarted"));state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
+  case"runSpringBootApp":{const app=ensureSpringApp(d);app.status="Running";app.profile=d.profile||app.profile;app.port=d.port||app.port;if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=d.console||"Started Spring Boot application";state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
+  case"stopSpringBootApp":{const app=ensureSpringApp(d);app.status="Stopped";if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=(state.spring.console?state.spring.console+"\n":"")+"Spring Boot application stopped";state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
+  case"restartSpringBootApp":{const app=ensureSpringApp(d);app.status="Running";app.profile=d.profile||app.profile;app.port=d.port||app.port;if(!state.visibleFeatures.includes("spring"))state.visibleFeatures.push("spring");state.spring.console=(d.console||((state.spring.console?state.spring.console+"\n":"")+"Spring Boot application restarted"));state.console=state.spring.console;activeBottom="services";renderFeatureVisibility();renderP0ServicesTool();break}
   case"setSpringProfile":state.spring.activeProfile=d.profile||"dev";break;
   case"showSpringBeans":showP0SpringView("beans",d);break;
   case"showSpringMappings":showP0SpringView("mappings",d);break;
